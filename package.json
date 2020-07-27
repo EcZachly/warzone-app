@@ -12,6 +12,7 @@
   "dependencies": {
     "call-of-duty-api": "^1.2.14",
     "esm": "^3.2.25",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "helmet": "^3.23.3"
   }
 }
