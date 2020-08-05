@@ -9,12 +9,17 @@ if(!EMAIL || !PASSWORD){
 }
 
 
+
+
+
 API.login(EMAIL, PASSWORD).then((response, api)=>{
-    API.MWcombatwzdate('EcZachly', 0,  0, API.platforms.xbl).then((output) => {
-        console.log(output.matches);
+
+    API.MWfullcombatwz('EcZachly', API.platforms.xbl).then((output) => {
+        console.log(output.length);
     }).catch((err) => {
         console.log(err);
     });
+
 }).catch(console.log);
 
 
