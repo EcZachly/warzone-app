@@ -13,7 +13,7 @@ app.get('/api/gamers', (req, res)=>{
 })
 
 app.get('/', (req, res)=>{
-    res.send("HELLO WORLD FOR WARZONE");
+    res.send("HELLO WORLD FOR WARZONE!");
 })
 app.listen(PORT, (req,res)=>{
     console.log("APP is listening on port 3000");
