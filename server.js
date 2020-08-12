@@ -1,16 +1,18 @@
 import express from 'express';
 import helmet from 'helmet';
 import {queryGamers} from "./lib/model/gamer";
-
+import {queryView} from './lib/model/analysis';
+import api_router from './routes/api_router';
+import view_router from './routes/view_router';
 let app = express()
 app.use(helmet());
 let PORT = process.env.PORT || 3000;
 
-app.get('/api/gamers', (req, res)=>{
-    queryGamers(req.query).then((gamers)=>{
-        res.json(gamers);
-    })
-})
+
+app.use(express.static('public'));
+app.set('view engine', 'ejs');
+app.use(view_router);
+app.use('/api', api_router)
 
 app.get('/', (req, res)=>{
     res.send("HELLO WORLD FOR WARZONE!");

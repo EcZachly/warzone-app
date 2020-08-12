@@ -1,0 +1,89 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+    <style>
+
+        @media only screen and (max-width: 900px) {
+
+            .demo-card-square.mdl-card {
+                width: 90%;
+                height: 320px;
+                margin-left:5%;
+                margin-right:5%;
+            }
+            .demo-supporting-text {
+            }
+
+            .demo-card-square > .mdl-card__title {
+                color: black;
+                height: 100px;
+                /*background: url('/images/ak-pic.jpeg') center / cover;*/
+            }
+        }
+
+        @media only screen and (min-width: 901px) {
+
+            .demo-card-square.mdl-card {
+                width: 40%;
+                height: 320px;
+                margin-left: 30%;
+                margin-right: 30%;
+            }
+            .demo-card-square > .mdl-card__title {
+                color: black;
+                height: 200px;
+                /*background: url('/images/ak-pic.jpeg') center / cover;*/
+            }
+            .demo-supporting-text {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+        }
+
+        .demo-card-square > .mdl-card__title {
+            color: black;
+            height: 100px;
+            /*background: url('/images/ak-pic.jpeg') center / cover;*/
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+<div class="demo-card-square mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <h2><%= gamer.username %></h2>
+    </div>
+    <div class="demo-supporting-text mdl-card__supporting-text">
+        <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th class="mdl-data-table__cell--non-numeric">KDR</th>
+                <th>Max Kills</th>
+                <th>Gulag Win %</th>
+<!--                <th>Avg Damage Done</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="mdl-data-table__cell"><%= gamer.username %> </td>
+                <td class="mdl-data-table__cell"><%= gamer.kdr.toFixed(2) %> </td>
+                <td class="mdl-data-table__cell"><%= gamer.max_kills %> </td>
+                <td class="mdl-data-table__cell"><%= gamer.gulag_win_rate.toFixed(2) * 100 + '%' %> </td>
+<!--                <td class="mdl-data-table__cell"><%= parseFloat(gamer.avg_damage_done).toFixed(2) %> </td>-->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+</body>
+</html>
