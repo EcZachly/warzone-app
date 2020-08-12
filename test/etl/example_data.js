@@ -1,0 +1,71 @@
+export const exampleData = {
+    gamerData: {
+        username: 'EcZachly',
+        platform: 'xbl'
+    },
+    gamerMatchData: {
+        utcStartSeconds: 1584154550,
+        utcEndSeconds: 1584156077,
+        map: 'mp_donetsk',
+        mode: 'br_25',
+        matchID: '14201464683862230528',
+        duration: 1527000,
+        playlistName: null,
+        version: 1,
+        gameType: 'wz',
+        playerCount: 139,
+        playerStats: {
+            kills: 5,
+            medalXp: 45,
+            objectiveTeamWiped: 1,
+            matchXp: 0,
+            scoreXp: 12323,
+            score: 3400,
+            totalXp: 14083,
+            headshots: 0,
+            assists: 0,
+            challengeXp: 0,
+            rank: 54,
+            scorePerMinute: 205.8526740665994,
+            distanceTraveled: 410701.47,
+            teamSurvivalTime: 922176,
+            deaths: 2,
+            kdRatio: 2.5,
+            objectiveBrDownEnemyCircle2: 1,
+            objectiveBrDownEnemyCircle1: 5,
+            objectiveBrMissionPickupTablet: 1,
+            bonusXp: 0,
+            objectiveBrKioskBuy: 1,
+            gulagDeaths: 0,
+            timePlayed: 991,
+            executions: 0,
+            gulagKills: 1,
+            objectiveBrCacheOpen: 1,
+            percentTimeMoving: 96.96641,
+            miscXp: 0,
+            longestStreak: 3,
+            teamPlacement: 24,
+            damageDone: 1487,
+            damageTaken: 200
+        },
+        player: {
+            team: 'team_thirty_seven',
+            rank: 54,
+            awards: {},
+            username: 'Wapanator',
+            uno: '11164373892730846220',
+            clantag: 'Botem',
+            brMissionStats: {
+                missionsComplete: 1,
+                totalMissionXpEarned: 300,
+                totalMissionWeaponXpEarned: 200,
+                missionStatsByType: [{stats: {}}]
+            },
+            loadout: [{loadout: {}}]
+        },
+        teamCount: 57,
+        rankedTeams: null,
+        draw: false,
+        privateMatch: false
+    }
+};

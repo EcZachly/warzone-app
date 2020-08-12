@@ -4,17 +4,20 @@
   "description": "A warzone website stats",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node -r esm server.js"
+    "test": "mocha --require esm",
+    "start": "node -r esm server.js",
+    "etl": "node -r esm lib/etl/scrape.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.7.2",
     "call-of-duty-api": "^1.2.14",
+    "chai": "^4.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "massive": "^6.6.0"
+    "massive": "^6.6.0",
+    "mocha": "^8.1.1"
   }
 }
