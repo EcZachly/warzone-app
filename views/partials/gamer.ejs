@@ -1,0 +1,24 @@
+<div class="demo-card-square mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <a href="/gamer/<%= gamer.username %>"><h6><%= gamer.username %></h6></a>
+    </div>
+
+    <div class="demo-supporting-text mdl-card__supporting-text">
+        <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
+            <thead>
+            <tr>
+                <th class="mdl-data-table__cell--non-numeric">KDR</th>
+                <th>Max Kills</th>
+                <th>Gulag Win %</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="mdl-data-table__cell"><%= gamer.kdr.toFixed(2) %> </td>
+                <td class="mdl-data-table__cell"><%= gamer.max_kills %> </td>
+                <td class="mdl-data-table__cell"><%= gamer.gulag_win_rate.toFixed(2) * 100 + '%' %> </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+@media only screen and (max-width: 1000px) {
+
+    .demo-card-square.mdl-card {
+        width: 90%;
+        height: 210px;
+        margin-left:5%;
+        margin-right:5%;
+    }
+    .demo-supporting-text {
+    }
+
+    .demo-card-square > .mdl-card__title {
+        color: black;
+        height: 65px;
+        /*background: url('/images/ak-pic.jpeg') center / cover;*/
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+
+    .demo-card-square.mdl-card {
+        width: 350px;
+        height: 210px;
+        margin-left: 30%;
+        margin-right: 30%;
+    }
+    .demo-card-square > .mdl-card__title {
+        color: black;
+        height: 65px;
+        /*background: url('/images/ak-pic.jpeg') center / cover;*/
+    }
+    .demo-supporting-text {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+}
+
+.demo-card-square > .mdl-card__title {
+    color: black;
+    height: 100px;
+    /*background: url('/images/ak-pic.jpeg') center / cover;*/
+}

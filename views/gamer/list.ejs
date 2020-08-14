@@ -6,10 +6,11 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <%- include ('../partials/header') %>
 
-    <%- include('../partials/gamer', {gamer: gamer}); %>
+    <% gamers.map(function(gamer) { %>
+        <%- include('../partials/gamer', {gamer: gamer}); %>
+    <% }) %>
 
 </div>
-
 
 </body>
 </html>
