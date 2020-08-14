@@ -4,8 +4,22 @@
 </head>
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
     <%- include ('../partials/header') %>
 
+
+    <% if (submittedUsername) { %>
+        <p style="color: green;"> <%= submittedUsername %> was successfully added. Please wait a day and come back for data!</p>
+    <%} else { %>
+    <% } %>
+
+
+    <% if (submissionError) { %>
+        <p style="color: red;"> <%= submissionError %></p>
+    <%} else { %>
+    <% } %>
+
+    <%- include ('../partials/gamer_add') %>
     <% gamers.map(function(gamer) { %>
         <%- include('../partials/gamer', {gamer: gamer}); %>
     <% }) %>

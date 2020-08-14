@@ -1,0 +1,23 @@
+<form action="/api/gamer" method="POST" class="submit-card mdl-card mdl-shadow--2dp">
+
+    <div class="mdl-card__title">
+        <h6>Add your username to the stats!</h6>
+    </div>
+
+    <div class="submit-card-body mdl-card__supporting-text">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" minlength="1" name="username" type="text" id="username">
+            <label class="mdl-textfield__label" for="username">Username</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <select class="mdl-textfield__input" id="platform" name="platform">
+                <option value="xbl">Xbox Live</option>
+                <option value="battle">Battle.net</option>
+                <option value="psn">Playstation Network</option>
+            </select>
+            <label class="mdl-textfield__label" for="platform">Platform</label>
+        </div>
+        <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" formmethod="POST" type="submit" value="Add Stats"/><!-- Raised button with ripple -->
+    </div>
+
+</form>

@@ -1,5 +1,12 @@
 @media only screen and (max-width: 1000px) {
 
+
+    .submit-card.mdl-card{
+        width: 90%;
+        height: 300px;
+        margin-left:5%;
+        margin-right:5%;
+    }
     .demo-card-square.mdl-card {
         width: 90%;
         height: 210px;
@@ -14,9 +21,23 @@
         height: 65px;
         /*background: url('/images/ak-pic.jpeg') center / cover;*/
     }
+    .submit-card-body{
+        height: 500px;
+    }
 }
 
 @media only screen and (min-width: 1000px) {
+
+    .submit-card.mdl-card{
+        width: 500px;
+        height: 600px;
+        margin-left: 30%;
+        margin-right: 30%;
+    }
+    .submit-card-body{
+        height: 500px;
+    }
+
 
     .demo-card-square.mdl-card {
         width: 350px;
@@ -34,10 +55,4 @@
         margin-right: auto;
     }
 
-}
-
-.demo-card-square > .mdl-card__title {
-    color: black;
-    height: 100px;
-    /*background: url('/images/ak-pic.jpeg') center / cover;*/
 }

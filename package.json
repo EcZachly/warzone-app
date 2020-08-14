@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
     "call-of-duty-api": "^1.2.14",
     "chai": "^4.2.0",
     "ejs": "^3.1.3",
