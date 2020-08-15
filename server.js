@@ -23,7 +23,7 @@ app.use(view_router);
 app.use('/api', api_router)
 
 app.get('/', (req, res)=>{
-    res.send("HELLO WORLD FOR WARZONE!");
+    res.redirect('/gamers');
 });
 app.listen(PORT, (req,res)=>{
     console.log("APP is listening on port 3000");

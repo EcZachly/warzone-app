@@ -3,7 +3,6 @@
 
     .submit-card.mdl-card{
         width: 90%;
-        height: 300px;
         margin-left:5%;
         margin-right:5%;
     }
@@ -12,6 +11,7 @@
         height: 210px;
         margin-left:5%;
         margin-right:5%;
+        margin-bottom: 25px;
     }
     .demo-supporting-text {
     }
@@ -21,22 +21,18 @@
         height: 65px;
         /*background: url('/images/ak-pic.jpeg') center / cover;*/
     }
-    .submit-card-body{
-        height: 500px;
-    }
 }
 
 @media only screen and (min-width: 1000px) {
 
     .submit-card.mdl-card{
-        width: 500px;
+        margin-bottom: 50px;
+        width: 350px;
         height: 600px;
         margin-left: 30%;
         margin-right: 30%;
     }
-    .submit-card-body{
-        height: 500px;
-    }
+
 
 
     .demo-card-square.mdl-card {
