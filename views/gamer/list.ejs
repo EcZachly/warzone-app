@@ -8,6 +8,7 @@
     <%- include ('../partials/header') %>
 
     <main class="mdl-layout__content">
+        <div class="page-content">
         <% if (submittedUsername) { %>
             <p style="color: green;"> <%= submittedUsername %> was successfully added. Please wait a day and come back
                 for data!</p>
@@ -23,7 +24,7 @@
         <% gamers.map(function(gamer) { %>
             <%- include('../partials/gamer', {gamer: gamer}); %>
         <% }) %>
-
+        </div>
     </main>
 </div>
 
