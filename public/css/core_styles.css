@@ -3,6 +3,7 @@
 
     .submit-card.mdl-card{
         width: 90%;
+        margin-top: 30px;
         height: 200px;
         margin-left:5%;
         margin-right:5%;
@@ -27,6 +28,7 @@
 @media only screen and (min-width: 1000px) {
 
     .submit-card.mdl-card{
+        margin-top: 25px;
         margin-bottom: 50px;
         width: 350px;
         height: 250px;
