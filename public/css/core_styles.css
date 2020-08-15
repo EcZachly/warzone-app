@@ -3,6 +3,7 @@
 
     .submit-card.mdl-card{
         width: 90%;
+        height: 200px;
         margin-left:5%;
         margin-right:5%;
     }
@@ -28,7 +29,7 @@
     .submit-card.mdl-card{
         margin-bottom: 50px;
         width: 350px;
-        height: 600px;
+        height: 250px;
         margin-left: 30%;
         margin-right: 30%;
     }
