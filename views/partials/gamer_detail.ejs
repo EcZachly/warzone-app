@@ -1,5 +1,21 @@
+<div class="demo-supporting-text mdl-card__supporting-text">
+    <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
+        <thead>
+        <tr>
 
-<% teammateData.map(function(row) { %>
+            <% titleKeys.map(function(key) { %>
+                <th><%= key %></th>
+            <% }) %>
+        </tr>
+        </thead>
+        <tbody>
+        <% teammateData.map(function(gamer) { %>
 
 
-<% }) %>
+
+            <%- include('../partials/teammate_row', {gamer: gamer, filterKeys: filterKeys}); %>
+
+        <% }) %>
+        </tbody>
+    </table>
+</div>

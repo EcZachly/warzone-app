@@ -1,8 +1,15 @@
 import express from 'express'
 import {queryView} from "../lib/model/analysis";
 import Bluebird from 'bluebird';
+import _ from 'lodash';
 
 let view_router = express.Router();
+let FILTER_KEYS = ['shooting_player', 'num_rows', 'total_assists', 'avg_assists']
+
+
+function columnToDisplayName(column){
+    return column.split('_').map(_.capitalize).join(' ')
+}
 
 function mapGamer(gamer) {
     let gulagWinRate = (gamer.gulag_win_rate.toFixed(4) * 100).toFixed(2) + "%";
@@ -25,13 +32,15 @@ view_router.get('/gamer/:username', (req, res) => {
             views[key].data = arrData[index];
         });
         let gamer = mapGamer(views['player_stat_summary'].data[0]);
-        let teammateData = views['teammate_analysis'].data;
+        let teammateData = views['teammate_analysis'].data.map(mapGamer);
+        let titleKeys = Object.keys(teammateData[0]).filter((key)=> !FILTER_KEYS.includes(key)).map(columnToDisplayName);
+
         let seoMetadata = {
             title: 'Warzone stats for ' + gamer.username,
             keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
             description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate + '%'
         };
-        res.render('gamer/detail', {gamer: gamer, teammateData: teammateData, seoMetadata: seoMetadata});
+        res.render('gamer/detail', {gamer: gamer, titleKeys: titleKeys, teammateData: teammateData, seoMetadata: seoMetadata, filterKeys: FILTER_KEYS});
     });
 });
 
@@ -51,7 +60,8 @@ view_router.get('/gamers', (req, res) => {
             gamers: mappedGamers,
             seoMetadata: seoMetadata,
             submittedUsername: submittedUsername,
-            submissionError: submissionError
+            submissionError: submissionError,
+            filterKeys: FILTER_KEYS
         })
     });
 });

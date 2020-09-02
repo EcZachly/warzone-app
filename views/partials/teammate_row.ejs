@@ -1,0 +1,23 @@
+<tr>
+    <% Object.keys(gamer).filter((key) => !filterKeys.includes(key)).map(function(key) { %>
+
+
+        <% if (key.includes("time")) { %>
+            <td class="mdl-data-table__cell"><%= gamer[key].toDateString() %> </td>
+        <% } else if (key.includes("avg") || key.includes("kdr")) { %>
+            <td class="mdl-data-table__cell"><%= parseFloat(gamer[key]).toFixed(2) %> </td>
+        <% } else if (key.includes("total") || key.includes("num") || key.includes("max")) { %>
+            <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
+        <% } else if (key.includes("player")) { %>
+
+            <% if (!["(overall)", "without teammates"].includes(gamer[key])) { %>
+                    <td class="mdl-data-table__cell"><a href="/gamer/<%= gamer[key] %>"><%= gamer[key] %></a></td>
+            <% } else { %>
+                <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
+            <% } %>
+
+        <% } else { %>
+            <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
+        <% } %>
+    <% }) %>
+</tr>
