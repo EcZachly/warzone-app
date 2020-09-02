@@ -9,9 +9,6 @@ if(!EMAIL || !PASSWORD){
 }
 
 
-
-
-
 API.login(EMAIL, PASSWORD).then((response, api)=>{
 
     API.MWfullcombatwz('EcZachly', API.platforms.xbl).then((output) => {
