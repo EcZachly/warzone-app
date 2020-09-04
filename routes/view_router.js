@@ -4,7 +4,7 @@ import Bluebird from 'bluebird';
 import _ from 'lodash';
 
 let view_router = express.Router();
-let FILTER_KEYS = ['shooting_player', 'num_rows', 'total_assists', 'avg_assists']
+let FILTER_KEYS = ['shooting_player', 'helping_player_temp', 'shooting_player_temp']
 
 
 function columnToDisplayName(column){

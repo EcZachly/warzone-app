@@ -10,7 +10,7 @@
             <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
         <% } else if (key.includes("player")) { %>
             <% if (!["(overall)", "without teammates"].includes(gamer[key])) { %>
-                    <td class="mdl-data-table__cell"><a href="/gamer/<%= gamer[key] %>"><%= gamer[key] %></a></td>
+                    <td class="mdl-data-table__cell"><a href="/gamer/<%= encodeURIComponent(gamer[key]) %>"><%= gamer[key] %></a></td>
             <% } else { %>
                 <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
             <% } %>
