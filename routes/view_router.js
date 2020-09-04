@@ -24,6 +24,7 @@ view_router.get('/gamer/:username', (req, res) => {
         'player_stat_summary':  {query:{username: req.params.username}},
         'teammate_analysis': {query:{shooting_player: req.params.username}}
     };
+    console.log(views);
 
     let promises = Object.keys(views).map((key)=> queryView(key, views[key].query));
 
@@ -33,6 +34,7 @@ view_router.get('/gamer/:username', (req, res) => {
         });
         let gamer = mapGamer(views['player_stat_summary'].data[0]);
         let teammateData = views['teammate_analysis'].data.map(mapGamer);
+        console.log(gamer, teammateData);
         let titleKeys = Object.keys(teammateData[0]).filter((key)=> !FILTER_KEYS.includes(key)).map(columnToDisplayName);
 
         let seoMetadata = {

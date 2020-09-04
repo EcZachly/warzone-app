@@ -1,6 +1,7 @@
 CREATE VIEW player_stat_summary AS
 
-SELECT username,
+SELECT query_username AS username,
+        ARRAY_AGG(username) AS aliases,
        MAX(kills) as max_kills,
        MAX(deaths) as max_deaths,
        MAX(damage_done) AS max_damage_done,

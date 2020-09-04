@@ -1,13 +1,15 @@
 <div class="demo-card-square mdl-card mdl-shadow--2dp">
     <div class="mdl-card__title">
-        <a href="/gamer/<%= gamer.username %>"><h6 class="mdl-card__title-text"><%= gamer.username %></h6></a>
+        <a href="/gamer/<%= gamer.username %>"><h6 class="mdl-card__title-text"><%= gamer.username %> </h6>  </a>
+        <p style="margin-left: 5%; margin-top: 5%; float: right;"><i> ( aka <%= gamer.aliases.join(',') %>)</i></p>
     </div>
 
     <div class="demo-supporting-text mdl-card__supporting-text">
+
         <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
             <thead>
             <tr>
-                <th class="mdl-data-table__cell--non-numeric">KDR</th>
+                <th>KDR</th>
                 <th>Max Kills</th>
                 <th>Gulag Win %</th>
             </tr>

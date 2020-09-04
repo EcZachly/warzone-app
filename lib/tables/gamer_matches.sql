@@ -1,6 +1,8 @@
 CREATE TABLE gamer_matches (
-    username TEXT REFERENCES gamers(username),
+    query_username TEXT,
+    query_platform TEXT,
     match_id TEXT REFERENCES matches(match_id),
+    username TEXT,
     team TEXT,
     clan_tag TEXT,
     kills INT,
@@ -23,5 +25,6 @@ CREATE TABLE gamer_matches (
     objective JSON,
     xp JSON,
     loadout JSON,
-    PRIMARY KEY (username, match_id)
+    FOREIGN KEY (query_username, query_platform) REFERENCES gamers_new(username, platform),
+    PRIMARY KEY (query_username, match_id)
 );

@@ -1,5 +1,6 @@
 create table gamers
 (
-	username text PRIMARY KEY,
-	platform text
+	username text,
+	platform text,
+	PRIMARY KEY (username, platform)
 );
