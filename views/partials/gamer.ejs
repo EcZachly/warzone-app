@@ -1,16 +1,16 @@
-<div class="demo-card-square mdl-card mdl-shadow--2dp gamer-card">
-    <div class="mdl-card__title name-container">
-        <h6 class="mdl-card__title-text name">
+<div class="card gamer-card mdl-shadow--2dp">
+    <div class="card-header">
+        <h2 class="name">
             <a href="/gamer/<%= encodeURIComponent(gamer.username); %>">
                 <%= gamer.username; %>
             </a>
             <small class="aliases">
-                (aka <%= gamer.aliases.join(','); %>)
+                (<%= gamer.aliases.join(', '); %>)
             </small>
-        </h6>
+        </h2>
     </div>
 
-    <div class="demo-supporting-text mdl-card__supporting-text details-container">
+    <div class="card-body demo-supporting-text mdl-card__supporting-text details-container">
 
         <table class="mdl-data-table mdl-js-data-table">
             <thead>
@@ -22,9 +22,9 @@
             </thead>
             <tbody>
             <tr>
-                <td class="mdl-data-table__cell"><%= gamer.kdr; %> </td>
-                <td class="mdl-data-table__cell"><%= gamer.max_kills; %> </td>
-                <td class="mdl-data-table__cell"><%= gamer.gulag_win_rate; %> </td>
+                <td><%= gamer.kdr; %> </td>
+                <td><%= gamer.max_kills; %> </td>
+                <td><%= gamer.gulag_win_rate; %> </td>
             </tr>
             </tbody>
         </table>

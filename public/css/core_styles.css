@@ -1,37 +1,213 @@
+/*BOILERPLATE*/
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 3px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    font-size: 2.1rem;
+    line-height: 2rem;
+}
+
+h2 {
+    font-size: 2rem;
+    line-height: 1.85rem;
+}
+
+h3 {
+    font-size: 1.85rem;
+    line-height: 1.7rem;
+}
+
+h4 {
+    font-size: 1.7rem;
+    line-height: 1.5rem;
+}
+
+h5 {
+    font-size: 1.5rem;
+    line-height: 1.35rem;
+}
+
+h6 {
+    font-size: 1.35rem;
+    line-height: 1.2rem;
+}
+
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*CONTENT CONTAINER*/
+
 .page-content {
-    width: 500px;
+    max-width: 500px;
+    width: 100%;
     box-sizing: border-box;
     padding: 10px;
     margin: 0 auto;
 }
 
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {
+
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*GAMER CARD*/
+
 .gamer-card {
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
     width: 100%;
 }
 
 .gamer-card .name {
     display: flex;
     align-items: baseline;
+    flex-flow: column;
 }
 
-.gamer-card .name .aliases {
-    margin-left: 5px;
+.gamer-card .name a {
+    word-break: break-word;
 }
 
 .gamer-card .details-container {
     box-sizing: border-box;
     width: 100%;
+    padding: 5px;
+    overflow: auto;
 }
 
 .gamer-card .details-container table {
     width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #DDDDDD;
+    overflow: auto;
 }
 
 .gamer-card .details-container table th, .gamer-card .details-container table td {
     text-align: center;
 }
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+    .gamer-card .name {
+        flex-flow: row wrap;
+    }
+
+
+    .gamer-card .name .aliases {
+        margin-left: 5px;
+    }
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*PLAYER SUPPORT CARD*/
+
+.gamer-card {
+    width: 100%;
+}
+
+.gamer-card .name {
+    display: flex;
+    align-items: baseline;
+    flex-flow: column;
+}
+
+.gamer-card .name a {
+    word-break: break-word;
+}
+
+.gamer-card .details-container {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px;
+    overflow: auto;
+}
+
+.gamer-card .details-container table {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #DDDDDD;
+    overflow: auto;
+}
+
+.gamer-card .details-container table th, .gamer-card .details-container table td {
+    text-align: center;
+}
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+    .gamer-card .name {
+        flex-flow: row wrap;
+    }
+
+
+    .gamer-card .name .aliases {
+        margin-left: 5px;
+    }
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*ADD USER CARD*/
 
 .add-user-card {
     width: 100%;
@@ -59,6 +235,9 @@
     box-sizing: border-box;
 }
 
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*FORMS*/
+
 .app .form-group {
     width: 100%;
 }
@@ -75,6 +254,35 @@
 }
 
 
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*CARD*/
+
+.card {
+    padding: 10px;
+    border: 1px solid #DDDDDD;
+    margin-bottom: 10px;
+}
+
+.card .card-header {
+    padding-bottom: 5px;
+}
+
+.card .card-header h1, .card .card-header h2, .card .card-header h3, .card .card-header h4, .card .card-header h5, .card .card-header h6 {
+    margin-top: 1rem;
+}
+
+.card .card-body {
+    width: 100%;
+}
+
+.card .card-footer {
+    padding-top: 5px;
+}
+
+
+
+/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
+/*MISC*/
 
 @media only screen and (max-width: 1000px) {
 
@@ -88,12 +296,7 @@
     }
 
     .demo-supporting-text {
-        overflow: auto;
-    }
-
-    .demo-card-square > .mdl-card__title {
-        color: black;
-        height: 65px;
+        /*overflow: auto;*/
     }
 }
 
@@ -102,16 +305,6 @@
     .submit-card.mdl-card {
         margin-top: 25px;
         margin-bottom: 50px;
-
-    }
-
-    .demo-card-square.mdl-card {
-
-    }
-
-    .demo-card-square > .mdl-card__title {
-        color: black;
-        height: 65px;
     }
 
 }
