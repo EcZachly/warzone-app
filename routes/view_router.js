@@ -24,8 +24,6 @@ view_router.get('/gamer/:username', (req, res) => {
         'player_stat_summary':  {query:{username: req.params.username}},
         'teammate_analysis': {query:{shooting_player: req.params.username}}
     };
-    console.log(views);
-
     let promises = Object.keys(views).map((key)=> queryView(key, views[key].query));
 
     return Bluebird.all(promises).then((arrData)=>{
@@ -40,7 +38,7 @@ view_router.get('/gamer/:username', (req, res) => {
         let seoMetadata = {
             title: 'Warzone stats for ' + gamer.username,
             keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
-            description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate + '%'
+            description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate
         };
         res.render('gamer/detail', {gamer: gamer, titleKeys: titleKeys, teammateData: teammateData, seoMetadata: seoMetadata, filterKeys: FILTER_KEYS});
     });
