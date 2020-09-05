@@ -19,6 +19,6 @@ SELECT query_username AS username,
 FROM gamer_matches gm
  JOIN matches_augmented m ON gm.match_id = m.match_id
 
-WHERE m.mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg%'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
+WHERE m.mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg%'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%' AND mode NOT LIKE '%dmz%'
 
 GROUP BY gm.query_username;
