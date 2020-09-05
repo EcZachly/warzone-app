@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --require esm",
     "start": "node -r esm server.js",
+    "nodemon": "nodemon -r esm server.js",
     "etl": "node -r esm lib/etl/scrape.js"
   },
   "author": "",

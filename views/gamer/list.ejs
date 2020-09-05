@@ -3,15 +3,16 @@
     <%- include ('../partials/head') %>
 </head>
 <body>
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header app">
 
     <%- include ('../partials/header') %>
 
-    <main class="mdl-layout__content">
+    <main class="mdl-layout__content gamer-container">
         <div class="page-content">
         <% if (submittedUsername) { %>
-            <p style="color: green;"> <%= submittedUsername %> was successfully added. Please wait a day and come back
-                for data!</p>
+            <p style="color: green;">
+                <%= submittedUsername %> was successfully added. Please wait a day and come back for data!
+            </p>
         <% } else { %>
         <% } %>
 
