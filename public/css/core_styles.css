@@ -1,20 +1,92 @@
+.page-content {
+    width: 500px;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.gamer-card {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+.gamer-card .name {
+    display: flex;
+    align-items: baseline;
+}
+
+.gamer-card .name .aliases {
+    margin-left: 5px;
+}
+
+.gamer-card .details-container {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.gamer-card .details-container table {
+    width: 100%;
+}
+
+.gamer-card .details-container table th, .gamer-card .details-container table td {
+    text-align: center;
+}
+
+.add-user-card {
+    width: 100%;
+}
+
+.add-user-card .header {
+
+}
+
+.add-user-card .body {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.add-user-card .body {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.add-user-card .footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.app .form-group {
+    width: 100%;
+}
+
+.app .form-group .form-control {
+    width: 100%;
+}
+
+
+.mdl-layout__drawer-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
 @media only screen and (max-width: 1000px) {
 
 
-    .submit-card.mdl-card{
-        width: 90%;
+    .submit-card.mdl-card {
         margin-top: 30px;
-        height: 300px;
-        margin-left:5%;
-        margin-right:5%;
     }
+
     .demo-card-square.mdl-card {
-        width: 90%;
-        height: 210px;
-        margin-left:5%;
-        margin-right:5%;
         margin-bottom: 25px;
     }
+
     .demo-supporting-text {
         overflow: auto;
     }
@@ -22,35 +94,24 @@
     .demo-card-square > .mdl-card__title {
         color: black;
         height: 65px;
-        /*background: url('/images/ak-pic.jpeg') center / cover;*/
     }
 }
 
 @media only screen and (min-width: 1000px) {
 
-    .submit-card.mdl-card{
+    .submit-card.mdl-card {
         margin-top: 25px;
         margin-bottom: 50px;
-        width: 350px;
-        height: 300px;
-        margin-left: 30%;
-        margin-right: 30%;
+
     }
 
     .demo-card-square.mdl-card {
-        width: 500px;
-        height: 210px;
-        margin-left: 30%;
-        margin-right: 30%;
+
     }
+
     .demo-card-square > .mdl-card__title {
         color: black;
         height: 65px;
-        /*background: url('/images/ak-pic.jpeg') center / cover;*/
-    }
-    .demo-supporting-text {
-        /*margin-left: auto;*/
-        /*margin-right: auto;*/
     }
 
 }
