@@ -1,26 +1,36 @@
-<form class="submit-card mdl-card mdl-shadow--2dp mdl-card--border" action="/api/gamer" method="POST">
+<form class="submit-card mdl-card mdl-shadow--2dp mdl-card--border add-user-card" action="/api/gamer" method="POST">
 
-    <div class="mdl-card__title mdl-card--expand">
-        <h6 class="mdl-card__title-text">Add your username to the stats!</h6>
+    <div class="mdl-card__title mdl-card--expand header">
+        <h1 class="mdl-card__title-text title">
+            Add your username to start tracking
+        </h1>
     </div>
 
-    <div class="mdl-card__supporting-text">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" minlength="1" name="username" type="text" id="username">
+    <div class="mdl-card__supporting-text body">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label form-group">
+            <input class="mdl-textfield__input form-control" minlength="1" maxlength="100" name="username" type="text"
+                   id="username">
+
             <label class="mdl-textfield__label" for="username">Username</label>
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <select class="mdl-textfield__input" id="platform" name="platform">
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label form-group">
+            <select class="mdl-textfield__input form-control" id="platform" name="platform">
                 <option value="xbl">Xbox Live</option>
                 <option value="battle">Battle.net</option>
                 <option value="psn">Playstation Network</option>
             </select>
+
             <label class="mdl-textfield__label" for="platform">Platform</label>
+
+            <p class="text-muted" style="margin-top: 5px;">
+<!--                For Battle.net, include your full Battle Tag after your username with no spaces (e.g. yoshimeister#2000)-->
+            </p>
         </div>
     </div>
 
-    <div class="mdl-card__actions mdl-card--border">
-        <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" formmethod="POST"
-               type="submit" value="Add Stats"/><!-- Raised button with ripple -->
+    <div class="mdl-card__actions mdl-card--border footer">
+        <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect submit" formmethod="POST"
+               type="submit" value="Add Stats"/>
     </div>
 </form>
