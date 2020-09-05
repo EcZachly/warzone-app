@@ -6,11 +6,13 @@ WITH source AS (
             gm.*,
             COALESCE(gm2.username, 'without teammates')  AS helping_player_temp
     FROM gamer_matches gm
+         JOIN matches_augmented m on gm.match_id = m.match_id
          LEFT JOIN gamer_matches gm2
                    ON gm.team = gm2.team
                        AND gm.match_id = gm2.match_id
                        AND gm.username <> gm2.username
-         JOIN matches_augmented m on gm.match_id = m.match_id
+    WHERE mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg&'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
+
 
 ),
      overall AS (
@@ -42,6 +44,7 @@ WITH source AS (
        MAX(start_timestamp)                                                                      AS last_game_time
     FROM gamer_matches gm
           JOIN matches_augmented m on gm.match_id = m.match_id
+    WHERE mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg%'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
          GROUP BY shooting_player, helping_player_temp
 
      ),
