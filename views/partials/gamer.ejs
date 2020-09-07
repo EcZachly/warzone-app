@@ -1,4 +1,4 @@
-<div class="card gamer-card mdl-shadow--2dp">
+<div class="card gamer-card mdl-shadow--2dp" data-search="<%=[gamer.username, ...gamer.aliases].join(', ').toLowerCase();%>">
     <div class="card-header">
         <h2 class="name">
             <a href="/gamer/<%= encodeURIComponent(gamer.username); %>">
