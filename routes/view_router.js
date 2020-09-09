@@ -56,8 +56,11 @@ view_router.get('/gamer/:username', (req, res) => {
 
 view_router.get('/gamers', (req, res) => {
 	let viewName = 'player_stat_summary';
-	let submittedUsername = req.query.submittedUsername || '';
-	let submissionError = req.query.submissionError || '';
+	let queryParams = req.query;
+
+	let submittedUsername = queryParams.submittedUsername || '';
+	let submissionError = queryParams.submissionError || '';
+
 	let query = {};
 	queryView(viewName, query).then((data) => {
 		let mappedGamers = data.map(mapGamer);
