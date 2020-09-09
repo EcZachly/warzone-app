@@ -1,4 +1,4 @@
-CREATE VIEW monthly_player_stat_summary AS
+CREATE VIEW warzone.monthly_player_stat_summary AS
 
 SELECT
        DATE_TRUNC('month', to_timestamp(start_time)) as game_month,
@@ -13,8 +13,8 @@ SELECT
                        ELSE NULL::integer
                        END + gm.gulag_kills)::double precision           AS gulag_win_rate
 
-FROM gamer_matches gm
-    JOIN matches m ON gm.match_id = m.match_id
+FROM warzone.gamer_matches gm
+    JOIN warzone.matches m ON gm.match_id = m.match_id
 
 GROUP BY 1,2
 ORDER BY username, game_month

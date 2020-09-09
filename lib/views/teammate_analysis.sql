@@ -1,13 +1,13 @@
-CREATE OR REPLACE VIEW teammate_analysis AS
+CREATE OR REPLACE VIEW warzone.teammate_analysis AS
 WITH source AS (
     SELECT
             m.start_timestamp,
             m.team_type,
             gm.*,
             COALESCE(gm2.username, 'without teammates')  AS helping_player_temp
-    FROM gamer_matches gm
-         JOIN matches_augmented m on gm.match_id = m.match_id
-         LEFT JOIN gamer_matches gm2
+    FROM warzone.gamer_matches gm
+         JOIN warzone.matches_augmented m on gm.match_id = m.match_id
+         LEFT JOIN warzone.gamer_matches gm2
                    ON gm.team = gm2.team
                        AND gm.match_id = gm2.match_id
                        AND gm.username <> gm2.username
@@ -43,8 +43,8 @@ WITH source AS (
        AVG(COALESCE(CAST(objective->>'missions_started' AS INT), 0))                                                       AS avg_missions_started,
        MIN(start_timestamp)                                                                      AS first_game_time,
        MAX(start_timestamp)                                                                      AS last_game_time
-    FROM gamer_matches gm
-          JOIN matches_augmented m on gm.match_id = m.match_id
+    FROM warzone.gamer_matches gm
+          JOIN warzone.matches_augmented m on gm.match_id = m.match_id
     WHERE mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg%'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
           AND mode NOT LIKE '%dmz%'
          GROUP BY shooting_player, helping_player_temp
@@ -93,7 +93,7 @@ HAVING COUNT(DISTINCT gm.match_id) >= 10
             COALESCE(ps.username, c.helping_player_temp) AS helping_player,
              c.*
         FROM combined c
-            LEFT JOIN player_stat_summary ps ON ps.aliases @> ARRAY[c.helping_player_temp]
+            LEFT JOIN warzone.player_stat_summary ps ON ps.aliases @> ARRAY[c.helping_player_temp]
      )
 
      SELECT * FROM unboxed;

@@ -16,8 +16,8 @@ SELECT query_username AS username,
        SUM(deaths) as total_deaths,
        CAST(SUM(kills) AS REAL)/SUM(deaths) as KDR,
        CAST(SUM(gulag_kills) AS REAL)/SUM( CASE WHEN gulag_deaths <= 1 THEN gulag_deaths END + gulag_kills) as gulag_win_rate
-FROM gamer_matches gm
- JOIN matches_augmented m ON gm.match_id = m.match_id
+FROM warzone.gamer_matches gm
+ JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
 
 WHERE m.mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg%'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%' AND mode NOT LIKE '%dmz%'
 
