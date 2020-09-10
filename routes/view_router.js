@@ -1,5 +1,6 @@
 import express from 'express';
 import {queryView} from '../lib/model/analysis';
+import {DATABASE_SCHEMA} from "../lib/constants";
 import Bluebird from 'bluebird';
 import _ from 'lodash';
 
