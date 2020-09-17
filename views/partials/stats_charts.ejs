@@ -5,77 +5,26 @@
 
 <div style="margin-left: 25%; margin-left: 25%">
     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
-           for="kdrOption" onchange="filterChange(STAT_DATA, this.MaterialRadio.element_.innerText, 'stats-chart-container')">
-        <input type="radio" id="kdrOption" name="placementFilter"
+           for="kdrOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="kdrOption" name="statFilter"
                class="mdl-radio__button" checked>
         <span class="mdl-radio__label">kdr</span>
     </label>
-    <label class="mdl-radio mdl-js-radio" for="scoreOption" onchange="filterChange(STAT_DATA, this.MaterialRadio.element_.innerText, 'stats-chart-container')">
-        <input type="radio" id="scoreOption" name="placementFilter"
+    <label class="mdl-radio mdl-js-radio" for="scoreOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="scoreOption" name="statFilter"
                class="mdl-radio__button">
         <span class="mdl-radio__label">score</span>
     </label>
 
-    <label class="mdl-radio mdl-js-radio" for="killsOption" onchange="filterChange(STAT_DATA, this.MaterialRadio.element_.innerText, 'stats-chart-container')">
-        <input type="radio" id="killsOption" name="placementFilter"
+    <label class="mdl-radio mdl-js-radio" for="killsOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="killsOption" name="statFilter"
                class="mdl-radio__button">
         <span class="mdl-radio__label">kills</span>
     </label>
 </div>
 
 <script>
-    let STAT_DATA = JSON.parse('<%- JSON.stringify(grades) %>')
-
-    function filterChange(data, keyFilter, chartId){
-        let filteredObject = [];
-        Object.keys(data).forEach((key)=>{
-            if(key.includes(keyFilter)){
-                let newPoint = {
-                    name: key.split('_')[0].toUpperCase(),
-                    y: parseFloat(data[key])
-                };
-                filteredObject.push(newPoint);
-            }
-        })
-        filteredObject[0].sliced = true;
-        filteredObject[0].selected = true;
-        let title = keyFilter + ' Grading';
-        rechart(chartId, keyFilter.toUpperCase(),  title, filteredObject);
-    }
-    function rechart(id, name, title, data) {
-        Highcharts.chart(id, {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: title
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
-                }
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                    }
-                }
-            },
-            series: [{
-                name: name,
-                colorByPoint: true,
-                data: data
-            }]
-        })
+    function statsInputChange(data, value){
+        filterChange(data, value, _.capitalize(value) + ' Grades', 'stats-chart-container');
     }
 </script>
