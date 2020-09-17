@@ -24,7 +24,9 @@ function mapGamer(gamer) {
 view_router.get('/gamer/:username', (req, res) => {
     let views = {
         'player_stat_summary': {query: {username: req.params.username}},
-        'teammate_analysis': {query: {shooting_player: req.params.username}}
+        'teammate_analysis': {query: {shooting_player: req.params.username}},
+        'gamer_stats_graded': {query: {query_username: req.params.username}},
+
     };
     console.log(views);
 
@@ -36,6 +38,9 @@ view_router.get('/gamer/:username', (req, res) => {
         });
         let gamer = mapGamer(views['player_stat_summary'].data[0]);
         let teammateData = views['teammate_analysis'].data.map(mapGamer);
+
+        let grades = views['gamer_stats_graded'].data[0];
+
         console.log(gamer, teammateData);
         let titleKeys = Object.keys(teammateData[0]).filter((key) => !FILTER_KEYS.includes(key)).map(columnToDisplayName);
         let seoMetadata = {
@@ -45,6 +50,7 @@ view_router.get('/gamer/:username', (req, res) => {
         };
         res.render('gamer/detail', {
             gamer: gamer,
+            grades: grades,
             titleKeys: titleKeys,
             teammateData: teammateData,
             seoMetadata: seoMetadata,

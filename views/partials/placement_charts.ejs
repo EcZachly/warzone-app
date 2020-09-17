@@ -1,0 +1,36 @@
+<figure class="highcharts-figure">
+    <div id="placement-chart-container"></div>
+    <p class="highcharts-description"></p>
+</figure>
+
+<div style="margin-left: 25%; margin-left: 25%">
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
+           for="soloOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="soloOption" name="placementFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">solo</span>
+    </label>
+    <label class="mdl-radio mdl-js-radio" for="duoOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="duoOption" name="placementFilter"
+               class="mdl-radio__button" checked>
+        <span class="mdl-radio__label">duo</span>
+    </label>
+
+    <label class="mdl-radio mdl-js-radio" for="trioOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="trioOption" name="placementFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">trio</span>
+    </label>
+
+    <label class="mdl-radio mdl-js-radio" for="quadOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="quadOption" name="placementFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">quad</span>
+    </label>
+</div>
+
+<script>
+    function placementInputChange(data, value){
+        filterChange(data, value, _.capitalize(value) + ' Placement Grades', 'placement-chart-container');
+    }
+</script>
