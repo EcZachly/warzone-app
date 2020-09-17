@@ -1,36 +1,30 @@
 <figure class="highcharts-figure">
-    <div id="placement-chart-container"></div>
+    <div id="stats-chart-container"></div>
     <p class="highcharts-description"></p>
 </figure>
 
 <div style="margin-left: 25%; margin-left: 25%">
     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
-           for="soloOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
-        <input type="radio" id="soloOption" name="placementFilter"
+           for="kdrOption" onchange="filterChange(STAT_DATA, this.MaterialRadio.element_.innerText, 'stats-chart-container')">
+        <input type="radio" id="kdrOption" name="placementFilter"
                class="mdl-radio__button" checked>
-        <span class="mdl-radio__label">solo</span>
+        <span class="mdl-radio__label">kdr</span>
     </label>
-    <label class="mdl-radio mdl-js-radio" for="duoOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
-        <input type="radio" id="duoOption" name="placementFilter"
+    <label class="mdl-radio mdl-js-radio" for="scoreOption" onchange="filterChange(STAT_DATA, this.MaterialRadio.element_.innerText, 'stats-chart-container')">
+        <input type="radio" id="scoreOption" name="placementFilter"
                class="mdl-radio__button">
-        <span class="mdl-radio__label">duo</span>
-    </label>
-
-    <label class="mdl-radio mdl-js-radio" for="trioOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
-        <input type="radio" id="trioOption" name="placementFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">trio</span>
+        <span class="mdl-radio__label">score</span>
     </label>
 
-    <label class="mdl-radio mdl-js-radio" for="quadOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
-        <input type="radio" id="quadOption" name="placementFilter"
+    <label class="mdl-radio mdl-js-radio" for="killsOption" onchange="filterChange(STAT_DATA, this.MaterialRadio.element_.innerText, 'stats-chart-container')">
+        <input type="radio" id="killsOption" name="placementFilter"
                class="mdl-radio__button">
-        <span class="mdl-radio__label">quad</span>
+        <span class="mdl-radio__label">kills</span>
     </label>
 </div>
 
 <script>
-    let ALL_GRADES = JSON.parse('<%- JSON.stringify(grades) %>')
+    let STAT_DATA = JSON.parse('<%- JSON.stringify(grades) %>')
 
     function filterChange(data, keyFilter, chartId){
         let filteredObject = [];
@@ -45,8 +39,8 @@
         })
         filteredObject[0].sliced = true;
         filteredObject[0].selected = true;
-        let title = keyFilter + ' Placement Grading';
-        rechart(chartId, 'Placements',  title, filteredObject);
+        let title = keyFilter + ' Grading';
+        rechart(chartId, keyFilter.toUpperCase(),  title, filteredObject);
     }
     function rechart(id, name, title, data) {
         Highcharts.chart(id, {
