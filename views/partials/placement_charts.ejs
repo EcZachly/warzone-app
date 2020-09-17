@@ -1,0 +1,87 @@
+<figure class="highcharts-figure">
+    <div id="placement-chart-container"></div>
+    <p class="highcharts-description"></p>
+</figure>
+
+<div style="margin-left: 25%; margin-left: 25%">
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
+           for="soloOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
+        <input type="radio" id="soloOption" name="placementFilter"
+               class="mdl-radio__button" checked>
+        <span class="mdl-radio__label">solo</span>
+    </label>
+    <label class="mdl-radio mdl-js-radio" for="duoOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
+        <input type="radio" id="duoOption" name="placementFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">duo</span>
+    </label>
+
+    <label class="mdl-radio mdl-js-radio" for="trioOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
+        <input type="radio" id="trioOption" name="placementFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">trio</span>
+    </label>
+
+    <label class="mdl-radio mdl-js-radio" for="quadOption" onchange="filterChange(ALL_GRADES, this.MaterialRadio.element_.innerText, 'placement-chart-container')">
+        <input type="radio" id="quadOption" name="placementFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">quad</span>
+    </label>
+</div>
+
+<script>
+    let ALL_GRADES = JSON.parse('<%- JSON.stringify(grades) %>')
+
+    function filterChange(data, keyFilter, chartId){
+        let filteredObject = [];
+        Object.keys(data).forEach((key)=>{
+            if(key.includes(keyFilter)){
+                let newPoint = {
+                    name: key.split('_')[0].toUpperCase(),
+                    y: parseFloat(data[key])
+                };
+                filteredObject.push(newPoint);
+            }
+        })
+        filteredObject[0].sliced = true;
+        filteredObject[0].selected = true;
+        let title = keyFilter + ' Placement Grading';
+        rechart(chartId, 'Placements',  title, filteredObject);
+    }
+    function rechart(id, name, title, data) {
+        Highcharts.chart(id, {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: title
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                name: 'Placements',
+                colorByPoint: true,
+                data: data
+            }]
+        })
+    }
+</script>

@@ -2,23 +2,51 @@
 <head>
 
     <%- include ('../partials/head') %>
+    <%- include ('../partials/high_charts') %>
 
 </head>
 <body>
 
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header app">
-        <%- include ('../partials/header') %>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header app">
+    <%- include ('../partials/header') %>
 
-        <main class="mdl-layout__content">
-            <div class="page-content">
-                <%- include('../partials/gamer', {gamer: gamer, filterKeys: filterKeys}); %>
-            </div>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <%- include('../partials/gamer', {gamer: gamer, filterKeys: filterKeys}); %>
 
-            <div class="page-content-lg page-content">
-                <%- include('../partials/gamer_detail', {gamer: gamer, filterKeys: filterKeys}); %>
+
+            <div class="mdl-tabs mdl-js-tabs">
+                <div class="mdl-tabs__tab-bar">
+                    <a href="#placements-panel" class="mdl-tabs__tab"
+                       onclick="filterChange(ALL_GRADES, 'solo', 'placement-chart-container')">Placements</a>
+                    <a href="#teammates-panel" class="mdl-tabs__tab">Teammates</a>
+                    <a href="#stats-panel" class="mdl-tabs__tab">Stats</a>
+                </div>
+
+                <div class="mdl-tabs__panel" id="placements-panel">
+                    <%- include('../partials/placement_charts', {gamer: gamer, grades: grades, filterKeys: filterKeys}); %>
+
+                </div>
+
+
+                <div class="mdl-tabs__panel" id="teammates-panel">
+
+                    <div class="page-content-lg page-content">
+                        <%- include('../partials/teammate_table', {gamer: gamer, filterKeys: filterKeys}); %>
+                    </div>
+
+                </div>
+
+                <div class="mdl-tabs__panel" id="stats-panel">
+
+                </div>
             </div>
-        </main>
-    </div>
+        </div>
+
+
+    </main>
+</div>
+
 
 </body>
 </html>
