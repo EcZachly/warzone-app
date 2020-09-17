@@ -1,10 +1,14 @@
 <html>
 <head>
 
-    <%- include ('../partials/head') %>
     <%- include ('../partials/high_charts') %>
+    <%- include ('../partials/head') %>
 
+    <script>
+        let ALL_GRADES = JSON.parse('<%- JSON.stringify(grades) %>')
+    </script>
 </head>
+
 <body>
 
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header app">
@@ -13,45 +17,40 @@
     <main class="mdl-layout__content">
         <div class="page-content">
             <%- include('../partials/gamer', {gamer: gamer, filterKeys: filterKeys}); %>
-
-
             <div class="mdl-tabs mdl-js-tabs">
                 <div class="mdl-tabs__tab-bar">
                     <a href="#placements-panel" class="mdl-tabs__tab"
-                       onclick="filterChange(ALL_GRADES, 'solo', 'placement-chart-container')">Placements</a>
+                       onclick="placementInputChange(ALL_GRADES, 'duo', 'placement-chart-container')">Placements</a>
                     <a href="#stats-panel"
-                       onclick="filterChange(ALL_GRADES, 'kdr', 'stats-chart-container')"
-
-                       class="mdl-tabs__tab">Stats</a>
+                       onclick="statsInputChange(ALL_GRADES, 'kdr', 'stats-chart-container')"
+                       class="mdl-tabs__tab is-active">Stats</a>
                     <a href="#teammates-panel" class="mdl-tabs__tab">Teammates</a>
-
                 </div>
 
                 <div class="mdl-tabs__panel" id="placements-panel">
                     <%- include('../partials/placement_charts', {gamer: gamer, grades: grades, filterKeys: filterKeys}); %>
-
                 </div>
 
 
                 <div class="mdl-tabs__panel" id="teammates-panel">
-
                     <div class="page-content-lg page-content">
                         <%- include('../partials/teammate_table', {gamer: gamer, filterKeys: filterKeys}); %>
                     </div>
-
                 </div>
 
-                <div class="mdl-tabs__panel" id="stats-panel">
+                <div class="mdl-tabs__panel  is-active" id="stats-panel">
                     <%- include('../partials/stats_charts', {gamer: gamer, grades: grades, filterKeys: filterKeys}); %>
-
                 </div>
             </div>
         </div>
-
-
     </main>
+
+
 </div>
 
 
 </body>
+<script>
+    statsInputChange(ALL_GRADES, 'kdr')
+</script>
 </html>
