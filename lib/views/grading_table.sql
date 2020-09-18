@@ -36,4 +36,4 @@ SELECT
       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY CASE WHEN team_type = 'duo' THEN gm.team_placement END DESC) AS f_grade_duo,
       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY CASE WHEN team_type = 'solo' THEN gm.team_placement END DESC) AS f_grade_solo
 FROM warzone.gamer_matches gm
-JOIN warzone.matches_augmented m ON m.match_id = gm.match_id
+JOIN warzone.matches_augmented m ON m.match_id = gm.match_id AND m.is_warzone_match = TRUE

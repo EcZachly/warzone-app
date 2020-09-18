@@ -8,8 +8,8 @@ CREATE OR REPLACE VIEW warzone.gamer_stats_graded AS
 
     )
 SELECT
-   gm.query_username,
-       gm.query_platform,
+   gm.query_username as username,
+       gm.query_platform as platform,
 
         COUNT(CASE WHEN gm.score >= gt.a_grade_score THEN 1 END) AS a_grade_score,
               COUNT(CASE WHEN gm.score < gt.a_grade_score  AND gm.score >= gt.b_grade_score THEN 1 END) AS b_grade_score,
@@ -88,6 +88,5 @@ SELECT
         JOIN warzone.matches_augmented m on m.match_id = gm.match_id
         , warzone.grading_table gt
 
-    WHERE mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg&'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
-      AND mode NOT LIKE '%dmz%'
+    WHERE is_warzone_match = TRUE
  GROUP BY 1,2

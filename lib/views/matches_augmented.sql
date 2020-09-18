@@ -17,5 +17,7 @@ SELECT matches.match_id,
            WHEN matches.team_count > 45 THEN 'trio'::text
            WHEN matches.team_count <= 45 AND matches.team_count >= 30 THEN 'quad'::text
            ELSE NULL::text
-           END                                            AS team_type
+           END                                            AS team_type,
+       CASE WHEN mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg&'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
+                 AND mode NOT LIKE '%dmz%' THEN TRUE ELSE FALSE END as is_warzone_match
 FROM warzone.matches;
