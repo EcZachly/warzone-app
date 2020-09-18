@@ -3,6 +3,7 @@ import {queryGamers, getGamerFromAPI} from "../lib/model/gamer";
 import {queryView} from "../lib/model/analysis";
 import {handleResponse} from './response_handler';
 import {insertIntoDatabase} from "../lib/etl/utils";
+
 import WarzoneMapper from "../lib/etl/mapper";
 import {GAMER_TABLE} from "../lib/constants";
 let api_router = express.Router();
@@ -13,7 +14,6 @@ api_router.use((req, res, next)=>{
 });
 
 api_router.post('/gamer', (req, res)=>{
-    console.log(req.body);
     getGamerFromAPI(req.body.username, req.body.platform).then((gamer)=>{
         return insertIntoDatabase(WarzoneMapper.mapGamer(gamer), GAMER_TABLE).then((data)=>{
             res.redirect('/gamers?submittedUsername=' + req.body.username);
@@ -25,6 +25,7 @@ api_router.post('/gamer', (req, res)=>{
         res.redirect('/gamers?submissionError=' + errorMessage);
     });
 });
+
 
 api_router.get('/gamers', (req, res)=>{
     queryGamers(req.query).then((gamers)=>{

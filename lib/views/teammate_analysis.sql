@@ -4,22 +4,22 @@ WITH source AS (
             m.start_timestamp,
             m.team_type,
             gm.*,
-            COALESCE(gm2.username, 'without teammates')  AS helping_player_temp
+            COALESCE(gm2.query_username, 'without teammates')  AS helping_player_temp,
+            COALESCE(gm2.query_platform, 'without teammates') AS helping_player_platform
     FROM warzone.gamer_matches gm
-         JOIN warzone.matches_augmented m on gm.match_id = m.match_id
+         JOIN warzone.matches_augmented m
+            ON gm.match_id = m.match_id AND m.is_warzone_match = TRUE
          LEFT JOIN warzone.gamer_matches gm2
                    ON gm.team = gm2.team
                        AND gm.match_id = gm2.match_id
-                       AND gm.username <> gm2.username
-    WHERE mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg&'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
-      AND mode NOT LIKE '%dmz%'
-
-
+                       AND CONCAT(gm.query_platform, '-', gm.query_username) <> CONCAT(gm.query_platform, '-', gm2.query_username)
 ),
      overall AS (
           SELECT
           gm.query_username as shooting_player,
+          gm.query_platform AS shooting_player_platform,
        '(overall)' as helping_player_temp,
+       '(overall)' as helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
         CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
        CAST(SUM(gm.gulag_kills) AS REAL)/SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths END + gm.gulag_kills) as gulag_win_rate,
@@ -45,16 +45,17 @@ WITH source AS (
        MAX(start_timestamp)                                                                      AS last_game_time
     FROM warzone.gamer_matches gm
           JOIN warzone.matches_augmented m on gm.match_id = m.match_id
-    WHERE mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg%'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
-          AND mode NOT LIKE '%dmz%'
-         GROUP BY shooting_player, helping_player_temp
+          AND m.is_warzone_match = TRUE
+         GROUP BY gm.query_username, gm.query_platform, helping_player_temp
 
      ),
      with_teammates AS (
 
          SELECT
          gm.query_username AS shooting_player,
+         gm.query_platform AS shooting_player_platform,
        helping_player_temp,
+       helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
         CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
        CAST(SUM(gm.gulag_kills) AS REAL)/SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths END + gm.gulag_kills) as gulag_win_rate,
@@ -79,7 +80,7 @@ WITH source AS (
        MIN(start_timestamp)                                                                      AS first_game_time,
        MAX(start_timestamp)                                                                      AS last_game_time
 FROM source gm
-GROUP BY gm.query_username, helping_player_temp
+GROUP BY gm.query_username, gm.query_platform, helping_player_temp, helping_player_platform
 HAVING COUNT(DISTINCT gm.match_id) >= 10
      ),
      combined AS (

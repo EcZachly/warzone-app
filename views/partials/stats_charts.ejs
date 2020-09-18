@@ -21,6 +21,12 @@
                class="mdl-radio__button">
         <span class="mdl-radio__label">kills</span>
     </label>
+
+    <label class="mdl-radio mdl-js-radio" for="damageOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
+        <input type="radio" id="damageOption" name="statFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">damage</span>
+    </label>
 </div>
 
 <script>

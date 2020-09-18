@@ -9,10 +9,10 @@
         <% } else if (key.includes("total") || key.includes("num") || key.includes("max")) { %>
             <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
         <% } else if (key.includes("player")) { %>
-            <% if (!["(overall)", "without teammates"].includes(gamer[key])) { %>
-                    <td class="mdl-data-table__cell"><a href="/gamer/<%= encodeURIComponent(gamer[key]) %>"><%= gamer[key] %></a></td>
+            <% if (!["(overall)", "without teammates"].includes(gamer[key].name)) { %>
+                    <td class="mdl-data-table__cell"><a href="/gamer/<%= gamer[key].platform %>/<%= encodeURIComponent(gamer[key].name) %>"><%= gamer[key].name %></a></td>
             <% } else { %>
-                <td class="mdl-data-table__cell"><%= gamer[key] %> </td>
+                <td class="mdl-data-table__cell"><%= gamer[key].name %> </td>
             <% } %>
         <% } else { %>
             <td class="mdl-data-table__cell"><%= gamer[key] %> </td>

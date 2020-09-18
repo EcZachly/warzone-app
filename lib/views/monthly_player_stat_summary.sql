@@ -2,7 +2,8 @@ CREATE VIEW warzone.monthly_player_stat_summary AS
 
 SELECT
        DATE_TRUNC('month', to_timestamp(start_time)) as game_month,
-       gm.username,
+       gm.query_username,
+       gm.query_platform,
        AVG(gm.kills) as average_kills,
        AVG(gm.deaths) AS average_deaths,
        AVG(gm.damage_done) AS average_damage_done,
@@ -16,6 +17,6 @@ SELECT
 FROM warzone.gamer_matches gm
     JOIN warzone.matches m ON gm.match_id = m.match_id
 
-GROUP BY 1,2
-ORDER BY username, game_month
+GROUP BY 1,2,3
+ORDER BY gm.query_username, gm.query_platform, game_month
 
