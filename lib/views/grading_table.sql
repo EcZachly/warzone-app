@@ -1,5 +1,10 @@
-CREATE VIEW warzone.grading_table AS
+CREATE MATERIALIZED VIEW  warzone.grading_table AS
 SELECT
+      PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY damage_done) AS f_grade_damage,
+      PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY damage_done) AS d_grade_damage,
+      PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY damage_done) AS c_grade_damage,
+      PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY damage_done) AS b_grade_damage,
+      PERCENTILE_DISC(0.9) WITHIN GROUP (ORDER BY damage_done) AS a_grade_damage,
       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY score) AS f_grade_score,
       PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY score) AS d_grade_score,
       PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY score) AS c_grade_score,
