@@ -1,4 +1,4 @@
-CREATE TABLE matches (
+CREATE TABLE warzone.matches (
     match_id TEXT PRIMARY KEY,
     start_time BIGINT,
     end_time BIGINT,
