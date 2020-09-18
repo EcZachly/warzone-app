@@ -18,6 +18,15 @@ SELECT
               COUNT(CASE WHEN gm.score < gt.d_grade_score  THEN 1 END) AS f_grade_score,
 
 
+             COUNT(CASE WHEN gm.damage_done >= gt.a_grade_damage THEN 1 END) AS a_grade_damage,
+              COUNT(CASE WHEN gm.damage_done < gt.a_grade_damage  AND gm.damage_done >= gt.b_grade_damage THEN 1 END) AS b_grade_damage,
+              COUNT(CASE WHEN gm.damage_done < gt.b_grade_damage  AND gm.damage_done >= gt.c_grade_damage THEN 1 END) AS c_grade_damage,
+              COUNT(CASE WHEN gm.damage_done < gt.c_grade_damage  AND gm.damage_done >= gt.d_grade_damage THEN 1 END) AS d_grade_damage,
+              COUNT(CASE WHEN gm.damage_done < gt.d_grade_damage  THEN 1 END) AS f_grade_damage,
+
+
+
+
            COUNT(CASE WHEN gm.kills >= gt.a_grade_kills THEN 1 END) AS a_grade_kills,
               COUNT(CASE WHEN gm.kills < gt.a_grade_kills  AND gm.kills >= gt.b_grade_kills THEN 1 END) AS b_grade_kills,
               COUNT(CASE WHEN gm.kills < gt.b_grade_kills  AND gm.kills >= gt.c_grade_kills THEN 1 END) AS c_grade_kills,

@@ -26,7 +26,6 @@ view_router.get('/gamer/:platform/:username', (req, res) => {
         'player_stat_summary': {query: {username: req.params.username}},
         'teammate_analysis': {query: {shooting_player: req.params.username, shooting_player_platform: req.params.platform}},
         'gamer_stats_graded': {query: {username: req.params.username, platform: req.params.platform}},
-
     };
     let promises = Object.keys(views).map((key) => queryView(key, views[key].query));
     return Bluebird.all(promises).then((arrData) => {
