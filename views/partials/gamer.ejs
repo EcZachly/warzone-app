@@ -13,6 +13,13 @@
 
     <div class="card-body demo-supporting-text mdl-card__supporting-text details-container">
 
+
+        <% if (gamer.num_site_hits > 0) { %>
+            <small>
+                <%= gamer.num_site_hits %>   <%= gamer.num_site_hits == 1 ? 'view' : 'views' %>
+            </small>
+        <% } %>
+
         <table class="mdl-data-table mdl-js-data-table">
             <thead>
             <tr>

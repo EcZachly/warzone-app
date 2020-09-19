@@ -1,4 +1,5 @@
-CREATE OR REPLACE VIEW warzone.gamer_site_hits AS
+
+CREATE OR REPLACE MATERIALIZED VIEW warzone.gamer_site_hits AS
 (
 
 WITH events AS (
@@ -10,7 +11,7 @@ WITH events AS (
                     SPLIT_PART(
                         SPLIT_PART(url, '?', 1),
                     '/', 4)
-           ) AS gamer,
+           ) AS username,
            *
     FROM warzone.site_events
     WHERE UPPER(user_agent ->> 'family') NOT LIKE '%BOT%'
@@ -18,9 +19,9 @@ WITH events AS (
 )
 
 SELECT platform,
-       gamer,
+       username,
        COUNT(DISTINCT ip) AS num_distinct_users,
        COUNT(1)           AS num_hits
 FROM events
-GROUP BY platform, gamer
+GROUP BY platform, username
 );
