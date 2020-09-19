@@ -15,6 +15,7 @@ api_router.use((req, res, next) => {
 
 
 api_router.post('/gamer', recaptcha.middleware.verify, async (req, res) => {
+    console.log(req.recaptcha);
     let gamers = await queryGamers(req.body);
     if(gamers.length){
         let errorMessage = req.body.username + ' already exists!'

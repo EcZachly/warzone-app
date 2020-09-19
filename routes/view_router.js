@@ -3,7 +3,7 @@ import {queryView} from '../lib/model/analysis';
 import {updateGamer} from '../lib/model/gamers';
 import Bluebird from 'bluebird';
 import _ from 'lodash';
-
+import recaptcha from "../lib/middleware/recaptcha";
 
 let view_router = express.Router();
 let FILTER_KEYS = ['shooting_player', 'shooting_player_platform', 'helping_player_temp', 'helping_player_platform', 'shooting_player_temp'];
@@ -73,7 +73,7 @@ view_router.get('/gamer/:platform/:username', async (req, res) => {
     });
 });
 
-view_router.get('/gamers', async (req, res) => {
+view_router.get('/gamers', recaptcha.middleware.render, async (req, res) => {
     let viewName = 'player_stat_summary';
     let queryParams = req.query;
 
@@ -88,9 +88,8 @@ view_router.get('/gamers', async (req, res) => {
         description: 'Warzone stats for ' + data.length + ' gamers'
     };
     res.render('gamer/list', {
-        recaptcha: {
-            site_key: process.env.WARZONE_RECAPTCHA_SITE_KEY
-        },
+        captcha: res.recaptcha,
+        captcha_site_key: process.env.WARZONE_RECAPTCHA_SITE_KEY,
         gamers: mappedGamers,
         seoMetadata: seoMetadata,
         submittedUsername: submittedUsername,
