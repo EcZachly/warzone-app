@@ -78,7 +78,7 @@ view_router.get('/gamers', recaptcha.middleware.render, async (req, res) => {
     let seoMetadata = {
         title: 'Warzone Gamers',
         keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
-        description: 'Warzone stats for ' + data.length + ' gamers'
+        description: 'Warzone stats for ' + sanitizedGamers.length + ' gamers'
     };
     res.render('gamer/list', {
         captcha: res.recaptcha,
