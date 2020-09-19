@@ -89,7 +89,6 @@ view_router.get('/gamers', recaptcha.middleware.render, async (req, res) => {
     };
     res.render('gamer/list', {
         captcha: res.recaptcha,
-        captcha_site_key: process.env.WARZONE_RECAPTCHA_SITE_KEY,
         gamers: mappedGamers,
         seoMetadata: seoMetadata,
         submittedUsername: submittedUsername,

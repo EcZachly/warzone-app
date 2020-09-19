@@ -36,9 +36,7 @@ api_router.post('/gamer', recaptcha.middleware.verify, async (req, res) => {
                 return res.redirect('/gamers?submissionError=' + errorMessage);
             }
         }
-
     }
-
 });
 
 
