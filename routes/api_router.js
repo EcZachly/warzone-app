@@ -3,6 +3,8 @@ import {initializeGamer, queryGamers} from "../lib/model/gamers";
 import {queryView} from "../lib/model/analysis";
 import {handleResponse} from './response_handler';
 import {initializeMatches} from "../lib/model/matches";
+import recaptcha from "../lib/middleware/recaptcha";
+
 
 let api_router = express.Router();
 
@@ -12,7 +14,7 @@ api_router.use((req, res, next) => {
 });
 
 
-api_router.post('/gamer', async (req, res) => {
+api_router.post('/gamer', recaptcha.middleware.verify, async (req, res) => {
     let gamers = await queryGamers(req.body);
     if(gamers.length){
         let errorMessage = req.body.username + ' already exists!'

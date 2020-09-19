@@ -88,6 +88,9 @@ view_router.get('/gamers', async (req, res) => {
         description: 'Warzone stats for ' + data.length + ' gamers'
     };
     res.render('gamer/list', {
+        recaptcha: {
+            site_key: process.env.WARZONE_RECAPTCHA_SITE_KEY
+        },
         gamers: mappedGamers,
         seoMetadata: seoMetadata,
         submittedUsername: submittedUsername,
