@@ -1,8 +1,6 @@
 import express from 'express'
 import {initializeGamer, queryGamers} from "../lib/model/gamers";
 import {queryView} from "../lib/model/analysis";
-
-import {sleep} from "../lib/etl/utils";
 import {handleResponse} from './response_handler';
 import {initializeMatches} from "../lib/model/matches";
 
