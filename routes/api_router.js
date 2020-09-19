@@ -1,46 +1,47 @@
 import express from 'express'
-import {queryGamers, getGamerFromAPI} from "../lib/model/gamer";
+import {initializeGamer, queryGamers} from "../lib/model/gamers";
 import {queryView} from "../lib/model/analysis";
 import {handleResponse} from './response_handler';
-import {insertIntoDatabase} from "../lib/etl/utils";
+import {initializeMatches} from "../lib/model/matches";
 
-import WarzoneMapper from "../lib/etl/mapper";
-import {GAMER_TABLE} from "../lib/constants";
 let api_router = express.Router();
 
-api_router.use((req, res, next)=>{
+api_router.use((req, res, next) => {
     req.analysisStartTime = new Date();
     next();
 });
 
-api_router.post('/gamer', (req, res)=>{
-    getGamerFromAPI(req.body.username, req.body.platform).then((gamer)=>{
-        return insertIntoDatabase(WarzoneMapper.mapGamer(gamer), GAMER_TABLE).then((data)=>{
-            res.redirect('/gamers?submittedUsername=' + req.body.username);
-        }, (err)=>{
-            res.redirect('/gamers?submittedUsername=' + req.body.username);
-        });
-    }, (err)=>{
-        let errorMessage = req.body.username + '  was not found. Maybe you made a typo??'
+
+api_router.post('/gamer', async (req, res) => {
+    let gamers = await queryGamers(req.body);
+    if(gamers.length){
+        let errorMessage = req.body.username + ' already exists!'
         res.redirect('/gamers?submissionError=' + errorMessage);
-    });
+    }
+    else{
+        try {
+            let initializedGamer = await initializeGamer(req.body);
+            let matches = await initializeMatches(initializedGamer);
+            return res.redirect('/gamer/' +  req.body.platform + '/' + encodeURIComponent(req.body.username));
+        }
+        catch(e){
+            let errorMessage = req.body.username + '  was not found. Maybe you made a typo??'
+            return res.redirect('/gamers?submissionError=' + errorMessage);
+        }
+    }
 });
 
 
-api_router.get('/gamers', (req, res)=>{
-    queryGamers(req.query).then((gamers)=>{
-        handleResponse(req, res, gamers);
-    })
-})
-
-api_router.get('/data/:view', (req, res)=>{
+api_router.get('/data/:view', async (req, res) => {
     let viewName = req.params.view;
     let query = req.query;
-    queryView(viewName, query).then((data)=>{
+    try {
+        let data = await queryView(viewName, query);
         handleResponse(req, res, data);
-    }, (failure)=>{
-        handleResponse(req, res, failure);
-    })
+    }
+    catch(e){
+        handleResponse(req, res, e);
+    }
 })
 
 export default api_router;

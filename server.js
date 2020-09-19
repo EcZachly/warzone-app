@@ -1,13 +1,19 @@
 import express from 'express';
+import compress from 'compression';
 import helmet from 'helmet';
+
+import analyticsMiddleware from './lib/middleware/site_traffic_middleware';
+
 import api_router from './routes/api_router';
 import view_router from './routes/view_router';
 import bodyParser from 'body-parser';
 
 let app = express();
 app.use(helmet());
-let PORT = process.env.PORT || 3000;
+app.use(compress());
+app.use(analyticsMiddleware);
 
+let PORT = process.env.PORT || 3000;
 app.use(bodyParser.json({
     limit: '50mb'
 }));

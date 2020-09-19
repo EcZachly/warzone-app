@@ -1,6 +1,9 @@
-create table gamers
+CREATE TABLE warzone.gamers
 (
-	username text,
-	platform text,
+	username TEXT,
+	platform TEXT,
+	priority_number INTEGER,
+	needs_backfill BOOLEAN,
+	needs_update BOOLEAN,
 	PRIMARY KEY (username, platform)
 );

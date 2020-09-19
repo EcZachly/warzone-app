@@ -19,12 +19,19 @@
             <%- include('../partials/gamer', {gamer: gamer, filterKeys: filterKeys}); %>
             <div class="mdl-tabs mdl-js-tabs">
                 <div class="mdl-tabs__tab-bar">
+                    <a href="#teammates-panel" class="mdl-tabs__tab is-active">Teammates</a>
                     <a href="#placements-panel" class="mdl-tabs__tab"
                        onclick="placementInputChange(ALL_GRADES, 'duo', 'placement-chart-container')">Placements</a>
                     <a href="#stats-panel"
                        onclick="statsInputChange(ALL_GRADES, 'kdr', 'stats-chart-container')"
-                       class="mdl-tabs__tab is-active">Stats</a>
-                    <a href="#teammates-panel" class="mdl-tabs__tab">Teammates</a>
+                       class="mdl-tabs__tab">Stats</a>
+                </div>
+
+
+                <div class="mdl-tabs__panel is-active" id="teammates-panel">
+                    <div class="page-content-lg page-content">
+                        <%- include('../partials/teammate_table', {gamer: gamer, filterKeys: filterKeys}); %>
+                    </div>
                 </div>
 
                 <div class="mdl-tabs__panel" id="placements-panel">
@@ -32,13 +39,9 @@
                 </div>
 
 
-                <div class="mdl-tabs__panel" id="teammates-panel">
-                    <div class="page-content-lg page-content">
-                        <%- include('../partials/teammate_table', {gamer: gamer, filterKeys: filterKeys}); %>
-                    </div>
-                </div>
 
-                <div class="mdl-tabs__panel  is-active" id="stats-panel">
+
+                <div class="mdl-tabs__panel  " id="stats-panel">
                     <%- include('../partials/stats_charts', {gamer: gamer, grades: grades, filterKeys: filterKeys}); %>
                 </div>
             </div>
