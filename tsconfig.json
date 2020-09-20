@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "./dist",
+    "allowJs": true,
+    "target": "es6"
+  },
+  "include": ["./routes/**/*", "./lib/**/*"]
+}

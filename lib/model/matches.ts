@@ -2,8 +2,8 @@ import WarzoneMapper from "../etl/mapper";
 import {insertIntoDatabase, queryDatabase} from "../etl/utils";
 import UtilityService from './../services/UtilityService.js';
 import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from "../constants";
-import Bluebird from "bluebird";
-import {login} from '../api_wrapper';
+import * as Bluebird from "bluebird";
+import ApiWrapper from '../api_wrapper';
 
 
 /**
@@ -70,7 +70,7 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
 
 
 export async function initializeMatches(gamer){
-    let API = await login();
+    let API = await ApiWrapper.getInstance();
     let timestampList = [{start: 0, end:0}];
     return await getMatchDetailsFromAPI({timestampList: timestampList, gamer: gamer}, API, 5);
 }

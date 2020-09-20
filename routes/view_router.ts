@@ -1,6 +1,8 @@
-import express from 'express';
-import Bluebird from 'bluebird';
-import _ from 'lodash';
+import * as express from 'express';
+import { ApiRequest, ApiResponse } from "../lib/middleware/request_object"
+import { handleRender} from './response_handler';
+import * as Bluebird from 'bluebird';
+import * as _ from 'lodash';
 
 import recaptcha from "../lib/middleware/recaptcha";
 import {queryView} from '../lib/model/analysis';
@@ -12,10 +14,13 @@ let FILTER_KEYS = ['shooting_player', 'shooting_player_platform', 'helping_playe
 import UtilityService from './../lib/services/UtilityService.js';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
+view_router.use((req: ApiRequest, res: ApiResponse, next) => {
+	req.startTime = new Date().getTime();
+	next();
+});
 
 
-
-view_router.get('/gamer/:platform/:username', async (req, res) => {
+view_router.get('/gamer/:platform/:username', async (req:ApiRequest, res:ApiResponse) => {
 	let views = {
 		'player_stat_summary': {query: {username: req.params.username}},
 		'teammate_analysis': {
@@ -28,16 +33,16 @@ view_router.get('/gamer/:platform/:username', async (req, res) => {
 		'gamers': {query: {username: req.params.username, platform: req.params.platform}}
 	};
 
-	let promises = Object.keys(views).map((key) => queryView(key, views[key].query));
+	let promises = Object.keys(views).map(async (key:string) => await queryView(key, views[key].query));
 
 	Bluebird.all(promises).then(async (arrData) => {
-		Object.keys(views).forEach((key, index) => views[key].data = arrData[index]);
+		Object.keys(views).forEach((key:string, index:number) => views[key].data = arrData[index]);
 
-		let gamer = sanitizeGamer(views['player_stat_summary'].data[0]);
-		let teammates = sanitizeTeammates(views['teammate_analysis'].data);
-		let grades = views['gamer_stats_graded'].data[0];
+		let gamer = sanitizeGamer(views['player_stat_summary']['data'][0]);
+		let teammates = sanitizeTeammates(views['teammate_analysis']['data']);
+		let grades = views['gamer_stats_graded']['data'][0];
 
-		let gamerData = views['gamers'].data[0];
+		let gamerData = views['gamers']['data'][0];
 		let gamerPromise = Bluebird.resolve(gamerData);
 
 		if (!gamerData.needs_update) {
@@ -55,23 +60,23 @@ view_router.get('/gamer/:platform/:username', async (req, res) => {
 			description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate
 		};
 
-		res.render('gamer/detail', {
+		handleRender(req, res, 'gamer/detail', {
 			gamer: gamer,
 			grades: grades,
 			titleKeys: titleKeys,
 			teammateData: teammates,
 			seoMetadata: seoMetadata,
 			filterKeys: FILTER_KEYS
-		});
+		})
 	});
 });
 
-view_router.get('/gamers', recaptcha.middleware.render, async (req, res) => {
-    let viewName = 'player_stat_summary';
+view_router.get('/gamers', recaptcha.middleware.render, async (req: ApiRequest, res: ApiResponse) => {
+    let viewName: string = 'player_stat_summary';
     let queryParams = req.query;
 
-	let submittedUsername = UtilityService.validateItem(queryParams.submittedUsername, 'string', '');
-	let submissionError = UtilityService.validateItem(queryParams.submissionError, 'string', '');
+	let submittedUsername: string = (queryParams.submittedUsername || "").toString();
+	let submissionError: string = (queryParams.submissionError || "").toString();
 
 	let rawGamerList = await queryView(viewName);
 	let sanitizedGamers = rawGamerList.map(sanitizeGamer);
@@ -95,7 +100,7 @@ view_router.get('/gamers', recaptcha.middleware.render, async (req, res) => {
 //PRIVATE METHODS
 
 
-function columnToDisplayName(column) {
+function columnToDisplayName(column:string) {
 	return column.split('_').map(_.capitalize).join(' ');
 }
 
@@ -103,7 +108,6 @@ function columnToDisplayName(column) {
 
 function sanitizeGamer(gamer) {
 	gamer = UtilityService.validateItem(gamer, 'object', {});
-
 	gamer.gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
 	gamer.kdr = (UtilityService.validateItem(gamer.kdr, 'number', 0).toFixed(4)).toString();
 	gamer.aliases = UtilityService.validateItem(gamer.aliases, 'array', []);
