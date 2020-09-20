@@ -1,7 +1,9 @@
-import {createEvent} from '../model/events.js';
-import useragent from 'useragent';
+import {createEvent} from '../model/events';
+import * as useragent from 'useragent';
+import {NextFunction} from 'express';
+import {ApiResponse, ApiRequest} from "./request_object";
 
-function isFileRequest(req){
+function isFileRequest(req: ApiRequest){
     let pieces = ['.png', '.js', '.jpg', '.css'];
     let isFileRequest = false;
     pieces.forEach((piece)=>{
@@ -19,8 +21,8 @@ function isFileRequest(req){
  * @param next
  * @returns {Promise<void>}
  */
-export default async function createAPIEventMiddleware (req, res, next){
-    let shouldBeLogged = req.url && !req.hostname.includes('localhost') && !isFileRequest(req);
+export default async function createAPIEventMiddleware (req: ApiRequest, res: ApiResponse, next: NextFunction){
+    let shouldBeLogged = req.url && !isFileRequest(req) && !req.hostname.includes('localhost');
     let event = {
         url: req.url,
         referrer: req.headers.referer,
