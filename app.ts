@@ -17,7 +17,6 @@ import view_router from './routes/view_router';
 let app: Application = express();
 app.use(helmet());
 app.use(compress());
-app.use(analyticsMiddleware);
 app.use(bodyParser.json({
     limit: '50mb'
 }));
@@ -26,6 +25,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use(analyticsMiddleware);
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.set("views", "views")

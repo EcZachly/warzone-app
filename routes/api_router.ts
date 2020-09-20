@@ -23,8 +23,7 @@ api_router.post('/gamer', recaptcha.middleware.verify, async (req: ApiRequest, r
         };
         let gamers = await queryGamers(gamer);
         if(gamers.length){
-            let errorMessage = gamer.username + ' already exists!'
-            res.redirect('/gamers?submissionError=' + errorMessage);
+            res.redirect('/gamer/' +  gamer.platform + '/' + gamer.username);
         }
         else{
             try {
