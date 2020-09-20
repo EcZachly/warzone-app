@@ -1,5 +1,6 @@
-<form class="submit-card mdl-card mdl-shadow--2dp mdl-card--border add-user-card" action="/api/gamer" method="POST">
 
+<form id="gamerAddForm" class="submit-card mdl-card mdl-shadow--2dp mdl-card--border add-user-card" action="/api/gamer" method="POST">
+   <p><%- captcha %></p>
     <div class="mdl-card__title mdl-card--expand header">
         <h1 class="mdl-card__title-text title">
             Add your username to start tracking
@@ -33,4 +34,15 @@
         <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect submit" formmethod="POST"
                type="submit" value="Add Stats"/>
     </div>
+
+    <script>
+        function captchaCallback(token) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            input.setAttribute("hidden", "true");
+            input.setAttribute('name', 'g-recaptcha-response');
+            input.setAttribute('value', token);
+            document.getElementById('gamerAddForm').appendChild(input);
+        }
+    </script>
 </form>

@@ -3,6 +3,8 @@ import {initializeGamer, queryGamers} from "../lib/model/gamers";
 import {queryView} from "../lib/model/analysis";
 import {handleResponse} from './response_handler';
 import {initializeMatches} from "../lib/model/matches";
+import recaptcha from "../lib/middleware/recaptcha";
+
 
 let api_router = express.Router();
 
@@ -12,21 +14,27 @@ api_router.use((req, res, next) => {
 });
 
 
-api_router.post('/gamer', async (req, res) => {
-    let gamers = await queryGamers(req.body);
-    if(gamers.length){
-        let errorMessage = req.body.username + ' already exists!'
-        res.redirect('/gamers?submissionError=' + errorMessage);
-    }
-    else{
-        try {
-            let initializedGamer = await initializeGamer(req.body);
-            let matches = await initializeMatches(initializedGamer);
-            return res.redirect('/gamer/' +  req.body.platform + '/' + encodeURIComponent(req.body.username));
+api_router.post('/gamer', recaptcha.middleware.verify, async (req, res) => {
+    if(!req.recaptcha.error){
+        let gamer = {
+            username: req.body.username,
+            platform: req.body.platform
+        };
+        let gamers = await queryGamers(gamer);
+        if(gamers.length){
+            let errorMessage = gamer.username + ' already exists!'
+            res.redirect('/gamers?submissionError=' + errorMessage);
         }
-        catch(e){
-            let errorMessage = req.body.username + '  was not found. Maybe you made a typo??'
-            return res.redirect('/gamers?submissionError=' + errorMessage);
+        else{
+            try {
+                let initializedGamer = await initializeGamer(gamer);
+                let matches = await initializeMatches(initializedGamer);
+                return res.redirect('/gamer/' +  gamer.platform + '/' + encodeURIComponent(gamer.username));
+            }
+            catch(e){
+                let errorMessage = gamer.username + '  was not found. Maybe you made a typo??'
+                return res.redirect('/gamers?submissionError=' + errorMessage);
+            }
         }
     }
 });
