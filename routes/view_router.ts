@@ -45,6 +45,22 @@ view_router.get('/gamer/:platform/:username', async (req: ApiRequest, res: ApiRe
                 username: req.params.username,
                 platform: req.params.platform
             }
+        },
+        'time_of_day_analysis': {
+            query: {
+                timezone: 'America/Los_Angeles',
+                username: req.params.username,
+                platform: req.params.platform,
+                cutoff: "10"
+            }
+        },
+        'day_of_week_analysis': {
+            query: {
+                timezone: 'America/Los_Angeles',
+                username: req.params.username,
+                platform: req.params.platform,
+                cutoff: "10"
+            }
         }
     };
 
@@ -56,7 +72,8 @@ view_router.get('/gamer/:platform/:username', async (req: ApiRequest, res: ApiRe
         let gamer = sanitizeGamer(views['player_stat_summary']['data'][0]);
         let teammates = sanitizeTeammates(views['teammate_analysis']['data']);
         let grades = views['gamer_stats_graded']['data'][0];
-
+        let timeOfDay = views['time_of_day_analysis']['data'];
+        let dayOfWeek = views['day_of_week_analysis']['data'];
         let gamerData = views['gamers']['data'][0];
         let gamerPromise = Bluebird.resolve(gamerData);
 
@@ -78,6 +95,8 @@ view_router.get('/gamer/:platform/:username', async (req: ApiRequest, res: ApiRe
         handleRender(req, res, 'gamer/detail', {
             gamer: gamer,
             grades: grades,
+            dayOfWeek: dayOfWeek,
+            timeOfDay: timeOfDay,
             titleKeys: titleKeys,
             teammateData: teammates,
             seoMetadata: seoMetadata,

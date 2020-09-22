@@ -6,6 +6,9 @@
 
     <script>
         let ALL_GRADES = JSON.parse('<%- JSON.stringify(grades) %>')
+        let TIME_OF_DAY = JSON.parse('<%- JSON.stringify(timeOfDay) %>')
+
+        let DAY_OF_WEEK = JSON.parse('<%- JSON.stringify(dayOfWeek) %>')
     </script>
 </head>
 
@@ -26,6 +29,10 @@
                     <a href="#stats-panel"
                        onclick="statsInputChange(ALL_GRADES, 'kdr', 'stats-chart-container')"
                        class="mdl-tabs__tab">Stats</a>
+
+                    <a href="#time-of-day-panel"
+                       onclick="timeOfDayInputChange(TIME_OF_DAY, 'hour_of_play')"
+                       class="mdl-tabs__tab">Time</a>
                 </div>
 
 
@@ -45,6 +52,10 @@
                 <div class="mdl-tabs__panel  " id="stats-panel">
                     <%- include('../partials/stats_charts', {gamer: gamer, grades: grades, filterKeys: filterKeys}); %>
                 </div>
+
+                <div class="mdl-tabs__panel  " id="time-of-day-panel">
+                    <%- include('../partials/time_of_day_charts', {gamer: gamer, timeOfDay: timeOfDay, grades: grades, filterKeys: filterKeys}); %>
+                </div>
             </div>
         </div>
     </main>
@@ -55,6 +66,6 @@
 
 </body>
 <script>
-    statsInputChange(ALL_GRADES, 'kdr')
+    statsInputChange(ALL_GRADES, 'kdr', '% of Games')
 </script>
 </html>

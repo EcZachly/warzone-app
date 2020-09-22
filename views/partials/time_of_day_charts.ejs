@@ -1,0 +1,73 @@
+
+
+<small class="aliases">Everything is currently Pacific timezone-based</small>
+<figure class="highcharts-figure">
+    <div id="time-of-day-chart-container"></div>
+    <p class="highcharts-description"></p>
+</figure>
+
+
+<div style="margin-left: 25%; margin-left: 25%">
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
+           for="timeOfDayOption" onchange="timeOfDayInputChange(TIME_OF_DAY,  'hour_of_play')">
+        <input type="radio" id="timeOfDayOption" name="timeFilter"
+               class="mdl-radio__button" checked>
+        <span class="mdl-radio__label">time of day</span>
+    </label>
+    <label class="mdl-radio mdl-js-radio" for="dayOfWeekOption"
+           onchange="timeOfDayInputChange(DAY_OF_WEEK, 'day_of_week')">
+        <input type="radio" id="dayOfWeekOption" name="timeFilter"
+               class="mdl-radio__button">
+        <span class="mdl-radio__label">day of week</span>
+    </label>
+</div>
+
+<script>
+    function timeOfDayInputChange(data, key) {
+        let title = key === 'hour_of_play' ? 'Time of Day Analysis' : 'Day of Week Analysis';
+        let categories = data.map(d => d[key]);
+        let chartData = [
+            {
+                name: 'KDR',
+                data: data.map(d => d.kdr)
+            },
+            {
+                name: 'Average Kills',
+                data: data.map(d => d.avg_kills),
+                visible: false
+            },
+            {
+                name: 'Max Kills',
+                data: data.map(d => d.max_kills),
+                visible: false
+            },
+            {
+                name: 'Score',
+                data: data.map(d => d.avg_score),
+                visible: false
+            },
+            {
+                name: 'Quad Placement',
+                data: data.map(d => d.avg_quad_placement),
+                visible: false
+            },
+            {
+                name: 'Trio Placement',
+                data: data.map(d => d.avg_trio_placement),
+                visible: false
+            },
+            {
+                name: 'Duo Placement',
+                data: data.map(d => d.avg_duo_placement),
+                visible: false
+            },
+            {
+                name: 'Solo Placement',
+                data: data.map(d => d.avg_solo_placement),
+                visible: false
+            }
+
+        ]
+        rechartBar('time-of-day-chart-container', title, categories, chartData)
+    }
+</script>
