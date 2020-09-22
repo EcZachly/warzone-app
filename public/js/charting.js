@@ -1,57 +1,10 @@
-function filterChange(data, keyFilter, seriesName, title, chartId) {
-    let filteredObject = [];
-    Object.keys(data).forEach((key) => {
-        if (key.includes(keyFilter)) {
-            let newPoint = {
-                name: key.split('_')[0].toUpperCase(),
-                y: parseFloat(data[key])
-            };
-            filteredObject.push(newPoint);
-        }
-    })
-    filteredObject[0].sliced = true;
-    filteredObject[0].selected = true;
-    rechart(chartId, seriesName, title, filteredObject);
-}
-
-
-function rechart(id, name, title, data) {
-    Highcharts.chart(id, {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: title
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> <br> Count: {point.y}'
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
-            }
-        },
-        series: [{
-            name: name,
-            colorByPoint: true,
-            data: data
-        }]
+function generateGradeData(data, name) {
+    let grades = ['a', 'b', 'c', 'd', 'f'];
+    return grades.map((g) => {
+        let key = g + '_grade_' + name.toLowerCase();
+        return parseFloat(data[key])
     })
 }
-
 
 function rechartBar(id, title, categories, data, selectSeries){
     Highcharts.chart(id, {
@@ -70,6 +23,7 @@ function rechartBar(id, title, categories, data, selectSeries){
         legend: {
             reversed: true
         },
+        options: {},
         plotOptions: {
             series: {
                 events: {
