@@ -19,7 +19,7 @@ WITH agg AS (
            SUM(deaths)                                                                                           as total_deaths,
            CAST(SUM(kills) AS REAL) / SUM(deaths)                                                                as KDR,
            CAST(SUM(gulag_kills) AS REAL) /
-           SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths END + gulag_kills)                                  as gulag_win_rate
+           SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)                                  as gulag_win_rate
     FROM warzone.gamer_matches gm
              JOIN warzone.matches_augmented m
                   ON gm.match_id = m.match_id AND m.is_warzone_match = TRUE

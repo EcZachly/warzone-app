@@ -3,34 +3,23 @@
     <p class="highcharts-description"></p>
 </figure>
 
-<div style="margin-left: 25%; margin-left: 25%">
-    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
-           for="kdrOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="kdrOption" name="statFilter"
-               class="mdl-radio__button" checked>
-        <span class="mdl-radio__label">kdr</span>
-    </label>
-    <label class="mdl-radio mdl-js-radio" for="scoreOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="scoreOption" name="statFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">score</span>
-    </label>
-
-    <label class="mdl-radio mdl-js-radio" for="killsOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="killsOption" name="statFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">kills</span>
-    </label>
-
-    <label class="mdl-radio mdl-js-radio" for="damageOption" onchange="statsInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="damageOption" name="statFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">damage</span>
-    </label>
-</div>
-
 <script>
-    function statsInputChange(data, value){
-        filterChange(data, value, "% of Matches", _.capitalize(value) + ' Grades', 'stats-chart-container');
+
+    let selectedStat = 'kdr'
+
+    function selectStat(val) {
+        selectedStat = val;
+    }
+    function statsInputChange(data) {
+        let categories = ['A', 'B', 'C', 'D', 'F'];
+        let series = ['kdr', 'score', 'kills', 'damage'];
+        let chartData = series.map((serie) => {
+            return {
+                name: serie,
+                data: generateGradeData(data, serie),
+                visible: serie === selectedStat
+            }
+        });
+        rechartBar('stats-chart-container', "Stats Grades (# of games)", categories, chartData, selectStat)
     }
 </script>

@@ -3,36 +3,26 @@
     <p class="highcharts-description"></p>
 </figure>
 
-<div style="margin-left: 25%; margin-left: 25%">
-    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect"
-           for="soloOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="soloOption" name="placementFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">solo</span>
-    </label>
-    <label class="mdl-radio mdl-js-radio" for="duoOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="duoOption" name="placementFilter"
-               class="mdl-radio__button" checked>
-        <span class="mdl-radio__label">duo</span>
-    </label>
-
-    <label class="mdl-radio mdl-js-radio" for="trioOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="trioOption" name="placementFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">trio</span>
-    </label>
-
-    <label class="mdl-radio mdl-js-radio" for="quadOption" onchange="placementInputChange(ALL_GRADES, this.MaterialRadio.element_.innerText)">
-        <input type="radio" id="quadOption" name="placementFilter"
-               class="mdl-radio__button">
-        <span class="mdl-radio__label">quad</span>
-    </label>
-</div>
-
 <script>
-    function placementInputChange(data, value){
+    let selectedPlacement = 'Duo Placements';
 
-
-        filterChange(data, value, "% of Matches", _.capitalize(value) + ' Placement Grades', 'placement-chart-container');
+    function selectPlacement(val) {
+        selectedPlacement = val;
     }
+
+    function placementInputChange(data, value) {
+        let categories = ['A', 'B', 'C', 'D', 'F'];
+        let series = ['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements'];
+        let chartData = series.map((serie) => {
+            let displayName = serie.split('_').map(_.capitalize).join(' ');
+            return {
+                name: displayName,
+                data: generateGradeData(data, serie),
+                visible: displayName === selectedPlacement
+            }
+        });
+        console.log(chartData);
+        rechartBar('placement-chart-container', "Placement Grades (# of games)", categories, chartData, selectPlacement)
+    }
+
 </script>
