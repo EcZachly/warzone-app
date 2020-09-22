@@ -1,4 +1,4 @@
-create view warzone.matches_augmented(match_id, start_time, end_time, map, mode, duration, version, game_type, player_count, team_count, start_timestamp, end_timestamp, team_type) as
+create OR REPLACE view warzone.matches_augmented(match_id, start_time, end_time, map, mode, duration, version, game_type, player_count, team_count, start_timestamp, end_timestamp, team_type) as
 SELECT matches.match_id,
        matches.start_time,
        matches.end_time,
@@ -19,5 +19,8 @@ SELECT matches.match_id,
            ELSE NULL::text
            END                                            AS team_type,
        CASE WHEN mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg&'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
-                 AND mode NOT LIKE '%dmz%' THEN TRUE ELSE FALSE END as is_warzone_match
+                 AND mode NOT LIKE '%dmz%'   AND mode NOT LIKE  '%stim%' THEN TRUE
+
+
+                 ELSE FALSE END as is_warzone_match
 FROM warzone.matches;

@@ -1,5 +1,5 @@
 import * as CallOfDutyAPI from 'call-of-duty-api';
-import Bluebird from 'bluebird';
+import * as Bluebird from 'bluebird';
 let EMAIL = process.env.WARZONE_EMAIL;
 let PASSWORD = process.env.WARZONE_PASSWORD;
 

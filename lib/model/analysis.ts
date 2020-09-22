@@ -7,6 +7,10 @@ export async function queryView(view, query = {}){
     if(db[DATABASE_SCHEMA][view]){
         return db[DATABASE_SCHEMA][view].find(query)
     }
+    else if(db[view]){
+        Object.values(query);
+        return db[view](Object.values(query))
+    }
     else{
         return Bluebird.reject({message:"view " + view + " not found in database"});
     }

@@ -1,5 +1,4 @@
-function filterChange(data, keyFilter, title, chartId) {
-    console.log(data, keyFilter, title, chartId);
+function filterChange(data, keyFilter, seriesName, title, chartId) {
     let filteredObject = [];
     Object.keys(data).forEach((key) => {
         if (key.includes(keyFilter)) {
@@ -12,8 +11,7 @@ function filterChange(data, keyFilter, title, chartId) {
     })
     filteredObject[0].sliced = true;
     filteredObject[0].selected = true;
-    console.log(filteredObject);
-    rechart(chartId, 'Placements', title, filteredObject);
+    rechart(chartId, seriesName, title, filteredObject);
 }
 
 
@@ -52,4 +50,50 @@ function rechart(id, name, title, data) {
             data: data
         }]
     })
+}
+
+
+function rechartBar(id, title, categories, data){
+    Highcharts.chart(id, {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: title
+        },
+        xAxis: {
+            categories: categories
+        },
+        yAxis: {
+            min: 0
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                events: {
+                    show: function () {
+                        var chart = this.chart,
+                            series = chart.series,
+                            i = series.length,
+                            otherSeries;
+
+                        while (i--) {
+                            otherSeries = series[i];
+                            if (otherSeries != this && otherSeries.visible) {
+                                otherSeries.hide();
+                            }
+                        }
+                    },
+                    legendItemClick: function () {
+                        if (this.visible) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        },
+        series: data
+    });
 }
