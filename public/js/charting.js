@@ -53,7 +53,7 @@ function rechart(id, name, title, data) {
 }
 
 
-function rechartBar(id, title, categories, data){
+function rechartBar(id, title, categories, data, selectSeries){
     Highcharts.chart(id, {
         chart: {
             type: 'column'
@@ -87,6 +87,7 @@ function rechartBar(id, title, categories, data){
                         }
                     },
                     legendItemClick: function () {
+                        selectSeries(this.name);
                         if (this.visible) {
                             return false;
                         }

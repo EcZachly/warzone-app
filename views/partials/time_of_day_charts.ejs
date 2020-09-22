@@ -23,9 +23,15 @@
 </div>
 
 <script>
+    let selectedSeries = 'KDR';
+
+    function setSelectedSeries(series){
+        selectedSeries = series;
+    }
     function timeOfDayInputChange(data, key) {
         let title = key === 'hour_of_play' ? 'Time of Day Analysis' : 'Day of Week Analysis';
         let categories = data.map(d => d[key]);
+
         let chartData = [
             {
                 name: 'KDR',
@@ -34,40 +40,45 @@
             {
                 name: 'Average Kills',
                 data: data.map(d => d.avg_kills),
-                visible: false
             },
             {
                 name: 'Max Kills',
                 data: data.map(d => d.max_kills),
-                visible: false
             },
             {
                 name: 'Score',
                 data: data.map(d => d.avg_score),
-                visible: false
             },
             {
                 name: 'Quad Placement',
                 data: data.map(d => d.avg_quad_placement),
-                visible: false
             },
             {
                 name: 'Trio Placement',
                 data: data.map(d => d.avg_trio_placement),
-                visible: false
             },
             {
                 name: 'Duo Placement',
                 data: data.map(d => d.avg_duo_placement),
-                visible: false
             },
             {
                 name: 'Solo Placement',
                 data: data.map(d => d.avg_solo_placement),
-                visible: false
+            },
+            {
+                name: 'Gulag Win %',
+                data: data.map(d => d.gulag_win_rate),
+            },
+            {
+                name: 'Max Score',
+                data: data.map(d => d.max_score),
             }
+        ];
 
-        ]
-        rechartBar('time-of-day-chart-container', title, categories, chartData)
+        chartData = chartData.map((s)=> {
+            s.visible = s.name === selectedSeries;
+            return s;
+        })
+        rechartBar('time-of-day-chart-container', title, categories, chartData, setSelectedSeries)
     }
 </script>

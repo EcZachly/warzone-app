@@ -29,7 +29,10 @@ SELECT gm.query_username as username,
 
        CAST(AVG(kills)  AS REAL) AS avg_kills,
        CAST(MAX(kills) AS REAL) AS max_kills,
+       CAST(MAX(score) AS REAL) AS max_score,
        CAST(AVG(score) AS REAL) as avg_score,
+           CAST(SUM(gulag_kills) AS REAL) /
+                                 SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)                                  as gulag_win_rate,
        COUNT(1)                                                                 AS num_games
 FROM warzone.gamer_matches gm
          JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
