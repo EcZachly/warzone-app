@@ -3,3 +3,4 @@
 node_modules/
 .vs/
 dist/
+next-env.*

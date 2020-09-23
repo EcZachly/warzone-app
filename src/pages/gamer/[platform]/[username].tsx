@@ -2,12 +2,12 @@ import Head from 'next/head'
 import {GetServerSideProps} from 'next'
 
 export default function Gamers({gamerData}) {
-    let {gamer, viewData, message} = gamerData;
-    if (message) {
+    let {gamer, viewData, errorMessage} = gamerData;
+    if (errorMessage) {
         return (
             <div className="container">
                 <main>
-                    <h1>{message}</h1>
+                    <h1>{errorMessage}</h1>
                 </main>
             </div>
         )

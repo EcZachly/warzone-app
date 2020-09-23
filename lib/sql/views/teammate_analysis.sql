@@ -16,8 +16,8 @@ WITH source AS (
 ),
      overall AS (
           SELECT
-          gm.query_username as shooting_player,
-          gm.query_platform AS shooting_player_platform,
+          gm.query_username as username,
+          gm.query_platform AS platform,
        '(overall)' as helping_player_temp,
        '(overall)' as helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
@@ -52,8 +52,8 @@ WITH source AS (
      with_teammates AS (
 
          SELECT
-         gm.query_username AS shooting_player,
-         gm.query_platform AS shooting_player_platform,
+         gm.query_username AS username,
+         gm.query_platform AS platform,
        helping_player_temp,
        helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,

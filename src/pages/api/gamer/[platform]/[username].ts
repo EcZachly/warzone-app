@@ -1,107 +1,69 @@
 import {NextApiRequest, NextApiResponse} from 'next'
-import {queryView} from "../../../../../lib/model/analysis";
-import UtilityService from "../../../../../lib/services/UtilityService";
-import {updateGamer, queryGamers} from "../../../../../lib/model/gamers";
-import * as Bluebird from 'bluebird';
-import * as _ from 'lodash';
-let FILTER_KEYS = ['shooting_player', 'shooting_player_platform', 'helping_player_temp', 'helping_player_platform', 'shooting_player_temp'];
 
+import {ViewQuery} from "../../../../../lib/model/view_query";
+import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from "../../../../../lib/model/gamers";
+import Bluebird from 'bluebird';
+import _ from 'lodash';
+let FILTER_KEYS = ['username', 'platform', 'helping_player_temp', 'helping_player_platform',  'aliases'];
 
 function columnToDisplayName(column: string) {
     return column.split('_').map(_.capitalize).join(' ');
 }
 
-function sanitizeGamer(gamer) {
-    gamer = UtilityService.validateItem(gamer, 'object', {});
-    gamer.gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
-    gamer.kdr = (UtilityService.validateItem(gamer.kdr, 'number', 0).toFixed(4)).toString();
-    gamer.aliases = UtilityService.validateItem(gamer.aliases, 'array', []);
-    return gamer;
-}
-
-function sanitizeTeammates(teammates) {
-    return teammates.map((teammate) => {
-        teammate = sanitizeGamer(teammate);
-        teammate.helping_player = {
-            name: teammate.helping_player,
-            platform: teammate.helping_player_platform
-        };
-        return teammate;
-    });
+async function updateGamerUponRequest(gamerData){
+    let gamerPromise = Bluebird.resolve(gamerData);
+    if (!gamerData.needs_update) {
+        gamerData.needs_update = true;
+        gamerPromise = updateGamer({username: gamerData.username, platform: gamerData.platform}, gamerData);
+    }
+    return await gamerPromise;
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let {view, username, platform } = req.query;
-    let queriedViews = (view as string).split(',');
-    let defaultViews = ['player_stat_summary'];
-    let views = {
-        'player_stat_summary': {
-            query: {
-                username: username,
-                platform: platform
-            }
-        },
-        'teammate_analysis': {
-            query: {
-                shooting_player: req.query.username,
-                shooting_player_platform: req.query.platform
-            }
-        },
-        'gamer_stats_graded': {
-            query: {
-                username: req.query.username,
-                platform: req.query.platform
-            }
-        },
-        'gamers': {
-            query: {
-                username: req.query.username,
-                platform: req.query.platform
-            }
-        },
-        'time_of_day_analysis': {
-            query: {
-                timezone: 'America/Los_Angeles',
-                username: req.query.username,
-                platform: req.query.platform,
-                cutoff: "10"
-            }
-        },
-        'day_of_week_analysis': {
-            query: {
-                timezone: 'America/Los_Angeles',
-                username: req.query.username,
-                platform: req.query.platform,
-                cutoff: "10"
-            }
-        }
+
+
+    let userQuery = {
+        username: username,
+        platform: platform
     };
-    let gamerQueryData = await queryGamers({username: username, platform: platform});
-    let gamerData =gamerQueryData[0]
+    let timezoneQuery = {
+        timezone: 'America/Los_Angeles',
+        cutoff: "10"
+    };
+
+    let queryableViews = [
+        new ViewQuery('player_stat_summary', userQuery),
+        new ViewQuery('gamer_stats_graded', userQuery),
+        new ViewQuery('teammate_analysis', userQuery),
+        new ViewQuery('time_of_day_analysis', {...userQuery, ...timezoneQuery}),
+        new ViewQuery('day_of_week_analysis', {...userQuery, ...timezoneQuery}),
+    ]
+
+    let viewNamesToQuery = ['player_stat_summary', view as string];
+    let viewsToQuery = queryableViews.filter((v: ViewQuery)=> viewNamesToQuery.includes(v.view));
+
+    let gamerList = await queryGamers({username: username, platform: platform});
+    let gamerData = gamerList[0]
+    // Only try to fetch all the expensive view data if the gamer exists
     if(gamerData){
-        let promises = Object.keys(views).filter((v)=> defaultViews.includes(v) || queriedViews.includes(v)).map(async (key: string) => await queryView(key, views[key].query));
-        Bluebird.all(promises).then(async (arrData) => {
-            Object.keys(views).filter((v)=> defaultViews.includes(v) || queriedViews.includes(v)).forEach((key: string, index: number) => views[key].data = arrData[index]);
-            let gamer = sanitizeGamer(views['player_stat_summary']['data'][0]) || {};
-            let gamerPromise = Bluebird.resolve(gamerData);
-            let viewData = views[view as string]['data'];
+        let gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
+        Bluebird.all(gamerMatchDataPromises).then(async () => {
+            let gamer = sanitizeGamer(viewsToQuery[0].data[0]);
+            let viewData = viewsToQuery[1].data;
             if(view as string === 'teammate_analysis'){
-                let newViewData = {};
-                newViewData['teammates']= sanitizeTeammates(viewData);
-                newViewData['titleKeys'] =  Object.keys(viewData[0]).filter((key) => !FILTER_KEYS.includes(key)).map(columnToDisplayName);
-                viewData = newViewData;
+                viewData = {
+                    teammates: sanitizeTeammates(viewData),
+                    titleKeys: Object.keys(viewData[0]).filter((key) => !FILTER_KEYS.includes(key)).map(columnToDisplayName)
+                };
             }
-            if (!gamerData.needs_update) {
-                gamerData.needs_update = true;
-                gamerPromise = updateGamer({username: gamerData.username, platform: gamerData.platform}, gamerData);
-            }
-            await gamerPromise;
+            console.log(viewData);
+            await updateGamerUponRequest(gamerData);
             let seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,
                 keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
                 description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate
             };
-
             res.json({
                 gamer: gamer,
                 viewData: viewData,
@@ -109,14 +71,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 filterKeys: FILTER_KEYS
             })
         })
-
-
     }
     else{
         res.json({
-            message: username + ' on platform: ' + platform + ' was not found!'
+            errorMessage: username + ' on platform: ' + platform + ' was not found!'
         })
     }
-
-
 }
