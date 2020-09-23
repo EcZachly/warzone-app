@@ -15,7 +15,9 @@ import analyticsMiddleware from './lib/middleware/site_traffic_middleware';
 import api_router from './routes/api_router';
 import view_router from './routes/view_router';
 let app: Application = express();
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false
+}));
 app.use(compress());
 app.use(bodyParser.json({
     limit: '50mb'
