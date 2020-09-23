@@ -3,7 +3,27 @@
     "module": "commonjs",
     "outDir": "./dist",
     "allowJs": true,
-    "target": "es6"
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
   },
-  "include": ["./routes/**/*", "./lib/**/*"]
+  "include": [
+    "./routes/**/*",
+    "./lib/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

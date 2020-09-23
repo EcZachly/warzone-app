@@ -1,5 +1,5 @@
 import database from "../database";
-import * as Bluebird from 'bluebird';
+import Bluebird from 'bluebird';
 import {DATABASE_SCHEMA} from "../constants";
 
 export async function queryView(view, query = {}){

@@ -5,13 +5,19 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --require esm",
-    "start": "ts-node app.ts",
-    "nodemon": "nodemon -r esm app.ts",
-    "etl": "ts-node lib/etl/scrape.js"
+    "start": "ts-node bin/app.ts",
+    "nodemon": "nodemon -r esm bin/app.ts",
+    "etl": "ts-node lib/etl/scrape.js",
+    "build": "next build",
+    "dev": "next dev"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.17.8",
+    "@types/node": "^14.11.2",
+    "@types/react": "^16.9.49",
+    "@types/yargs": "^15.0.5",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "call-of-duty-api": "^1.2.16",
@@ -26,11 +32,11 @@
     "massive": "^6.6.0",
     "md5": "^2.3.0",
     "mocha": "^8.1.3",
+    "next": "^9.5.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3",
-    "@types/express": "^4.17.8",
-    "@types/node": "^14.11.2",
-    "@types/yargs": "^15.0.5",
     "useragent": "^2.3.0",
     "yargs": "^16.0.3"
   },

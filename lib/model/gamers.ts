@@ -22,3 +22,25 @@ export function queryGamers(query) {
 	query = UtilityService.validateItem(query, 'object', {});
 	return queryDatabase(GAMER_TABLE, query);
 }
+
+
+
+export function sanitizeGamer(gamer) {
+	gamer = UtilityService.validateItem(gamer, 'object', {});
+	gamer.gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
+	gamer.kdr = (UtilityService.validateItem(gamer.kdr, 'number', 0).toFixed(4)).toString();
+	gamer.aliases = UtilityService.validateItem(gamer.aliases, 'array', []);
+
+	return gamer;
+}
+
+export function sanitizeTeammates(teammates) {
+	return teammates.map((teammate) => {
+		teammate = sanitizeGamer(teammate);
+		teammate.helping_player = {
+			name: teammate.helping_player,
+			platform: teammate.helping_player_platform
+		};
+		return teammate;
+	});
+}
