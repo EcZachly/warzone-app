@@ -67,8 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             res.json({
                 gamer: gamer,
                 viewData: viewData,
-                seoMetadata: seoMetadata,
-                filterKeys: FILTER_KEYS
+                seoMetadata: seoMetadata
             })
         })
     }

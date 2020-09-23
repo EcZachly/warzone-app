@@ -9,7 +9,7 @@ import {queryView} from '../lib/model/analysis';
 import {updateGamer} from '../lib/model/gamers';
 
 let view_router = express.Router();
-let FILTER_KEYS = ['shooting_player', 'shooting_player_platform', 'helping_player_temp', 'helping_player_platform', 'shooting_player_temp'];
+let FILTER_KEYS = ['username', 'platform', 'helping_player_temp', 'helping_player_platform',  'aliases'];
 
 import UtilityService from './../lib/services/UtilityService.js';
 
