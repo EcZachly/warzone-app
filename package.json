@@ -7,7 +7,7 @@
     "test": "mocha --require esm",
     "start": "ts-node bin/app.ts",
     "nodemon": "nodemon -r esm bin/app.ts",
-    "etl": "ts-node lib/etl/scrape.js",
+    "etl": "ts-node lib/etl/user_match_scrape.js",
     "build": "next build",
     "dev": "next dev"
   },
