@@ -5,6 +5,12 @@ import '../../public/css/core_styles.css';
 import 'react-mdl/extra/material.css';
 import 'react-mdl/extra/material.js';
 
+import './../assets/styles/config.scss';
+import './../assets/styles/components.scss';
+
+import './../assets/styles/appComponents.scss';
+import './../assets/styles/appStyles.scss';
+
 class MyApp extends App {
     // Only uncomment this method if you have blocking data requirements for
     // every single page in your application. This disables the ability to
