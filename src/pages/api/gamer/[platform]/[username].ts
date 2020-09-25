@@ -57,7 +57,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     titleKeys: Object.keys(viewData[0]).filter((key) => !FILTER_KEYS.includes(key)).map(columnToDisplayName)
                 };
             }
-            console.log(viewData);
             await updateGamerUponRequest(gamerData);
             let seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,
@@ -67,8 +66,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             res.json({
                 gamer: gamer,
                 viewData: viewData,
-                seoMetadata: seoMetadata,
-                filterKeys: FILTER_KEYS
+                seoMetadata: seoMetadata
             })
         })
     }
