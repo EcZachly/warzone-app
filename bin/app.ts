@@ -1,19 +1,19 @@
 //Environment variables
-import process from './environment';
+import process from '../environment';
 let PORT: number = process.env.PORT || 3000;
 //Helper Libraries
-import * as express from 'express';
-import { Application, Request, Response, NextFunction } from "express"
-import * as compress from 'compression';
-import * as helmet from 'helmet';
-import * as bodyParser from 'body-parser';
+import express from 'express';
+import { Application } from "express"
+import  compress from 'compression';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
 
 //Middlewares
-import analyticsMiddleware from './lib/middleware/site_traffic_middleware';
+import analyticsMiddleware from '../lib/middleware/site_traffic_middleware';
 
 //Routers
-import api_router from './routes/api_router';
-import view_router from './routes/view_router';
+import api_router from '../routes/api_router';
+import view_router from '../routes/view_router';
 let app: Application = express();
 app.use(helmet({
     contentSecurityPolicy: false

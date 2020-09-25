@@ -1,6 +1,7 @@
 declare var process: {
     env: {
         WARZONE_DATABASE_URL: string,
+        NODE_ENV: string,
         WARZONE_EMAIL: string,
         WARZONE_PASSWORD: string,
         WARZONE_RECAPTCHA_SITE_KEY: string,

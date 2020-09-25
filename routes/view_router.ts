@@ -30,8 +30,8 @@ view_router.get('/gamer/:platform/:username', async (req: ApiRequest, res: ApiRe
         },
         'teammate_analysis': {
             query: {
-                shooting_player: req.params.username,
-                shooting_player_platform: req.params.platform
+                username: req.params.username,
+                platform: req.params.platform
             }
         },
         'gamer_stats_graded': {
