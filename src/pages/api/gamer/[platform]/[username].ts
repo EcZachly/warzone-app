@@ -21,7 +21,7 @@ async function updateGamerUponRequest(gamerData){
 }
 
 const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
-    let {view, username, platform } = req.query;
+    let {view, timeZone, username, platform } = req.query;
 
 
     let userQuery = {
@@ -57,6 +57,15 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
                     filterKeys: FILTER_KEYS
                 };
             }
+            if(view as string === 'time_analysis'){
+                viewData = {
+                    data: viewData,
+                    timezone: timeZone || timezoneQuery.timezone
+                }
+            }
+
+
+
             await updateGamerUponRequest(gamerData);
             let seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,

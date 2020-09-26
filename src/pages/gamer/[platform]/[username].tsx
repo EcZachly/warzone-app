@@ -4,7 +4,7 @@ import {Container, Main, Box, Button} from './../../../components/SimpleComponen
 import {Page, GamerCard, GamerGradeChart, GamerTimeChart, TeammateTable} from './../../../components/AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-async function setTabAndFetchData(username, platform, tabId, chartState, setChartState) {
+async function setTabAndFetchData(username, platform, tabId, hostname, chartState, setChartState) {
     //Since tabs 1 and 2 use the same data, we don't need to make another API call, we can just switch
     if (tabId == 1 && chartState.activeTab == 2) {
         setChartState({viewData: chartState.viewData, activeTab: tabId});
@@ -17,19 +17,20 @@ async function setTabAndFetchData(username, platform, tabId, chartState, setChar
             2: 'gamer_stats_graded',
             3: 'time_analysis'
         };
-        let fetchedData = await fetchViewData(username, platform, lookup[tabId]);
+        let fetchedData = await fetchViewData(hostname, username, platform, lookup[tabId]);
 
         setChartState({viewData: fetchedData.viewData, activeTab: tabId});
     }
 }
 
 export default function GamerDetail({gamerData, view}) {
+    let HOSTNAME = process.env.HOSTNAME;
     let {gamer, viewData, errorMessage} = gamerData;
     let tabLookup = {
         'teammates': 0,
         'placements': 1,
         'stats': 2,
-        'time_of_day': 3
+        'time': 3
     }
 
     const [chartState, setChartState] = useState({viewData, activeTab: tabLookup[view]});
@@ -50,7 +51,7 @@ export default function GamerDetail({gamerData, view}) {
         3: <GamerTimeChart height={260}
                            width={450}
                            key={"placement_chart"}
-                           data={chartState.viewData}
+                           viewData={chartState.viewData}
                            options={['hour_of_day', 'day_of_week']}
                            selectedValue="hour_of_day"/>
     }
@@ -74,13 +75,13 @@ export default function GamerDetail({gamerData, view}) {
                         <Box style={{"margin": "auto"}}>
                             <Container>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 0, chartState, setChartState)}>Teammates</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 0, HOSTNAME, chartState, setChartState)}>Teammates</Button>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 1, chartState, setChartState)}>Placements</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 1, HOSTNAME, chartState, setChartState)}>Placements</Button>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 2, chartState, setChartState)}>Stats</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 2, HOSTNAME, chartState, setChartState)}>Stats</Button>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 3, chartState, setChartState)}>Time</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 3, HOSTNAME, chartState, setChartState)}>Time</Button>
                             </Container>
                             <section>
                                 {TabData}
@@ -93,9 +94,9 @@ export default function GamerDetail({gamerData, view}) {
     }
 }
 
-async function fetchViewData(username, platform, view) {
-    //TODO MAKE THIS WORK ON HEROKU TOO
-    let dataUrl = 'http://localhost:3000/api/gamer/' + platform + '/' + username + '?view=' + view;
+async function fetchViewData(hostname, username, platform, view) {
+    let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    let dataUrl =  hostname + '/api/gamer/' + platform + '/' + username + '?view=' + view + "&timeZone=" + timeZone;
     const response = await fetch(dataUrl);
     return await response.json();
 }
@@ -108,7 +109,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         'stats': 'gamer_stats_graded',
         'time': 'time_analysis'
     };
-
     let {username, platform} = context.query;
     let view = viewMap[context.query.view as string] || 'teammate_analysis';
     let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamer/' + platform + '/' + username + '?view=' + view);

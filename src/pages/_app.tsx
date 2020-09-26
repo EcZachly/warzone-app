@@ -2,9 +2,6 @@ import React from 'react';
 import App from 'next/app';
 
 import '../../public/css/core_styles.css';
-import 'react-mdl/extra/material.css';
-import 'react-mdl/extra/material.js';
-
 import './../assets/styles/config.scss';
 import './../assets/styles/components.scss';
 

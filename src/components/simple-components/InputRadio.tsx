@@ -19,7 +19,6 @@ class InputRadio extends React.Component {
     
     render() {
         const props = this.props;
-        console.log(props);
         const radioInputs = this._getRadioInputs(props);
         
         return (
