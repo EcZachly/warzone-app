@@ -22,7 +22,11 @@ WITH source AS (
        '(overall)' as helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
         CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
-       CAST(SUM(gm.gulag_kills) AS REAL)/SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills) as gulag_win_rate,
+           CAST(SUM(gm.gulag_kills) AS REAL)/
+             CASE
+                WHEN SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills)  = 0 THEN 1
+                ELSE SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills)
+             END as gulag_win_rate,
        SUM(gm.kills)                                                                             AS total_kills,
        AVG(gm.kills)                                                                             AS avg_kills,
        SUM(gm.damage_done)                                                                             AS total_damage_done,
@@ -58,7 +62,11 @@ WITH source AS (
        helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
         CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
-       CAST(SUM(gm.gulag_kills) AS REAL)/SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills) as gulag_win_rate,
+       CAST(SUM(gm.gulag_kills) AS REAL)/
+        CASE
+            WHEN SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills) = 0 THEN 1
+            ELSE SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills)
+       END as gulag_win_rate,
        SUM(gm.kills)                                                                             AS total_kills,
        AVG(gm.kills)                                                                             AS avg_kills,
        SUM(gm.damage_done)                                                                             AS total_damage_done,
@@ -81,7 +89,6 @@ WITH source AS (
        MAX(start_timestamp)                                                                      AS last_game_time
 FROM source gm
 GROUP BY gm.query_username, gm.query_platform, helping_player_temp, helping_player_platform
-HAVING COUNT(DISTINCT gm.match_id) >= 10
      ),
      combined AS (
 
@@ -91,13 +98,14 @@ HAVING COUNT(DISTINCT gm.match_id) >= 10
      ),
      unboxed AS (
         SELECT
-            COALESCE(ps.username, c.helping_player_temp) AS helping_player,
+            c.helping_player_temp AS helping_player,
              c.*
         FROM combined c
-            LEFT JOIN warzone.player_stat_summary ps ON ps.aliases @> ARRAY[c.helping_player_temp]
+
      )
 
-     SELECT * FROM unboxed;
+     SELECT * FROM unboxed
+     ORDER BY num_matches DESC
 
 
 

@@ -12,10 +12,10 @@ async function setTabAndFetchData(username, platform, tabId, hostname, chartStat
         setChartState({viewData: chartState.viewData, activeTab: tabId});
     } else {
         let lookup = {
-            0: 'teammate_analysis',
-            1: 'gamer_stats_graded',
-            2: 'gamer_stats_graded',
-            3: 'time_analysis'
+            "teammates": 'teammate_analysis',
+            "placements": 'gamer_stats_graded',
+            "stats": 'gamer_stats_graded',
+            "time": 'time_analysis'
         };
         let fetchedData = await fetchViewData(hostname, username, platform, lookup[tabId]);
 
@@ -26,29 +26,22 @@ async function setTabAndFetchData(username, platform, tabId, hostname, chartStat
 export default function GamerDetail({gamerData, view}) {
     let HOSTNAME = process.env.HOSTNAME;
     let {gamer, viewData, errorMessage} = gamerData;
-    let tabLookup = {
-        'teammates': 0,
-        'placements': 1,
-        'stats': 2,
-        'time': 3
-    }
-
-    const [chartState, setChartState] = useState({viewData, activeTab: tabLookup[view]});
+    const [chartState, setChartState] = useState({viewData, activeTab:  view});
     let componentMap = {
-        0: <TeammateTable teammates={chartState.viewData.teammates} filterKeys={chartState.viewData.filterKeys}/>,
-        1: <GamerGradeChart height={260}
+        'teammates': <TeammateTable teammates={chartState.viewData.teammates} filterKeys={chartState.viewData.filterKeys}/>,
+        'placements': <GamerGradeChart height={260}
                             width={450}
                             key={"placement_chart"}
                             data={chartState.viewData}
                             options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
                             selectedValue="duo_placements"/>,
-        2: <GamerGradeChart height={260}
+        'stats': <GamerGradeChart height={260}
                             width={450}
                             key={"stat_chart"}
                             data={chartState.viewData}
                             options={['kdr', 'damage', 'kills', 'score']}
                             selectedValue="kdr"/>,
-        3: <GamerTimeChart height={260}
+        'time': <GamerTimeChart height={260}
                            width={450}
                            key={"placement_chart"}
                            viewData={chartState.viewData}
@@ -75,13 +68,14 @@ export default function GamerDetail({gamerData, view}) {
                         <Box style={{"margin": "auto"}}>
                             <Container>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 0, HOSTNAME, chartState, setChartState)}>Teammates</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "teammates", HOSTNAME, chartState, setChartState)}>Teammates</Button>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 1, HOSTNAME, chartState, setChartState)}>Placements</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "placements", HOSTNAME, chartState, setChartState)}>Placements</Button>
+
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 2, HOSTNAME, chartState, setChartState)}>Stats</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "stats", HOSTNAME, chartState, setChartState)}>Stats</Button>
                                 <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 3, HOSTNAME, chartState, setChartState)}>Time</Button>
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "time", HOSTNAME, chartState, setChartState)}>Time</Button>
                             </Container>
                             <section>
                                 {TabData}
