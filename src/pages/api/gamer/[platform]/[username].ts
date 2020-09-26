@@ -7,10 +7,6 @@ import Bluebird from 'bluebird';
 import _ from 'lodash';
 let FILTER_KEYS = ['username', 'platform', 'helping_player_temp', 'helping_player_platform',  'aliases'];
 
-function columnToDisplayName(column: string) {
-    return column.split('_').map(_.capitalize).join(' ');
-}
-
 async function updateGamerUponRequest(gamerData){
     let gamerPromise = Bluebird.resolve(gamerData);
     if (!gamerData.needs_update) {
@@ -23,6 +19,15 @@ async function updateGamerUponRequest(gamerData){
 const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
     let {view, timeZone, username, platform } = req.query;
 
+
+    let viewMap = {
+        'teammates': 'teammate_analysis',
+        'placements': 'gamer_stats_graded',
+        'stats': 'gamer_stats_graded',
+        'time': 'time_analysis'
+    };
+
+    let sqlView = viewMap[view as string];
 
     let userQuery = {
         username: username,
@@ -40,7 +45,7 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
         new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery})
     ]
 
-    let viewNamesToQuery = ['player_stat_summary', view as string];
+    let viewNamesToQuery = ['player_stat_summary', sqlView as string];
     let viewsToQuery = queryableViews.filter((v: ViewQuery)=> viewNamesToQuery.includes(v.view));
 
     let gamerList = await queryGamers({username: username, platform: platform});
@@ -51,20 +56,19 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
         Bluebird.all(gamerMatchDataPromises).then(async () => {
             let gamer = sanitizeGamer(viewsToQuery[0].data[0]);
             let viewData = viewsToQuery[1].data;
-            if(view as string === 'teammate_analysis'){
+
+            if(sqlView as string === 'teammate_analysis'){
                 viewData = {
                     teammates: sanitizeTeammates(viewData),
                     filterKeys: FILTER_KEYS
                 };
             }
-            if(view as string === 'time_analysis'){
+            if(sqlView as string === 'time_analysis'){
                 viewData = {
                     data: viewData,
                     timezone: timeZone || timezoneQuery.timezone
                 }
             }
-
-
 
             await updateGamerUponRequest(gamerData);
             let seoMetadata = {

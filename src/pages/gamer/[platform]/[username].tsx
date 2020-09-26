@@ -11,14 +11,7 @@ async function setTabAndFetchData(username, platform, tabId, hostname, chartStat
     } else if (tabId == 2 && chartState.activeTab == 1) {
         setChartState({viewData: chartState.viewData, activeTab: tabId});
     } else {
-        let lookup = {
-            "teammates": 'teammate_analysis',
-            "placements": 'gamer_stats_graded',
-            "stats": 'gamer_stats_graded',
-            "time": 'time_analysis'
-        };
-        let fetchedData = await fetchViewData(hostname, username, platform, lookup[tabId]);
-
+        let fetchedData = await fetchViewData(hostname, username, platform, tabId);
         setChartState({viewData: fetchedData.viewData, activeTab: tabId});
     }
 }
@@ -90,22 +83,16 @@ export default function GamerDetail({gamerData, view}) {
 
 async function fetchViewData(hostname, username, platform, view) {
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    let dataUrl =  hostname + '/api/gamer/' + platform + '/' + username + '?view=' + view + "&timeZone=" + timeZone;
+    let dataUrl =  hostname + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + "&timeZone=" + timeZone;
     const response = await fetch(dataUrl);
     return await response.json();
 }
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let viewMap = {
-        'teammates': 'teammate_analysis',
-        'placements': 'gamer_stats_graded',
-        'stats': 'gamer_stats_graded',
-        'time': 'time_analysis'
-    };
     let {username, platform} = context.query;
-    let view = viewMap[context.query.view as string] || 'teammate_analysis';
-    let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamer/' + platform + '/' + username + '?view=' + view);
+    let view = context.query.view || 'teammates';
+    let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view);
     let gamerJson = await rawGamerList.json();
     return {props: {gamerData: gamerJson, view: context.query.view || 'teammates'}}
 }
