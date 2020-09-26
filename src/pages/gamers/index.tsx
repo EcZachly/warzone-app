@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import {GetServerSideProps} from 'next'
-import GamerCard from '../../components/gamer/gamer_card';
+import GamerCard from '../../components/gamer/GamerCard';
 
 import {Container, Header, Main} from './../../components/SimpleComponents';
 import {Page} from './../../components/AppComponents';
@@ -9,7 +9,6 @@ import {Page} from './../../components/AppComponents';
 
 
 export default function Gamers({gamers}) {
-
     return (
         <Page title={'Gamers'}>
             <Container>

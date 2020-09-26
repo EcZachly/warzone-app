@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import TypeService from '../../../lib/services/TypeService';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
@@ -19,6 +19,7 @@ class InputRadio extends React.Component {
     
     render() {
         const props = this.props;
+        console.log(props);
         const radioInputs = this._getRadioInputs(props);
         
         return (

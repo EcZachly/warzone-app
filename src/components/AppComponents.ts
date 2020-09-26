@@ -19,8 +19,10 @@
 
 
 //G
-
-
+import GamerCard from "./gamer/GamerCard";
+import GamerGradeChart from "./gamer/GamerGradeChart";
+import GamerTimeChart from "./gamer/GamerTimeChart";
+export {GamerCard, GamerGradeChart, GamerTimeChart};
 //H
 
 
@@ -62,7 +64,8 @@ export {Page};
 
 
 //T
-
+import TeammateTable from "./gamer/TeammateTable";
+export {TeammateTable}
 
 //U
 

@@ -1,18 +1,12 @@
-import Head from 'next/head'
 import {GetServerSideProps} from 'next'
-import GamerCard from "../../../components/gamer/gamer_card";
-import GamerGradeChart from "../../../components/gamer/gamer_grade_chart";
-import {Tab, Tabs} from 'react-mdl/lib/Tabs';
 import React, {useState} from 'react';
-
-import {Container, Header, Main, Box} from './../../../components/SimpleComponents';
-import {Page} from './../../../components/AppComponents';
+import {Container, Main, Box, Button} from './../../../components/SimpleComponents';
+import {Page, GamerCard, GamerGradeChart, GamerTimeChart, TeammateTable} from './../../../components/AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-
 async function setTabAndFetchData(username, platform, tabId, chartState, setChartState) {
+    //Since tabs 1 and 2 use the same data, we don't need to make another API call, we can just switch
     if (tabId == 1 && chartState.activeTab == 2) {
-        console.log(chartState);
         setChartState({viewData: chartState.viewData, activeTab: tabId});
     } else if (tabId == 2 && chartState.activeTab == 1) {
         setChartState({viewData: chartState.viewData, activeTab: tabId});
@@ -21,16 +15,15 @@ async function setTabAndFetchData(username, platform, tabId, chartState, setChar
             0: 'teammate_analysis',
             1: 'gamer_stats_graded',
             2: 'gamer_stats_graded',
-            3: 'time_of_day_analysis'
-        }
-
+            3: 'time_analysis'
+        };
         let fetchedData = await fetchViewData(username, platform, lookup[tabId]);
 
         setChartState({viewData: fetchedData.viewData, activeTab: tabId});
     }
 }
 
-export default function Gamers({gamerData, view}) {
+export default function GamerDetail({gamerData, view}) {
     let {gamer, viewData, errorMessage} = gamerData;
     let tabLookup = {
         'teammates': 0,
@@ -41,13 +34,25 @@ export default function Gamers({gamerData, view}) {
 
     const [chartState, setChartState] = useState({viewData, activeTab: tabLookup[view]});
     let componentMap = {
-        0: <h1>Not yet done!</h1>,
-        1: <GamerGradeChart key={"placement_chart"} data={chartState.viewData}
+        0: <TeammateTable teammates={chartState.viewData.teammates} filterKeys={chartState.viewData.filterKeys}/>,
+        1: <GamerGradeChart height={260}
+                            width={450}
+                            key={"placement_chart"}
+                            data={chartState.viewData}
                             options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
                             selectedValue="duo_placements"/>,
-        2: <GamerGradeChart key={"stat_chart"} data={chartState.viewData} options={['kdr', 'damage', 'kills', 'score']}
+        2: <GamerGradeChart height={260}
+                            width={450}
+                            key={"stat_chart"}
+                            data={chartState.viewData}
+                            options={['kdr', 'damage', 'kills', 'score']}
                             selectedValue="kdr"/>,
-        3: <h1>Not yet done!</h1>
+        3: <GamerTimeChart height={260}
+                           width={450}
+                           key={"placement_chart"}
+                           data={chartState.viewData}
+                           options={['hour_of_day', 'day_of_week']}
+                           selectedValue="hour_of_day"/>
     }
 
     let TabData = componentMap[chartState.activeTab]
@@ -62,20 +67,21 @@ export default function Gamers({gamerData, view}) {
         )
     } else {
         return (
-            <Page title={gamer.username}>
+            <Page title={'Stats for ' + gamer.username}>
                 <Container>
                     <Main>
                         <GamerCard gamer={gamer}/>
                         <Box style={{"margin": "auto"}}>
-                            <Tabs activeTab={chartState.activeTab}
-                                  onChange={(tabId) => setTabAndFetchData(gamer.username, gamer.platform, tabId, chartState, setChartState)}
-                                  ripple>
-                                <Tab>Teammates</Tab>
-                                <Tab>Placements</Tab>
-                                <Tab>Stats</Tab>
-                                <Tab>Time</Tab>
-                            </Tabs>
-
+                            <Container>
+                                <Button
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 0, chartState, setChartState)}>Teammates</Button>
+                                <Button
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 1, chartState, setChartState)}>Placements</Button>
+                                <Button
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 2, chartState, setChartState)}>Stats</Button>
+                                <Button
+                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, 3, chartState, setChartState)}>Time</Button>
+                            </Container>
                             <section>
                                 {TabData}
                             </section>
@@ -89,8 +95,7 @@ export default function Gamers({gamerData, view}) {
 
 async function fetchViewData(username, platform, view) {
     //TODO MAKE THIS WORK ON HEROKU TOO
-    let dataUrl = 'https://localhost:3000/api/gamer/' + platform + '/' + username + '?view=' + view;
-    console.log(dataUrl);
+    let dataUrl = 'http://localhost:3000/api/gamer/' + platform + '/' + username + '?view=' + view;
     const response = await fetch(dataUrl);
     return await response.json();
 }
@@ -101,7 +106,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         'teammates': 'teammate_analysis',
         'placements': 'gamer_stats_graded',
         'stats': 'gamer_stats_graded',
-        'time_of_day': 'time_of_day_analysis'
+        'time': 'time_analysis'
     };
 
     let {username, platform} = context.query;
