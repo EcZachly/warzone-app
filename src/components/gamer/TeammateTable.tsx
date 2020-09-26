@@ -10,7 +10,6 @@ export default function TeammateTable({teammates, filterKeys}) {
 
     let rows = teammates.map((teammate, teammateIndex)=>{
         let tableData = Object.keys(teammate).filter((key) => !filterKeys.includes(key)).map(function(key, index){
-
             if(key.includes("time")){
                 return <TableData key={teammateIndex + key}>{new Date(teammate[key]).toDateString()}</TableData>
             }
@@ -45,9 +44,5 @@ export default function TeammateTable({teammates, filterKeys}) {
             </TableBody>
         </Table>
         </div>
-
-
     )
-
-
 }
