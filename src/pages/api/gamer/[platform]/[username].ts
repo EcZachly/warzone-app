@@ -1,6 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next'
 
 import {ViewQuery} from "../../../../../lib/model/view_query";
+import DefaultMiddleware from '../../../../middleware/default_middleware';
 import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from "../../../../../lib/model/gamers";
 import Bluebird from 'bluebird';
 import _ from 'lodash';
@@ -19,8 +20,8 @@ async function updateGamerUponRequest(gamerData){
     return await gamerPromise;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-    let {view, username, platform } = req.query;
+const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
+    let {view, timeZone, username, platform } = req.query;
 
 
     let userQuery = {
@@ -28,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         platform: platform
     };
     let timezoneQuery = {
-        timezone: 'America/Los_Angeles',
+        timezone: timeZone || 'America/Los_Angeles',
         cutoff: "10"
     };
 
@@ -36,8 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         new ViewQuery('player_stat_summary', userQuery),
         new ViewQuery('gamer_stats_graded', userQuery),
         new ViewQuery('teammate_analysis', userQuery),
-        new ViewQuery('time_of_day_analysis', {...userQuery, ...timezoneQuery}),
-        new ViewQuery('day_of_week_analysis', {...userQuery, ...timezoneQuery}),
+        new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery})
     ]
 
     let viewNamesToQuery = ['player_stat_summary', view as string];
@@ -45,8 +45,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     let gamerList = await queryGamers({username: username, platform: platform});
     let gamerData = gamerList[0]
-    // Only try to fetch all the expensive view data if the gamer exists
-    if(gamerData){
+    let gamerExists = !!gamerData;
+    if(gamerExists){
         let gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
         Bluebird.all(gamerMatchDataPromises).then(async () => {
             let gamer = sanitizeGamer(viewsToQuery[0].data[0]);
@@ -54,10 +54,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             if(view as string === 'teammate_analysis'){
                 viewData = {
                     teammates: sanitizeTeammates(viewData),
-                    titleKeys: Object.keys(viewData[0]).filter((key) => !FILTER_KEYS.includes(key)).map(columnToDisplayName)
+                    filterKeys: FILTER_KEYS
                 };
             }
-            console.log(viewData);
+            if(view as string === 'time_analysis'){
+                viewData = {
+                    data: viewData,
+                    timezone: timeZone || timezoneQuery.timezone
+                }
+            }
+
+
+
             await updateGamerUponRequest(gamerData);
             let seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,
@@ -67,8 +75,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             res.json({
                 gamer: gamer,
                 viewData: viewData,
-                seoMetadata: seoMetadata,
-                filterKeys: FILTER_KEYS
+                seoMetadata: seoMetadata
             })
         })
     }
@@ -78,3 +85,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })
     }
 }
+
+export default DefaultMiddleware(gamerDetail)

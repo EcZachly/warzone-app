@@ -1,3 +1,4 @@
+--DEPRECATE ONCE WE FINISH MIGRATING
 SELECT gm.query_username as username,
        gm.query_platform as platform,
        $1                                                                as timezone,

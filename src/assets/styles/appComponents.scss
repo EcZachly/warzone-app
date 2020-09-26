@@ -1,0 +1,302 @@
+/* These styles are specific to only this application and will apply to the application as a whole */
+@import 'config';
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SYSTEM STATUS SERVICE ITEM STATUS INDICATOR LEGEND
+
+.status-indicator-legend {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  margin-left: 10px;
+}
+
+.status-indicator-legend .label {
+  margin-right: 25px;
+  font-size: .875rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SYSTEM STATUS TEST CYCLE TABLE
+
+.table-with-details {
+
+}
+
+.table-with-details.loading {
+  padding: 20px;
+}
+
+.table-with-details .details {
+
+}
+
+.table-with-details .details .table-head {
+  border-top: none;
+}
+
+.table-with-details .details th,
+.table-with-details .details .th .paragraph, {
+  font-size: .85rem;
+  color: $theme-gray;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-top: none;
+}
+
+
+.table-with-details .details td * {
+  font-size: .85rem;
+}
+
+
+.table-with-details .details .table-data,
+.table-with-details .details .table-data {
+  padding: .5rem;
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SYSTEM STATUS EVENT CONTAINER
+
+.event-card {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.event-card.loading {
+
+}
+
+.event-card .top-container {
+  font-size: .875rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-card .time-details-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.event-card .time-details-container .time-details {
+  color: $theme-gray;
+}
+
+.event-card .affected-services-container .system-status-indicator {
+  position: relative;
+  top: 1px;
+}
+
+.event-card .bottom-container {
+
+}
+
+.event-card .bottom-container .label-value-container .label {
+  font-size: .875rem;
+  font-weight: 400;
+  color: $theme-gray;
+}
+
+.event-card .bottom-container .label-value-container .value {
+
+}
+
+//loading
+
+.event-card.loading .top-container, .event-card.loading .bottom-container {
+  background: linear-gradient(to right, #f3f3f3 3%, #fafafa 25%, #f3f3f3 100%);
+  animation: placeholderShimmer 2.25s linear 0s infinite normal forwards;
+
+  width: 100%;
+}
+
+.event-card.loading .top-container {
+  height: 23px;
+}
+
+.event-card.loading .bottom-container {
+  margin-top: 8px;
+  height: 36px;
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//COMMENT MANAGER
+
+.comments-container {
+
+}
+
+.comments-container.loading {
+
+}
+
+.comments-container .sorting-container {
+  width: 250px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.comments-container .sorting-container .form-group {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.comments-container .sorting-container .form-group .label {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.comments-container .sorting-container .form-group .form-control {
+  display: inline-block;
+  width: 80%;
+  margin-bottom: 0;
+}
+
+.comments-container .new-comment-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.comments-container .new-comment-container .form-group {
+  flex-grow: 20;
+  margin-bottom: 0;
+}
+
+.comments-container .new-comment-container .form-group .form-control {
+  margin-bottom: 0;
+}
+
+.comments-container .new-comment-container .button {
+  flex-grow: 1;
+  margin-left: 5px;
+  height: 35px;
+  margin-bottom: 0;
+}
+
+.comments-container .comment-single-container {
+  padding-bottom: 10px;
+  margin-top: 20px;
+  border-bottom: 1px solid $theme-gray-90;
+}
+
+.comments-container .comment-single-container.last {
+  border-bottom: none;
+}
+
+.comments-container .comment-single-container .comment {
+  margin-bottom: 10px;
+  line-height: 140%;
+  margin-top: 2px;
+}
+
+.comments-container .comment-single-container .commenter {
+  font-size: .75rem;
+  color: $theme-gray;
+}
+
+.comments-container .comment-single-container .metadata-details {
+  font-size: .75rem;
+  color: $theme-gray;
+}
+
+.comments-container .comment-single-container .metadata-details .time-details {
+
+}
+
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SYSTEM STATUS TEST CYCLE TABLE
+
+.test-running-status-indicator {
+
+}
+
+.test-running-status-indicator .loading {
+
+}
+
+.test-running-status-indicator .icon {
+  width: 1rem;
+  position: relative;
+  top: 3px;
+  margin-right: 5px;
+  color: $theme-status-down;
+}
+
+.test-running-status-indicator .running {
+  color: $theme-status-resolved;
+}
+
+.test-running-status-indicator span {
+  font-weight: bold;
+}
+
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SMARTCARD DASHBOARD
+
+.smartcard-dashboard:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.smartcard-dashboard:active {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.639), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+// ACTION BAR
+
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+
+.sorting-container {
+  display: flex;
+  width: 200px;
+  align-items: center;
+}
+
+.sorting-dropdown {
+  width: 100%;
+}
+
+.directional-container {
+  width: 100px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.view-container {
+  width: 100px;
+  display: flex;
+}
+
+.up-button,
+.down-button {
+  margin: 0;
+}
