@@ -1,8 +1,7 @@
-import Head from 'next/head'
 import {GetServerSideProps} from 'next'
 import GamerCard from '../../components/gamer/GamerCard';
 
-import {Container, Header, Main} from './../../components/SimpleComponents';
+import {Container, Main} from './../../components/SimpleComponents';
 import {Page} from './../../components/AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

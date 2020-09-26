@@ -4,10 +4,10 @@ import {ViewQuery} from "../../../../../lib/model/view_query";
 import DefaultMiddleware from '../../../../middleware/default_middleware';
 import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from "../../../../../lib/model/gamers";
 import Bluebird from 'bluebird';
-import _ from 'lodash';
-let FILTER_KEYS = ['username', 'platform', 'helping_player_temp', 'helping_player_platform',  'aliases'];
 
-async function updateGamerUponRequest(gamerData){
+let TEAMMATE_FILTER_KEYS = ['username', 'platform', 'aliases'];
+
+async function updateGamerUponRequest(gamerData) {
     let gamerPromise = Bluebird.resolve(gamerData);
     if (!gamerData.needs_update) {
         gamerData.needs_update = true;
@@ -17,7 +17,7 @@ async function updateGamerUponRequest(gamerData){
 }
 
 const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
-    let {view, timeZone, username, platform } = req.query;
+    let {view, timeZone, username, platform} = req.query;
 
 
     let viewMap = {
@@ -46,30 +46,22 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
     ]
 
     let viewNamesToQuery = ['player_stat_summary', sqlView as string];
-    let viewsToQuery = queryableViews.filter((v: ViewQuery)=> viewNamesToQuery.includes(v.view));
+    let viewsToQuery = queryableViews.filter((v: ViewQuery) => viewNamesToQuery.includes(v.view));
 
     let gamerList = await queryGamers({username: username, platform: platform});
     let gamerData = gamerList[0]
     let gamerExists = !!gamerData;
-    if(gamerExists){
+    if (gamerExists) {
         let gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
         Bluebird.all(gamerMatchDataPromises).then(async () => {
             let gamer = sanitizeGamer(viewsToQuery[0].data[0]);
             let viewData = viewsToQuery[1].data;
-
-            if(sqlView as string === 'teammate_analysis'){
-                viewData = {
-                    teammates: sanitizeTeammates(viewData),
-                    filterKeys: FILTER_KEYS
-                };
+            let lookup = {
+                'gamer_stats_graded': () => viewData,
+                'time_analysis': () => viewData,
+                'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS)
             }
-            if(sqlView as string === 'time_analysis'){
-                viewData = {
-                    data: viewData,
-                    timezone: timeZone || timezoneQuery.timezone
-                }
-            }
-
+            viewData = lookup[sqlView]();
             await updateGamerUponRequest(gamerData);
             let seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,
@@ -82,8 +74,7 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
                 seoMetadata: seoMetadata
             })
         })
-    }
-    else{
+    } else {
         res.json({
             errorMessage: username + ' on platform: ' + platform + ' was not found!'
         })

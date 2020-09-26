@@ -4,7 +4,7 @@ WITH source AS (
             m.start_timestamp,
             m.team_type,
             gm.*,
-            COALESCE(gm2.query_username, 'without teammates')  AS helping_player_temp,
+            COALESCE(gm2.query_username, 'without teammates')  AS helping_player,
             COALESCE(gm2.query_platform, 'without teammates') AS helping_player_platform
     FROM warzone.gamer_matches gm
          JOIN warzone.matches_augmented m
@@ -18,7 +18,7 @@ WITH source AS (
           SELECT
           gm.query_username as username,
           gm.query_platform AS platform,
-       '(overall)' as helping_player_temp,
+       '(overall)' as helping_player,
        '(overall)' as helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
         CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
@@ -50,7 +50,7 @@ WITH source AS (
     FROM warzone.gamer_matches gm
           JOIN warzone.matches_augmented m on gm.match_id = m.match_id
           AND m.is_warzone_match = TRUE
-         GROUP BY gm.query_username, gm.query_platform, helping_player_temp
+         GROUP BY gm.query_username, gm.query_platform, helping_player
 
      ),
      with_teammates AS (
@@ -58,7 +58,7 @@ WITH source AS (
          SELECT
          gm.query_username AS username,
          gm.query_platform AS platform,
-       helping_player_temp,
+       helping_player,
        helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
         CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
@@ -88,7 +88,7 @@ WITH source AS (
        MIN(start_timestamp)                                                                      AS first_game_time,
        MAX(start_timestamp)                                                                      AS last_game_time
 FROM source gm
-GROUP BY gm.query_username, gm.query_platform, helping_player_temp, helping_player_platform
+GROUP BY gm.query_username, gm.query_platform, helping_player, helping_player_platform
      ),
      combined AS (
 
@@ -98,7 +98,6 @@ GROUP BY gm.query_username, gm.query_platform, helping_player_temp, helping_play
      ),
      unboxed AS (
         SELECT
-            c.helping_player_temp AS helping_player,
              c.*
         FROM combined c
 

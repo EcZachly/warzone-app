@@ -5,10 +5,11 @@ import {Page, GamerCard, GamerGradeChart, GamerTimeChart, TeammateTable} from '.
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 async function setTabAndFetchData(username, platform, tabId, hostname, chartState, setChartState) {
-    //Since tabs 1 and 2 use the same data, we don't need to make another API call, we can just switch
-    if (tabId == 1 && chartState.activeTab == 2) {
+    //Since the placements and stats tabs use the same data, we don't need to make another API call, we can just switch
+    // The tabs
+    if (tabId == "placements" && chartState.activeTab == "stats") {
         setChartState({viewData: chartState.viewData, activeTab: tabId});
-    } else if (tabId == 2 && chartState.activeTab == 1) {
+    } else if (tabId == "stats" && chartState.activeTab == "placements") {
         setChartState({viewData: chartState.viewData, activeTab: tabId});
     } else {
         let fetchedData = await fetchViewData(hostname, username, platform, tabId);
@@ -21,7 +22,7 @@ export default function GamerDetail({gamerData, view}) {
     let {gamer, viewData, errorMessage} = gamerData;
     const [chartState, setChartState] = useState({viewData, activeTab:  view});
     let componentMap = {
-        'teammates': <TeammateTable teammates={chartState.viewData.teammates} filterKeys={chartState.viewData.filterKeys}/>,
+        'teammates': <TeammateTable teammates={chartState.viewData}/>,
         'placements': <GamerGradeChart height={260}
                             width={450}
                             key={"placement_chart"}

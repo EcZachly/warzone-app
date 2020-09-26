@@ -2,15 +2,13 @@ import React from 'react';
 import {Table, TableBody, TableHead, TableRow, TableData, TableHeader} from '../SimpleComponents';
 import _ from 'lodash'
 
-export default function TeammateTable({teammates, filterKeys}) {
+export default function TeammateTable({teammates}) {
     let tableHeaders = Object.keys(teammates[0])
-        .filter((key) => !filterKeys.includes(key))
         .map((key) => key.split('_').map(_.capitalize).join(' '))
         .map((key) => <TableHeader key={key}>{key}</TableHeader>)
 
-
     let rows = teammates.map((teammate, teammateIndex) => {
-        let tableData = Object.keys(teammate).filter((key) => !filterKeys.includes(key)).map(function (key, index) {
+        let tableData = Object.keys(teammate).map(function (key, index) {
             if (key.includes("time")) {
                 return <TableData key={teammateIndex + key}>{new Date(teammate[key]).toDateString()}</TableData>
             } else if (key.includes('player')) {
@@ -27,7 +25,7 @@ export default function TeammateTable({teammates, filterKeys}) {
                 return <TableData key={teammateIndex + key}>{teammate[key]}</TableData>
             }
         })
-        return <TableRow key={teammate.helping_player.name + " " + teammateIndex}>{tableData}</TableRow>
+        return <TableRow key={teammate.helping_player.name + " " + teammateIndex}>{tableData}</TableRow>;
     })
 
 

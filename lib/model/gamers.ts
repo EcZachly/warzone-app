@@ -34,13 +34,17 @@ export function sanitizeGamer(gamer) {
 	return gamer;
 }
 
-export function sanitizeTeammates(teammates) {
+export function sanitizeTeammates(teammates, filterKeys: string[] = []) {
 	return teammates.map((teammate) => {
 		teammate = sanitizeGamer(teammate);
 		teammate.helping_player = {
 			name: teammate.helping_player,
 			platform: teammate.helping_player_platform
 		};
+		delete teammate.helping_player_platform;
+		filterKeys.forEach((key)=>{
+			delete teammate[key];
+		})
 		return teammate;
 	});
 }
