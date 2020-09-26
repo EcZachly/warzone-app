@@ -29,7 +29,7 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
         platform: platform
     };
     let timezoneQuery = {
-        timezone: 'America/Los_Angeles',
+        timezone: timeZone || 'America/Los_Angeles',
         cutoff: "10"
     };
 
