@@ -65,7 +65,6 @@ export default function GamerDetail({gamerData, view}) {
                                     onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "teammates", HOSTNAME, chartState, setChartState)}>Teammates</Button>
                                 <Button
                                     onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "placements", HOSTNAME, chartState, setChartState)}>Placements</Button>
-
                                 <Button
                                     onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "stats", HOSTNAME, chartState, setChartState)}>Stats</Button>
                                 <Button

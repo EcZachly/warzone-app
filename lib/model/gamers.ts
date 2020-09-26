@@ -25,6 +25,13 @@ export function queryGamers(query) {
 
 
 
+export function sanitizeSquad(squad) {
+	squad = UtilityService.validateItem(squad, 'object', {});
+	squad.gulag_win_rate = (UtilityService.validateItem(squad.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
+	squad.kdr = parseFloat((UtilityService.validateItem(squad.kdr, 'number', 0).toFixed(4)));
+	return squad;
+}
+
 export function sanitizeGamer(gamer) {
 	gamer = UtilityService.validateItem(gamer, 'object', {});
 	gamer.gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
