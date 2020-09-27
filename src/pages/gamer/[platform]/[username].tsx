@@ -2,25 +2,31 @@ import {GetServerSideProps} from 'next'
 import React, {useState} from 'react';
 import {Container, Main, Box, Button} from './../../../components/SimpleComponents';
 import {Page, GamerCard, GamerGradeChart, GamerTimeChart, TeammateTable} from './../../../components/AppComponents';
-
+import _ from 'lodash';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-async function setTabAndFetchData(username, platform, tabId, hostname, chartState, setChartState) {
+async function setTabAndFetchData(tabId, chartState, setChartState) {
     //Since the placements and stats tabs use the same data, we don't need to make another API call, we can just switch
     // The tabs
-    if (tabId == "placements" && chartState.activeTab == "stats") {
-        setChartState({viewData: chartState.viewData, activeTab: tabId});
+    let newState = Object.assign({}, chartState);
+    newState.activeTab = tabId;
+    if(tabId === chartState.activeTab){
+        //Do nothing since we aren't changing tabs
+    }
+    else if (tabId == "placements" && chartState.activeTab == "stats") {
+        setChartState(newState);
     } else if (tabId == "stats" && chartState.activeTab == "placements") {
-        setChartState({viewData: chartState.viewData, activeTab: tabId});
+        setChartState(newState);
     } else {
-        let fetchedData = await fetchViewData(hostname, username, platform, tabId);
-        setChartState({viewData: fetchedData.viewData, activeTab: tabId});
+        let fetchedData = await fetchViewData(chartState.hostname, chartState.gamer.username, chartState.gamer.platform, tabId);
+        newState.viewData =  fetchedData.viewData;
+        setChartState(newState);
     }
 }
 
-export default function GamerDetail({gamerData, view}) {
-    let HOSTNAME = process.env.HOSTNAME;
+export default function GamerDetail({gamerData, view, hostname}) {
     let {gamer, viewData, errorMessage} = gamerData;
-    const [chartState, setChartState] = useState({viewData, activeTab:  view});
+    const [chartState, setChartState] = useState({viewData: viewData, hostname:hostname, gamer:gamer, activeTab: view});
+    let allTabs: string[] = ['teammates', 'placements', 'stats', 'time'];
     let componentMap = {
         'teammates': <TeammateTable teammates={chartState.viewData}/>,
         'placements': <GamerGradeChart height={260}
@@ -45,6 +51,9 @@ export default function GamerDetail({gamerData, view}) {
 
     let TabData = componentMap[chartState.activeTab]
 
+    let buttonTabs = allTabs.map((tab)=> <Button
+        onClick={() => setTabAndFetchData(tab, chartState, setChartState)}>{_.capitalize(tab)}</Button>
+    )
     if (errorMessage) {
         return (
             <div className="container">
@@ -61,15 +70,7 @@ export default function GamerDetail({gamerData, view}) {
                         <GamerCard gamer={gamer}/>
                         <Box style={{"margin": "auto"}}>
                             <Container>
-                                <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "teammates", HOSTNAME, chartState, setChartState)}>Teammates</Button>
-                                <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "placements", HOSTNAME, chartState, setChartState)}>Placements</Button>
-
-                                <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "stats", HOSTNAME, chartState, setChartState)}>Stats</Button>
-                                <Button
-                                    onClick={() => setTabAndFetchData(gamer.username, gamer.platform, "time", HOSTNAME, chartState, setChartState)}>Time</Button>
+                                {buttonTabs}
                             </Container>
                             <section>
                                 {TabData}
@@ -95,5 +96,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let view = context.query.view || 'teammates';
     let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view);
     let gamerJson = await rawGamerList.json();
-    return {props: {gamerData: gamerJson, view: context.query.view || 'teammates'}}
+    return {props: {gamerData: gamerJson, view: context.query.view || 'teammates', hostname: process.env.HOSTNAME}}
 }

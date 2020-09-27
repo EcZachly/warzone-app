@@ -28,16 +28,15 @@ SELECT query_username as username,
                 END
        as day_of_week,
        sorter,
-       CAST(SUM(kills) AS REAL) / SUM(deaths)                                   AS kdr,
+       CAST(SUM(kills) AS REAL) / NULLIF(SUM(deaths)    , 0)                               AS kdr,
 
-       CAST(SUM(CASE WHEN team_type = 'duo' THEN kills END) AS REAL) /
       CAST(SUM(CASE WHEN team_type = 'duo' THEN kills END) AS REAL) /
-            CASE WHEN SUM(CASE WHEN team_type = 'duo' THEN deaths END)  =  0 THEN 1 ELSE SUM(CASE WHEN team_type = 'duo' THEN deaths END)    END          AS duo_kdr,
+         NULLIF(CASE WHEN SUM(CASE WHEN team_type = 'duo' THEN deaths END)  =  0 THEN 1 ELSE SUM(CASE WHEN team_type = 'duo' THEN deaths END)  END   ,0)          AS duo_kdr,
                 CAST(SUM(CASE WHEN team_type = 'trio' THEN kills END) AS REAL) /
-               CASE WHEN SUM(CASE WHEN team_type = 'trio' THEN deaths END)  =  0 THEN 1 ELSE SUM(CASE WHEN team_type = 'trio' THEN deaths END)     END                       AS trio_kdr,
+              NULLIF(CASE WHEN SUM(CASE WHEN team_type = 'trio' THEN deaths END)  =  0 THEN 1 ELSE SUM(CASE WHEN team_type = 'trio' THEN deaths END)    END   , 0)                    AS trio_kdr,
 
             CAST(SUM(CASE WHEN team_type = 'quad' THEN kills END) AS REAL) /
-             CASE WHEN SUM(CASE WHEN team_type = 'quad' THEN deaths END)  =  0 THEN 1 ELSE SUM(CASE WHEN team_type = 'quad' THEN deaths END)      END                        AS quad_kdr,
+            NULLIF(CASE WHEN SUM(CASE WHEN team_type = 'quad' THEN deaths END)  =  0 THEN 1 ELSE SUM(CASE WHEN team_type = 'quad' THEN deaths END)    END     , 0)                   AS quad_kdr,
                    CAST(AVG(CASE WHEN team_type = 'quad' THEN team_placement END) AS REAL) AS avg_quad_placement,
                     CAST(AVG(CASE WHEN team_type = 'trio' THEN team_placement END) AS REAL) AS avg_trio_placement,
 
@@ -49,8 +48,8 @@ SELECT query_username as username,
 
                   CAST(MAX(score) AS REAL) AS max_score,
                CAST(AVG(score) AS REAL) as avg_score,
-                    CAST(SUM(gulag_kills) AS REAL) /
-                          SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)                                  as gulag_win_rate,
+                   NULLIF(CAST(SUM(gulag_kills) AS REAL) /
+                          SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills),0)                                 as gulag_win_rate,
        COUNT(1)                                                                 AS num_games
 FROM source
 GROUP BY 1, 2, 3, 4, 5

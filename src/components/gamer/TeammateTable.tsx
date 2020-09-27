@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table, TableBody, TableHead, TableRow, TableData, TableHeader} from '../SimpleComponents';
+import {GamerLink} from '../AppComponents';
 import _ from 'lodash'
 
 export default function TeammateTable({teammates}) {
@@ -14,7 +15,7 @@ export default function TeammateTable({teammates}) {
             } else if (key.includes('player')) {
                 if (!["(overall)", "without teammates"].includes(teammate[key].name)) {
                     return <TableData key={teammateIndex + key}>
-                        <a href={"/gamer/" + teammate[key].platform + "/" + encodeURIComponent(teammate[key].name)}>{teammate[key].name}</a></TableData>
+                        <GamerLink gamer={{username: teammate[key].name, platform: teammate[key].platform}}/></TableData>
                 } else {
                     return <TableData key={teammateIndex + key}>{teammate[key].name}</TableData>
                 }
