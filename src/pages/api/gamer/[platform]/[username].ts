@@ -19,7 +19,6 @@ async function updateGamerUponRequest(gamerData) {
 const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
     let {view, timeZone, username, platform} = req.query;
 
-
     let viewMap = {
         'teammates': 'teammate_analysis',
         'placements': 'gamer_stats_graded',
@@ -56,12 +55,12 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
         Bluebird.all(gamerMatchDataPromises).then(async () => {
             let gamer = sanitizeGamer(viewsToQuery[0].data[0]);
             let viewData = viewsToQuery[1].data;
-            let lookup = {
+            let sanitizationLookup = {
                 'gamer_stats_graded': () => viewData,
                 'time_analysis': () => viewData,
                 'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS)
             }
-            viewData = lookup[sqlView]();
+            viewData = sanitizationLookup[sqlView]();
             await updateGamerUponRequest(gamerData);
             let seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,

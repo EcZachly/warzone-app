@@ -22,7 +22,8 @@
 import GamerCard from "./gamer/GamerCard";
 import GamerGradeChart from "./gamer/GamerGradeChart";
 import GamerTimeChart from "./gamer/GamerTimeChart";
-export {GamerCard, GamerGradeChart, GamerTimeChart};
+import GamerLink from "./gamer/GamerLink";
+export {GamerCard, GamerGradeChart, GamerTimeChart, GamerLink};
 //H
 
 

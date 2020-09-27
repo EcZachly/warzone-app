@@ -1,11 +1,12 @@
 import React from 'react';
-import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader} from '../SimpleComponents';
+import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Box} from '../SimpleComponents';
 export default function SquadCard({squad}) {
     let gamerLinks = squad.gamers.map((gamer)=>{
-        return <div>
-            <a href={"/gamer/" + gamer.split('-')[0] + "/" + gamer.split('-')[1]}>{gamer.split('-')[1]}</a>
+        let [platform, username] = gamer.split('-');
+        return <Box>
+            <a href={"/gamer/" + encodeURIComponent(platform) + "/" + encodeURIComponent(username)}>{username}</a>
             <br/>
-        </div>
+        </Box>
     })
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
