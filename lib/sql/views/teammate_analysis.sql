@@ -21,12 +21,13 @@ WITH source AS (
        '(overall)' as helping_player,
        '(overall)' as helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
-        CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
+        CAST(SUM(gm.kills) AS real) /NULLIF(CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END, 0) AS kdr,
            CAST(SUM(gm.gulag_kills) AS REAL)/
+             NULLIF(
              CASE
                 WHEN SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills)  = 0 THEN 1
                 ELSE SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills)
-             END as gulag_win_rate,
+             END, 0) as gulag_win_rate,
        SUM(gm.kills)                                                                             AS total_kills,
        AVG(gm.kills)                                                                             AS avg_kills,
        SUM(gm.damage_done)                                                                             AS total_damage_done,
@@ -61,12 +62,12 @@ WITH source AS (
        helping_player,
        helping_player_platform,
         COUNT(DISTINCT gm.match_id)                                                               AS num_matches,
-        CAST(SUM(gm.kills) AS real) / CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END AS kdr,
+        CAST(SUM(gm.kills) AS real) / NULLIF(CASE WHEN SUM(gm.deaths) = 0 THEN 1 ELSE SUM(gm.deaths) END, 0) AS kdr,
        CAST(SUM(gm.gulag_kills) AS REAL)/
-        CASE
+        NULLIF(CASE
             WHEN SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills) = 0 THEN 1
             ELSE SUM( CASE WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths ELSE 0 END + gm.gulag_kills)
-       END as gulag_win_rate,
+       END, 0) as gulag_win_rate,
        SUM(gm.kills)                                                                             AS total_kills,
        AVG(gm.kills)                                                                             AS avg_kills,
        SUM(gm.damage_done)                                                                             AS total_damage_done,

@@ -3,7 +3,7 @@ CREATE OR REPLACE VIEW warzone.gamer_stats_graded AS
     WITH mapped AS (
 
         SELECT *,
-               CAST(kills AS REAL)/CASE WHEN deaths = 0 THEN 1 ELSE deaths END as kdr
+               CAST(kills AS REAL)/NULLIF(CASE WHEN deaths = 0 THEN 1 ELSE deaths END, 0) as kdr
                FROM warzone.gamer_matches
 
     )
