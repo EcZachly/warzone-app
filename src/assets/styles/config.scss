@@ -22,5 +22,8 @@ $theme-status-maintenance: #5AB6FA;
 $theme-status-resolved: #76CF78;
 $theme-status-loading: #ccc;
 
-$theme-background-color: $theme-white;
-$theme-text-color: $theme-black;
+$theme-error: darken($theme-red, 10);
+
+$theme-background-color: $theme-black;
+$theme-text-color: $theme-white;
+$theme-line-break: lighten($theme-background-color, 25);

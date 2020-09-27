@@ -52,49 +52,6 @@ h6 {
 }
 
 /*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
-/*CONTENT CONTAINER*/
-
-.page-content {
-    max-width: 500px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    margin: 0 auto;
-}
-
-.page-content.page-content-lg {
-    max-width: 1000px;
-}
-
-.page-content-fluid {
-    max-width: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    margin: 0 auto;
-}
-
-/* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-
-}
-
-/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
-@media (min-width: 768px) {
-
-}
-
-/* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) {
-
-}
-
-/* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
-
-}
-
-/*=-=-=-==-==--=-=-====-=-=-==-==--=-=-====-=-=-==-==--=-=-===*/
 /*GAMER CARD*/
 
 .gamer-card {

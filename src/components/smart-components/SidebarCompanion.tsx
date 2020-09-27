@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Container} from '@waveortho/simple-components';
+import {Container} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

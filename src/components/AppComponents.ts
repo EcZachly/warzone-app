@@ -1,7 +1,6 @@
 //A
 
 
-
 //B
 
 
@@ -17,18 +16,31 @@
 //F
 
 
-
 //G
 import GamerCard from "./gamer/GamerCard";
+
+export {GamerCard};
+
 import GamerGradeChart from "./gamer/GamerGradeChart";
-import GamerTimeChart from "./gamer/GamerTimeChart";
+
+export {GamerGradeChart};
+
 import GamerLink from "./gamer/GamerLink";
-export {GamerCard, GamerGradeChart, GamerTimeChart, GamerLink};
+
+export {GamerLink};
+
+import GamerPlatformImage from "./gamer/GamerPlatformImage";
+
+export {GamerPlatformImage};
+
+import GamerTimeChart from "./gamer/GamerTimeChart";
+
+export {GamerTimeChart};
+
 //H
 
 
 //I
-
 
 
 //J
@@ -43,15 +55,17 @@ export {GamerCard, GamerGradeChart, GamerTimeChart, GamerLink};
 //M
 
 
-
 //N
+import Navbar from './app-components/Navbar';
 
+export {Navbar};
 
 //O
 
 
 //P
 import Page from './app-components/Page';
+
 export {Page};
 
 
@@ -66,6 +80,7 @@ export {Page};
 
 //T
 import TeammateTable from "./gamer/TeammateTable";
+
 export {TeammateTable}
 
 //U
@@ -86,5 +101,12 @@ export {TeammateTable}
 //Z
 
 export default {
+    TeammateTable: <Function>TeammateTable,
+    GamerCard: <Function>GamerCard,
+    GamerGradeChart: <Function>GamerGradeChart,
+    GamerTimeChart: <Function>GamerTimeChart,
+    GamerPlatformImage: <Function>GamerPlatformImage,
+    GamerLink: <Function>GamerLink,
     Page: <Function>Page,
+    Navbar: <Function>Navbar,
 }

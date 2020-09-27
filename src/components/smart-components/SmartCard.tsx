@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {Card, CardFooter, CardHeader, Link, CardIcon, CardImage, CardBody} from '@waveortho/simple-components';
-import {TypeService} from '@waveortho/services';
+import {Card, CardFooter, CardHeader, Link, CardIcon, CardImage, CardBody} from './../SimpleComponents';
+import TypeService from './../../services/TypeService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

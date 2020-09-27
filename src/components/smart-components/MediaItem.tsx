@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Media, MediaBody, MediaImage} from '@waveortho/simple-components';
+import {Media, MediaBody, MediaImage} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

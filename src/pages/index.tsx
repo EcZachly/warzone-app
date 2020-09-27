@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import {Page} from './../components/AppComponents';
+import {Navbar, Page} from './../components/AppComponents';
 import {Container, Header, Main} from './../components/SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -9,6 +9,8 @@ import {Container, Header, Main} from './../components/SimpleComponents';
 export default function Home() {
     return (
         <Page title={'Warzone'}>
+            <Navbar/>
+            
             <Container>
                 <Main>
                     <Header>Warzone</Header>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {TypeService} from '@waveortho/services';
+import TypeService from './../../services/TypeService';
 
 const CONSTANTS = {
     VALID_SIZES: {

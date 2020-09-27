@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {BreadcrumbContainer, BreadcrumbItem, Badge, BreadcrumbSeparator} from '@waveortho/simple-components';
-import {TypeService} from '@waveortho/services';
+import {BreadcrumbContainer, BreadcrumbItem, Badge, BreadcrumbSeparator} from './../SimpleComponents';
+import TypeService from './../../services/TypeService';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

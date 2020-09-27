@@ -13,7 +13,7 @@ import {
     Required,
     FormGroup,
     Paragraph
-} from '@waveortho/simple-components';
+} from './../SimpleComponents';
 
 const MODULE_CONSTANTS = {
     TYPE_MAP: {

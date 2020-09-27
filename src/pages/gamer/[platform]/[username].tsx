@@ -1,59 +1,67 @@
 import {GetServerSideProps} from 'next'
 import React, {useState} from 'react';
-import {Container, Main, Box, Button} from './../../../components/SimpleComponents';
-import {Page, GamerCard, GamerGradeChart, GamerTimeChart, TeammateTable} from './../../../components/AppComponents';
 import _ from 'lodash';
+
+import {Container, Main, Box, Header, Text, Button, Small, Image} from './../../../components/SimpleComponents';
+import {SidebarCompanion, LabelValue, Sidebar} from "../../../components/SmartComponents";
+import {
+    Page,
+    GamerCard,
+    GamerGradeChart,
+    GamerTimeChart,
+    TeammateTable,
+    GamerPlatformImage,
+    Navbar
+} from './../../../components/AppComponents';
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-async function setTabAndFetchData(tabId, chartState, setChartState) {
-    //Since the placements and stats tabs use the same data, we don't need to make another API call, we can just switch
-    // The tabs
-    let newState = Object.assign({}, chartState);
-    newState.activeTab = tabId;
-    if(tabId === chartState.activeTab){
-        //Do nothing since we aren't changing tabs
-    }
-    else if (tabId == "placements" && chartState.activeTab == "stats") {
-        setChartState(newState);
-    } else if (tabId == "stats" && chartState.activeTab == "placements") {
-        setChartState(newState);
-    } else {
-        let fetchedData = await fetchViewData(chartState.hostname, chartState.gamer.username, chartState.gamer.platform, tabId);
-        newState.viewData =  fetchedData.viewData;
-        setChartState(newState);
-    }
-}
 
 export default function GamerDetail({gamerData, view, hostname}) {
     let {gamer, viewData, errorMessage} = gamerData;
-    const [chartState, setChartState] = useState({viewData: viewData, hostname:hostname, gamer:gamer, activeTab: view});
-    let allTabs: string[] = ['teammates', 'placements', 'stats', 'time'];
+
+    const [chartState, setChartState] = useState({
+        viewData: viewData,
+        hostname: hostname,
+        gamer: gamer,
+        activeTab: view
+    });
+
+    let tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
+
     let componentMap = {
         'teammates': <TeammateTable teammates={chartState.viewData}/>,
         'placements': <GamerGradeChart height={260}
-                            width={450}
-                            key={"placement_chart"}
-                            data={chartState.viewData}
-                            options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
-                            selectedValue="duo_placements"/>,
+                                       width={450}
+                                       key={"placement_chart"}
+                                       data={chartState.viewData}
+                                       options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
+                                       selectedValue="duo_placements"/>,
         'stats': <GamerGradeChart height={260}
-                            width={450}
-                            key={"stat_chart"}
-                            data={chartState.viewData}
-                            options={['kdr', 'damage', 'kills', 'score']}
-                            selectedValue="kdr"/>,
+                                  width={450}
+                                  key={"stat_chart"}
+                                  data={chartState.viewData}
+                                  options={['kdr', 'damage', 'kills', 'score']}
+                                  selectedValue="kdr"/>,
         'time': <GamerTimeChart height={260}
-                           width={450}
-                           key={"placement_chart"}
-                           viewData={chartState.viewData}
-                           options={['hour_of_day', 'day_of_week']}
-                           selectedValue="hour_of_day"/>
+                                width={450}
+                                key={"placement_chart"}
+                                viewData={chartState.viewData}
+                                options={['hour_of_day', 'day_of_week']}
+                                selectedValue="hour_of_day"/>
     }
 
     let TabData = componentMap[chartState.activeTab]
 
-    let buttonTabs = allTabs.map((tab)=> <Button
-        onClick={() => setTabAndFetchData(tab, chartState, setChartState)}>{_.capitalize(tab)}</Button>
-    )
+    let buttonTabs = tabNames.map((tabName) => {
+        const isActive = (chartState.activeTab === tabName);
+
+        return (
+            <Button type={isActive ? 'purple' : 'light'} onClick={() => isActive ? '' : setTabAndFetchData(tabName, chartState, setChartState)}>
+                {_.capitalize(tabName)}
+            </Button>
+        )
+    });
+
     if (errorMessage) {
         return (
             <div className="container">
@@ -65,27 +73,66 @@ export default function GamerDetail({gamerData, view, hostname}) {
     } else {
         return (
             <Page title={'Stats for ' + gamer.username}>
-                <Container>
-                    <Main>
-                        <GamerCard gamer={gamer}/>
-                        <Box style={{"margin": "auto"}}>
-                            <Container>
+                <Navbar/>
+
+                <Main>
+                    <Container size={'lg'} mode={'sidebar'}>
+                        <Sidebar>
+                            <Header size={'lg'}>
+                                {gamer.username}
+
+                                <Small>
+                                    <GamerPlatformImage gamer={gamer}/>
+                                </Small>
+                            </Header>
+
+
+                            <LabelValue label={'aliases'} value={gamer.aliases.join(', ')}/>
+
+                            <LabelValue label={'KDR'} value={gamer.kdr}/>
+
+                            <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
+
+                            <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
+
+                        </Sidebar>
+                        <SidebarCompanion>
+                            <Box>
                                 {buttonTabs}
-                            </Container>
-                            <section>
+                            </Box>
+                            <Box>
                                 {TabData}
-                            </section>
-                        </Box>
-                    </Main>
-                </Container>
+                            </Box>
+                        </SidebarCompanion>
+                    </Container>
+                </Main>
             </Page>
         )
     }
 }
 
+
+async function setTabAndFetchData(tabId, chartState, setChartState) {
+    //Since the placements and stats tabs use the same data, we don't need to make another API call, we can just switch
+    // The tabs
+    let newState = Object.assign({}, chartState);
+    newState.activeTab = tabId;
+    if (tabId === chartState.activeTab) {
+        //Do nothing since we aren't changing tabs
+    } else if (tabId == "placements" && chartState.activeTab == "stats") {
+        setChartState(newState);
+    } else if (tabId == "stats" && chartState.activeTab == "placements") {
+        setChartState(newState);
+    } else {
+        let fetchedData = await fetchViewData(chartState.hostname, chartState.gamer.username, chartState.gamer.platform, tabId);
+        newState.viewData = fetchedData.viewData;
+        setChartState(newState);
+    }
+}
+
 async function fetchViewData(hostname, username, platform, view) {
     let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    let dataUrl =  hostname + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + "&timeZone=" + timeZone;
+    let dataUrl = hostname + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + "&timeZone=" + timeZone;
     const response = await fetch(dataUrl);
     return await response.json();
 }

@@ -16,7 +16,7 @@ class Box extends React.Component {
         const classNames = this.getClassNames(props);
     
         return (
-            <div className={classNames} style={props.style} title={props.title} ref={props.innerRef}>
+            <div id={props.id} className={classNames} style={props.style} title={props.title} ref={props.innerRef}>
                 {props.children}
             </div>
         );
