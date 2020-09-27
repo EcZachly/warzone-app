@@ -1,12 +1,10 @@
 import React from 'react';
 import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Box} from '../SimpleComponents';
+import {GamerLink} from '../AppComponents';
 export default function SquadCard({squad}) {
     let gamerLinks = squad.gamers.map((gamer)=>{
         let [platform, username] = gamer.split('-');
-        return <Box>
-            <a href={"/gamer/" + encodeURIComponent(platform) + "/" + encodeURIComponent(username)}>{username}</a>
-            <br/>
-        </Box>
+        return <GamerLink gamer={{platform: platform, username: username}}/>
     })
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
