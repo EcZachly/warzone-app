@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Progress, ProgressBar} from '@waveortho/simple-components';
+import {Progress, ProgressBar} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

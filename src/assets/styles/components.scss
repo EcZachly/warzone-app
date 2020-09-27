@@ -17,6 +17,7 @@ body {
   color: $theme-text-color;
   overflow-x: hidden;
   width: 100%;
+  scrollbar-base-color: $theme-background-color;
 }
 
 body, .app-container {
@@ -224,8 +225,8 @@ a:focus, a:active {
 #navbar {
   height: 70px;
   width: 100%;
-  background: $theme-background-color;
-  border-bottom: 1px solid #bbb;
+  background: lighten($theme-background-color, 2);
+  border-bottom: 1px solid $theme-line-break;
 }
 
 #navbar-container {
@@ -261,7 +262,7 @@ a:focus, a:active {
   }
 }
 
-#left {
+#navbar-left {
   justify-content: flex-start;
 }
 
@@ -275,7 +276,7 @@ a:focus, a:active {
 }
 
 
-#right {
+#navbar-right {
   justify-content: flex-end;
 }
 
@@ -736,8 +737,7 @@ a:focus, a:active {
 //BUTTON
 
 .button {
-  margin-top: .2rem;
-  margin-bottom: .2rem;
+  margin: .2rem 3px;
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -749,6 +749,14 @@ a:focus, a:active {
   line-height: 1.5;
   outline: none;
   transition: box-shadow 0.25s ease-in-out;
+}
+
+.button:first-child {
+  margin-left: 0;
+}
+
+.button:last-child {
+  margin-right: 0;
 }
 
 .button.button-xs {
@@ -1528,10 +1536,10 @@ a:focus, a:active {
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  border: 1px solid #e7e7e7;
+  border: 1px solid $theme-line-break;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: $theme-background-color;
   background-clip: border-box;
   border-radius: 0.25rem;
 }
@@ -1933,6 +1941,7 @@ a:focus, a:active {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
+  padding-top: 10px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -2902,13 +2911,13 @@ image {
 .table-head {
   padding: .75rem;
   vertical-align: top;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid $theme-line-break;
 }
 
 .table-data {
   padding: .75rem;
   vertical-align: top;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid $theme-line-break;
 }
 
 .table-data p {
@@ -2917,7 +2926,7 @@ image {
 
 .th {
   padding: .75rem;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid $theme-line-break;
 }
 
 .table-head.align-left {
@@ -2934,12 +2943,12 @@ image {
 }
 
 .table-bordered {
-  border: 1px solid #dee2e6;
+  border: 1px solid $theme-line-break;
 }
 
 .table-bordered .th,
 .table-bordered .table-data {
-  border: 1px solid #dee2e6;
+  border: 1px solid $theme-line-break;
 }
 
 .table-bordered .table-head .th,
@@ -3079,7 +3088,7 @@ image {
 //RECOMMENDED
 
 .recommended {
-  color: #3E7CFF;
+  color: $theme-blue;
 }
 
 .recommended, .required {
@@ -3092,7 +3101,7 @@ image {
 //REQUIRED
 
 .required {
-  color: #E6123F;
+  color: $theme-error;
 }
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
@@ -3107,7 +3116,7 @@ image {
 }
 
 .paragraph-error {
-  color: #E6123F;
+  color: $theme-error;
 }
 
 
@@ -3134,7 +3143,7 @@ image {
   color: #fff;
   text-align: center;
   white-space: nowrap;
-  background-color: #007bff;
+  background-color: $theme-blue;
   font-weight: 600;
   transition: width 0.6s ease;
 }
@@ -3242,7 +3251,7 @@ image {
 hr {
   height: 1px;
   border-left: 0;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid $theme-line-break;
   margin-top: 20px;
   margin-bottom: 10px;
 }
@@ -3281,7 +3290,7 @@ hr.line-break.no-margins {
 }
 
 .media.media-border-bottom {
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid $theme-line-break;
 }
 
 

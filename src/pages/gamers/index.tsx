@@ -2,7 +2,7 @@ import {GetServerSideProps} from 'next'
 import GamerCard from '../../components/gamer/GamerCard';
 
 import {Container, Main} from './../../components/SimpleComponents';
-import {Page} from './../../components/AppComponents';
+import {Page, Navbar} from './../../components/AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -10,6 +10,8 @@ import {Page} from './../../components/AppComponents';
 export default function Gamers({gamers}) {
     return (
         <Page title={'Gamers'}>
+            <Navbar/>
+
             <Container>
                 <Main>
                     {gamers.map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>)}

@@ -11,7 +11,7 @@ const Image = (props) => {
     }
     
     return (
-        <img id={props.id} src={props.src} alt={props.alt || ''} className={classNames} style={props.style}/>
+        <img id={props.id} title={props.title} src={props.src} alt={props.alt || ''} className={classNames} style={props.style}/>
     );
 };
 
@@ -27,6 +27,9 @@ Image.propTypes = {
     
     //the ID of the HTML element
     id: PropTypes.string,
+
+    //the Title of the HTML element
+    title: PropTypes.string,
     
     //the source of the image
     src: PropTypes.string.isRequired,
