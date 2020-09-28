@@ -2045,17 +2045,17 @@ a:focus, a:active {
 
 .form-group .label {
   font-weight: 400;
-  color: $theme-dark-gray;
+  color: darken($theme-text-color, 25);
   font-size: .9375rem;
 }
 
 .form-group.form-group-plain .label {
-  color: $theme-dark-gray;
+  color: $theme-text-color;
   font-weight: bold;
 }
 
 .label.small {
-  color: $theme-light-gray;
+  color: lighten($theme-background-color, 40);
   font-size: .75rem;
   margin-bottom: -3px;
 }
@@ -2073,11 +2073,11 @@ a:focus, a:active {
 }
 
 .form-group .help-message {
-  color: #777777;
+  color: lighten($theme-background-color, 50);
 }
 
 .form-group .error-message {
-  color: #802a2c;
+  color: $theme-error;
 }
 
 
@@ -2297,10 +2297,10 @@ textarea.form-control, input.form-control, select.form-control {
   font-weight: 400;
   line-height: 1.5;
   width: 100%;
-  color: $theme-black;
-  background-color: $theme-white;
+  color: $theme-text-color;
+  background-color: lighten($theme-background-color, 5);
   display: block;
-  border: 1px solid $theme-gray-80;
+  border: 1px solid $theme-line-break;
   border-radius: .25rem;
   margin-bottom: 1rem;
 }
@@ -2311,17 +2311,21 @@ select.form-control {
   -moz-appearance: none;
   appearance: none;
   word-wrap: normal;
-  color: $theme-black;
+  color: $theme-text-color;
   font-size: 1rem;
   cursor: pointer;
   vertical-align: middle;
-  background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+  //if light mode
+  //background: lighten($theme-background-color, 5) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
+
+
+  background: lighten($theme-background-color, 5) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
 }
 
 .form-control:focus {
   outline: 0;
   box-shadow: 0 0 0 .2rem rgba(0, 85, 255, 0.25);
-  border-color: #82acff;
+  border-color: lighten($theme-blue, 25);
 }
 
 .form-control:disabled {
@@ -2346,10 +2350,10 @@ input {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: $theme-black;
-  background-color: $theme-white;
+  color: $theme-text-color;
+  background-color: $theme-background-color;
   background-clip: padding-box;
-  border: 1px solid $theme-very-light-gray;
+  border: 1px solid $theme-line-break;
   border-radius: .25rem;
 }
 
@@ -2366,21 +2370,21 @@ input.form-control {
 }
 
 input.form-control:disabled {
-  background: #eee;
+  background: $theme-line-break;
   cursor: not-allowed;
 }
 
 input::placeholder {
   opacity: 1;
-  color: #9b9b9b;
+  color: $theme-line-break;
 }
 
 input:-ms-input-placeholder {
-  color: #9b9b9b;
+  color: $theme-line-break;
 }
 
 input::-ms-input-placeholder {
-  color: #9b9b9b;
+  color: $theme-line-break;
 }
 
 input[type=text],
@@ -3252,6 +3256,8 @@ hr {
   height: 1px;
   border-left: 0;
   border-top: 1px solid $theme-line-break;
+  border-bottom: 0;
+  border-right: 0;
   margin-top: 20px;
   margin-bottom: 10px;
 }
