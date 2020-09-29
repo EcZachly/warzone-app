@@ -1,15 +1,17 @@
 import {createEvent} from '../../lib/model/events';
 import useragent from 'useragent';
 
-function isFileRequest(req){
+function isFileRequest(req) {
     let pieces = ['.png', '.js', '.jpg', '.css'];
     let isFileRequest = false;
-    pieces.forEach((piece)=>{
-        if(req.url.includes(piece)){
+
+    pieces.forEach((piece) => {
+        if (req.url.includes(piece)) {
             isFileRequest = true;
         }
     });
-    return isFileRequest
+
+    return isFileRequest;
 }
 
 /**
@@ -33,10 +35,9 @@ const createAPIEventMiddleware = async (req, res) => {
         body: JSON.stringify(req.body)
     };
 
-    if(shouldBeLogged){
+    if (shouldBeLogged) {
         return await createEvent(event);
-    }
-    else{
+    } else {
         return;
     }
 }
