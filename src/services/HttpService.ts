@@ -121,7 +121,13 @@ async function http(options) {
                     statusText: responseData.statusText
                 };
 
-                const isJson = response.headers['content-type'].includes('application/json');
+                let isJson = false;
+
+                try {
+                    isJson = response.headers['content-type'].includes('application/json');
+                } catch (e) {
+                    isJson = false;
+                }
 
                 let jsonResponse = {};
 
