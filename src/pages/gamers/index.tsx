@@ -1,5 +1,6 @@
 import {GetServerSideProps} from 'next'
 import React, {useState} from "react";
+import Router, {withRouter} from 'next/router';
 import _ from 'lodash';
 
 import {Container, Alert, Header, LineBreak, Button, Box, Main} from './../../components/SimpleComponents';
@@ -119,7 +120,7 @@ export default class Gamers extends React.Component {
                 console.log(response);
 
                 if (response.status === 200) {
-
+                    Router.push(response.data.url || ['gamer', newUserConfig.platform, encodeURIComponent(newUserConfig.value)].join('/'));
                 } else {
                     let message = 'An unknown error occurred while trying to create the user';
 
