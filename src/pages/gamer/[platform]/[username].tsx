@@ -18,7 +18,7 @@ import {
 
 export default function GamerDetail({gamerData, view, hostname}) {
     let {gamer, viewData, errorMessage} = gamerData;
-
+    let tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
     const [chartState, setChartState] = useState({
         viewData: viewData,
         hostname: hostname,
@@ -26,7 +26,31 @@ export default function GamerDetail({gamerData, view, hostname}) {
         activeTab: view
     });
 
-    let tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
+
+    const fetchViewData = async (tabId) => {
+        let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let dataUrl = hostname + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + "&timeZone=" + timeZone;
+        console.log(dataUrl);
+        const response = await fetch(dataUrl);
+        return await response.json();
+    }
+
+    const setTabAndFetchData = async (tabId) =>{
+        let newState = Object.assign({}, chartState);
+        newState.activeTab = tabId;
+        if (tabId === chartState.activeTab) {
+            //Do nothing since we aren't changing tabs
+        } else if (tabId == "placements" && chartState.activeTab == "stats") {
+            setChartState(newState);
+        } else if (tabId == "stats" && chartState.activeTab == "placements") {
+            setChartState(newState);
+        } else {
+            let fetchedData = await fetchViewData(tabId);
+            newState.viewData = fetchedData.viewData;
+            setChartState(newState);
+        }
+    }
+
 
     let componentMap = {
         'teammates': <TeammateTable teammates={chartState.viewData}/>,
@@ -54,9 +78,8 @@ export default function GamerDetail({gamerData, view, hostname}) {
 
     let buttonTabs = tabNames.map((tabName) => {
         const isActive = (chartState.activeTab === tabName);
-
         return (
-            <Button type={isActive ? 'purple' : 'light'} onClick={() => isActive ? '' : setTabAndFetchData(tabName, chartState, setChartState)}>
+            <Button type={isActive ? 'purple' : 'light'} onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
                 {_.capitalize(tabName)}
             </Button>
         )
@@ -110,33 +133,6 @@ export default function GamerDetail({gamerData, view, hostname}) {
         )
     }
 }
-
-
-async function setTabAndFetchData(tabId, chartState, setChartState) {
-    //Since the placements and stats tabs use the same data, we don't need to make another API call, we can just switch
-    // The tabs
-    let newState = Object.assign({}, chartState);
-    newState.activeTab = tabId;
-    if (tabId === chartState.activeTab) {
-        //Do nothing since we aren't changing tabs
-    } else if (tabId == "placements" && chartState.activeTab == "stats") {
-        setChartState(newState);
-    } else if (tabId == "stats" && chartState.activeTab == "placements") {
-        setChartState(newState);
-    } else {
-        let fetchedData = await fetchViewData(chartState.hostname, chartState.gamer.username, chartState.gamer.platform, tabId);
-        newState.viewData = fetchedData.viewData;
-        setChartState(newState);
-    }
-}
-
-async function fetchViewData(hostname, username, platform, view) {
-    let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    let dataUrl = hostname + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + "&timeZone=" + timeZone;
-    const response = await fetch(dataUrl);
-    return await response.json();
-}
-
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let {username, platform} = context.query;

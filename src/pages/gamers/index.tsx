@@ -7,7 +7,7 @@ import {SidebarCompanion, Sidebar} from '../../components/SmartComponents';
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-d
+
 export default function Gamers({gamers, hostname, recaptchaSiteKey}){
     let gamerList = gamers.map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
     return (
