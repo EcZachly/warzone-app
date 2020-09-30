@@ -12,13 +12,13 @@ export default async function createGamer(req: NextApiRequest, res: NextApiRespo
     const {username, platform} = newUser;
     let error = null;
     if(!username){
-        error = {message: 'body.username (String) is required', status: 400}
+        error = {userMessage: 'body.username (String) is required', status: 400}
     }
     if(!platform){
-        error = {message: 'body.platform (String) is required', status: 400}
+        error = {userMessage: 'body.platform (String) is required', status: 400}
     }
     if(!recaptchaSuccess){
-        error = {message: 'failed recaptcha verification', status: 400}
+        error = {userMessage: 'failed recaptcha verification', status: 400}
     }
 
     if(!error){

@@ -30,7 +30,6 @@ export default function GamerDetail({gamerData, view, hostname}) {
     const fetchViewData = async (tabId) => {
         let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         let dataUrl = hostname + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + "&timeZone=" + timeZone;
-        console.log(dataUrl);
         const response = await fetch(dataUrl);
         return await response.json();
     }

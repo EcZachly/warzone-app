@@ -1,4 +1,4 @@
-import {Alert, Box, Button, Header, ProgressBar} from "../SimpleComponents";
+import {Alert, Box, Button, Header, Image, ProgressBar} from "../SimpleComponents";
 import {Input} from "../SmartComponents";
 import React, {useState} from "react";
 import {GamerService} from "./index";
@@ -18,6 +18,7 @@ const CONFIG = {
 
 export default function GamerAdd({recaptchaSiteKey, hostname}) {
 
+    const recaptcha = React.createRef();
     const [username, setUsername] = useState("");
     const [platform, setPlatform] = useState("xbl");
     const [token, setToken] = useState("");
@@ -28,18 +29,22 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
     let loadingComponent = <div></div>;
     if(loading){
         //TODO make this a spinner
-        loadingComponent = <ProgressBar/>
+        loadingComponent = <Image style={{width: '50px', height: '50px'}} src={"/images/spinner_gif.gif"}/>
     }
 
     const addGamer = async () => {
         let newUserConfig = {username: username, platform: platform};
         let errorMessage = '';
 
+        //Reset the recaptcha token in case they make a mistake
+        setToken(await recaptcha.current.executeRecaptcha("submit"));
+
         if (!newUserConfig.username) {
             errorMessage = 'Username is required';
         } else if (!newUserConfig.platform) {
             errorMessage = 'Platform is required';
         }
+
         if(!errorMessage) {
             setLoading(true);
             setMessage( {message: '', type: ''});
@@ -59,6 +64,7 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
                 if (response.data && response.data.userMessage) {
                     message = response.data.userMessage;
                 }
+                setLoading(false);
                 setMessage({message: message, type: 'error'});
             }
         }
@@ -67,19 +73,23 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
         }
     }
 
+    //The input is disabled if they've already submitted or they don't have a recaptcha token
+    let disabled = loading || !token;
     return (
-        <GoogleReCaptchaProvider reCaptchaKey={recaptchaSiteKey}>
+        <GoogleReCaptchaProvider ref={recaptcha}  reCaptchaKey={recaptchaSiteKey}>
             <GoogleReCaptcha onVerify={token => setToken(token)} action="submit" />
             <Box>
                 <Header size={'sm'}>Add Gamer</Header>
                 <Input label={'Username'}
                        type={'text'}
+                       disabled={disabled}
                        value={username}
                        onChange={(username) => setUsername(username)}
                        placeholder={'Username'}/>
 
                 <Input label={'Platform'}
                        type={'select'}
+                       disabled={disabled}
                        options={CONFIG.PLATFORM_OPTIONS}
                        value={platform}
                        onChange={(value) => setPlatform(value)}/>
