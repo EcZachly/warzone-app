@@ -32,7 +32,8 @@ import TeammateTable from './TeammateTable';
 
 export {TeammateTable};
 
-
+import GamerAdd from './GamerAdd';
+export {GamerAdd};
 export default {
     GamerCard: <Function>GamerCard,
     GamerGradeChart: <Function>GamerGradeChart,
@@ -41,4 +42,5 @@ export default {
     GamerService: <Object>GamerService,
     GamerTimeChart: <Function>GamerTimeChart,
     TeammateTable: <Function>TeammateTable,
+    GamerAdd: <Function>GamerAdd
 }
