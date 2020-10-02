@@ -1,0 +1,48 @@
+Date: 2020-09-28, 8:00 PM
+attendees: Zach Wilson, Ben Leaptrot, Wesley Braithwaite
+
+---
+
+Quick link to a static page:
+New Page Bunkers
+- Red Access Card
+	- Opens 7 bunkers on the map, zach only goes to 2
+
+---
+
+Dashboard
+	- Login
+	- Create User
+	- User Search
+	- View all gamers
+	- Quick Links
+		- Red Access Card & Bunkers
+	- Breakdown of User Types
+		- Hunter
+		- Scavenger
+		- Explorer
+		- Survivor
+
+---
+
+Landing Page
+	- Generate interest
+	- Generate emails to do marketing and research
+
+---
+
+- Leaderboards would be cool
+
+---
+
+Tasks:
+[] Get the add gamer feature back
+[] Deprecating all the ejs & express stuff
+[] Getting page-map going
+[] Landing page
+[] Debugging the cron-job
+[] Add a "last game played"
+	- we could display "how old the data is"
+[] time how long it takes for a game to appear in the api
+[] new images for PSN, Xbox, & Battle.net
+

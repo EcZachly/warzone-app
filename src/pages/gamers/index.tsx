@@ -1,28 +1,39 @@
 import {GetServerSideProps} from 'next'
-import GamerCard from '../../components/gamer/GamerCard';
+import React, {useState} from "react";
 
-import {Container, Main} from './../../components/SimpleComponents';
+import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
 import {Page, Navbar} from './../../components/AppComponents';
+import {SidebarCompanion, Sidebar} from '../../components/SmartComponents';
+import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-
-export default function Gamers({gamers}) {
+export default function Gamers({gamers, hostname, recaptchaSiteKey}){
+    let gamerList = gamers.map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
     return (
         <Page title={'Gamers'}>
             <Navbar/>
+            <Main>
+                <Container mode={'sidebar'} size={'lg'}>
+                    <Sidebar>
+                        <Header>
+                            All Gamers
+                        </Header>
+                        <LineBreak/>
+                        <GamerAdd recaptchaSiteKey={recaptchaSiteKey} hostname={hostname}/>
+                    </Sidebar>
 
-            <Container>
-                <Main>
-                    {gamers.map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>)}
-                </Main>
-            </Container>
+                    <SidebarCompanion>
+                        {gamerList}
+                    </SidebarCompanion>
+                </Container>
+            </Main>
         </Page>
-    )
+    );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamers');
     let gamerJson = await rawGamerList.json();
-    return {props: {gamers: gamerJson}}
+    return {props: {gamers: gamerJson, hostname: process.env.HOSTNAME, recaptchaSiteKey: process.env.WARZONE_RECAPTCHA_SITE_KEY}}
 }
