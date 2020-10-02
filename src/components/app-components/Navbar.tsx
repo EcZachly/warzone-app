@@ -39,12 +39,9 @@ class Page extends React.Component {
                         <a href={'/gamers'}>
                             Gamers
                         </a>
-                    </Box>
 
-
-                    <Box className={'navbar-items'} id={'navbar-right'}>
                         <a href={'/help'}>
-                            Help
+                            Resources
                         </a>
                     </Box>
                 </Box>

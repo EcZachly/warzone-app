@@ -10,15 +10,32 @@ export default function Home() {
     return (
         <Page title={'Warzone'}>
             <Navbar/>
-            
+
             <Container>
                 <Main>
                     <Header>Warzone</Header>
-                    <a href={'/gamers'}>View all Gamers</a>
-                    <LineBreak />
-                    <a href={'/squads'}>View all Squads</a>
+
+                    <LineBreak clear/>
+
+                    <a href={'/gamers'}>
+                        <Header size={'md'}>
+                            View all Gamers
+                        </Header>
+                    </a>
+
+                    <a href={'/squads'}>
+                        <Header size={'md'}>
+                            View all Squads
+                        </Header>
+                    </a>
+
                     <LineBreak/>
-                    <a href={'/help/bunkers'}>View Red Access Card Bunker Locations</a>
+
+                    <a href={'/help/bunkers'}>
+                        <Header size={'md'}>
+                            View Red Access Card Bunker Locations
+                        </Header>
+                    </a>
                 </Main>
             </Container>
         </Page>
