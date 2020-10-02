@@ -8,9 +8,11 @@ export default function SquadCard({squad}) {
     })
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
+
             <CardHeader>
                 {gamerLinks}
             </CardHeader>
+
             <CardBody>
                 <Table>
                     <TableHeader>KDR</TableHeader>
@@ -25,6 +27,7 @@ export default function SquadCard({squad}) {
                     </TableBody>
                 </Table>
             </CardBody>
+
         </Card>
     )
 }
