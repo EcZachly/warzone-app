@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --require esm",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "nodemon": "nodemon -r esm bin/app.ts",
     "etl": "ts-node lib/etl/user_match_scrape.js",
     "dev": "next dev"
