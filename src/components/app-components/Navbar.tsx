@@ -40,6 +40,13 @@ class Page extends React.Component {
                             Gamers
                         </a>
                     </Box>
+
+
+                    <Box className={'navbar-items'} id={'navbar-right'}>
+                        <a href={'/help'}>
+                            Help
+                        </a>
+                    </Box>
                 </Box>
             </Box>
         );
