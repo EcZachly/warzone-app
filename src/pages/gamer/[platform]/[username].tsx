@@ -78,7 +78,7 @@ export default function GamerDetail({gamerData, view, hostname}) {
     let buttonTabs = tabNames.map((tabName) => {
         const isActive = (chartState.activeTab === tabName);
         return (
-            <Button type={isActive ? 'purple' : 'light'} onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
+            <Button key={tabName} type={isActive ? 'purple' : 'light'} onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
                 {_.capitalize(tabName)}
             </Button>
         )

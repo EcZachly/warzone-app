@@ -1,4 +1,4 @@
-import {Alert, Box, Button, Header, Image, ProgressBar} from "../SimpleComponents";
+import {Alert, Box, Button, Header, Image} from "../SimpleComponents";
 import {Input} from "../SmartComponents";
 import React, {useState} from "react";
 import {GamerService} from "./index";

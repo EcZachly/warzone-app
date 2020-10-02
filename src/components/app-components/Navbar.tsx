@@ -39,6 +39,10 @@ class Page extends React.Component {
                         <a href={'/gamers'}>
                             Gamers
                         </a>
+
+                        <a href={'/help'}>
+                            Resources
+                        </a>
                     </Box>
                 </Box>
             </Box>

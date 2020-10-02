@@ -288,6 +288,8 @@ a:focus, a:active {
 .navbar-items a {
   display: flex;
   align-items: center;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .navbar-items a img {

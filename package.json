@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --require esm",
-    "start": "ts-node bin/app.ts",
+    "build": "next build",
+    "start": "next start -p $PORT",
     "nodemon": "nodemon -r esm bin/app.ts",
     "etl": "ts-node lib/etl/user_match_scrape.js",
-    "build": "next build",
     "dev": "next dev"
   },
   "author": "",
