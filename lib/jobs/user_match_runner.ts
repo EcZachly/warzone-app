@@ -1,7 +1,7 @@
 import { runBackfills, runUpdates } from '../etl/user_match_scrape'
 import { createEtlJob, updateEtlJob } from '../model/etl_jobs'
 import { argv } from 'yargs'
-import * as md5 from 'md5'
+import md5 from 'md5'
 
 const jobType: string = argv.jobType as string;
 
