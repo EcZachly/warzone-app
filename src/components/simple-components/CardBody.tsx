@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const CardBody = (props) => {
+const CardBody = (props:CardBodyProps) => {
     const classNames = getClassNames(props);
     
     return (
@@ -18,11 +17,11 @@ export default CardBody;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-CardBody.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-};
+type CardBodyProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

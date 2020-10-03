@@ -27,7 +27,7 @@ const CONSTANTS = {
 
 
 
-function Header(props) {
+function Header(props: HeaderProps) {
     const textTitle = props.children;
     const HeaderTag = getHeaderSize(props);
     const classNames = getClassNames(props, HeaderTag);
@@ -44,25 +44,19 @@ export default Header;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Header.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //changes the size and tag of the rendered component
-    size: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_SIZES)),
-    
-    //Centers the text
-    textCenter: PropTypes.bool,
-    
-    //Removes the padding from the top of the header tag
-    noTopPadding: PropTypes.bool,
-    
-    //bolds the text
-    bold: PropTypes.bool,
-    
-    italic: PropTypes.bool
-};
+const TS_VALID_SIZES = [...Object.keys(CONSTANTS.VALID_SIZES)] as const;
+
+type HeaderProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    size?: typeof TS_VALID_SIZES,
+    id?: string,
+    textCenter?: boolean,
+    noTopPadding?: boolean,
+    bold?: boolean,
+    italic?: boolean
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

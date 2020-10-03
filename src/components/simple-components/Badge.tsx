@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const CONSTANTS = {
     VALID_TYPES: {
@@ -23,7 +22,7 @@ const CONSTANTS = {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Badge = (props) => {
+const Badge = (props:BadgeProps) => {
     const classNames = getClassNames(props);
     
     return (
@@ -38,17 +37,15 @@ export default Badge;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Badge.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //Renders the badge with a pill style
-    pill: PropTypes.bool,
-    
-    //The color scheme of the alert
-    type: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_TYPES))
-};
+const VALID_TYPE_ENTRIES = [...Object.keys(CONSTANTS.VALID_TYPES)] as const;
+
+type BadgeProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    pill?: boolean,
+    type?: (typeof VALID_TYPE_ENTRIES)[number]
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

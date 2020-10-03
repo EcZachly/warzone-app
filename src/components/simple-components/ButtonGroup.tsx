@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const ButtonGroup = (props) => {
+const ButtonGroup = (props:ButtonGroupProps) => {
     const classNames = getClassNames(props);
     
     return (
@@ -18,11 +17,11 @@ export default ButtonGroup;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-ButtonGroup.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
-};
+type ButtonGroupProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

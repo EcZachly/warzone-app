@@ -1,5 +1,4 @@
 import React from 'react';
-import CSS from "csstype";
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -51,7 +50,7 @@ class Box extends React.Component<BoxProps> {
 
 type BoxProps = {
     className?: string | Array<String>,
-    style?: CSS.Properties,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
     shadow?: Boolean | 1 | 2 | 3 | 4 | 5,
     title?: string,

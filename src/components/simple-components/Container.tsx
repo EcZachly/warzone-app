@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const CONSTANTS = {
     VALID_SIZES: {
@@ -12,9 +11,9 @@ const CONSTANTS = {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Container = (props) => {
+const Container = (props: ContainerProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
         <div id={props.id} className={classNames} style={props.style}>
             {props.children}
@@ -27,21 +26,19 @@ export default Container;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Container.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    id: PropTypes.string,
+const TS_VALID_SIZES = [...Object.keys(CONSTANTS.VALID_SIZES)] as const;
 
-    //Changes the width of the container
-    size: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_SIZES)),
-    
-    //Centers the children inside the container vertically and horizontally
-    centerContent: PropTypes.bool,
-    inline: PropTypes.bool,
-    flex: PropTypes.bool,
-    mode: PropTypes.oneOf(['sidebar', undefined])
-};
+type ContainerProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    id?: string,
+    size?: typeof TS_VALID_SIZES,
+    centerContent?: boolean,
+    inline?: boolean,
+    flex?: boolean,
+    mode?: 'sidebar'
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -51,37 +48,37 @@ function getClassNames(props) {
     let classNames = [
         'container'
     ];
-    
+
     classNames.push(getSize(props));
-    
+
     if (props.centerContent === true) {
         classNames.push('center-content');
     }
-    
+
     if (props.inline === true) {
         classNames.push('inline');
     }
-    
+
     if (props.flex === true) {
         classNames.push('flex');
     }
-    
+
     if (props.mode === 'sidebar') {
         classNames.push('sidebar-container');
     }
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }
 
 
 function getSize(props) {
     const propSize = props.size;
-    
+
     const validSizes = CONSTANTS.VALID_SIZES;
-    
+
     return (validSizes[propSize]) ? `container-${validSizes[propSize]}` : '';
 }

@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Code = (props) => {
+const Code = (props: CodeProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
         <code className={classNames} style={props.style}>
             {props.children}
@@ -18,12 +17,11 @@ export default Code;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Code.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
-};
-
+type CodeProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+}
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PRIVATE METHODS
@@ -32,10 +30,10 @@ function getClassNames(props) {
     let classNames = [
         'code'
     ];
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }

@@ -11,9 +11,9 @@ const CONSTANTS = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-const CardImage = (props) => {
+const CardImage = (props: CardImageProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
         <Image {...props} className={classNames}/>
     );
@@ -24,19 +24,18 @@ export default CardImage;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-CardImage.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //Indicating where the icon will be placed on the card, so the proper corner roundings can be applied
-    position: PropTypes.oneOf(CONSTANTS.VALID_POSITIONS),
-    
-    //Choosing to not have any position indicated for the card icon
-    noPosition: PropTypes.bool,
-    
-    ...Image.propTypes
-};
+type CardImageProps = {
+    src: string,
+    alt: string,
+
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+
+    noPosition?: boolean,
+    background?: string,
+    position?: typeof CONSTANTS.VALID_POSITIONS
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -46,21 +45,21 @@ function getClassNames(props) {
     let classNames = [
         'card-img'
     ];
-    
+
     const validPositions = CONSTANTS.VALID_POSITIONS;
     let selectedPosition = CONSTANTS.DEFAULT_POSITION;
-    
+
     if (validPositions.includes(props.position)) {
         selectedPosition = props.position;
     }
-    
+
     if (props.noPosition !== true) {
         classNames.push('card-img-' + selectedPosition);
     }
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }

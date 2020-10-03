@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const BreadcrumbContainer = (props) => {
+const BreadcrumbContainer = (props:BreadcrumbContainerProps) => {
     const classNames = getClassNames(props);
     
     return (
@@ -18,14 +17,12 @@ export default BreadcrumbContainer;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-BreadcrumbContainer.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //Show the default gray background for the breadcrumbs
-    withBackground: PropTypes.bool
-};
+type BreadcrumbContainerProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    withBackground?: boolean
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
