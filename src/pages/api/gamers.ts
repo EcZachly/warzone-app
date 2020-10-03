@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import {queryView} from "../../model/analysis";
-import {sanitizeGamer} from "../../model/gamers";
+import {queryView} from "../../lib/model/analysis";
+import {sanitizeGamer} from "../../lib/model/gamers";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let viewName: string = 'player_stat_summary';

@@ -1,12 +1,12 @@
 import * as Bluebird from 'bluebird';
 import {getTimestampList} from './utils';
-import {queryGamers, updateGamer} from '../../model/gamers';
+import {queryGamers, updateGamer} from '../model/gamers';
 import {
     getMatchDetailsFromAPI,
     getMinMaxMatchTimestamps,
     writeGamerMatchesToDatabase,
     writeMatchesToDatabase
-} from '../../model/matches';
+} from '../model/matches';
 import ApiWrapper from '../api_wrapper';
 
 //How many gamers we will process at one time

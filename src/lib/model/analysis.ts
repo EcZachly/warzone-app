@@ -1,6 +1,6 @@
-import database from "../lib/database";
+import database from "../database";
 import Bluebird from 'bluebird';
-import {DATABASE_SCHEMA} from "../lib/constants";
+import {DATABASE_SCHEMA} from "../constants";
 
 export async function queryView(view, query = {}){
     let db = await database;

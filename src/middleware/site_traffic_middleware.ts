@@ -1,4 +1,4 @@
-import {createEvent} from '../model/events';
+import {createEvent} from '../lib/model/events';
 import useragent from 'useragent';
 
 function isFileRequest(req) {

@@ -1,9 +1,9 @@
-import WarzoneMapper from "../lib/etl/mapper";
-import {insertIntoDatabase, queryDatabase} from "../lib/etl/utils";
-import UtilityService from '../services/UtilityService.js';
-import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from "../lib/constants";
+import WarzoneMapper from "../etl/mapper";
+import {insertIntoDatabase, queryDatabase} from "../etl/utils";
+import UtilityService from '../../services/UtilityService.js';
+import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from "../constants";
 import  Bluebird from "bluebird";
-import ApiWrapper from '../lib/api_wrapper';
+import ApiWrapper from '../api_wrapper';
 
 
 /**
