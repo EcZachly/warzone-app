@@ -72,5 +72,7 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
 export async function initializeMatches(gamer){
     let API = await ApiWrapper.getInstance();
     let timestampList = [{start: 0, end:0}];
-    return await getMatchDetailsFromAPI({timestampList: timestampList, gamer: gamer}, API, 5);
+    let matches = await getMatchDetailsFromAPI(timestampList, gamer, API, 5);
+    await writeMatchesToDatabase(matches);
+    await writeGamerMatchesToDatabase(matches, gamer);
 }

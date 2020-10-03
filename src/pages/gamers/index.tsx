@@ -2,7 +2,7 @@ import {GetServerSideProps} from 'next'
 import React, {useState} from "react";
 
 import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
-import {Page, Navbar} from './../../components/AppComponents';
+import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
