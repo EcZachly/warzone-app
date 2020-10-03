@@ -12,6 +12,7 @@ main.main {
 
 #navbar {
   height: 100px;
+  width: 100%;
 }
 
 #navbar #navbar-container, #navbar-left, #navbar-right {
@@ -23,7 +24,8 @@ main.main {
   font-weight: 500;
   text-transform: uppercase;
   font-size: 1.25em;
-  margin-right: 25px;
+  margin-left: 0;
+  margin-right: 0;
   width: 100%;
   display: block;
   clear: both;
@@ -62,6 +64,10 @@ main.main {
     font-size: 1.1em;
   }
 
+
+  #navbar #brand-image {
+    margin-right: 25px;
+  }
 
 
   #navbar #navbar-container, #navbar-left, #navbar-right {
