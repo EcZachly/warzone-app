@@ -100,10 +100,10 @@ main.main {
   display: flex;
   align-content: center;
   align-items: center;
+  flex-grow: 1;
 }
 
 #footer #footer-container #footer-branding .header {
-  flex-grow: 1;
 }
 
 #footer #footer-container #footer-branding .header {
@@ -119,7 +119,7 @@ main.main {
 }
 
 #footer #footer-container #footer-item-container {
-  flex-grow: 3;
+  flex-grow: 4;
   width: 100%;
   padding-left: 0;
   display: flex;
@@ -149,6 +149,9 @@ main.main {
     flex-flow: row;
   }
 
+  #footer #footer-container #footer-branding {
+    min-width: 250px;
+  }
 
 
   #footer #footer-container #footer-item-container {
