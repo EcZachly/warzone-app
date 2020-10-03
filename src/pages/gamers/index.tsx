@@ -22,8 +22,6 @@ export default function Gamers({gamers, hostname, recaptchaSiteKey}) {
             return true;
         }
     }).map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
-
-
     return (
         <Page title={'Gamers'}>
             <Navbar/>
