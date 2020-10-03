@@ -82,6 +82,10 @@ class InputText extends React.Component {
         if (props.textCenter) {
             classNames.push('text-center');
         }
+
+        if (['xl', 'lg', 'md', 'sm'].includes(props.size)) {
+            classNames.push('input-size-' + props.size);
+        }
         
         return classNames.join(' ');
     }
@@ -118,13 +122,15 @@ InputText.propTypes = {
     style: PropTypes.object,
     children: PropTypes.node,
     innerRef: PropTypes.func,
-    
+
     //When the input changes, this function will be called
     onChange: PropTypes.func,
     
     //The value of the input
     value: PropTypes.string,
-    
+
+    size: PropTypes.string,
+
     //If true, this will set the focus automatically when the input is loaded
     focus: PropTypes.bool,
     

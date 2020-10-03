@@ -1,7 +1,165 @@
 /* These styles are specific to only this application and will apply to the application as a whole */
 @import 'config';
 
+main.main {
+  position: relative;
+  min-height: 80vh;
+}
+
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
-//SYSTEM STATUS SERVICE ITEM STATUS INDICATOR LEGEND
+//NAVBAR
 
+#navbar {
+  height: 100px;
+}
+
+#navbar #navbar-container, #navbar-left, #navbar-right {
+  display: block;
+  text-align: center;
+}
+
+#navbar #brand-image {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 1.25em;
+  margin-right: 25px;
+  width: 100%;
+  display: block;
+  clear: both;
+  text-align: center;
+}
+
+#navbar #brand-image span {
+  font-weight: 300;
+  color: $theme-light-gray;
+  text-transform: capitalize;
+}
+
+#navbar #navbar-left a, #navbar #navbar-right a {
+  display: inline-block;
+}
+
+#navbar a {
+  color: #eee;
+}
+
+#navbar a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+  #navbar {
+    height: 70px;
+    font-size: 1.1em;
+  }
+
+
+
+  #navbar #navbar-container, #navbar-left, #navbar-right {
+    display: flex;
+  }
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//FOOTER
+
+#footer {
+  width: 100%;
+  min-height: 300px;
+  font-size: 1.1em;
+  padding-top: 60px;
+  padding-bottom: 80px;
+  background: #202017;
+}
+
+#footer #footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: column;
+}
+
+#footer #footer-container #footer-branding {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+#footer #footer-container #footer-branding .header {
+  flex-grow: 1;
+}
+
+#footer #footer-container #footer-branding .header {
+  font-weight: 500;
+  font-size: 2.5em;
+  align-self: center;
+  line-height: 100%;
+}
+
+#footer #footer-container #footer-branding .header .small {
+  font-weight: 300;
+  color: $theme-light-gray;
+}
+
+#footer #footer-container #footer-item-container {
+  flex-grow: 3;
+  width: 100%;
+  padding-left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+}
+
+
+#footer #footer-container #footer-item-container .footer-items {
+  flex-grow: 1;
+  align-self: flex-start;
+}
+
+
+#footer #footer-container #footer-item-container .footer-items a {
+  color: white;
+}
+
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+  #footer #footer-container {
+    flex-flow: row;
+  }
+
+
+
+  #footer #footer-container #footer-item-container {
+    padding-left: 50px;
+  }
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}

@@ -28,6 +28,8 @@ class Page extends React.Component {
         return (
             <div style={props.style} className={classNames}>
                 <Head>
+                    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+
                     <title>{props.title}</title>
                 </Head>
 

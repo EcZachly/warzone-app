@@ -1,30 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import CSS from 'csstype';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const LineBreak = (props) => {
+
+export default function LineBreak(props: LineBreakProps) {
     const classNames = getClassNames(props);
     const Tag = getTag(props);
-    
+
     return (
         <Tag className={classNames} style={props.style}/>
     );
-};
-export default LineBreak;
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-LineBreak.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    noMargin: PropTypes.bool,
-    noMargins: PropTypes.bool
-};
-
+type LineBreakProps = {
+    className?: String | Array<String>,
+    style?: CSS.Properties,
+    children?: React.ReactNode,
+    noMargins?: Boolean,
+    noMargin?: Boolean,
+    clear?: Boolean
+}
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PRIVATE METHODS
@@ -33,15 +33,15 @@ function getClassNames(props) {
     let classNames = [
         'line-break'
     ];
-    
+
     if (props.noMargin === true) {
         classNames.push('no-margins');
     }
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }
 

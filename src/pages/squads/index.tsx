@@ -2,7 +2,8 @@ import {GetServerSideProps} from 'next'
 import SquadCard from '../../components/squad/SquadCard';
 
 import {Container, Main} from './../../components/SimpleComponents';
-import {Page, Navbar} from './../../components/AppComponents';
+import {Page, Navbar, Footer} from './../../components/AppComponents';
+import React from "react";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -17,6 +18,8 @@ export default function Squads({squads}) {
                     {squads.map((squad) => <SquadCard key={squad.team_grain} squad={squad}/>)}
                 </Main>
             </Container>
+
+            <Footer/>
         </Page>
     )
 }

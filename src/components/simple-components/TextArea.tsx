@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CSS from "csstype";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class TextArea extends React.Component {
+class TextArea extends React.Component<TextAreaProps> {
     
     constructor(props) {
         super(props);
@@ -73,29 +74,23 @@ class TextArea extends React.Component {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-let ForwardedRefTextArea = React.forwardRef((props, ref) => <TextArea innerRef={ref} {...props}/>);
+type TextAreaProps = {
+    className?: string | Array<String>,
+    style?: CSS.Properties,
+    children?: React.ReactNode,
+    focus?: boolean,
+    onChange?: Function,
+    ref?: any,
+    innerRef?: any,
+    hasError?: boolean,
+    disabled?: boolean,
+    placeholder?: string,
+    value?: string,
+    textCenter?: boolean,
+    mode?: 'plain'
+}
 
-TextArea.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //When the input changes, this function will be called
-    onChange: PropTypes.func,
-    
-    //The value of the input
-    value: PropTypes.string,
-    
-    //The placeholder for the element
-    placeholder: PropTypes.string,
-    
-    //disables the input and prevents the user from entering any information
-    disabled: PropTypes.bool,
-    
-    //Adds some error stylings to the input
-    hasError: PropTypes.bool
-};
 
-ForwardedRefTextArea.propTypes = TextArea.propTypes;
+let ForwardedRefTextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => <TextArea innerRef={ref} {...props}/>);
 
 export default ForwardedRefTextArea;

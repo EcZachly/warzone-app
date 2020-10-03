@@ -4,11 +4,11 @@ import {withRouter} from 'next/router';
 
 import React from 'react';
 
-import {Box, Paragraph} from './../SimpleComponents';
+import {Box, Button, Text} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-class Page extends React.Component {
+class Navbar extends React.Component {
 
     constructor(props) {
         super(props);
@@ -30,12 +30,9 @@ class Page extends React.Component {
                 <Box id={'navbar-container'}>
                     <Box className={'navbar-items'} id={'navbar-left'}>
                         <a href={'/'} id={'brand-image'}>
-                            Warzone
+                            Warzone <Text>Stats Tracker</Text>
                         </a>
-                    </Box>
 
-
-                    <Box className={'navbar-items'} id={'navbar-right'}>
                         <a href={'/gamers'}>
                             Gamers
                         </a>
@@ -44,6 +41,17 @@ class Page extends React.Component {
                             Resources
                         </a>
                     </Box>
+
+
+                    <Box className={'navbar-items'} id={'navbar-right'}>
+                        <a>
+                            Login
+                        </a>
+
+                        <Button type={'dark'} style={{fontWeight: '500'}}>
+                            Signup
+                        </Button>
+                    </Box>
                 </Box>
             </Box>
         );
@@ -51,4 +59,4 @@ class Page extends React.Component {
 
 }
 
-export default withRouter(Page);
+export default withRouter(Navbar);

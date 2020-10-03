@@ -2,7 +2,104 @@
 @import 'config';
 
 body {
-  background: #333;
-  color: #fafafa;
+  //background: #333;
+  //color: #fafafa;
 }
 
+html, body {
+  font: normal 100% / 1.65 'Roboto', 'Arial', sans-serif;
+}
+
+#section-display {
+  padding-top: 25px;
+  padding-bottom: 60px;
+
+  background-image: url("/images/home/smoke-sm.jpeg");
+  background-position: cover;
+  background-size: cover;
+}
+
+#section-display h1 {
+  font-size: 3em;
+  line-height: 100%;
+  font-weight: 500;
+}
+
+#section-display h1 small {
+  font-weight: 300;
+  color: $theme-light-gray;
+  font-size: .9em;
+}
+
+#section-display input {
+  opacity: .9;
+}
+
+@media (min-width: 576px) {
+  #section-display {
+    background-image: url("/images/home/smoke-md.jpeg");
+  }
+}
+
+@media (min-width: 768px) {
+  #section-display {
+    padding-top: 75px;
+    padding-bottom: 100px;
+
+    background-image: url("/images/home/smoke-xl.jpeg");
+  }
+
+
+  #section-display h1 {
+    font-size: 4em;
+  }
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SECTION OVERVIEW
+
+#section-overview {
+  background: darken($theme-background-color, 5);
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+#section-overview .info-container {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+#section-overview .info-container .info-box {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+  #section-overview .info-container {
+    display: flex;
+    flex-flow: row;
+  }
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
