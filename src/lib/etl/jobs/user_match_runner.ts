@@ -1,5 +1,5 @@
-import { runBackfills, runUpdates } from '../etl/user_match_scrape'
-import { createEtlJob, updateEtlJob } from '../model/etl_jobs'
+import { runBackfills, runUpdates } from '../user_match_scrape'
+import { createEtlJob, updateEtlJob } from '../../../model/etl_jobs'
 import { argv } from 'yargs'
 import md5 from 'md5'
 

@@ -1,7 +1,7 @@
-import {insertIntoDatabase, queryDatabase, updateDatabaseRecords} from "../etl/utils";
-import WarzoneMapper from "../etl/mapper";
-import {GAMER_TABLE} from "../constants";
-import ApiWrapper from '../api_wrapper';
+import {insertIntoDatabase, queryDatabase, updateDatabaseRecords} from "../lib/etl/utils";
+import WarzoneMapper from "../lib/etl/mapper";
+import {GAMER_TABLE} from "../lib/constants";
+import ApiWrapper from '../lib/api_wrapper';
 import UtilityService from '../services/UtilityService';
 
 

@@ -7,4 +7,4 @@ let DB_URL = WARZONE_DATABASE_URL + '?ssl=no-verify'
 
 import massive from 'massive';
 
-export default massive({connectionString : DB_URL});
+export default massive(DB_URL, {  allowedSchemas: ['warzone']});

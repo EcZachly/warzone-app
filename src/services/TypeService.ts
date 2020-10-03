@@ -1,10 +1,3 @@
-let exportObj = {};
-
-
-//===---==--=-=--==---===----===---==--=-=--==---===----//
-
-
-
 /**
  * @description this ensures that an item is undefined
  *
@@ -14,7 +7,6 @@ let exportObj = {};
 export function isUndefined(item) {
     return typeof item === 'undefined';
 }
-exportObj.isUndefined = isUndefined;
 
 
 /**
@@ -26,7 +18,6 @@ exportObj.isUndefined = isUndefined;
 export function isNull(item) {
     return item === null;
 }
-exportObj.isNull = isNull;
 
 
 /**
@@ -36,7 +27,7 @@ exportObj.isNull = isNull;
  * @param {Boolean} [allowString=false] - allow a user to test if an item is a string and a valid date object
  * @returns {Boolean} - true or false
  */
-export function isDate(item, allowString) {
+export function isDate(item, allowString=false) {
     const isNotInvalidType = (!isUndefined(item) && !isNull(item) && !isNumeric(item) && !isBoolean(item) && !isArray(item));
     const stringAllowance = (allowString !== true) ? !isString(item) : true;
 
@@ -51,8 +42,6 @@ export function isDate(item, allowString) {
         return false;
     }
 }
-exportObj.isDate = isDate;
-
 
 
 /**
@@ -63,7 +52,7 @@ exportObj.isDate = isDate;
  * @param {*=} [equalityVal=null] - (true/false) if equalityVal is present, it will check to see if the value is true or false
  * @returns {Boolean} - true or false
  */
-export function isBoolean(item, allowString, equalityVal) {
+export function isBoolean(item, allowString=false, equalityVal=null) {
     const itemIsBoolean = (item === true || item === false);
     const itemIsStringBoolean = (item === 'true' || item === 'false');
 
@@ -77,8 +66,6 @@ export function isBoolean(item, allowString, equalityVal) {
         return (allowString === true) ? (itemIsBoolean || itemIsStringBoolean) : itemIsBoolean;
     }
 }
-exportObj.isBoolean = isBoolean;
-
 
 
 /**
@@ -88,14 +75,11 @@ exportObj.isBoolean = isBoolean;
  * @param {Boolean} [withoutTypeConversion=false] - require that the item is not a string
  * @returns {Boolean} - true or false
  */
-export function isInteger(item, withoutTypeConversion) {
-    const itemIsInteger = (!isUndefined(item) && !isNull(item) && !isNaN(item) && (parseInt(Number(item)) == item) && !isNaN(parseInt(item, 10))); // eslint-disable-line
+export function isInteger(item, withoutTypeConversion=false) {
+    const itemIsInteger = (!isUndefined(item) && !isNull(item) && !isNaN(item) && (parseInt(item) == item) && !isNaN(parseInt(item, 10))); // eslint-disable-line
     const isNotString = (withoutTypeConversion === true) ? (itemIsInteger === true && !isString(item)) : true;
     return (itemIsInteger === true && isNotString === true);
 }
-exportObj.isInteger = isInteger;
-
-
 
 /**
  * @description this ensures than an item is a number (with or without decimals)
@@ -104,13 +88,11 @@ exportObj.isInteger = isInteger;
  * @param {Boolean} [withoutTypeConversion=false] - require that the item is not a string
  * @returns {Boolean} - true or false
  */
-export function isNumeric(item, withoutTypeConversion) {
+export function isNumeric(item, withoutTypeConversion=false) {
     const itemIsNumeric = (!isUndefined(item) && !isNull(item) && !isNaN(parseFloat(item)) && isFinite(item));
     const isNotString = (withoutTypeConversion === true) ? (itemIsNumeric === true && !isString(item)) : true;
     return (itemIsNumeric === true && isNotString === true);
 }
-exportObj.isNumeric = isNumeric;
-
 
 
 /**
@@ -122,8 +104,6 @@ exportObj.isNumeric = isNumeric;
 export function isFunction(item) {
     return (!isUndefined(item) && !isNull(item) && typeof item === 'function');
 }
-exportObj.isFunction = isFunction;
-
 
 
 /**
@@ -133,14 +113,11 @@ exportObj.isFunction = isFunction;
  * @param {Boolean} [requireNotEmpty=false] - require that the string has a length of at least one
  * @returns {Boolean} - true or false
  */
-export function isString(item, requireNotEmpty) {
+export function isString(item, requireNotEmpty=false) {
     const itemIsString = (!isUndefined(item) && !isNull(item) && typeof item === 'string');
     const isNotEmpty = (requireNotEmpty === true) ? (itemIsString === true && item.length > 0) : true;
     return (itemIsString === true && isNotEmpty === true);
 }
-exportObj.isString = isString;
-
-
 
 /**
  * @description this ensures than an item is an object
@@ -149,13 +126,11 @@ exportObj.isString = isString;
  * @param {Boolean} [requireNotEmpty=false] - require that the object has at least one key
  * @returns {Boolean} - true or false
  */
-export function isObject(item, requireNotEmpty) {
+export function isObject(item, requireNotEmpty=false) {
     const itemIsObject = (!isUndefined(item) && !isNull(item) && !isDate(item) && typeof item === 'object' && !isFunction(item) && Array.isArray(item) === false);
     const isNotEmpty = (requireNotEmpty === true) ? (itemIsObject === true && Object.keys(item).length > 0) : true;
     return (itemIsObject === true && isNotEmpty === true);
 }
-exportObj.isObject = isObject;
-
 
 
 /**
@@ -165,13 +140,11 @@ exportObj.isObject = isObject;
  * @param {Boolean} [requireNotEmpty=false] - require that the array has a length of at least one
  * @returns {Boolean} - true or false
  */
-export function isArray(item, requireNotEmpty) {
+export function isArray(item, requireNotEmpty=false) {
     const isArray = !isUndefined(item) && !isNull(item) && Array.isArray(item);
     const isNotEmpty = (requireNotEmpty === true) ? (isArray === true && item.length > 0) : true;
     return (isArray === true && isNotEmpty === true);
 }
-exportObj.isArray = isArray;
-
 
 
 /**
@@ -189,8 +162,18 @@ export function isIsoString(item) {
         return false;
     }
 }
-exportObj.isIsoString = isIsoString;
 
 
-
-export default exportObj;
+export default {
+    isToIsoString: isIsoString,
+    isArray: isArray,
+    isObject: isObject,
+    isString: isString,
+    isFunction: isFunction,
+    isInteger: isInteger,
+    isBoolean: isBoolean,
+    isUndefined: isUndefined,
+    isNull: isNull,
+    isDate: isDate,
+    isNumeric: isNumeric
+};

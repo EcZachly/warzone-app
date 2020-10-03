@@ -21,7 +21,7 @@
   },
   "include": [
     "./routes/**/*",
-    "./lib/**/*"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules"

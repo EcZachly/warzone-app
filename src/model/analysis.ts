@@ -1,6 +1,6 @@
-import database from "../database";
+import database from "../lib/database";
 import Bluebird from 'bluebird';
-import {DATABASE_SCHEMA} from "../constants";
+import {DATABASE_SCHEMA} from "../lib/constants";
 
 export async function queryView(view, query = {}){
     let db = await database;
@@ -8,7 +8,6 @@ export async function queryView(view, query = {}){
         return db[DATABASE_SCHEMA][view].find(query)
     }
     else if(db[view]){
-        Object.values(query);
         return db[view](Object.values(query))
     }
     else{

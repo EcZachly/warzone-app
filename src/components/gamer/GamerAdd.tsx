@@ -26,7 +26,7 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
     const [message, setMessage] = useState({});
 
 
-    let loadingComponent = <div></div>;
+    let loadingComponent = <div/>;
     if(loading){
         //TODO make this a spinner
         loadingComponent = <Image style={{width: '50px', height: '50px'}} src={"/images/spinner_gif.gif"}/>
@@ -95,9 +95,9 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
                        onChange={(value) => setPlatform(value)}/>
 
                 {loadingComponent}
-                <Alert type={message.type}
+                <Alert type={message['type']}
                        hideIfEmpty>
-                    {message.message}
+                    {message['message']}
                 </Alert>
 
                 <Button onClick={() => addGamer()}>

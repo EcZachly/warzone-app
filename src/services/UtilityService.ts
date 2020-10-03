@@ -1,20 +1,14 @@
-let exportObj = {};
-
-import TypeService from './TypeService.js';
+import TypeService from './TypeService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-export function sleep(milliseconds) {
+export function sleep(milliseconds: number) {
 	const date = Date.now();
 	let currentDate = null;
 	do {
 		currentDate = Date.now();
 	} while (currentDate - date < milliseconds);
 }
-exportObj.sleep = sleep;
-
-
-
 
 /**
  *
@@ -24,7 +18,7 @@ exportObj.sleep = sleep;
  *
  * @returns {*}
  */
-export function validateItem(item, type, defaultValue) {
+export function validateItem(item: any, type:string, defaultValue: any) {
 	const typeMap = {
 		'undefined': TypeService.isUndefined,
 		'null': TypeService.isNull,
@@ -43,11 +37,12 @@ export function validateItem(item, type, defaultValue) {
 	if (typeMap[key]) {
 		return (typeMap[key](item) === true) ? item : defaultValue;
 	} else {
+		console.log(item, type, defaultValue);
 		throw new Error('invalid key');
 	}
 }
-exportObj.validateItem = validateItem;
 
-
-
-export default exportObj;
+export default {
+	validateItem: validateItem,
+	sleep: sleep
+};

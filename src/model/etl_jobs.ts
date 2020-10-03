@@ -1,5 +1,5 @@
-import {insertIntoDatabase, updateDatabaseRecords} from "../etl/utils";
-import {ETL_JOBS} from "../constants";
+import {insertIntoDatabase, updateDatabaseRecords} from "../lib/etl/utils";
+import {ETL_JOBS} from "../lib/constants";
 
 export async function updateEtlJob(job) {
     let query = {
