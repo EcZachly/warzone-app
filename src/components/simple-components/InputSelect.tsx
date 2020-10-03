@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class InputRadio extends React.Component {
+class InputSelect extends React.Component {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: InputSelectProps) {
         super(props);
     }
     
@@ -18,7 +18,7 @@ class InputRadio extends React.Component {
     }
     
     render() {
-        const props = this.props;
+        const props = this.props as InputSelectProps;
         const classNames = this._getClasses(props);
         const selectOptions = this._getSelectOptions(props);
         
@@ -26,7 +26,7 @@ class InputRadio extends React.Component {
             <select className={classNames}
                     disabled={props.disabled}
                     style={props.style}
-                    value={props.value}
+                    value={props.value as string}
                     onChange={(event) => {
                         if (props.onChange) {
                             const value = event.target.value;
@@ -107,28 +107,28 @@ class InputRadio extends React.Component {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-InputRadio.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
+type InputSelectProps = {
+    className?: string,
+    style?: object,
+    children?: React.ReactNode,
     
     //When the input changes, this function will be called
-    onChange: PropTypes.func.isRequired,
+    onChange: Function,
     
     //The list of possible radio options that the user can select from
-    options: PropTypes.arrayOf(PropTypes.object).isRequired,
+    options: Array<object>
     
     //The value of the input
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
+    value: string |number | boolean
     
     //If true, this will set the focus automatically when the input is loaded
-    focus: PropTypes.bool,
+    focus: boolean,
     
     //disables the input and prevents the user from entering any information
-    disabled: PropTypes.bool,
+    disabled: boolean,
     
     //Adds some error stylings to the input
-    hasError: PropTypes.bool
+    hasError: boolean
 };
 
-export default InputRadio;
+export default InputSelect;

@@ -26,7 +26,7 @@ class Navbar extends React.Component {
         const props = this.props;
 
         return (
-            <Box id={'navbar'} className={'navbar'} style={props.style}>
+            <Box id={'navbar'} className={'navbar'} style={props['style']}>
                 <Box id={'navbar-container'}>
                     <Box className={'navbar-items'} id={'navbar-left'}>
                         <a href={'/'} id={'brand-image'}>
@@ -48,7 +48,7 @@ class Navbar extends React.Component {
                             Login
                         </a>
 
-                        <Button type={'dark'} style={{fontWeight: '500'}}>
+                        <Button type={['dark']} style={{fontWeight: 500}}>
                             Signup
                         </Button>
                     </Box>

@@ -16,7 +16,7 @@ class Main extends React.Component {
         const classNames = this.getClassNames(props);
     
         return (
-            <main className={classNames} style={props.style} ref={props.innerRef}>
+            <main className={classNames} style={props['style']} ref={props['innerRef']}>
                 {props.children}
             </main>
         );

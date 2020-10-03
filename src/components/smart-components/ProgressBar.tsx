@@ -12,7 +12,8 @@ const ProgressBarContainer = (props) => {
                          color={props.color}
                          type={props.type}
                          animated={props.animated}
-                         striped={props.striped} showLabel={props.showLabel}/>
+                         striped={props.striped}
+                         showLabel={props.showLabel}/>
         </Progress>
     );
 };

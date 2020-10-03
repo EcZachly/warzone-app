@@ -26,7 +26,7 @@ export default CardImage;
 
 type CardImageProps = {
     src: string,
-    alt: string,
+    alt?: string,
 
     className?: string,
     style?: React.CSSProperties,

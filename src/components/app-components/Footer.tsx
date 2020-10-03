@@ -5,7 +5,6 @@ import {withRouter} from 'next/router';
 import React from 'react';
 
 import {Box, Button, Small, Paragraph, LineBreak, Header, Container} from './../SimpleComponents';
-
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 class Footer extends React.Component {
@@ -26,7 +25,7 @@ class Footer extends React.Component {
         const props = this.props;
 
         return (
-            <Box id={'footer'} className={'footer'} style={props.style}>
+            <Box id={'footer'} className={'footer'} style={props['style']}>
                 <Container id={'footer-container'}>
                     <Box id={'footer-branding'}>
                         <Header>
@@ -70,7 +69,7 @@ class Footer extends React.Component {
                             </Paragraph>
 
                             <Paragraph>
-                                <Button type={'dark'} style={{fontWeight: '500'}}>
+                                <Button type={['dark']} style={{fontWeight: 500}}>
                                     Signup
                                 </Button>
                             </Paragraph>
@@ -88,7 +87,6 @@ class Footer extends React.Component {
             </Box>
         );
     }
-
 }
 
 export default withRouter(Footer);

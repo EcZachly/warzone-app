@@ -16,7 +16,7 @@ const CONFIG = {
 
 
 export default function GamerPlatformImage({gamer, size, color}: GamerPlatformImageProps) {
-    const platformCode = gamer.platform;
+    const platformCode = gamer['platform'];
     const platformConfig = GamerService.getPlatformObjByID(platformCode);
 
 

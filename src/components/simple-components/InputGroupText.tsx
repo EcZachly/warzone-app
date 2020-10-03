@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const InputGroupText = (props) => {
+const InputGroupText = (props: InputGroupTextProps) => {
     const classNames = getClassNames(props);
     
     return (
@@ -18,10 +18,10 @@ export default InputGroupText;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-InputGroupText.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
+type InputGroupTextProps = {
+    className: string,
+    style: object,
+    children: React.ReactNode
 };
 
 

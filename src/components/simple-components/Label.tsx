@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CSS from "csstype";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Label = (props) => {
+const Label = (props: LabelProps) => {
     const classNames = getClassNames(props);
     
     return (
@@ -18,10 +19,12 @@ export default Label;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Label.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
+type LabelProps = {
+    className?: string,
+    style?: CSS.Properties,
+    onClick?: (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => void,
+    size?: string,
+    children?: React.ReactNode
 };
 
 

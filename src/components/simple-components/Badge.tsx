@@ -44,6 +44,7 @@ type BadgeProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     pill?: boolean,
+    color?: string,
     type?: (typeof VALID_TYPE_ENTRIES)[number]
 }
 

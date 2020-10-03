@@ -50,7 +50,7 @@ type HeaderProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    size?: typeof TS_VALID_SIZES,
+    size?: string,
     id?: string,
     textCenter?: boolean,
     noTopPadding?: boolean,

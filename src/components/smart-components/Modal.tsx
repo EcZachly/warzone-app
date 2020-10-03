@@ -22,9 +22,8 @@ export default class Modal extends React.Component {
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: ModalProps) {
         super(props);
-        
         this.state = {
             dialogueWasClicked: false
         };
@@ -43,7 +42,7 @@ export default class Modal extends React.Component {
     }
     
     componentWillUnmount() {
-        if (this.props.show === true) {
+        if (this.props['show'] === true) {
             document.removeEventListener('keydown', this.keydown, false);
         }
     }
@@ -51,7 +50,7 @@ export default class Modal extends React.Component {
     
     
     escapeKeyClicked(event) {
-        const props = this.props;
+        const props: ModalProps =  this.props as ModalProps;
         
         if (props.show === true && props.disableEscapeClose !== true) {
             if (TypeService.isFunction(props.onEscapeClick)) {
@@ -89,7 +88,7 @@ export default class Modal extends React.Component {
                      style={{display: 'block', opacity: 1, ...props.style}}
                      onClick={() => {
                          setTimeout(() => {
-                             if (this.state.dialogueWasClicked !== true) {
+                             if (this.state['dialogueWasClicked'] !== true) {
                                  this.backgroundClicked();
                              } else {
                                  this.setState({
@@ -131,7 +130,7 @@ export default class Modal extends React.Component {
     
     
     backgroundClicked() {
-        const props = this.props;
+        const props: ModalProps = this.props as ModalProps;
         
         if (props.disableBackgroundClose !== true) {
             if (TypeService.isFunction(props.onBackgroundClick)) {
@@ -205,13 +204,13 @@ export default class Modal extends React.Component {
     
 }
 
-Modal.propTypes = {
-    show: PropTypes.bool.isRequired,
-    size: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_SIZES)),
-    centered: PropTypes.bool,
-    disableEscapeClose: PropTypes.bool,
-    disableBackgroundClose: PropTypes.bool,
-    closeModal: PropTypes.func,
-    onBackgroundClick: PropTypes.func,
-    onEscapeClick: PropTypes.func
+type ModalProps = {
+    show: boolean,
+    size: string,
+    centered: boolean,
+    disableEscapeClose: boolean,
+    disableBackgroundClose: boolean,
+    closeModal: Function,
+    onBackgroundClick: Function,
+    onEscapeClick: Function
 };

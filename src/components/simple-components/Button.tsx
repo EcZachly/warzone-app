@@ -67,12 +67,12 @@ type ButtonProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
 
-    buttonType?: typeof CONSTANTS.VALID_BUTTON_TYPES,
+    buttonType?: (typeof CONSTANTS.VALID_BUTTON_TYPES) | string,
     noDefaultType?: boolean,
     block?: boolean,
     outline?: boolean,
     size?: typeof CONSTANTS.VALID_SIZES,
-    type?: typeof TS_VALID_TYPES,
+    type?: typeof TS_VALID_TYPES | string,
     disabled?: boolean
 }
 

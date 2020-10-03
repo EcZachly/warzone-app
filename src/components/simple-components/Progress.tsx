@@ -60,7 +60,7 @@ function getStyle(props) {
             heightValue = heightValue + defaultEnding;
         }
         
-        style.height = heightValue;
+        style['height'] = heightValue;
     }
     
     return style;

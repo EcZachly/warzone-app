@@ -11,7 +11,7 @@ class InputRadio extends React.Component<InputRadioProps> {
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: InputRadioProps) {
         super(props);
     }
     
@@ -89,7 +89,7 @@ type InputRadioProps = {
     options: Array<Object>,
     name: string,
     onChange: Function,
-
+    focus?: boolean,
     className?: string | Array<String>,
     style?: CSS.Properties,
     children?: React.ReactNode,

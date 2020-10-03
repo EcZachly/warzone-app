@@ -33,7 +33,7 @@ type ContainerProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     id?: string,
-    size?: typeof TS_VALID_SIZES,
+    size?: typeof TS_VALID_SIZES | string,
     centerContent?: boolean,
     inline?: boolean,
     flex?: boolean,

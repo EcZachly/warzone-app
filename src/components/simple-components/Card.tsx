@@ -24,6 +24,7 @@ export default Card;
 type CardProps = {
     className?: string,
     style?: React.CSSProperties,
+    isClickable?: boolean,
     children?: React.ReactNode | React.ReactNodeArray,
     shadow?: 1 | 2 | 3 | 4 | 5,
     onClick?: Function

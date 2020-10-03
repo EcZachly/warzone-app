@@ -3,6 +3,7 @@ import React from 'react';
 import ListItem from './ListItem';
 import Badge from './Badge';
 import Button from './Button';
+import TypeService from "../../services/TypeService";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -85,9 +86,9 @@ function getStyle(props) {
     let style = {};
 
     if (badgeValueExists(props)) {
-        style.display = 'flex';
-        style.justifyContent = 'space-between';
-        style.alignItems = 'center';
+        style['display'] = 'flex';
+        style['justifyContent'] = 'space-between';
+        style['alignItems']= 'center';
     }
 
     return style;

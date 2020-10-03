@@ -24,7 +24,7 @@ const CONSTANTS = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-const ProgressBar = (props) => {
+const ProgressBar = (props: ProgressBarProps) => {
     const classNames = getClassNames(props);
     const style = getStyle(props);
     const label = getLabel(props);
@@ -46,29 +46,21 @@ export default ProgressBar;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-ProgressBar.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
+type ProgressBarProps = {
+    className?: string,
+    style?: object,
+    children?: React.ReactNode,
+    color?: string,
     //Make the progress bar striped
-    striped: PropTypes.bool,
+    striped?: boolean,
     
     //If the progress bar is striped, this will animate it
-    animated: PropTypes.bool,
+    animated?: boolean,
     
-    type: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_TYPES)),
+    type?: string,
     
-    value: function(props, propName, componentName) {
-        const value = props[propName];
-        const isUndefined = (TypeService.isUndefined(value) || TypeService.isNull(value));
-        
-        if (isUndefined === false) {
-            if (TypeService.isInteger(props[propName]) === false || props[propName] > 100 || props[propName] < 0) {
-                return new Error(`Invalid prop ${propName} supplied to ${componentName}. It must be an Integer between 0 and 100`);
-            }
-        }
-    }
+    value?: number,
+    showLabel?: boolean
 };
 
 
@@ -115,7 +107,7 @@ function getStyle(props) {
         style = {...style, ...props.style};
     }
     
-    style.width = getCurrentValuePosition(props) + '%';
+    style['width'] = getCurrentValuePosition(props) + '%';
     
     return style;
 }

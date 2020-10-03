@@ -20,8 +20,8 @@ export default BreadcrumbItem;
 //PROPS
 
 type BreadcrumbItemProps = {
-    onClick: Function,
-
+    onClick?: Function,
+    href: Function,
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
