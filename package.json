@@ -7,8 +7,7 @@
     "test": "mocha --require esm",
     "build": "next build",
     "start": "next start -p $PORT",
-    "nodemon": "nodemon -r esm bin/app.ts",
-    "etl": "ts-node lib/etl/user_match_scrape.js",
+    "etl": "ts-node src/lib/etl/user_match_scrape.js",
     "dev": "next dev"
   },
   "author": "",
@@ -18,6 +17,7 @@
     "@types/node": "^14.11.2",
     "@types/react": "^16.9.49",
     "@types/yargs": "^15.0.5",
+    "@zeit/next-sass": "^1.0.1",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "call-of-duty-api": "^1.2.16",

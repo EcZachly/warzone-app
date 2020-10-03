@@ -8,7 +8,6 @@ export async function queryView(view, query = {}){
         return db[DATABASE_SCHEMA][view].find(query)
     }
     else if(db[view]){
-        Object.values(query);
         return db[view](Object.values(query))
     }
     else{

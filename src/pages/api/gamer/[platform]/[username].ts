@@ -1,8 +1,8 @@
 import {NextApiRequest, NextApiResponse} from 'next'
 
-import {ViewQuery} from "../../../../../lib/model/view_query";
+import {ViewQuery} from "../../../../lib/model/view_query";
 import DefaultMiddleware from '../../../../middleware/default_middleware';
-import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from "../../../../../lib/model/gamers";
+import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from "../../../../lib/model/gamers";
 import Bluebird from 'bluebird';
 
 let TEAMMATE_FILTER_KEYS = ['username', 'platform', 'aliases'];

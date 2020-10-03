@@ -32,7 +32,7 @@ SELECT team_grain,
        CAST(COUNT(DISTINCT ft.match_id) AS REAL) AS num_matches,
        CAST(SUM(kills) AS REAL) AS total_kills,
        CAST(SUM(deaths) AS REAL) AS total_deaths,
-       CAST(SUM(kills) AS REAL)/SUM(deaths) AS kdr,
+       CAST(SUM(kills) AS REAL)/NULLIF(SUM(deaths), 0) AS kdr,
        CAST(SUM(kills) AS REAL)/COUNT(DISTINCT ft.match_id) AS kills_per_game,
        CAST(SUM(kills) AS REAL)/COUNT(DISTINCT ft.match_id)/COUNT(DISTINCT gm.query_username || '-' || gm.query_platform) AS kills_per_person_per_game,
        CAST(SUM(score) AS REAL)/COUNT(DISTINCT ft.match_id) AS score_per_game,
@@ -49,7 +49,7 @@ SELECT team_grain,
        CAST(SUM(headshots) AS REAL) AS total_headshots,
        CAST(SUM(headshots) AS REAL)/COUNT(DISTINCT ft.match_id) AS headshots_per_game,
        CAST(SUM(gulag_kills) AS REAL) /
-       SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)                                  as gulag_win_rate
+       NULLIF(SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills), 0)                              as gulag_win_rate
 FROM full_teams ft
     JOIN warzone.gamer_matches gm ON ft.match_id = gm.match_id
        JOIN warzone.matches_augmented m ON ft.match_id = m.match_id

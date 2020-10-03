@@ -1,6 +1,6 @@
 // This uses phases as outlined here: https://nextjs.org/docs/#custom-configuration
-
-module.exports = (phase) => {
+const withSass = require('@zeit/next-sass');
+module.exports = withSass((phase) => {
     const env = {
         WARZONE_DATABASE_URL: process.env.WARZONE_DATABASE_URL,
         WARZONE_EMAIL: process.env.WARZONE_EMAIL,
@@ -19,4 +19,4 @@ module.exports = (phase) => {
         env,
         api
     }
-}
+});

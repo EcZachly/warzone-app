@@ -1,7 +1,7 @@
 import React from 'react';
 import App from 'next/app';
 
-import '../../public/css/core_styles.css';
+// import '../../public/css/core_styles.css';
 import './../assets/styles/config.scss';
 import './../assets/styles/components.scss';
 

@@ -2,7 +2,7 @@ import {insertIntoDatabase, queryDatabase, updateDatabaseRecords} from "../etl/u
 import WarzoneMapper from "../etl/mapper";
 import {GAMER_TABLE} from "../constants";
 import ApiWrapper from '../api_wrapper';
-import UtilityService from '../services/UtilityService';
+import UtilityService from '../../services/UtilityService';
 
 
 export async function initializeGamer(queryGamer) {
