@@ -1,43 +1,79 @@
-import Head from 'next/head'
+import React, {useState} from 'react';
 
-import {Navbar, Page} from './../components/AppComponents';
-import {Container, Header, Main, LineBreak} from './../components/SimpleComponents';
+import {Navbar, Page, Footer} from './../components/AppComponents';
+import {Container, Header, Box, Text, Small, Main, LineBreak} from './../components/SimpleComponents';
+import {Input} from './../components/SmartComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 export default function Home() {
+    const [searchInputValue, updateSearchInputValue] = useState('');
     return (
         <Page title={'Warzone'}>
             <Navbar/>
 
-            <Container>
-                <Main>
-                    <Header>Warzone</Header>
+            <Main>
+                <Box id={'section-display'}>
+                    <Container>
+                        <Header size={'xl'}>
+                            WARZONE
 
-                    <LineBreak clear/>
+                            <LineBreak clear/>
 
-                    <a href={'/gamers'}>
-                        <Header size={'md'}>
-                            View all Gamers
+                            <Small>
+                                Stats Tracker
+                            </Small>
                         </Header>
-                    </a>
 
-                    <a href={'/squads'}>
-                        <Header size={'md'}>
-                            View all Squads
-                        </Header>
-                    </a>
+                        <LineBreak clear/>
 
-                    <LineBreak/>
+                        <Input onChange={updateSearchInputValue}
+                               placeholder={'Search Gamers'}
+                               mode={'plain'}
+                               focus
+                               inputStyle={{borderRadius: 0, borderBottom: '1px solid #888'}}
+                               size={'xl'}
+                               helpMessage={'This input does nothing yet'}/>
+                    </Container>
 
-                    <a href={'/help/bunkers'}>
-                        <Header size={'md'}>
-                            View Red Access Card Bunker Locations
-                        </Header>
-                    </a>
-                </Main>
-            </Container>
+                </Box>
+
+
+                <Box id={'section-overview'}>
+                    <Container>
+                        <Box className={'info-container'}>
+
+                            <Box className={'info-box'}>
+                                <Header>Gamers</Header>
+
+                                <a href={'/gamers'}>
+                                    View all Gamers
+                                </a>
+                            </Box>
+
+                            <Box className={'info-box'}>
+                                <Header>Squads</Header>
+
+                                <a href={'/squads'}>
+                                    View all Squads
+                                </a>
+                            </Box>
+
+                            <Box className={'info-box'}>
+                                <Header>Resources</Header>
+
+                                <a href={'/help/bunkers'}>
+                                    Red Access Card Bunker Locations
+                                </a>
+                            </Box>
+
+                        </Box>
+                    </Container>
+                </Box>
+            </Main>
+
+            <Footer/>
         </Page>
     );
 }

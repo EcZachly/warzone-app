@@ -12,7 +12,6 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
-  //background-color: adjust-color($theme-background-color, $lightness: -2%);
   background-color: $theme-background-color;
   color: $theme-text-color;
   overflow-x: hidden;
@@ -23,10 +22,6 @@ body {
 body, .app-container {
   width: 100%;
   min-height: 100vh;
-}
-
-html, body, .app-container {
-  font: normal 100% / 1.65 'IBM Plex Sans', sans-serif;
 }
 
 
@@ -223,7 +218,7 @@ a:focus, a:active {
 //NAVBAR
 
 #navbar {
-  height: 70px;
+  min-height: 70px;
   width: 100%;
   background: lighten($theme-background-color, 2);
   border-bottom: 1px solid $theme-line-break;
@@ -271,8 +266,7 @@ a:focus, a:active {
 }
 
 #brand-image {
-  -webkit-filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .1));
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .1));
+
 }
 
 
@@ -2340,7 +2334,7 @@ select.form-control {
 }
 
 .form-control.input-plain:hover {
-  background: #f5f5f5;
+  background: lighten($theme-background-color, 10);
   cursor: pointer;
 }
 
@@ -2357,6 +2351,19 @@ input {
   background-clip: padding-box;
   border: 1px solid $theme-line-break;
   border-radius: .25rem;
+}
+
+input.form-control.input-size-xl {
+  font-size: 1.5rem;
+}
+
+input.form-control.input-size-lg {
+  font-size: 1.25rem;
+}
+
+input.form-control.input-size-sm {
+  font-size: .8rem;
+  padding: .4rem .625rem;
 }
 
 input.form-control {

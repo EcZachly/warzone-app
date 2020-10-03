@@ -14,7 +14,8 @@
 
 
 //F
-
+import Footer from './app-components/Footer';
+export {Footer};
 
 //G
 import GamerCard from "./gamer/GamerCard";
@@ -101,12 +102,13 @@ export {TeammateTable}
 //Z
 
 export default {
-    TeammateTable: <Function>TeammateTable,
+    Footer: <Function>Footer,
     GamerCard: <Function>GamerCard,
     GamerGradeChart: <Function>GamerGradeChart,
     GamerTimeChart: <Function>GamerTimeChart,
     GamerPlatformImage: <Function>GamerPlatformImage,
     GamerLink: <Function>GamerLink,
-    Page: <Function>Page,
     Navbar: <Function>Navbar,
+    TeammateTable: <Function>TeammateTable,
+    Page: <Function>Page,
 }

@@ -11,7 +11,7 @@ import {
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
-    Navbar
+    Navbar, Footer
 } from './../../../components/AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
@@ -128,6 +128,8 @@ export default function GamerDetail({gamerData, view, hostname}) {
                         </SidebarCompanion>
                     </Container>
                 </Main>
+
+                <Footer/>
             </Page>
         )
     }

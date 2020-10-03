@@ -14,6 +14,7 @@ import {
     FormGroup,
     Paragraph
 } from './../SimpleComponents';
+import CSS from "csstype";
 
 const MODULE_CONSTANTS = {
     TYPE_MAP: {
@@ -33,7 +34,7 @@ const MODULE_CONSTANTS = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class Input extends React.Component {
+class Input extends React.Component<InputType> {
     
     constructor(props) {
         super(props);
@@ -48,11 +49,13 @@ class Input extends React.Component {
         const inputItem = this._getInput(props);
         
         let labelSize;
-        
+
+        if (props.mode == 'plain') {
+            labelSize = 'sm';
+        }
+
         if (props.labelSize) {
             labelSize = props.labelSize;
-        } else if (props.mode === 'plain') {
-            labelSize = 'sm';
         }
         
         let classNames = [props.className];
@@ -96,6 +99,7 @@ class Input extends React.Component {
                 <InputText onChange={props.onChange}
                            focus={props.focus}
                            style={inputStyle}
+                           size={props.size}
                            innerRef={props.innerRef}
                            mode={props.mode}
                            type={props.type}
@@ -220,6 +224,32 @@ class Input extends React.Component {
     }
 }
 
-const ForwardedRefInput = React.forwardRef((props, ref) => <Input innerRef={ref} {...props}/>);
+
+type InputType = {
+    className?: string | Array<String>,
+    style?: CSS.Properties,
+    inputStyle?: CSS.Properties,
+    children?: React.ReactNode,
+    type?: 'text' | 'number' | 'date' | 'checkbox' | 'select' | 'radio' | 'textarea',
+    focus?: boolean,
+    onChange: Function,
+    ref?: any,
+    innerRef?: any,
+    mode?: string,
+    errorMessage?: string,
+    disabled?: boolean,
+    size?: 'xl' | 'lg' | 'md' | 'sm',
+    placeholder?: string,
+    value?: string,
+    textCenter?: boolean,
+    onEnter?: Function,
+    labelSize?: string,
+    label?: string,
+    required?: boolean,
+    helpMessage?: string
+}
+
+
+const ForwardedRefInput = React.forwardRef<HTMLInputElement, InputType>((props, ref) => <Input innerRef={ref} {...props}/>);
 
 export default ForwardedRefInput;

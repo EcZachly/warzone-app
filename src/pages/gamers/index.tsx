@@ -50,6 +50,8 @@ export default function Gamers({gamers, hostname, recaptchaSiteKey}) {
                     </SidebarCompanion>
                 </Container>
             </Main>
+
+            <Footer/>
         </Page>
     );
 }

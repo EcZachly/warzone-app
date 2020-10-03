@@ -16,7 +16,7 @@ const Container = (props) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div id={props.id} className={classNames} style={props.style}>
             {props.children}
         </div>
     );
@@ -31,7 +31,8 @@ Container.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
     children: PropTypes.node,
-    
+    id: PropTypes.string,
+
     //Changes the width of the container
     size: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_SIZES)),
     
