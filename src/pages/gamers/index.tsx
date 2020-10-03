@@ -10,6 +10,7 @@ import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
 export default function Gamers({gamers, hostname, recaptchaSiteKey}){
     let gamerList = gamers.map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
+
     return (
         <Page title={'Gamers'}>
             <Navbar/>
@@ -19,7 +20,9 @@ export default function Gamers({gamers, hostname, recaptchaSiteKey}){
                         <Header>
                             All Gamers
                         </Header>
+
                         <LineBreak/>
+
                         <GamerAdd recaptchaSiteKey={recaptchaSiteKey} hostname={hostname}/>
                     </Sidebar>
 
