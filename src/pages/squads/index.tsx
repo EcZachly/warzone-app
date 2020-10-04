@@ -52,6 +52,7 @@ export default function Squads({squads, baseUrl, limit}) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let baseUrl = getBaseUrlWithProtocol(context.req);
     let rawSquadList = await fetch(baseUrl + '/api/squads');
+    console.log(rawSquadList);
     let squadJson = await rawSquadList.json();
     return {props: {squads: squadJson, limit: 10, baseUrl: baseUrl}}
 }
