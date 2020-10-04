@@ -9,14 +9,14 @@ import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-export default function Gamers({gamers, hostname, recaptchaSiteKey, limit}) {
+export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
     const [usernameSearchValue, updateUsernameSearchValue] = useState('');
     const [gamerValues, setGamers] = useState(gamers);
     const [feedHasMore, setFeedHasMore] = useState(true);
     const tempUsernameSearchValue = usernameSearchValue.toLowerCase();
 
     const fetchMoreGamers = async (page) => {
-        let dataUrl = hostname + '/api/gamers?limit=' + limit + "&offset=" + limit*page
+        let dataUrl = baseUrl + '/api/gamers?limit=' + limit + "&offset=" + limit*page
         const response = await fetch(dataUrl);
         let newGamers =  await response.json();
         if(newGamers.length === 0){
@@ -50,7 +50,7 @@ export default function Gamers({gamers, hostname, recaptchaSiteKey, limit}) {
 
                         <LineBreak/>
 
-                        <GamerAdd recaptchaSiteKey={recaptchaSiteKey} hostname={hostname}/>
+                        <GamerAdd recaptchaSiteKey={recaptchaSiteKey} baseUrl={baseUrl}/>
 
                         <LineBreak/>
 
@@ -81,14 +81,18 @@ export default function Gamers({gamers, hostname, recaptchaSiteKey, limit}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamers');
+
+    let host = context.req.headers.host;
+    let protocol = host.includes('localhost') ? 'http://' : 'https://';
+    let baseUrl = protocol + host
+    let rawGamerList = await fetch(baseUrl + '/api/gamers');
     let gamerJson = await rawGamerList.json();
     return {
         props: {
             offset: 0,
             limit: 10,
             gamers: gamerJson,
-            hostname: process.env.HOSTNAME,
+            baseUrl: baseUrl,
             recaptchaSiteKey: process.env.WARZONE_RECAPTCHA_SITE_KEY
         }
     }

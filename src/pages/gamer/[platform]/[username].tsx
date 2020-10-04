@@ -16,12 +16,12 @@ import {
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-export default function GamerDetail({gamerData, view, hostname}) {
+export default function GamerDetail({gamerData, view, baseUrl}) {
     let {gamer, viewData, errorMessage} = gamerData;
     let tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
     const [chartState, setChartState] = useState({
         viewData: viewData,
-        hostname: hostname,
+        baseUrl: baseUrl,
         gamer: gamer,
         activeTab: view
     });
@@ -29,7 +29,7 @@ export default function GamerDetail({gamerData, view, hostname}) {
 
     const fetchViewData = async (tabId) => {
         let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        let dataUrl = hostname + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + "&timeZone=" + timeZone;
+        let dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + "&timeZone=" + timeZone;
         const response = await fetch(dataUrl);
         return await response.json();
     }
@@ -138,7 +138,10 @@ export default function GamerDetail({gamerData, view, hostname}) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let {username, platform} = context.query;
     let view = context.query.view || 'teammates';
-    let rawGamerList = await fetch(process.env.HOSTNAME + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view);
+    let host = context.req.headers.host;
+    let protocol = host.includes('localhost') ? 'http://' : 'https://';
+    let baseUrl = protocol + host
+    let rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view);
     let gamerJson = await rawGamerList.json();
-    return {props: {gamerData: gamerJson, view: context.query.view || 'teammates', hostname: process.env.HOSTNAME}}
+    return {props: {gamerData: gamerJson, view: context.query.view || 'teammates', baseUrl: baseUrl}}
 }

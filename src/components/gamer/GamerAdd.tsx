@@ -14,10 +14,10 @@ const CONFIG = {
 
 type GamerAddProps = {
     recaptchaSiteKey: string,
-    hostname: string
+    baseUrl: string
 }
 
-export default function GamerAdd({recaptchaSiteKey, hostname}: GamerAddProps) {
+export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
 
     let recaptcha = React.createRef<GoogleReCaptchaProvider>();
     const [username, setUsername] = useState("");
@@ -50,7 +50,7 @@ export default function GamerAdd({recaptchaSiteKey, hostname}: GamerAddProps) {
             setLoading(true);
             setMessage( {message: '', type: ''});
             let response = await HttpService.http({
-                url: hostname + '/api/gamer',
+                url: baseUrl + '/api/gamer',
                 method: 'POST',
                 body: {
                     username: newUserConfig.username,

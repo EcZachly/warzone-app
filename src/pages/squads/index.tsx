@@ -49,7 +49,9 @@ export default function Squads({squads, hostname, limit}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let rawSquadList = await fetch(process.env.HOSTNAME + '/api/squads');
+    let host = context.req.headers.host;
+    let protocol = host.includes('localhost') ? 'http://' : 'https://';
+    let rawSquadList = await fetch(protocol + host + '/api/squads');
     let squadJson = await rawSquadList.json();
-    return {props: {squads: squadJson, limit: 10, hostname: process.env.HOSTNAME}}
+    return {props: {squads: squadJson, limit: 10, hostname: protocol + host}}
 }
