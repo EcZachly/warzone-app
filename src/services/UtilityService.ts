@@ -13,6 +13,7 @@ export function sleep(milliseconds: number) {
 
 
 export function getBaseUrlWithProtocol(request: IncomingMessage){
+	console.log(request.headers);
 	let host = request.headers.host;
 	let protocol = host.includes('localhost') ? 'http://' : 'https://';
 	return protocol + host;

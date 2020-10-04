@@ -51,6 +51,7 @@ export function getTimestampList(output) {
 
 export async function queryDatabase(table, query, options = {}) {
 	let db = await database;
+	console.log(query, options);
 	return db[DATABASE_SCHEMA][table].find(query, options);
 }
 
@@ -58,10 +59,11 @@ export async function queryDatabase(table, query, options = {}) {
 
 export async function insertIntoDatabase(data, table) {
 	let db = await database;
-
+	console.log(db);
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
 	} catch (failure) {
+		console.log(failure);
 		const isDuplicateRecordError = failure.code === '23505';
 
 		if (!isDuplicateRecordError) {
