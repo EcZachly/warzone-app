@@ -4,8 +4,14 @@ import {GamerLink} from '../AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
+//TODO CREATE Gamer type and enforce it here
+type GamerCardProps = {
+    gamer: object
+}
 
-export default function GamerCard({gamer}) {
+
+
+export default function GamerCard({gamer} : GamerCardProps) {
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 
@@ -14,7 +20,7 @@ export default function GamerCard({gamer}) {
 
                 <br/>
 
-                <small className="aliases">({gamer.aliases.join(',')})</small>
+                <small className="aliases">({gamer['aliases'].join(',')})</small>
             </CardHeader>
             <CardBody>
                 <Table>
@@ -22,9 +28,9 @@ export default function GamerCard({gamer}) {
                     <TableHeader>Max Kills</TableHeader>
                     <TableHeader>Gulag Win Rate</TableHeader>
                     <TableBody>
-                        <TableData>{gamer.kdr}</TableData>
-                        <TableData>{gamer.max_kills}</TableData>
-                        <TableData>{gamer.gulag_win_rate}</TableData>
+                        <TableData>{gamer['kdr']}</TableData>
+                        <TableData>{gamer['max_kills']}</TableData>
+                        <TableData>{gamer['gulag_win_rate']}</TableData>
                     </TableBody>
                 </Table>
             </CardBody>

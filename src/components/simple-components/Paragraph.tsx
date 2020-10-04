@@ -26,22 +26,22 @@ export default Paragraph;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Paragraph.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
+type ParagraphProps = {
+    className: string,
+    style: object,
+    children: React.ReactNode,
     
     //text align to the center
-    textCenter: PropTypes.bool,
+    textCenter: boolean,
     
     //text align to the left
-    textLeft: PropTypes.bool,
+    textLeft: boolean,
     
     //text align to the right
-    textRight: PropTypes.bool,
+    textRight: boolean,
     
     //A simple additional styling option to quickly format the text as a certain type
-    type: PropTypes.oneOf(CONSTANTS.VALID_TYPES)
+    type: string
 };
 
 

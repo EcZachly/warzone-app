@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Clear = (props) => {
+const Clear = (props: ClearProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
         <div className={classNames} style={props.style}>
             {props.children}
@@ -18,11 +17,11 @@ export default Clear;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Clear.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
-};
+type ClearProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -32,10 +31,10 @@ function getClassNames(props) {
     let classNames = [
         'clear'
     ];
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }

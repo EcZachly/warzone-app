@@ -2,6 +2,7 @@ import React from "react";
 
 import GamerService from './GamerService';
 import {Image} from "../SimpleComponents";
+import CSS from "csstype";
 
 const CONFIG = {
     PRETTY_PLATFORM_MAP: {
@@ -14,8 +15,8 @@ const CONFIG = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-export default function GamerPlatform({gamer, size, color}) {
-    const platformCode = gamer.platform;
+export default function GamerPlatformImage({gamer, size, color}: GamerPlatformImageProps) {
+    const platformCode = gamer['platform'];
     const platformConfig = GamerService.getPlatformObjByID(platformCode);
 
 
@@ -32,6 +33,13 @@ export default function GamerPlatform({gamer, size, color}) {
                alt={'platform ' + platformPretty}
                src={url}/>
     );
+}
+
+
+type GamerPlatformImageProps = {
+    gamer: Object,
+    size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
+    color?: 'black' | 'white'
 }
 
 

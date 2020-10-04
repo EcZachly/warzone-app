@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TypeService from '../../services/TypeService';
+import CSS from "csstype";
+
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class InputRadio extends React.Component {
+class InputRadio extends React.Component<InputRadioProps> {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: InputRadioProps) {
         super(props);
     }
     
@@ -82,31 +84,23 @@ class InputRadio extends React.Component {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-InputRadio.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //When the input changes, this function will be called
-    onChange: PropTypes.func.isRequired,
-    
-    //The list of possible radio options that the user can select from
-    options: PropTypes.arrayOf(PropTypes.object).isRequired,
-    
-    //The value of the input
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
-    
-    //The name of the group of radio options
-    name: PropTypes.string.isRequired,
-    
-    //If true, this will set the focus automatically when the input is loaded
-    focus: PropTypes.bool,
-    
-    //disables the input and prevents the user from entering any information
-    disabled: PropTypes.bool,
-    
-    //Adds some error stylings to the input
-    hasError: PropTypes.bool
-};
+
+type InputRadioProps = {
+    options: Array<Object>,
+    name: string,
+    onChange: Function,
+    focus?: boolean,
+    className?: string | Array<String>,
+    style?: CSS.Properties,
+    children?: React.ReactNode,
+
+    hasError?: boolean,
+    disabled?: boolean,
+    title?: string,
+    value?: string | number | boolean,
+    id?: string,
+    ref?: any,
+    innerRef?: any
+}
 
 export default InputRadio;

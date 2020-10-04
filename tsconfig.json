@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "./dist",
-    "allowJs": true,
+    "allowJs": false,
     "target": "es6",
     "lib": [
       "dom",

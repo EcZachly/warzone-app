@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const BreadcrumbSeparator = (props) => {
+const BreadcrumbSeparator = (props:BreadcrumbSeparatorProps) => {
     const classNames = getClassNames(props);
     const separator = getSeparator(props);
     
@@ -19,14 +18,14 @@ export default BreadcrumbSeparator;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-BreadcrumbSeparator.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //The string used to separate two breadcrumb items
-    separator: PropTypes.string
-};
+
+type BreadcrumbSeparatorProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    separator?: string
+}
+
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

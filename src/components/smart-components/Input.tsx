@@ -36,13 +36,13 @@ const MODULE_CONSTANTS = {
 
 class Input extends React.Component<InputType> {
     
-    constructor(props) {
+    constructor(props: InputType) {
         super(props);
     }
     
     
     render() {
-        const props = this.props;
+        const props: InputType = this.props;
         
         const formError = this._getFormError(props);
         const helpMessage = this._getFormHelpMessage(props);
@@ -64,10 +64,11 @@ class Input extends React.Component<InputType> {
             classNames.push('form-group-checkbox');
         }
         
-        classNames = classNames.join(' ');
+        let classNamesString = classNames.join(' ');
         
         return (
-            <FormGroup className={classNames} style={props.style} mode={props.mode}>
+            <FormGroup className={classNamesString} style={props.style} mode={props.mode}>
+
                 <Label size={labelSize}>
                     {props.label}
                     
@@ -89,13 +90,14 @@ class Input extends React.Component<InputType> {
     //PRIVATE METHODS
     
     
-    _getInput(props) {
+    _getInput(props: InputType) {
         const inputStyle = {marginBottom: 0, ...props.inputStyle};
         
         const mappedType = this._getMappedType();
         
         if (mappedType === 'text') {
             return (
+                // @ts-ignore
                 <InputText onChange={props.onChange}
                            focus={props.focus}
                            style={inputStyle}
@@ -112,6 +114,7 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'number') {
             return (
+                // @ts-ignore
                 <InputNumber onChange={props.onChange}
                              innerRef={props.innerRef}
                              focus={props.focus}
@@ -123,7 +126,9 @@ class Input extends React.Component<InputType> {
                              options={props.options}/>
             );
         } else if (mappedType === 'date') {
+
             return (
+                // @ts-ignore
                 <InputDate onChange={props.onChange}
                            focus={props.focus}
                            style={inputStyle}
@@ -134,6 +139,7 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'checkbox') {
             return (
+                // @ts-ignore
                 <InputCheckbox onChange={props.onChange}
                                innerRef={props.innerRef}
                                focus={props.focus}
@@ -145,6 +151,7 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'select') {
             return (
+                // @ts-ignore
                 <InputSelect onChange={props.onChange}
                              innerRef={props.innerRef}
                              focus={props.focus}
@@ -157,8 +164,10 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'radio') {
             return (
+
                 <InputRadio onChange={props.onChange}
                             focus={props.focus}
+                    // @ts-ignore
                             style={inputStyle}
                             innerRef={props.innerRef}
                             name={props.name}
@@ -171,7 +180,9 @@ class Input extends React.Component<InputType> {
             return (
                 <TextArea onChange={props.onChange}
                           focus={props.focus}
+                    // @ts-ignore
                           style={inputStyle}
+                    // @ts-ignore
                           mode={props.mode}
                           innerRef={props.innerRef}
                           hasError={!!props.errorMessage}
@@ -246,7 +257,9 @@ type InputType = {
     labelSize?: string,
     label?: string,
     required?: boolean,
-    helpMessage?: string
+    helpMessage?: string,
+    name?: string,
+    options?: Array<object>
 }
 
 

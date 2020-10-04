@@ -18,7 +18,7 @@ class InputText extends React.Component {
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: InputTextProps) {
         super(props);
     }
     
@@ -27,7 +27,7 @@ class InputText extends React.Component {
     }
     
     render() {
-        const props = this.props;
+        const props = this.props as InputTextProps;
         
         const classes = this.getClasses(props);
         const type = this.getType(props);
@@ -49,9 +49,9 @@ class InputText extends React.Component {
                    className={classes}
                    data-has-on-change={!!props.onChange}
                    onChange={(event) => {
-                       if (props.onChange) {
+                       if (props['onChange']) {
                            const value = event.target.value;
-                           props.onChange(value, props, {value, event, props});
+                           props['onChange'](value, props, {value, event, props});
                        }
                    }}/>
         );
@@ -114,42 +114,40 @@ class InputText extends React.Component {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
-
-const ForwardedRefInputText = React.forwardRef((props, ref) => <InputText innerRef={ref} {...props}/>);
-
-InputText.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    innerRef: PropTypes.func,
+type InputTextProps = {
+    className?: string,
+    style?: object,
+    children?: React.ReactNode,
+    innerRef?: any,
 
     //When the input changes, this function will be called
-    onChange: PropTypes.func,
+    onChange?: Function,
+
+    onEnter?: Function,
     
     //The value of the input
-    value: PropTypes.string,
+    value?: string,
 
-    size: PropTypes.string,
+    size?: string,
 
     //If true, this will set the focus automatically when the input is loaded
-    focus: PropTypes.bool,
+    focus?: boolean,
     
     //The type of the input
-    type: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_TYPES)),
+    type?: string,
     
     //The placeholder for the element
-    placeholder: PropTypes.string,
+    placeholder?: string,
     
     //disables the input and prevents the user from entering any information
-    disabled: PropTypes.bool,
+    disabled?: boolean,
     
     //Adds some error stylings to the input
-    hasError: PropTypes.bool,
+    hasError?: boolean,
     
     //center the text inside the input
-    textCenter: PropTypes.bool
+    textCenter?: boolean
 };
 
-ForwardedRefInputText.propTypes = InputText.propTypes;
 
-export default ForwardedRefInputText;
+export default InputText;

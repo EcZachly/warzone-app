@@ -15,10 +15,14 @@ const CONFIG = {
     PLATFORM_OPTIONS: GamerService.getGamerPlatforms().map(({id, name}) => ({text: name, value: id}))
 };
 
+type GamerAddProps = {
+    recaptchaSiteKey: string,
+    hostname: string
+}
 
-export default function GamerAdd({recaptchaSiteKey, hostname}) {
+export default function GamerAdd({recaptchaSiteKey, hostname}: GamerAddProps) {
 
-    const recaptcha = React.createRef();
+    let recaptcha = React.createRef<GoogleReCaptchaProvider>();
     const [username, setUsername] = useState("");
     const [platform, setPlatform] = useState("xbl");
     const [token, setToken] = useState("");
@@ -37,6 +41,7 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
         let errorMessage = '';
 
         //Reset the recaptcha token in case they make a mistake
+        // @ts-ignore
         setToken(await recaptcha.current.executeRecaptcha("submit"));
 
         if (!newUserConfig.username) {
@@ -75,6 +80,7 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
 
     //The input is disabled if they've already submitted or they don't have a recaptcha token
     let disabled = loading || !token;
+
     return (
         <GoogleReCaptchaProvider ref={recaptcha}  reCaptchaKey={recaptchaSiteKey}>
             <GoogleReCaptcha onVerify={token => setToken(token)} action="submit" />
@@ -90,6 +96,7 @@ export default function GamerAdd({recaptchaSiteKey, hostname}) {
                 <Input label={'Platform'}
                        type={'select'}
                        disabled={disabled}
+                         // @ts-ignore
                        options={CONFIG.PLATFORM_OPTIONS}
                        value={platform}
                        onChange={(value) => setPlatform(value)}/>

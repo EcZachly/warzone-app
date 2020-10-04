@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const FormGroup = (props) => {
+const FormGroup = (props: FormGroupProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
         <div className={classNames} style={props.style}>
             {props.children}
@@ -18,12 +17,12 @@ export default FormGroup;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-FormGroup.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
-};
-
+type FormGroupProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    mode: string
+}
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PRIVATE METHODS
@@ -32,14 +31,14 @@ function getClassNames(props) {
     let classNames = [
         'form-group'
     ];
-    
+
     if (props.mode === 'plain') {
         classNames.push('form-group-plain');
     }
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }

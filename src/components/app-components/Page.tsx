@@ -3,10 +3,12 @@ import Router from 'next/router';
 import {withRouter} from 'next/router';
 
 import React from 'react';
+import {Box} from './../SimpleComponents';
+import CSS from "csstype";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-class Page extends React.Component {
+class Page extends React.Component<PageProps> {
 
     constructor(props) {
         super(props);
@@ -22,11 +24,10 @@ class Page extends React.Component {
 
     render() {
         const props = this.props;
-        const backgroundColor = this._getBackgroundColor(props);
         const classNames = this._getClassNames(props);
 
         return (
-            <div style={props.style} className={classNames}>
+            <Box style={props.style} className={classNames}>
                 <Head>
                     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
 
@@ -34,16 +35,10 @@ class Page extends React.Component {
                 </Head>
 
                 {props.children}
-            </div>
+            </Box>
         );
     }
 
-
-    _getBackgroundColor(props) {
-        const defaultBackgroundColor = 'inherit';
-
-        return (props.backgroundColor) ? props.backgroundColor : defaultBackgroundColor;
-    }
 
 
     _getClassNames(props) {
@@ -53,8 +48,15 @@ class Page extends React.Component {
 
         return classNames.join(' ');
     }
-
-
 }
+
+
+type PageProps = {
+    className?: string | Array<String>,
+    style?: CSS.Properties,
+    children?: React.ReactNode,
+    title?: string,
+}
+
 
 export default withRouter(Page);

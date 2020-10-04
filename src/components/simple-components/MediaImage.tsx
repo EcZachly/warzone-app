@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Image from './Image';
+import TypeService from "../../services/TypeService";
 
 const CONSTANTS = {
     VALID_POSITIONS: {
@@ -16,7 +17,7 @@ const CONSTANTS = {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const MediaImage = (props) => {
+const MediaImage = (props: MediaImageProps) => {
     const classNames = getClassNames(props);
     const style = getStyle(props);
     
@@ -30,16 +31,16 @@ export default MediaImage;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-MediaImage.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
+type MediaImageProps = {
+    className?: string,
+    style?: object,
+    children?: React.ReactNode,
+    src: string,
     //The vertical position of the image, relative to the rest of the media body
-    position: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_POSITIONS)),
+    position?: string,
     
     //Whether the image appears before or after the media body
-    order: PropTypes.oneOf(['end', 'last'])
+    order?: string
 };
 
 
@@ -77,7 +78,7 @@ function getStyle(props) {
     }
     
     if (props.order === 'end' || props.order === 'last') {
-        style.order = 2;
+        style['order'] = 2;
     }
     
     return style;

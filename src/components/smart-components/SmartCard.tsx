@@ -114,16 +114,7 @@ function getImage(props) {
                        noPosition={hasNoPosition}/>
         );
     } else if (props.iconSrc || props.icon) {
-        return (
-            <CardIcon src={props.iconSrc}
-                      icon={props.icon}
-                      style={props.iconStyle}
-                      size={props.iconSize || '6x'}
-                      position={imagePosition}
-                      background={props.iconBackground}
-                      color={props.iconColor}
-                      noPosition={hasNoPosition}/>
-        );
+        throw Error("Not Yet implemented");
     } else {
         return '';
     }

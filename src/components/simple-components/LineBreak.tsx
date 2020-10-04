@@ -21,9 +21,11 @@ type LineBreakProps = {
     className?: String | Array<String>,
     style?: CSS.Properties,
     children?: React.ReactNode,
-    noMargins?: Boolean,
-    noMargin?: Boolean,
-    clear?: Boolean
+    noMargins?: boolean,
+    noMargin?: boolean,
+    clear?: boolean,
+    blank?: boolean,
+    br?: boolean
 }
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -47,5 +49,5 @@ function getClassNames(props) {
 
 
 function getTag(props) {
-    return (props.clear === true) ? 'br' : 'hr';
+    return (props.clear === true || props.blank === true || props.br === true) ? 'br' : 'hr';
 }

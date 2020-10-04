@@ -26,11 +26,11 @@ export default class Text extends React.Component {
         
         return (
             <span className={classes}
-                  style={props.style}
-                  title={props.title}
+                  style={props['style']}
+                  title={props['title']}
                   onClick={(event) => {
-                      if (props.onClick && props.disabled !== true) {
-                          props.onClick(props, event);
+                      if (props['onClick'] && props['disabled'] !== true) {
+                          props['onClick'](props, event);
                       }
                   }}>
             {props.children}
@@ -81,7 +81,7 @@ export default class Text extends React.Component {
 }
 
 
-Text.propTypes = {
+Text['propTypes'] = {
     className: PropTypes.string,
     style: PropTypes.object,
     children: PropTypes.node,

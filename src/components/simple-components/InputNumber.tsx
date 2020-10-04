@@ -10,7 +10,7 @@ class InputNumber extends React.Component {
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: InputNumberProps) {
         super(props);
     }
     
@@ -19,7 +19,7 @@ class InputNumber extends React.Component {
     }
     
     render() {
-        const props = this.props;
+        const props = this.props as InputNumberProps;
         
         const classes = this.getClasses(props);
         
@@ -80,32 +80,31 @@ class InputNumber extends React.Component {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-const ForwardedRefInputNumber = React.forwardRef((props, ref) => <InputNumber innerRef={ref} {...props}/>);
-
-InputNumber.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
+type InputNumberProps = {
+    className: string,
+    style: object,
+    children: React.ReactNode,
     
     //When the input changes, this function will be called
-    onChange: PropTypes.func,
+    onChange: Function,
     
     //The value of the input
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    value: string | number,
     
     //The placeholder for the element
-    placeholder: PropTypes.string,
+    placeholder: string,
     
     //disables the input and prevents the user from entering any information
-    disabled: PropTypes.bool,
+    disabled: boolean,
     
     //Adds some error stylings to the input
-    hasError: PropTypes.bool,
+    hasError: boolean,
     
     //center the text inside the input
-    textCenter: PropTypes.bool
+    textCenter: boolean,
+
+    innerRef: any
 };
 
-ForwardedRefInputNumber.propTypes = InputNumber.propTypes;
 
-export default ForwardedRefInputNumber;
+export default InputNumber;

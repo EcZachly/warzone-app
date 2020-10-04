@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import PropTypes from 'prop-types';
-
+import moment from 'moment';
 const CONSTANTS = {VALID_TYPES: []};
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
+
 
 
 class InputDate extends React.Component {
@@ -11,7 +12,7 @@ class InputDate extends React.Component {
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
     
-    constructor(props) {
+    constructor(props: InputDateProps) {
         super(props);
         
         this.state = {
@@ -28,8 +29,8 @@ class InputDate extends React.Component {
     
     
     componentDidMount() {
-        if (this.props.value) {
-            this.updateDateValue(moment(this.props.value).format('MM/DD/YYYY'));
+        if (this.props['value']) {
+            this.updateDateValue(moment(this.props['value']).format('MM/DD/YYYY'));
         }
     }
     
@@ -42,29 +43,29 @@ class InputDate extends React.Component {
         
         return (
             <>
-                <input value={this.state.dateObj.input}
-                       placeholder={props.placeholder}
+                <input value={this.state['dateObj']['input']}
+                       placeholder={props['placeholder']}
                        type={'date'}
-                       style={{marginBottom: 5, ...props.style}}
-                       disabled={props.disabled}
-                       ref={props.innerRef}
-                       autoFocus={props.focus === true}
-                       data-has-focus={!!props.focus}
+                       style={{marginBottom: 5, ...props['style']}}
+                       disabled={props['disabled']}
+                       ref={props['innerRef']}
+                       autoFocus={props['focus'] === true}
+                       data-has-focus={!!props['focus']}
                        onKeyPress={(event) => {
-                           if (event.key === 'Enter' && props.onEnter) {
-                               props.onEnter(event);
+                           if (event.key === 'Enter' && props['onEnter']) {
+                               props['onEnter'](event);
                            }
                        }}
                        className={classes}
-                       data-has-on-change={!!props.onChange}
+                       data-has-on-change={!!props['onChange']}
                        onChange={(event) => {
                            const value = event.target.value;
                            this.updateDateValue(value);
                        }}/>
                 
-                <p className={'paragraph-' + (this.state.dateObj.hasError ? 'error' : 'help')}
+                <p className={'paragraph-' + (this.state['dateObj']['hasError'] ? 'error' : 'help')}
                    style={{fontSize: '.75em', marginTop: '0px', paddingLeft: 5}}>
-                    {this.state.dateObj.error || this.state.dateObj.pretty}
+                    {this.state['dateObj']['error'] || this.state['dateObj']['pretty']}
                 </p>
             </>
         );
@@ -88,7 +89,7 @@ class InputDate extends React.Component {
             classNames.push('input-plain');
         }
         
-        if (props.hasError || this.state.dateObj.hasError) {
+        if (props.hasError || this.state['dateObj'].hasError) {
             classNames.push('has-error');
         }
         
@@ -132,8 +133,8 @@ class InputDate extends React.Component {
             dateObj: newDateObj
         });
         
-        if (this.props.onChange) {
-            this.props.onChange(value);
+        if (this.props['onChange']) {
+            this.props['onChange'](value);
         }
     }
     
@@ -161,39 +162,35 @@ class InputDate extends React.Component {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-const ForwardedRefInputDate = React.forwardRef((props, ref) => <InputDate innerRef={ref} {...props}/>);
-
-InputDate.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    innerRef: PropTypes.func,
+type InputDateProps = {
+    className: string,
+    style: object,
+    children: ReactNode,
+    innerRef: Function,
     
     //When the input changes, this function will be called
-    onChange: PropTypes.func,
+    onChange: Function,
     
     //The value of the input
-    value: PropTypes.string,
+    value: string,
     
     //If true, this will set the focus automatically when the input is loaded
-    focus: PropTypes.bool,
+    focus: boolean,
     
     //The type of the input
-    type: PropTypes.oneOf(Object.keys(CONSTANTS.VALID_TYPES)),
+    type: string,
     
     //The placeholder for the element
-    placeholder: PropTypes.string,
+    placeholder: string,
     
     //disables the input and prevents the user from entering any information
-    disabled: PropTypes.bool,
+    disabled: boolean,
     
     //Adds some error stylings to the input
-    hasError: PropTypes.bool,
+    hasError: boolean,
     
     //center the text inside the input
-    textCenter: PropTypes.bool
+    textCenter: boolean
 };
 
-ForwardedRefInputDate.propTypes = InputDate.propTypes;
-
-export default ForwardedRefInputDate;
+export default InputDate;

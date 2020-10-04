@@ -1,15 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import Link from './Link';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const BreadcrumbItem = (props) => {
+const BreadcrumbItem = (props: BreadcrumbItemProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
-        <Link className={classNames} style={props.style} href={props.href}>
+        <Link className={classNames} style={props.style} onClick={props.onClick}>
             {props.children}
         </Link>
     );
@@ -20,14 +19,14 @@ export default BreadcrumbItem;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-BreadcrumbItem.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    //If the current item is active, this will gray it out and prevent the user from clicking on it
-    active: PropTypes.bool
-};
+type BreadcrumbItemProps = {
+    onClick?: Function,
+    href: Function,
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    active?: boolean
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -37,14 +36,14 @@ function getClassNames(props) {
     let classNames = [
         'breadcrumb-item'
     ];
-    
+
     if (props.active === true) {
         classNames.push('active');
     }
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }

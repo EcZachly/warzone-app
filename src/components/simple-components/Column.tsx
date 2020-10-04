@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Column = (props) => {
+const Column = (props: ColumnProps) => {
     const classNames = getClassNames(props);
-    
+
     return (
         <div className={classNames} style={props.style}>
             {props.children}
@@ -18,11 +17,15 @@ export default Column;
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-Column.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node
-};
+type ColumnProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    'size-xs'?: number,
+    'size-sm'?: number,
+    'size-md'?: number,
+    'size-lg'?: number
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -33,21 +36,20 @@ function getClassNames(props) {
         'column',
         'col'
     ];
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     classNames.push(getSize(props));
-    
+
     return classNames.join(' ');
 }
 
 
-
 function getSize(props) {
     const validSizes = ['xs', 'sm', 'md', 'lg'];
-    
+
     return validSizes.filter((size) => {
         return !!props[size] || isNaN(props[size]) === false;
     }).map((size) => {
