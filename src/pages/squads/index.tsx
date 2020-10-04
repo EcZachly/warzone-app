@@ -4,16 +4,17 @@ import {Container, Main} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 import React, {useState} from "react";
 import InfiniteScroll from 'react-infinite-scroller';
+import {getBaseUrlWithProtocol} from "../../services/UtilityService";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function Squads({squads, hostname, limit}) {
+export default function Squads({squads, baseUrl, limit}) {
     let [feedHasMore, setFeedHasMore] = useState(true);
     let [squadValues, setSquads] = useState(squads);
 
     const fetchMoreSquads = async (page) => {
-        let dataUrl = hostname + '/api/squads?limit=' + limit + "&offset=" + limit*page
+        let dataUrl = baseUrl + '/api/squads?limit=' + limit + "&offset=" + limit*page
         const response = await fetch(dataUrl);
         let newSquads =  await response.json();
         if(newSquads.length === 0){
@@ -49,9 +50,8 @@ export default function Squads({squads, hostname, limit}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let host = context.req.headers.host;
-    let protocol = host.includes('localhost') ? 'http://' : 'https://';
-    let rawSquadList = await fetch(protocol + host + '/api/squads');
+    let baseUrl = getBaseUrlWithProtocol(context.req);
+    let rawSquadList = await fetch(baseUrl + '/api/squads');
     let squadJson = await rawSquadList.json();
-    return {props: {squads: squadJson, limit: 10, hostname: protocol + host}}
+    return {props: {squads: squadJson, limit: 10, baseUrl: baseUrl}}
 }

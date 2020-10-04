@@ -13,6 +13,7 @@ import {
     GamerPlatformImage,
     Navbar, Footer
 } from './../../../components/AppComponents';
+import {getBaseUrlWithProtocol} from "../../../services/UtilityService";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -138,9 +139,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     let {username, platform} = context.query;
     let view = context.query.view || 'teammates';
-    let host = context.req.headers.host;
-    let protocol = host.includes('localhost') ? 'http://' : 'https://';
-    let baseUrl = protocol + host
+    let baseUrl = getBaseUrlWithProtocol(context.req);
     let rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view);
     let gamerJson = await rawGamerList.json();
     return {props: {gamerData: gamerJson, view: context.query.view || 'teammates', baseUrl: baseUrl}}

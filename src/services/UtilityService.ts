@@ -1,4 +1,5 @@
 import TypeService from './TypeService';
+import {IncomingMessage} from "http";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -8,6 +9,13 @@ export function sleep(milliseconds: number) {
 	do {
 		currentDate = Date.now();
 	} while (currentDate - date < milliseconds);
+}
+
+
+export function getBaseUrlWithProtocol(request: IncomingMessage){
+	let host = request.headers.host;
+	let protocol = host.includes('localhost') ? 'http://' : 'https://';
+	return protocol + host;
 }
 
 /**

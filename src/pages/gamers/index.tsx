@@ -6,6 +6,7 @@ import {Container, Header, LineBreak, Main} from './../../components/SimpleCompo
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
+import {getBaseUrlWithProtocol} from "../../services/UtilityService";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -81,10 +82,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-
-    let host = context.req.headers.host;
-    let protocol = host.includes('localhost') ? 'http://' : 'https://';
-    let baseUrl = protocol + host
+    let baseUrl = getBaseUrlWithProtocol(context.req);
     let rawGamerList = await fetch(baseUrl + '/api/gamers');
     let gamerJson = await rawGamerList.json();
     return {
