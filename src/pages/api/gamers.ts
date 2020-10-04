@@ -10,6 +10,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     delete queryParams.offset;
     delete queryParams.limit;
     let rawGamerList = await queryView(viewName, queryParams, {offset, limit});
+    console.log(rawGamerList);
     let sanitizedGamers = rawGamerList.map(sanitizeGamer);
     res.json(sanitizedGamers);
 }
