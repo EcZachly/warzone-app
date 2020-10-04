@@ -4,6 +4,8 @@ import {DATABASE_SCHEMA} from "../constants";
 
 export async function queryView(view, query = {}, options = {}){
     let db = await database;
+    console.log(db);
+    console.log(query, options);
     if(db[DATABASE_SCHEMA][view]){
         return db[DATABASE_SCHEMA][view].find(query, options)
     }
