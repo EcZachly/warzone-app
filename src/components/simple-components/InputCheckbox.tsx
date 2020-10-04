@@ -1,12 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import TypeService from "../../services/TypeService";
-import CSS from "csstype";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class InputCheckbox extends React.Component {
+class InputCheckbox extends React.Component<InputCheckboxProps> {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
@@ -23,14 +21,14 @@ class InputCheckbox extends React.Component {
         const props = this.props;
 
         const classes = this.getClasses(props);
-        const hasOnChange = TypeService.isFunction(props['onChange']);
+        const hasOnChange = TypeService.isFunction(props.onChange);
         
         return (
             <input type={'checkbox'}
-                   checked={!!props['value']}
-                   style={props['style']}
-                   disabled={props['disabled']}
-                   ref={props['innerRef']}
+                   checked={!!props.value}
+                   style={props.style}
+                   disabled={props.disabled}
+                   ref={props.innerRef}
                    className={classes}
                    data-has-on-change={hasOnChange}
                    onChange={(event) => {
@@ -79,29 +77,31 @@ class InputCheckbox extends React.Component {
 
 
 type InputCheckboxProps = {
-    className: string,
-    style: CSS.Properties,
-    children: React.ReactNode,
+    className?: string,
+    style?: object,
+    children?: React.ReactNode,
     
     //When the input changes, this function will be called
-    onChange: Function,
+    onChange?: Function,
     
     //The value of the input
-    value: string | number,
+    value?: string | number,
     
     //The placeholder for the element
-    placeholder: string,
+    placeholder?: string,
     
     //disables the input and prevents the user from entering any information
-    disabled: boolean,
+    disabled?: boolean,
     
     //Adds some error stylings to the input
-    hasError: boolean,
+    hasError?: boolean,
     
     //center the text inside the input
-    textCenter: boolean,
-    
-    innerRef: any
+    textCenter?: boolean,
+
+    focus?:boolean,
+    options?: Array<object>,
+    innerRef?: any
 };
 
 

@@ -1,4 +1,4 @@
-import * as Bluebird from 'bluebird';
+import Bluebird from 'bluebird';
 import {getTimestampList} from './utils';
 import {queryGamers, updateGamer} from '../model/gamers';
 import {

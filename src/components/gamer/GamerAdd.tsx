@@ -5,10 +5,7 @@ import {GamerService} from "./index";
 import HttpService from "../../services/HttpService";
 import Router from "next/router";
 
-import {
-    GoogleReCaptchaProvider,
-    GoogleReCaptcha
-} from 'react-google-recaptcha-v3';
+import {GoogleReCaptcha, GoogleReCaptchaProvider} from 'react-google-recaptcha-v3';
 
 
 const CONFIG = {
@@ -41,7 +38,6 @@ export default function GamerAdd({recaptchaSiteKey, hostname}: GamerAddProps) {
         let errorMessage = '';
 
         //Reset the recaptcha token in case they make a mistake
-        // @ts-ignore
         setToken(await recaptcha.current.executeRecaptcha("submit"));
 
         if (!newUserConfig.username) {
@@ -96,7 +92,6 @@ export default function GamerAdd({recaptchaSiteKey, hostname}: GamerAddProps) {
                 <Input label={'Platform'}
                        type={'select'}
                        disabled={disabled}
-                         // @ts-ignore
                        options={CONFIG.PLATFORM_OPTIONS}
                        value={platform}
                        onChange={(value) => setPlatform(value)}/>

@@ -1,13 +1,13 @@
 import React, {ReactNode} from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+
 const CONSTANTS = {VALID_TYPES: []};
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 
-class InputDate extends React.Component {
+class InputDate extends React.Component<InputDateProps> {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
@@ -48,7 +48,7 @@ class InputDate extends React.Component {
                        type={'date'}
                        style={{marginBottom: 5, ...props['style']}}
                        disabled={props['disabled']}
-                       ref={props['innerRef']}
+                       ref={props.innerRef}
                        autoFocus={props['focus'] === true}
                        data-has-focus={!!props['focus']}
                        onKeyPress={(event) => {
@@ -163,34 +163,34 @@ class InputDate extends React.Component {
 //PROPS
 
 type InputDateProps = {
-    className: string,
-    style: object,
-    children: ReactNode,
-    innerRef: Function,
+    className?: string,
+    style?: object,
+    children?: ReactNode,
+    innerRef?: React.LegacyRef<HTMLInputElement>,
     
     //When the input changes, this function will be called
-    onChange: Function,
+    onChange?: Function,
     
     //The value of the input
-    value: string,
+    value?: string,
     
     //If true, this will set the focus automatically when the input is loaded
-    focus: boolean,
+    focus?: boolean,
     
     //The type of the input
-    type: string,
+    type?: string,
     
     //The placeholder for the element
-    placeholder: string,
+    placeholder?: string,
     
     //disables the input and prevents the user from entering any information
-    disabled: boolean,
+    disabled?: boolean,
     
     //Adds some error stylings to the input
-    hasError: boolean,
+    hasError?: boolean,
     
     //center the text inside the input
-    textCenter: boolean
+    textCenter?: boolean
 };
 
 export default InputDate;

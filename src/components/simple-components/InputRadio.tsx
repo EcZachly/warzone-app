@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import TypeService from '../../services/TypeService';
-import CSS from "csstype";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -91,7 +89,7 @@ type InputRadioProps = {
     onChange: Function,
     focus?: boolean,
     className?: string | Array<String>,
-    style?: CSS.Properties,
+    style?: object,
     children?: React.ReactNode,
 
     hasError?: boolean,
