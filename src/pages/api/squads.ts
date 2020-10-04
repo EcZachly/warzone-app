@@ -5,8 +5,11 @@ import {sanitizeSquad} from "../../lib/model/gamers";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     let viewName: string = 'full_squad_stat_summary';
     let queryParams = req.query;
-    let rawSquadList = await queryView(viewName, queryParams);
+    let limit = req.query.limit || 10;
+    let offset = req.query.offset || 0;
+    delete queryParams.limit;
+    delete queryParams.offset;
+    let rawSquadList = await queryView(viewName, queryParams, {limit, offset});
     let squadList = rawSquadList.map(sanitizeSquad);
-    console.log(squadList);
     res.json(squadList);
 }
