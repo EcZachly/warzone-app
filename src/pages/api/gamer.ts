@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from 'next'
-import {initializeGamer, queryGamers, sanitizeGamer} from "../../lib/model/gamers";
-import {handleResponse, handleError} from "../../middleware/response_handler";
+import {initializeGamer, queryGamers} from "../../lib/model/gamers";
+import {handleError, handleResponse} from "../../middleware/response_handler";
 import {initializeMatches} from "../../lib/model/matches";
 import {handleRecaptchaVerify} from "../../middleware/recaptcha_middleware";
 

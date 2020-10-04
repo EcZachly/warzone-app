@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class InputNumber extends React.Component {
+class InputNumber extends React.Component<InputNumberProps> {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
@@ -81,29 +80,31 @@ class InputNumber extends React.Component {
 //PROPS
 
 type InputNumberProps = {
-    className: string,
-    style: object,
-    children: React.ReactNode,
-    
+    className?: string,
+    style?: object,
+    children?: React.ReactNode,
+    focus? : boolean,
+    mode? : string,
+    options? : Array<object>,
     //When the input changes, this function will be called
-    onChange: Function,
+    onChange?: Function,
     
     //The value of the input
-    value: string | number,
+    value?: string | number,
     
     //The placeholder for the element
-    placeholder: string,
+    placeholder?: string,
     
     //disables the input and prevents the user from entering any information
-    disabled: boolean,
+    disabled?: boolean,
     
     //Adds some error stylings to the input
-    hasError: boolean,
+    hasError?: boolean,
     
     //center the text inside the input
-    textCenter: boolean,
+    textCenter?: boolean,
 
-    innerRef: any
+    innerRef?: any
 };
 
 

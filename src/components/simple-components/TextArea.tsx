@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import CSS from "csstype";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -75,8 +73,8 @@ class TextArea extends React.Component<TextAreaProps> {
 //PROPS
 
 type TextAreaProps = {
-    className?: string | Array<String>,
-    style?: CSS.Properties,
+    className?: string | Array<string>,
+    style?: object,
     children?: React.ReactNode,
     focus?: boolean,
     onChange?: Function,
@@ -87,7 +85,7 @@ type TextAreaProps = {
     placeholder?: string,
     value?: string,
     textCenter?: boolean,
-    mode?: 'plain'
+    mode?: 'plain' | string
 }
 
 

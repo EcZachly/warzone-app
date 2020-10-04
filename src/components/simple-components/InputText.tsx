@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import TypeService from '../../services/TypeService';
+
 const CONSTANTS = {
     VALID_TYPES: {
         'text': 'text',
@@ -13,7 +13,7 @@ const CONSTANTS = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class InputText extends React.Component {
+class InputText extends React.Component<InputTextProps> {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
@@ -146,7 +146,9 @@ type InputTextProps = {
     hasError?: boolean,
     
     //center the text inside the input
-    textCenter?: boolean
+    textCenter?: boolean,
+
+    mode?: string
 };
 
 

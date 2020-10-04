@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-class InputSelect extends React.Component {
+class InputSelect extends React.Component<InputSelectProps> {
     
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     
@@ -113,7 +112,7 @@ type InputSelectProps = {
     children?: React.ReactNode,
     
     //When the input changes, this function will be called
-    onChange: Function,
+    onChange?: Function,
     
     //The list of possible radio options that the user can select from
     options: Array<object>
@@ -122,13 +121,17 @@ type InputSelectProps = {
     value: string |number | boolean
     
     //If true, this will set the focus automatically when the input is loaded
-    focus: boolean,
+    focus?: boolean,
     
     //disables the input and prevents the user from entering any information
-    disabled: boolean,
+    disabled?: boolean,
     
     //Adds some error stylings to the input
-    hasError: boolean
+    hasError?: boolean,
+
+    innerRef?: Function,
+
+    mode?: string
 };
 
 export default InputSelect;

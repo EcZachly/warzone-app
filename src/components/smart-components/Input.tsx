@@ -1,18 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
-    InputText,
-    InputSelect,
-    InputNumber,
-    InputDate,
-    InputCheckbox,
-    Label,
-    InputRadio,
-    TextArea,
-    Required,
     FormGroup,
-    Paragraph
+    InputCheckbox,
+    InputDate,
+    InputNumber,
+    InputRadio,
+    InputSelect,
+    InputText,
+    Label,
+    Paragraph,
+    Required,
+    TextArea
 } from './../SimpleComponents';
 import CSS from "csstype";
 
@@ -97,7 +96,6 @@ class Input extends React.Component<InputType> {
         
         if (mappedType === 'text') {
             return (
-                // @ts-ignore
                 <InputText onChange={props.onChange}
                            focus={props.focus}
                            style={inputStyle}
@@ -114,7 +112,6 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'number') {
             return (
-                // @ts-ignore
                 <InputNumber onChange={props.onChange}
                              innerRef={props.innerRef}
                              focus={props.focus}
@@ -128,7 +125,6 @@ class Input extends React.Component<InputType> {
         } else if (mappedType === 'date') {
 
             return (
-                // @ts-ignore
                 <InputDate onChange={props.onChange}
                            focus={props.focus}
                            style={inputStyle}
@@ -139,7 +135,6 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'checkbox') {
             return (
-                // @ts-ignore
                 <InputCheckbox onChange={props.onChange}
                                innerRef={props.innerRef}
                                focus={props.focus}
@@ -151,7 +146,6 @@ class Input extends React.Component<InputType> {
             );
         } else if (mappedType === 'select') {
             return (
-                // @ts-ignore
                 <InputSelect onChange={props.onChange}
                              innerRef={props.innerRef}
                              focus={props.focus}
@@ -167,7 +161,6 @@ class Input extends React.Component<InputType> {
 
                 <InputRadio onChange={props.onChange}
                             focus={props.focus}
-                    // @ts-ignore
                             style={inputStyle}
                             innerRef={props.innerRef}
                             name={props.name}
@@ -180,9 +173,7 @@ class Input extends React.Component<InputType> {
             return (
                 <TextArea onChange={props.onChange}
                           focus={props.focus}
-                    // @ts-ignore
                           style={inputStyle}
-                    // @ts-ignore
                           mode={props.mode}
                           innerRef={props.innerRef}
                           hasError={!!props.errorMessage}
