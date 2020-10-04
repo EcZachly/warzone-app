@@ -49,9 +49,9 @@ export function getTimestampList(output) {
 
 
 
-export async function queryDatabase(table, query) {
+export async function queryDatabase(table, query, options = {}) {
 	let db = await database;
-	return db[DATABASE_SCHEMA][table].find(query);
+	return db[DATABASE_SCHEMA][table].find(query, options);
 }
 
 
