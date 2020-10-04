@@ -18,9 +18,9 @@ export function updateGamer(query, gamer) {
 }
 
 
-export function queryGamers(query) {
+export function queryGamers(query, options={}) {
 	query = UtilityService.validateItem(query, 'object', {});
-	return queryDatabase(GAMER_TABLE, query);
+	return queryDatabase(GAMER_TABLE, query, options);
 }
 
 

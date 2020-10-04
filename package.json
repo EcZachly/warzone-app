@@ -37,6 +37,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-recaptcha-v3": "^1.5.4",
+    "react-infinite-scroller": "^1.2.4",
     "recharts": "^1.8.5",
     "sass": "^1.26.11",
     "ts-node": "^9.0.0",
