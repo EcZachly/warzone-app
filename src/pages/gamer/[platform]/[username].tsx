@@ -19,7 +19,9 @@ import {getBaseUrlWithProtocol} from "../../../services/UtilityService";
 
 export default function GamerDetail({gamerData, view, baseUrl}) {
     let {gamer, viewData, errorMessage} = gamerData;
+
     let tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
+
     const [chartState, setChartState] = useState({
         viewData: viewData,
         baseUrl: baseUrl,
@@ -35,7 +37,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         return await response.json();
     }
 
-    const setTabAndFetchData = async (tabId) =>{
+    const setTabAndFetchData = async (tabId) => {
         let newState = Object.assign({}, chartState);
         newState.activeTab = tabId;
         if (tabId === chartState.activeTab) {
@@ -51,23 +53,35 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         }
     }
 
+    let windowWidth = 0;
+
+    try {
+        windowWidth = window && window.innerWidth ? window.innerWidth : 0;
+    } catch (e) {
+
+    }
+
+    const maxWidth = 550;
+    const chartSidePadding = 25 * 2;
+    const chartWidth = ((windowWidth > 0 && windowWidth > maxWidth) ? maxWidth : windowWidth) - (chartSidePadding);
+
 
     let componentMap = {
         'teammates': <TeammateTable teammates={chartState.viewData}/>,
         'placements': <GamerGradeChart height={260}
-                                       width={450}
+                                       width={chartWidth}
                                        key={"placement_chart"}
                                        data={chartState.viewData}
                                        options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
                                        selectedValue="duo_placements"/>,
         'stats': <GamerGradeChart height={260}
-                                  width={450}
+                                  width={chartWidth}
                                   key={"stat_chart"}
                                   data={chartState.viewData}
                                   options={['kdr', 'damage', 'kills', 'score']}
                                   selectedValue="kdr"/>,
         'time': <GamerTimeChart height={260}
-                                width={450}
+                                width={chartWidth}
                                 key={"placement_chart"}
                                 viewData={chartState.viewData}
                                 options={['hour_of_day', 'day_of_week']}
@@ -79,7 +93,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     let buttonTabs = tabNames.map((tabName) => {
         const isActive = (chartState.activeTab === tabName);
         return (
-            <Button key={tabName} type={isActive ? 'purple' : 'light'} onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
+            <Button key={tabName} type={isActive ? 'purple' : 'light'}
+                    onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
                 {_.capitalize(tabName)}
             </Button>
         )
@@ -137,10 +152,20 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let {username, platform} = context.query;
-    let view = context.query.view || 'teammates';
+    let {username, platform, view} = context.query;
+
+    const validViewNames = ['teammates', 'placements', 'stats', 'time'];
+    let selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
+
     let baseUrl = getBaseUrlWithProtocol(context.req);
-    let rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view);
+    let rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
     let gamerJson = await rawGamerList.json();
-    return {props: {gamerData: gamerJson, view: context.query.view || 'teammates', baseUrl: baseUrl}}
+
+    return {
+        props: {
+            gamerData: gamerJson,
+            view: selectedView,
+            baseUrl: baseUrl
+        }
+    }
 }
