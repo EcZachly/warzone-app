@@ -20,7 +20,7 @@ export default InputGroupText;
 
 type InputGroupTextProps = {
     className: string,
-    style: object,
+    style?: React.CSSProperties,
     children: React.ReactNode
 };
 
@@ -29,7 +29,7 @@ type InputGroupTextProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'input-group-text'
     ];
     

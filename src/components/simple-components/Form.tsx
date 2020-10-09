@@ -30,7 +30,7 @@ type FormProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    onSubmit?: Function,
+    onSubmit?:  () => void,
 }
 
 
@@ -38,7 +38,7 @@ type FormProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         ''
     ];
 

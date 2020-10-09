@@ -54,7 +54,7 @@ type BadgeProps = {
 
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'badge'
     ];
     

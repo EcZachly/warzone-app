@@ -28,7 +28,7 @@ type ButtonGroupProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'button-group'
     ];
     

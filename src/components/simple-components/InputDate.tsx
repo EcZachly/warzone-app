@@ -77,7 +77,7 @@ class InputDate extends React.Component<InputDateProps> {
     
     
     getClasses(props) {
-        let classNames = [
+        const classNames = [
             'form-control'
         ];
         
@@ -106,7 +106,7 @@ class InputDate extends React.Component<InputDateProps> {
     
     
     updateDateValue(newInputValue) {
-        let newDateObj = {
+        const newDateObj = {
             input: newInputValue,
             pretty: '',
             isEmpty: null,
@@ -164,12 +164,12 @@ class InputDate extends React.Component<InputDateProps> {
 
 type InputDateProps = {
     className?: string,
-    style?: object,
+    style?: React.CSSProperties,
     children?: ReactNode,
     innerRef?: React.LegacyRef<HTMLInputElement>,
     
     //When the input changes, this function will be called
-    onChange?: Function,
+    onChange?:  (value) => void,
     
     //The value of the input
     value?: string,

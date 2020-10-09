@@ -82,15 +82,21 @@ class InputRadio extends React.Component<InputRadioProps> {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
+type Option = {
+    value: string,
+    text: string,
+    className?: string
+}
 
 type InputRadioProps = {
-    options: Array<Object>,
-    name: string,
-    onChange: Function,
-    focus?: boolean,
-    className?: string | Array<String>,
-    style?: object,
     children?: React.ReactNode,
+    style?: React.CSSProperties,
+    className?: string | Array<string>,
+
+    options: Option[],
+    name: string,
+    onChange:  (string, OptionType) => void,
+    focus?: boolean,
 
     hasError?: boolean,
     disabled?: boolean,

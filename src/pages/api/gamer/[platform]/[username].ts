@@ -1,11 +1,11 @@
-import {NextApiRequest, NextApiResponse} from 'next'
+import {NextApiRequest, NextApiResponse} from 'next';
 
-import {ViewQuery} from "../../../../lib/model/view_query";
+import {ViewQuery} from '../../../../lib/model/view_query';
 import DefaultMiddleware from '../../../../middleware/default_middleware';
-import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from "../../../../lib/model/gamers";
+import {updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../../../lib/model/gamers';
 import Bluebird from 'bluebird';
 
-let TEAMMATE_FILTER_KEYS = ['username', 'platform', 'aliases'];
+const TEAMMATE_FILTER_KEYS = ['username', 'platform', 'aliases'];
 
 async function updateGamerUponRequest(gamerData) {
     let gamerPromise = Bluebird.resolve(gamerData);
@@ -17,52 +17,52 @@ async function updateGamerUponRequest(gamerData) {
 }
 
 const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
-    let {view, timeZone, username, platform} = req.query;
+    const {view, timeZone, username, platform} = req.query;
 
-    let viewMap = {
+    const viewMap = {
         'teammates': 'teammate_analysis',
         'placements': 'gamer_stats_graded',
         'stats': 'gamer_stats_graded',
         'time': 'time_analysis'
     };
 
-    let sqlView = viewMap[view as string];
+    const sqlView = viewMap[view as string];
 
-    let userQuery = {
+    const userQuery = {
         username: username,
         platform: platform
     };
-    let timezoneQuery = {
+    const timezoneQuery = {
         timezone: timeZone || 'America/Los_Angeles',
-        cutoff: "10"
+        cutoff: '10'
     };
 
-    let queryableViews = [
+    const queryableViews = [
         new ViewQuery('player_stat_summary', userQuery),
         new ViewQuery('gamer_stats_graded', userQuery),
         new ViewQuery('teammate_analysis', userQuery),
         new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery})
-    ]
+    ];
 
-    let viewNamesToQuery = ['player_stat_summary', sqlView as string];
-    let viewsToQuery = queryableViews.filter((v: ViewQuery) => viewNamesToQuery.includes(v.view));
+    const viewNamesToQuery = ['player_stat_summary', sqlView as string];
+    const viewsToQuery = queryableViews.filter((v: ViewQuery) => viewNamesToQuery.includes(v.view));
 
-    let gamerList = await queryGamers({username: username, platform: platform});
-    let gamerData = gamerList[0]
-    let gamerExists = !!gamerData;
+    const gamerList = await queryGamers({username: username, platform: platform});
+    const gamerData = gamerList[0];
+    const gamerExists = !!gamerData;
     if (gamerExists) {
-        let gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
+        const gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
         Bluebird.all(gamerMatchDataPromises).then(async () => {
-            let gamer = sanitizeGamer(viewsToQuery[0].data[0]);
+            const gamer = sanitizeGamer(viewsToQuery[0].data[0]);
             let viewData = viewsToQuery[1].data;
-            let sanitizationLookup = {
+            const sanitizationLookup = {
                 'gamer_stats_graded': () => viewData,
                 'time_analysis': () => viewData,
                 'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS)
-            }
+            };
             viewData = sanitizationLookup[sqlView]();
             await updateGamerUponRequest(gamerData);
-            let seoMetadata = {
+            const seoMetadata = {
                 title: 'Warzone stats for ' + gamer.username,
                 keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
                 description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate
@@ -71,13 +71,13 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
                 gamer: gamer,
                 viewData: viewData,
                 seoMetadata: seoMetadata
-            })
-        })
+            });
+        });
     } else {
         res.json({
             errorMessage: username + ' on platform: ' + platform + ' was not found!'
-        })
+        });
     }
-}
+};
 
-export default DefaultMiddleware(gamerDetail)
+export default DefaultMiddleware(gamerDetail);

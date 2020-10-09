@@ -2,7 +2,7 @@ import {createEvent} from '../lib/model/events';
 import useragent from 'useragent';
 
 function isFileRequest(req) {
-    let pieces = ['.png', '.js', '.jpg', '.css'];
+    const pieces = ['.png', '.js', '.jpg', '.css'];
     let isFileRequest = false;
 
     pieces.forEach((piece) => {
@@ -22,8 +22,8 @@ function isFileRequest(req) {
  * @returns {Promise<void>}
  */
 const createAPIEventMiddleware = async (req, res) => {
-    let shouldBeLogged = req.url && !isFileRequest(req) && !req.headers.host.includes('localhost');
-    let event = {
+    const shouldBeLogged = req.url && !isFileRequest(req) && !req.headers.host.includes('localhost');
+    const event = {
         url: req.url,
         referrer: req.headers.referer,
         query: JSON.stringify(req.query),
@@ -40,5 +40,5 @@ const createAPIEventMiddleware = async (req, res) => {
     } else {
         return;
     }
-}
+};
 export default createAPIEventMiddleware;

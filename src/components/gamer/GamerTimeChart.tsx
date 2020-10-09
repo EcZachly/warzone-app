@@ -1,30 +1,30 @@
 import {BarChart, Bar, XAxis, YAxis, Tooltip} from 'recharts';
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import {InputRadio} from '../SimpleComponents';
 import _ from 'lodash';
 export default function GamerTimeChart({viewData, options, selectedValue, height, width}) {
     const [selectedChart, setActiveChart] = useState(selectedValue);
-    const [selectedSeries, setActiveSeries] = useState("kdr");
-    let chartData = viewData.filter((row)=> row.analysis_type === selectedChart);
+    const [selectedSeries, setActiveSeries] = useState('kdr');
+    const chartData = viewData.filter((row)=> row.analysis_type === selectedChart);
     if(chartData.length > 0){
-        let analysisTypeInputOptions = options.map((option)=>{
+        const analysisTypeInputOptions = options.map((option)=>{
             return {
                 value: option,
                 text: option.split('_').map(_.capitalize).join(' '),
                 className: ''
-            }
-        })
+            };
+        });
 
-        let seriesTypeInputOptions = Object.keys(chartData[0]).filter((i, index)=> index > 5).map((option)=>{
+        const seriesTypeInputOptions = Object.keys(chartData[0]).filter((i, index)=> index > 5).map((option)=>{
             return {
                 value: option,
                 text: option.split('_').map(_.capitalize).join(' '),
                 className: ''
-            }
-        })
+            };
+        });
         return (
             <div style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
-                <small className={"aliases"}>{"All times are in " +  Intl.DateTimeFormat().resolvedOptions().timeZone + "  timezone"}</small>
+                <small className={'aliases'}>{'All times are in ' +  Intl.DateTimeFormat().resolvedOptions().timeZone + '  timezone'}</small>
                 <InputRadio name="demo" value={selectedChart} options={analysisTypeInputOptions} onChange={(val)=> setActiveChart(val)}/>
                 <BarChart  width={width} height={height} data={chartData}>
                     <Bar dataKey={selectedSeries} fill="#8884d8"/>
@@ -34,7 +34,7 @@ export default function GamerTimeChart({viewData, options, selectedValue, height
                 </BarChart>
                 <InputRadio name="series" value={selectedSeries} options={seriesTypeInputOptions} onChange={(val)=> setActiveSeries(val)}/>
             </div>
-        )
+        );
 
     }
     else{

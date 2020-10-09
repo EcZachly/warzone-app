@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Image from './Image';
-import TypeService from "../../services/TypeService";
+import TypeService from '../../services/TypeService';
 
 const CONSTANTS = {
     VALID_POSITIONS: {
@@ -33,7 +33,7 @@ export default MediaImage;
 
 type MediaImageProps = {
     className?: string,
-    style?: object,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
     src: string,
     //The vertical position of the image, relative to the rest of the media body
@@ -48,7 +48,7 @@ type MediaImageProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'media-image'
     ];
     

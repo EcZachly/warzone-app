@@ -13,7 +13,7 @@ import {
     Required,
     TextArea
 } from './../SimpleComponents';
-import CSS from "csstype";
+import CSS from 'csstype';
 
 const MODULE_CONSTANTS = {
     TYPE_MAP: {
@@ -34,43 +34,43 @@ const MODULE_CONSTANTS = {
 
 
 class Input extends React.Component<InputType> {
-    
+
     constructor(props: InputType) {
         super(props);
     }
-    
-    
+
+
     render() {
         const props: InputType = this.props;
-        
+
         const formError = this._getFormError(props);
         const helpMessage = this._getFormHelpMessage(props);
         const inputItem = this._getInput(props);
-        
+
         let labelSize;
 
-        if (props.mode == 'plain') {
+        if (props.mode === 'plain') {
             labelSize = 'sm';
         }
 
         if (props.labelSize) {
             labelSize = props.labelSize;
         }
-        
-        let classNames = [props.className];
-        
+
+        const classNames = [props.className];
+
         if (this._isCheckbox()) {
             classNames.push('form-group-checkbox');
         }
-        
-        let classNamesString = classNames.join(' ');
-        
+
+        const classNamesString = classNames.join(' ');
+
         return (
             <FormGroup className={classNamesString} style={props.style} mode={props.mode}>
 
                 <Label size={labelSize}>
                     {props.label}
-                    
+
                     {props.required === true ? <Required/> : null}
                 </Label>
                 {inputItem}
@@ -79,21 +79,21 @@ class Input extends React.Component<InputType> {
             </FormGroup>
         );
     }
-    
+
     //====--=-=--=--=-=-=-==-=-=--=====--=-=--=--=-=-=-==-=-=--=//
     //PUBLIC METHODS
-    
-    
-    
+
+
+
     //====--=-=--=--=-=-=-==-=-=--=====--=-=--=--=-=-=-==-=-=--=//
     //PRIVATE METHODS
-    
-    
+
+
     _getInput(props: InputType) {
         const inputStyle = {marginBottom: 0, ...props.inputStyle};
-        
+
         const mappedType = this._getMappedType();
-        
+
         if (mappedType === 'text') {
             return (
                 <InputText onChange={props.onChange}
@@ -119,8 +119,7 @@ class Input extends React.Component<InputType> {
                              style={inputStyle}
                              hasError={!!props.errorMessage}
                              disabled={props.disabled}
-                             value={props.value}
-                             options={props.options}/>
+                             value={props.value}/>
             );
         } else if (mappedType === 'date') {
 
@@ -184,26 +183,26 @@ class Input extends React.Component<InputType> {
             );
         }
     }
-    
-    
-    
+
+
+
     _getMappedType() {
         const type = this.props.type;
         const validTypes = Object.keys(MODULE_CONSTANTS.TYPE_MAP);
         const isValidType = validTypes.includes(type);
         const defaultMappedType = 'text';
-        
+
         return (isValidType) ? MODULE_CONSTANTS.TYPE_MAP[type] : defaultMappedType;
     }
-    
-    
-    
+
+
+
     _isCheckbox() {
         return this._getMappedType() === 'checkbox';
     }
-    
-    
-    
+
+
+
     _getFormError(props) {
         if (props.errorMessage) {
             return (
@@ -213,8 +212,8 @@ class Input extends React.Component<InputType> {
             return '';
         }
     }
-    
-    
+
+
     _getFormHelpMessage(props) {
         if (props.helpMessage) {
             return (
@@ -227,14 +226,19 @@ class Input extends React.Component<InputType> {
 }
 
 
+type Option = {
+    value: string,
+    text: string
+}
+
 type InputType = {
-    className?: string | Array<String>,
+    className?: string | Array<string>,
     style?: CSS.Properties,
     inputStyle?: CSS.Properties,
     children?: React.ReactNode,
     type?: 'text' | 'number' | 'date' | 'checkbox' | 'select' | 'radio' | 'textarea',
     focus?: boolean,
-    onChange: Function,
+    onChange: () => void,
     ref?: any,
     innerRef?: any,
     mode?: string,
@@ -244,16 +248,17 @@ type InputType = {
     placeholder?: string,
     value?: string,
     textCenter?: boolean,
-    onEnter?: Function,
+    onEnter?: () => void,
     labelSize?: string,
     label?: string,
     required?: boolean,
     helpMessage?: string,
     name?: string,
-    options?: Array<object>
+    options?: Option[]
 }
 
 
-const ForwardedRefInput = React.forwardRef<HTMLInputElement, InputType>((props, ref) => <Input innerRef={ref} {...props}/>);
+const ForwardedRefInput = React.forwardRef<HTMLInputElement, InputType>((props, ref) => <Input
+    innerRef={ref} {...props}/>);
 
 export default ForwardedRefInput;

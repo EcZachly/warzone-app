@@ -2,16 +2,16 @@
 
 export default class WarzoneMapper{
     static mapGamer(gamer){
-        let dataObject = {
+        const dataObject = {
             username: gamer.username,
             platform: gamer.platform,
             needs_backfill: !!gamer.needs_backfill
-        }
+        };
         return dataObject;
     }
 
     static mapMatch(match){
-        let dataObject = {
+        const dataObject = {
             match_id: match.matchID,
             start_time: match.utcStartSeconds,
             end_time: match.utcEndSeconds,
@@ -22,11 +22,11 @@ export default class WarzoneMapper{
             game_type: match.gameType,
             player_count: match.playerCount,
             team_count: match.teamCount
-        }
+        };
         return dataObject;
     }
     static mapGamerMatch(match, queryGamer){
-        let dataObject = {
+        const dataObject = {
             query_username: queryGamer.username,
             query_platform: queryGamer.platform,
             username: match.player.username,
@@ -67,7 +67,7 @@ export default class WarzoneMapper{
                 bonus_xp: match.playerStats.bonusXp
             }),
             loadout: JSON.stringify(match.player.loadout)
-        }
+        };
         return dataObject;
     }
 }

@@ -29,7 +29,7 @@ export default LabelValue;
 
 
 function getClassName(props) {
-    let classes = ['label-value-container'];
+    const classes = ['label-value-container'];
     
     if (props.size && CONSTANTS.VALID_SIZES.includes(props.size)) {
         classes.push('size-' + props.size);

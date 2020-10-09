@@ -1,7 +1,7 @@
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-function getGamerPlatforms() {
+export function getGamerPlatforms() {
     return [
         {
             id: 'xbl',
@@ -18,19 +18,16 @@ function getGamerPlatforms() {
             name: 'Playstation Network',
             image: 'playstation'
         }
-    ]
+    ];
 }
 
-export {getGamerPlatforms};
 
-
-function getPlatformObjByID(platformCode) {
+export function getPlatformObjByID(platformCode) {
     return getGamerPlatforms().filter(({id}) => id === platformCode)[0];
 }
-export {getPlatformObjByID};
 
 
 export default {
-    getGamerPlatforms: <Function>getGamerPlatforms,
-    getPlatformObjByID: <Function>getPlatformObjByID
+    getGamerPlatforms: getGamerPlatforms,
+    getPlatformObjByID: getPlatformObjByID
 };

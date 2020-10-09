@@ -400,4 +400,4 @@ export default {
     Text: Text,
     TextArea: TextArea,
     UnorderedList: UnorderedList,
-}
+};

@@ -20,8 +20,8 @@ export default BreadcrumbItem;
 //PROPS
 
 type BreadcrumbItemProps = {
-    onClick?: Function,
-    href: Function,
+    onClick?: () => void,
+    href:  () => void,
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
@@ -33,7 +33,7 @@ type BreadcrumbItemProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'breadcrumb-item'
     ];
 
