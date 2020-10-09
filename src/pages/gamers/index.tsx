@@ -23,8 +23,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 
     const fetchMoreGamers = async (page) => {
         const dataUrl = baseUrl + '/api/gamer?limit=' + limit + '&offset=' + limit * page;
+
         const response = await fetch(dataUrl);
         const newGamers = await response.json();
+
         if (newGamers.length === 0) {
             setFeedHasMore(false);
         } else {
@@ -89,8 +91,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
+
     const rawGamerList = await fetch(baseUrl + '/api/gamer');
     const gamerJson = await rawGamerList.json();
+
     return {
         props: {
             offset: 0,

@@ -15,7 +15,7 @@ export function include(server) {
 
     router.get('/api/gamer/:platform/:username', Gamers.getGamerDetails);
 
-    router.get('/api/sqaud', Squads.findSquads)
+    router.get('/api/squad', Squads.findSquads)
 
     configure(server);
     server.use('/', router);
