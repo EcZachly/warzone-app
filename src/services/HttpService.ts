@@ -1,6 +1,6 @@
-import * as fetch from 'unfetch';
+import fetch from 'unfetch';
 
-const TypeService = require('./TypeService');
+import TypeService from './TypeService';
 
 //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
 //PUBLIC METHODS
