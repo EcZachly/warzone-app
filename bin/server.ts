@@ -19,29 +19,6 @@ const typescriptLoader = {
     exclude: /node_modules/
 };
 
-const sassLoader = {
-    test: /\.s[ac]ss$/i,
-    include: [
-        path.resolve(__dirname, '..', 'src', 'assets')
-    ],
-    use: [
-        // Creates `style` nodes from JS strings
-        // 'style-loader',
-
-        // Translates CSS into CommonJS
-        'css-loader',
-
-        // Compiles Sass to CSS
-        'sass-loader',
-
-    ]
-};
-
-const fileLoader = {
-    test: /\.(png|svg|jpg|jpeg|gif)$/,
-    use: ['file-loader']
-};
-
 let PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
 
 // const withSass = require('@zeit/next-sass');
@@ -52,9 +29,7 @@ const app = next({
     conf: {
         pageExtensions: ['tsx', 'ts', 'js', 'jsx'],
         webpack: (config, options) => {
-            // config.module.rules.push(sassLoader);
             config.module.rules.push(typescriptLoader);
-            // config.module.rules.push(fileLoader);
 
             return config;
         },

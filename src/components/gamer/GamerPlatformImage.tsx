@@ -25,7 +25,7 @@ export default function GamerPlatformImage({gamer, size, color}: GamerPlatformIm
     const selectedSize = getSize(size);
     const selectedColor = ['black', 'white'].includes(color) ? color : 'white';
 
-    const url = '/images/platform/' + [platformImageName, selectedColor, selectedSize].join('-') + '.png';
+    const url = '/assets/images/platform/' + [platformImageName, selectedColor, selectedSize].join('-') + '.png';
 
     return (
         <Image style={{width: '20px', height: '20px', marginLeft: '10px'}}

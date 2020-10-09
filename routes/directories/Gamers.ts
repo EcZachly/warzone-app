@@ -76,7 +76,9 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.limit;
     const rawGamerList = await queryView(viewName, queryParams, {offset, limit});
     const sanitizedGamers = rawGamerList.map(sanitizeGamer);
-    res.json(sanitizedGamers);
+
+    handleResponse(req, res, sanitizedGamers);
+    // res.json(sanitizedGamers);
 }
 
 
@@ -161,6 +163,6 @@ export async function getGamerDetails(req: NextApiRequest, res: NextApiResponse)
 
 export default {
     createGamer,
-    queryGamers,
+    findGamers,
     getGamerDetails: DefaultMiddleware(getGamerDetails)
 };
