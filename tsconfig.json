@@ -2,28 +2,34 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "./dist",
-    "allowJs": false,
+    "allowJs": true,
     "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "jsx": "preserve"
   },
   "include": [
     "./routes/**/*",
-    "./src/**/*"
+    "./src/**/*",
+    "./bin/**/*",
+    "./config/**/*",
+    "./lib/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "src/.next"
   ]
 }

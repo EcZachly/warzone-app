@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 
 import {Navbar, Page, Footer} from './../components/AppComponents';
 import {Container, Header, Box, Text, Small, Main, LineBreak} from './../components/SimpleComponents';

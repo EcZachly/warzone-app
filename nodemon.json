@@ -1,0 +1,6 @@
+{
+    "watch": ["src", "bin", "config", "lib", "routes"],
+    "ext": "js, tsx, ts, json",
+    "ignore": ["src/.next"],
+    "exec": "npm run dev"
+}

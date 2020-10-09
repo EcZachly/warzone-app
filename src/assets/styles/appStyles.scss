@@ -16,7 +16,7 @@ html, body {
   padding-top: 25px;
   padding-bottom: 60px;
 
-  background-image: url("/images/home/smoke-sm.jpeg");
+  background-image: url("./../images/home/smoke-sm.jpeg");
   background-position: cover;
   background-size: cover;
 }
@@ -39,7 +39,7 @@ html, body {
 
 @media (min-width: 576px) {
   #section-display {
-    background-image: url("/images/home/smoke-md.jpeg");
+    background-image: url("./../images/home/smoke-md.jpeg");
   }
 }
 
@@ -48,7 +48,7 @@ html, body {
     padding-top: 75px;
     padding-bottom: 100px;
 
-    background-image: url("/images/home/smoke-xl.jpeg");
+    background-image: url("./../images/home/smoke-xl.jpeg");
   }
 
 

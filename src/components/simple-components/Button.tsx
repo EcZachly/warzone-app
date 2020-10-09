@@ -61,7 +61,7 @@ export default Button;
 const TS_VALID_TYPES = [...Object.keys(CONSTANTS.VALID_TYPES)] as const;
 
 type ButtonProps = {
-    onClick?:  () => void,
+    onClick?:  (ButtonProps, any) => void,
 
     className?: string,
     style?: React.CSSProperties,

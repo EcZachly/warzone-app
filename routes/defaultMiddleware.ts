@@ -1,5 +1,5 @@
 
-import SiteTrafficMiddleware from './site_traffic_middleware';
+import SiteTrafficMiddleware from './siteTrafficMiddlware';
 
 const defaultMiddleware = (handler) => async(req, res)=> {
     await SiteTrafficMiddleware(req, res);
