@@ -140,8 +140,7 @@ class Input extends React.Component<InputType> {
                                style={inputStyle}
                                hasError={!!props.errorMessage}
                                disabled={props.disabled}
-                               value={props.value}
-                               options={props.options}/>
+                               value={props.value}/>
             );
         } else if (mappedType === 'select') {
             return (
@@ -238,7 +237,7 @@ type InputType = {
     children?: React.ReactNode,
     type?: 'text' | 'number' | 'date' | 'checkbox' | 'select' | 'radio' | 'textarea',
     focus?: boolean,
-    onChange: () => void,
+    onChange: (string) => void,
     ref?: any,
     innerRef?: any,
     mode?: string,

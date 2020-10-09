@@ -5,10 +5,14 @@ import InfiniteScroll from 'react-infinite-scroller';
 import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
-import {GamerCard, GamerAdd} from './../../components/gamer/index';
+
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
+import {GamerCard, GamerAdd} from './../../components/gamer/index';
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
 
 export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
     const [usernameSearchValue, updateUsernameSearchValue] = useState('');
@@ -16,18 +20,19 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
     const [feedHasMore, setFeedHasMore] = useState(true);
     const tempUsernameSearchValue = usernameSearchValue.toLowerCase();
 
+
     const fetchMoreGamers = async (page) => {
-        const dataUrl = baseUrl + '/api/gamers?limit=' + limit + '&offset=' + limit*page;
+        const dataUrl = baseUrl + '/api/gamers?limit=' + limit + '&offset=' + limit * page;
         const response = await fetch(dataUrl);
-        const newGamers =  await response.json();
-        if(newGamers.length === 0){
+        const newGamers = await response.json();
+        if (newGamers.length === 0) {
             setFeedHasMore(false);
-        }
-        else{
+        } else {
             const allGamers = [...gamerValues, ...newGamers];
             setGamers(allGamers);
         }
     };
+
 
     const gamerList = gamerValues.filter(({username, aliases}) => {
         if (!!usernameSearchValue) {
@@ -39,15 +44,16 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
             return true;
         }
     }).map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
+
+
     return (
         <Page title={'Gamers'}>
             <Navbar/>
+
             <Main>
                 <Container mode={'sidebar'} size={'lg'}>
                     <Sidebar>
-                        <Header>
-                            All Gamers
-                        </Header>
+                        <Header>All Gamers</Header>
 
                         <LineBreak/>
 
@@ -65,7 +71,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
                     <SidebarCompanion>
                         <InfiniteScroll
                             pageStart={0}
-                            loadMore={(page)=> fetchMoreGamers(page)}
+                            loadMore={(page) => fetchMoreGamers(page)}
                             hasMore={feedHasMore}
                             loader={<div className="loader" key={0}>Loading ...</div>}
                             useWindow={true}
@@ -80,6 +86,8 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
         </Page>
     );
 }
+
+
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
