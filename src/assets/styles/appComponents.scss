@@ -172,3 +172,15 @@ main.main {
 @media (min-width: 1200px) {
 
 }
+
+
+
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//RECAPTCHA
+
+.rc-anchor, .rc-anchor-normal-footer, .grecaptcha-badge {
+  visiblity: hidden;
+  display: none;
+}
