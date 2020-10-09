@@ -7,6 +7,9 @@ import Router from 'next/router';
 
 import {GoogleReCaptcha, GoogleReCaptchaProvider} from 'react-google-recaptcha-v3';
 
+//===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
 
 const CONFIG = {
     PLATFORM_OPTIONS: GamerService.getGamerPlatforms().map(({id, name}) => ({text: name, value: id}))
@@ -28,13 +31,18 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
 
 
     let loadingComponent = <div/>;
-    if(loading){
+
+    if (loading) {
         //TODO make this a spinner
         loadingComponent = <Image style={{width: '50px', height: '50px'}} src={'/images/spinner_gif.gif'}/>;
     }
 
     const addGamer = async () => {
-        const newUserConfig = {username: username, platform: platform};
+        const newUserConfig = {
+            username: username,
+            platform: platform
+        };
+
         let errorMessage = '';
 
         //Reset the recaptcha token in case they make a mistake
@@ -46,9 +54,10 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
             errorMessage = 'Platform is required';
         }
 
-        if(!errorMessage) {
+        if (!errorMessage) {
             setLoading(true);
-            setMessage( {message: '', type: ''});
+            setMessage({message: '', type: ''});
+
             const response = await HttpService.http({
                 url: baseUrl + '/api/gamer',
                 method: 'POST',
@@ -58,18 +67,20 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
                     token: token
                 }
             });
+
             if (response.status === 200) {
                 Router.push(response.data.url || ['gamer', newUserConfig.platform, encodeURIComponent(newUserConfig.username)].join('/'));
             } else {
                 let message = 'An unknown error occurred while trying to create the user';
+
                 if (response.data && response.data.userMessage) {
                     message = response.data.userMessage;
                 }
+
                 setLoading(false);
                 setMessage({message: message, type: 'error'});
             }
-        }
-        else{
+        } else {
             setMessage({message: errorMessage, type: 'error'});
         }
     };
@@ -78,10 +89,13 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
     const disabled = loading || !token;
 
     return (
-        <GoogleReCaptchaProvider ref={recaptcha}  reCaptchaKey={recaptchaSiteKey}>
-            <GoogleReCaptcha onVerify={token => setToken(token)} action="submit" />
+        <GoogleReCaptchaProvider ref={recaptcha} reCaptchaKey={recaptchaSiteKey}>
+
+            <GoogleReCaptcha onVerify={token => setToken(token)} action="submit"/>
+
             <Box>
                 <Header size={'sm'}>Add Gamer</Header>
+
                 <Input label={'Username'}
                        type={'text'}
                        disabled={disabled}
@@ -97,6 +111,7 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
                        onChange={(value) => setPlatform(value)}/>
 
                 {loadingComponent}
+
                 <Alert type={message['type']}
                        hideIfEmpty>
                     {message['message']}
@@ -106,6 +121,7 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
                     Add Gamer
                 </Button>
             </Box>
+
         </GoogleReCaptchaProvider>
     );
 }
