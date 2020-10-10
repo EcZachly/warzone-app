@@ -32,7 +32,7 @@ type ColumnProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'column',
         'col'
     ];

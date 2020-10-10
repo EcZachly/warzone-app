@@ -147,7 +147,7 @@ export default class Modal extends React.Component {
     
     
     _getModalClasses(props) {
-        let classes = [
+        const classes = [
             'modal'
         ];
         
@@ -164,7 +164,7 @@ export default class Modal extends React.Component {
     
     
     _getModalDialogClasses(props) {
-        let classes = [
+        const classes = [
             'modal-dialog'
         ];
         
@@ -191,7 +191,7 @@ export default class Modal extends React.Component {
     
     
     _getBackdropClasses(props) {
-        let classes = [
+        const classes = [
             'modal-backdrop'
         ];
         
@@ -210,7 +210,7 @@ type ModalProps = {
     centered: boolean,
     disableEscapeClose: boolean,
     disableBackgroundClose: boolean,
-    closeModal: Function,
-    onBackgroundClick: Function,
-    onEscapeClick: Function
+    closeModal:  () => void,
+    onBackgroundClick:  () => void,
+    onEscapeClick:  () => void
 };

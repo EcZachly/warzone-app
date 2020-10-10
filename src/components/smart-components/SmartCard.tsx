@@ -114,7 +114,7 @@ function getImage(props) {
                        noPosition={hasNoPosition}/>
         );
     } else if (props.iconSrc || props.icon) {
-        throw Error("Not Yet implemented");
+        throw Error('Not Yet implemented');
     } else {
         return '';
     }

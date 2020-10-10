@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "etl": "ts-node src/lib/etl/user_match_scrape.js",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "dev": "next dev"
   },
   "author": "",
@@ -45,5 +47,11 @@
     "useragent": "^2.3.0",
     "yargs": "^16.0.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/parser": "^4.4.0",
+    "eslint": "^7.10.0",
+    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-react": "^7.21.3"
+  }
 }

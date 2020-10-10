@@ -25,7 +25,7 @@ async function getMatchHistory(gamer, api) {
         console.log('BACKFILLING ENTIRE DATASET!!!');
     }
     try {
-        let history = await api.MWfullcombatwz(gamer.username, gamer.platform);
+        const history = await api.MWfullcombatwz(gamer.username, gamer.platform);
         console.log('found history for gamer:' + gamer.username + ' on platform:' + gamer.platform);
         console.log('game history of size:' + history.length);
         return history;
@@ -44,24 +44,24 @@ async function getMatchHistory(gamer, api) {
  * @returns {[] -- an array of valid time frames}
  */
 function getQueryTimeframes(matchHistory, queriedTimestamps, gamer) {
-    let hasLatestTimestamp = queriedTimestamps.last_timestamp;
-    let matchesCopied = matchHistory
+    const hasLatestTimestamp = queriedTimestamps.last_timestamp;
+    let matchesCopied = matchHistory;
     if (hasLatestTimestamp && !gamer.needs_backfill) {
         matchesCopied = matchHistory.filter((match) => {
-            return match.timestamp > parseFloat(queriedTimestamps.last_timestamp)
+            return match.timestamp > parseFloat(queriedTimestamps.last_timestamp);
         });
     }
 
-    let timestampList = []
+    let timestampList = [];
     if (matchesCopied.length > 0) {
         timestampList = getTimestampList(matchesCopied);
     }
-    return timestampList
+    return timestampList;
 }
 
 
 async function getMatchDetails(queryTimeframes, gamer, API){
-    let matches = await getMatchDetailsFromAPI(queryTimeframes, gamer, API);
+    const matches = await getMatchDetailsFromAPI(queryTimeframes, gamer, API);
     await writeMatchesToDatabase(matches);
     await writeGamerMatchesToDatabase(matches, gamer);
     if (gamer.needs_backfill) {
@@ -84,14 +84,14 @@ async function getMatchDetails(queryTimeframes, gamer, API){
  * @returns {Promise<{gamer, matchHistory, queriedTimestamps, isBackfill}>}
  */
 async function executePipeline(gamer) {
-    let API = await ApiWrapper.getInstance();
-    let history = await getMatchHistory(gamer, API);
-    let queriedTimestamps = await getMinMaxMatchTimestamps(gamer);
-    let queryTimeframes = getQueryTimeframes(history, queriedTimestamps, gamer);
+    const API = await ApiWrapper.getInstance();
+    const history = await getMatchHistory(gamer, API);
+    const queriedTimestamps = await getMinMaxMatchTimestamps(gamer);
+    const queryTimeframes = getQueryTimeframes(history, queriedTimestamps, gamer);
 
     if (queryTimeframes.length > 0) {
-        let matches = await getMatchDetails(queryTimeframes, gamer, API);
-        console.log('Found ' + matches.length + ' matches for player: ' + gamer.username + ' on platform: ' + gamer.platform)
+        const matches = await getMatchDetails(queryTimeframes, gamer, API);
+        console.log('Found ' + matches.length + ' matches for player: ' + gamer.username + ' on platform: ' + gamer.platform);
     } else {
         console.log('No new games found for gamer: ' + gamer.username  + ' on platform: ' + gamer.platform + ', doing nothing');
     }
@@ -109,9 +109,9 @@ async function executePipeline(gamer) {
  * @returns {PromiseLike<void>}
  */
 async function refreshData(query = {}) {
-    let gamers = await queryGamers(query);
+    const gamers = await queryGamers(query);
     await Bluebird.map(gamers, (gamer) => executePipeline(gamer), {concurrency: THREAD_CONCURRENCY_LIMIT});
-    console.log("Finished entire refresh")
+    console.log('Finished entire refresh');
 }
 
 export async function runUpdates(){

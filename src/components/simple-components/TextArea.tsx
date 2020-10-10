@@ -38,7 +38,7 @@ class TextArea extends React.Component<TextAreaProps> {
     
     
     getClassNames(props) {
-        let classNames = [
+        const classNames = [
             'form-control'
         ];
     
@@ -74,10 +74,10 @@ class TextArea extends React.Component<TextAreaProps> {
 
 type TextAreaProps = {
     className?: string | Array<string>,
-    style?: object,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
     focus?: boolean,
-    onChange?: Function,
+    onChange?:  (string, TextAreaProps, {value, event, props}) => void,
     ref?: any,
     innerRef?: any,
     hasError?: boolean,
@@ -89,6 +89,6 @@ type TextAreaProps = {
 }
 
 
-let ForwardedRefTextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => <TextArea innerRef={ref} {...props}/>);
+const ForwardedRefTextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => <TextArea innerRef={ref} {...props}/>);
 
 export default ForwardedRefTextArea;

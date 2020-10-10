@@ -38,7 +38,7 @@ TableRow.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = ['tr'];
+    const classNames = ['tr'];
     
     if (props.className) {
         classNames.push(props.className);

@@ -8,14 +8,14 @@ import {DATABASE_SCHEMA} from '../constants';
 export function getTimestampList(output) {
 	let currentFirstTimestamp = 0;
 	let currentLastTimestamp = 0;
-	let timestampList = [];
+	const timestampList = [];
 
 	//First we sort the array to make sure the matches are ordered by timestamp
 	output.sort(function(first, second) {
 		return first.timestamp < second.timestamp;
 	});
 
-	let filtered = output.filter((match) => match.timestamp > 0);
+	const filtered = output.filter((match) => match.timestamp > 0);
 
 	//Our very first timestamp limit would be the timestamp of the very first game
 	currentFirstTimestamp = new Date().getTime();
@@ -50,14 +50,14 @@ export function getTimestampList(output) {
 
 
 export async function queryDatabase(table, query, options = {}) {
-	let db = await database;
+	const db = await database;
 	return db[DATABASE_SCHEMA][table].find(query, options);
 }
 
 
 
 export async function insertIntoDatabase(data, table) {
-	let db = await database;
+	const db = await database;
 
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
@@ -73,7 +73,7 @@ export async function insertIntoDatabase(data, table) {
 
 
 export async function updateDatabaseRecords(query, data, table) {
-	let db = await database;
+	const db = await database;
 
 	try {
 		return await db[DATABASE_SCHEMA][table].update(query, data);

@@ -31,14 +31,14 @@ type TableDataProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = ['table-data'];
+    const classNames = ['table-data'];
 
     if (props.className) {
         classNames.push(props.className);
     }
 
     const validTextAlignPositions = ['left', 'right', 'center'];
-    let alignPropValue = (props.align || props.textAlign || '').toLowerCase();
+    const alignPropValue = (props.align || props.textAlign || '').toLowerCase();
 
     if (validTextAlignPositions.includes(alignPropValue)) {
         classNames.push('text-' + alignPropValue);

@@ -18,7 +18,7 @@ export default function LineBreak(props: LineBreakProps) {
 //PROPS
 
 type LineBreakProps = {
-    className?: String | Array<String>,
+    className?: string | Array<string>,
     style?: CSS.Properties,
     children?: React.ReactNode,
     noMargins?: boolean,
@@ -32,7 +32,7 @@ type LineBreakProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'line-break'
     ];
 

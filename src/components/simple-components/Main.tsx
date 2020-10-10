@@ -27,7 +27,7 @@ class Main extends React.Component {
     //PRIVATE METHODS
     
     getClassNames(props) {
-        let classNames = [
+        const classNames = [
             'main'
         ];
         

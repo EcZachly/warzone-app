@@ -45,7 +45,7 @@ class InputNumber extends React.Component<InputNumberProps> {
     
     
     getClasses(props) {
-        let classNames = [
+        const classNames = [
             'form-control'
         ];
     
@@ -81,13 +81,13 @@ class InputNumber extends React.Component<InputNumberProps> {
 
 type InputNumberProps = {
     className?: string,
-    style?: object,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
     focus? : boolean,
     mode? : string,
-    options? : Array<object>,
+
     //When the input changes, this function will be called
-    onChange?: Function,
+    onChange?:  (string, InputNumberProps, {value, event, props}) => void,
     
     //The value of the input
     value?: string | number,

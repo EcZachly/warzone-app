@@ -35,7 +35,7 @@ ProgressBar.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'progress'
     ];
     
@@ -48,7 +48,7 @@ function getClassNames(props) {
 
 
 function getStyle(props) {
-    let style = {};
+    const style = {};
     
     if (props.height) {
         let heightValue = props.height;

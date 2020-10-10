@@ -52,7 +52,7 @@ type AlertProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'alert'
     ];
     

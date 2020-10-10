@@ -1,7 +1,7 @@
 import CallOfDutyAPI from 'call-of-duty-api';
 import Bluebird from 'bluebird';
-let EMAIL = process.env.WARZONE_EMAIL;
-let PASSWORD = process.env.WARZONE_PASSWORD;
+const EMAIL = process.env.WARZONE_EMAIL;
+const PASSWORD = process.env.WARZONE_PASSWORD;
 
 export default class ApiWrapper {
     private static API: CallOfDutyAPI;
@@ -16,7 +16,7 @@ export default class ApiWrapper {
         else{
             return ApiWrapper.API.login(EMAIL, PASSWORD).then(()=>{
                 return ApiWrapper.API;
-            })
+            });
         }
     }
 }

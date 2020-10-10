@@ -30,7 +30,7 @@ type CardFooterProps = {
 
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'card-footer'
     ];
     

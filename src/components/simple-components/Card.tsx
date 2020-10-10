@@ -27,7 +27,7 @@ type CardProps = {
     isClickable?: boolean,
     children?: React.ReactNode | React.ReactNodeArray,
     shadow?: 1 | 2 | 3 | 4 | 5,
-    onClick?: Function
+    onClick?:  () => void
 }
 
 
@@ -35,7 +35,7 @@ type CardProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'card'
     ];
 

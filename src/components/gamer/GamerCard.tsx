@@ -2,11 +2,13 @@ import React from 'react';
 import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader} from '../SimpleComponents';
 import {GamerLink} from '../AppComponents';
 
+import {Gamer} from './GamerTypes';
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 //TODO CREATE Gamer type and enforce it here
 type GamerCardProps = {
-    gamer: object
+    gamer: Gamer
 }
 
 
@@ -20,7 +22,7 @@ export default function GamerCard({gamer} : GamerCardProps) {
 
                 <br/>
 
-                <small className="aliases">({gamer['aliases'].join(',')})</small>
+                <small className="aliases">({gamer.aliases.join(',')})</small>
             </CardHeader>
             <CardBody>
                 <Table>
@@ -36,5 +38,5 @@ export default function GamerCard({gamer} : GamerCardProps) {
             </CardBody>
 
         </Card>
-    )
+    );
 }

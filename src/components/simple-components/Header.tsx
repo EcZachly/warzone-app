@@ -63,7 +63,7 @@ type HeaderProps = {
 //PRIVATE METHODS
 
 function getHeaderSize(props) {
-    let selectedSize = (typeof props.size === 'string' && props.size.length > 0) ? props.size.trim() : '';
+    const selectedSize = (typeof props.size === 'string' && props.size.length > 0) ? props.size.trim() : '';
     const validSizes = CONSTANTS.VALID_SIZES;
     
     return (validSizes[selectedSize]) ? validSizes[selectedSize] : validSizes['default'];
@@ -71,7 +71,7 @@ function getHeaderSize(props) {
 
 
 function getClassNames(props, HeaderTag) {
-    let classes = [
+    const classes = [
         'header'
     ];
     

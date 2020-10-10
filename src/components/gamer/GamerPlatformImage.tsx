@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 import GamerService from './GamerService';
-import {Image} from "../SimpleComponents";
-import CSS from "csstype";
+import {Image} from '../SimpleComponents';
+import {Gamer} from './GamerTypes';
 
 const CONFIG = {
     PRETTY_PLATFORM_MAP: {
@@ -10,7 +10,7 @@ const CONFIG = {
         'psn': 'Playstation Network',
         'battle': 'Battle.net',
     }
-}
+};
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -37,7 +37,7 @@ export default function GamerPlatformImage({gamer, size, color}: GamerPlatformIm
 
 
 type GamerPlatformImageProps = {
-    gamer: Object,
+    gamer: Gamer,
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
     color?: 'black' | 'white'
 }
@@ -55,5 +55,5 @@ function getSize(size) {
         large: 'lg'
     };
 
-    return sizeMap[size] ? sizeMap[size] : sizeMap['sm']
+    return sizeMap[size] ? sizeMap[size] : sizeMap['sm'];
 }

@@ -1,14 +1,18 @@
-import {GetServerSideProps} from 'next'
-import React, {useState} from "react";
+import {GetServerSideProps} from 'next';
+import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
+
+import {getBaseUrlWithProtocol} from '../../services/UtilityService';
+
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
-import {getBaseUrlWithProtocol} from "../../services/UtilityService";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
 
 export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
     const [usernameSearchValue, updateUsernameSearchValue] = useState('');
@@ -16,20 +20,21 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
     const [feedHasMore, setFeedHasMore] = useState(true);
     const tempUsernameSearchValue = usernameSearchValue.toLowerCase();
 
+
     const fetchMoreGamers = async (page) => {
-        let dataUrl = baseUrl + '/api/gamers?limit=' + limit + "&offset=" + limit*page
+        const dataUrl = baseUrl + '/api/gamers?limit=' + limit + '&offset=' + limit * page;
         const response = await fetch(dataUrl);
-        let newGamers =  await response.json();
-        if(newGamers.length === 0){
+        const newGamers = await response.json();
+        if (newGamers.length === 0) {
             setFeedHasMore(false);
-        }
-        else{
-            let allGamers = [...gamerValues, ...newGamers];
+        } else {
+            const allGamers = [...gamerValues, ...newGamers];
             setGamers(allGamers);
         }
-    }
+    };
 
-    let gamerList = gamerValues.filter(({username, aliases}) => {
+
+    const gamerList = gamerValues.filter(({username, aliases}) => {
         if (!!usernameSearchValue) {
             const gamerUsernameIncludes = username.toLowerCase().includes(tempUsernameSearchValue);
             const aliasesIncludes = aliases.filter((name) => name.toLowerCase().includes(tempUsernameSearchValue)).length > 0;
@@ -39,15 +44,16 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
             return true;
         }
     }).map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
+
+
     return (
         <Page title={'Gamers'}>
             <Navbar/>
+
             <Main>
                 <Container mode={'sidebar'} size={'lg'}>
                     <Sidebar>
-                        <Header>
-                            All Gamers
-                        </Header>
+                        <Header>All Gamers</Header>
 
                         <LineBreak/>
 
@@ -65,7 +71,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
                     <SidebarCompanion>
                         <InfiniteScroll
                             pageStart={0}
-                            loadMore={(page)=> fetchMoreGamers(page)}
+                            loadMore={(page) => fetchMoreGamers(page)}
                             hasMore={feedHasMore}
                             loader={<div className="loader" key={0}>Loading ...</div>}
                             useWindow={true}
@@ -81,10 +87,12 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
     );
 }
 
+
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let baseUrl = getBaseUrlWithProtocol(context.req);
-    let rawGamerList = await fetch(baseUrl + '/api/gamers');
-    let gamerJson = await rawGamerList.json();
+    const baseUrl = getBaseUrlWithProtocol(context.req);
+    const rawGamerList = await fetch(baseUrl + '/api/gamers');
+    const gamerJson = await rawGamerList.json();
     return {
         props: {
             offset: 0,
@@ -93,5 +101,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             baseUrl: baseUrl,
             recaptchaSiteKey: process.env.WARZONE_RECAPTCHA_SITE_KEY
         }
-    }
-}
+    };
+};

@@ -2,10 +2,10 @@ import React from 'react';
 import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Box} from '../SimpleComponents';
 import {GamerLink} from '../AppComponents';
 export default function SquadCard({squad}) {
-    let gamerLinks = squad.gamers.map((gamer)=>{
-        let [platform, username] = gamer.split('-');
-        return <GamerLink gamer={{platform: platform, username: username}}/>
-    })
+    const gamerLinks = squad.gamers.map((gamer)=>{
+        const [platform, username] = gamer.split('-');
+        return <GamerLink gamer={{platform: platform, username: username}}/>;
+    });
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 
@@ -29,5 +29,5 @@ export default function SquadCard({squad}) {
             </CardBody>
 
         </Card>
-    )
+    );
 }
