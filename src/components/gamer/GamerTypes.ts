@@ -6,5 +6,6 @@ export type Gamer = {
     max_kills?: number
     gulag_win_rate?: number,
     platform: string,
-    username: string
+    username: string,
+    gamer_class_object?: object
 }

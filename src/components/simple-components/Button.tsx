@@ -62,7 +62,6 @@ const TS_VALID_TYPES = [...Object.keys(CONSTANTS.VALID_TYPES)] as const;
 
 type ButtonProps = {
     onClick?:  (ButtonProps, any) => void,
-
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,

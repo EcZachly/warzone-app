@@ -153,10 +153,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view} = context.query;
-
-    const validViewNames = ['teammates', 'placements', 'stats', 'time'];
-    const selectedView = validViewNames.includes(view as string) ? view : 'teammates';
-
+    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'classes'];
+    const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
     const gamerJson = await rawGamerList.json();

@@ -55,7 +55,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const rawSquadList = await fetch(baseUrl + '/api/squad');
     const squadJson = await rawSquadList.json();
-
     return {
         props: {
             squads: squadJson,

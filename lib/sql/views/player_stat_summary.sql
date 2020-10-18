@@ -30,9 +30,12 @@ WITH agg AS (
 
 SELECT a.*,
        COALESCE(gsh.num_hits, 0)         AS num_site_hits,
-       COALESCE(gsh.num_distinct_users, 0) AS num_distinct_viewing_users
+       COALESCE(gsh.num_distinct_users, 0) AS num_distinct_viewing_users,
+       tgc.gamer_class_object
 FROM agg a
         LEFT JOIN warzone.gamer_site_hits gsh
               ON a.username = gsh.username AND a.platform = gsh.platform
+        LEFT JOIN warzone.top_gamer_classes  tgc
+                ON a.username = tgc.username and a.platform = tgc.platform
  ORDER BY  COALESCE(gsh.num_hits, 0)   DESC
 );
