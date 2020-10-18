@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --require esm",
-    "build": "next build",
+    "build": "next build && tsc",
     "nodemon": "nodemon",
-    "dev": "ts-node bin/server.ts",
+    "dev": "ts-node server.ts",
     "_dev": "next dev",
-    "start": "next start -p $PORT",
+    "start": "NODE_ENV=production ts-node server.ts",
     "etl": "ts-node src/lib/etl/user_match_scrape.js",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"

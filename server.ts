@@ -9,7 +9,7 @@ let server = express();
 
 const dev = (process.env.NODE_ENV !== 'production');
 const CONSTANTS = {
-    PAGES_DIRECTORY: path.join(__dirname, '..', 'src'), //this points to the location of our next.js app
+    PAGES_DIRECTORY: path.join(__dirname), //this points to the location of our next.js app
     UNSECURED_PORT: 3000
 };
 
@@ -50,11 +50,11 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
-const StaticFiles = require('./../config/server/staticFiles');
-const Security = require('./../config/server/security');
-const Tools = require('./../config/server/tools');
+const StaticFiles = require('./config/server/staticFiles');
+const Security = require('./config/server/security');
+const Tools = require('./config/server/tools');
 // const FrontEndPageMap = require('./../src/page-map/');
-const Routes = require('./../routes/index');
+const Routes = require('./routes');
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

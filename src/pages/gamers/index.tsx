@@ -92,6 +92,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
 
+    console.log(baseUrl + '/api/gamer');
     const rawGamerList = await fetch(baseUrl + '/api/gamer');
     const gamerJson = await rawGamerList.json();
 
