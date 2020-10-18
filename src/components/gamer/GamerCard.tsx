@@ -14,7 +14,9 @@ type GamerCardProps = {
 
 
 export default function GamerCard({gamer} : GamerCardProps) {
-    let classes = Object.keys(gamer.gamer_class_object).map((key)=>
+    let keys = Object.keys(gamer.gamer_class_object);
+    keys.sort();
+    let classes =keys.map((key)=>
        <Badge style={{margin: '2px'}}>
            <small>{gamer.gamer_class_object[key]}</small>
        </Badge>
