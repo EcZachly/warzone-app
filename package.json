@@ -42,6 +42,7 @@
     "react-infinite-scroller": "^1.2.4",
     "recharts": "^1.8.5",
     "sass": "^1.26.11",
+    "sass-loader": "^10.0.3",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3",
     "useragent": "^2.3.0",

@@ -1,11 +1,11 @@
 
 
 export type Gamer = {
-    aliases: string[],
-    kdr: number
-    max_kills: number
-    gulag_win_rate: number,
+    aliases?: string[],
+    kdr?: number
+    max_kills?: number
+    gulag_win_rate?: number,
     platform: string,
     username: string,
-    gamer_class_object: object
+    gamer_class_object?: object
 }

@@ -41,7 +41,8 @@ type ParagraphProps = {
     textRight?: boolean,
     
     //A simple additional styling option to quickly format the text as a certain type
-    type?: string
+    type?: string,
+    onClick?: (props, event) => void
 };
 
 
