@@ -46,5 +46,5 @@ SELECT *, CASE
 FROM agg
 )
 
-SELECT *, RANK() OVER(PARTITION BY category, username, platform ORDER BY num_matches DESC) as class_rank
+SELECT *, DENSE_RANK() OVER(PARTITION BY category, username, platform ORDER BY num_matches DESC) as class_rank
 FROM categories

@@ -16,7 +16,7 @@ const Paragraph = (props: ParagraphProps) => {
     return (
         <p className={classes} style={props.style} onClick={() => {
             if (props.onClick){
-                props.onClick();
+                props.onClick(props, {});
             }
         }}>
             {props.children}
@@ -34,9 +34,6 @@ type ParagraphProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode,
-
-    onClick?: () => {}
-    
     //text align to the center
     textCenter?: boolean,
     

@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW  warzone.gamer_classes AS
+CREATE VIEW  warzone.gamer_classes AS
 
 SELECT
 
@@ -41,8 +41,8 @@ SELECT
    PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY damage_taken) AS bullet_sponge,
    PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY damage_taken) AS hospital_patient,
 
-   PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY headshots) AS trainee,
-   PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY headshots) AS deadeye,
+   PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY headshots) AS trainee,
+   PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY headshots) AS deadeye,
    PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY headshots) AS headshot_hacker
 
 FROM warzone.gamer_matches

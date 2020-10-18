@@ -14,13 +14,13 @@ SELECT
         END as movement_class,
         CASE
             WHEN objective->>'down_enemy_circle_1' >= g2.warmonger THEN 'warmonger'
-                       WHEN objective->>'down_enemy_circle_1' >= g2.aggressor THEN 'aggressor'
+             WHEN objective->>'down_enemy_circle_1' >= g2.aggressor THEN 'aggressor'
               WHEN objective->>'down_enemy_circle_1' >= g2.peacemaker THEN 'peacemaker'
 
               ELSE 'pacifist'
         END as aggressiveness_class,
           CASE
-            WHEN CAST(objective->>'caches_open' AS INTEGER) >= g2.tomb_raider THEN 'looter'
+            WHEN CAST(objective->>'caches_open' AS INTEGER) >= g2.tomb_raider THEN 'tomb_raider'
             WHEN CAST(objective->>'caches_open' AS INTEGER) >= g2.pirate THEN 'pirate'
               WHEN CAST(objective->>'caches_open' AS INTEGER) >= g2.scavenger THEN 'scavenger'
               ELSE 'looter'
@@ -46,10 +46,10 @@ SELECT
 
         CASE
                 WHEN damage_taken >= g2.hospital_patient THEN 'hospital_patient'
-                          WHEN damage_taken >= g2.bullet_sponge THEN 'bullet_sponge'
+                  WHEN damage_taken >= g2.bullet_sponge THEN 'bullet_sponge'
                   WHEN damage_taken >= g2.scratched THEN 'scratched'
 
-                  ELSE 'hospital_patient'
+                  ELSE 'uninjured'
             END as damage_taken_class,
 
                     CASE
