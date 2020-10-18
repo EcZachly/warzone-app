@@ -38,7 +38,7 @@ InputGroupItem.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [];
+    const classNames = [];
     
     if (props.className) {
         classNames.push(props.className);
@@ -51,7 +51,7 @@ function getClassNames(props) {
 
 
 function getType(props) {
-    let validTypes = CONSTANTS.VALID_TYPES;
+    const validTypes = CONSTANTS.VALID_TYPES;
     
     return 'input-group-' + ((props.type && validTypes.includes(props.type)) ? props.type : validTypes[0]);
 }

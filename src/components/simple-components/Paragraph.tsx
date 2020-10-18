@@ -10,7 +10,7 @@ const CONSTANTS = {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Paragraph = (props) => {
+const Paragraph = (props: ParagraphProps) => {
     const classes = getClassNames(props);
     
     return (
@@ -27,21 +27,21 @@ export default Paragraph;
 //PROPS
 
 type ParagraphProps = {
-    className: string,
-    style: object,
-    children: React.ReactNode,
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode,
     
     //text align to the center
-    textCenter: boolean,
+    textCenter?: boolean,
     
     //text align to the left
-    textLeft: boolean,
+    textLeft?: boolean,
     
     //text align to the right
-    textRight: boolean,
+    textRight?: boolean,
     
     //A simple additional styling option to quickly format the text as a certain type
-    type: string
+    type?: string
 };
 
 
@@ -49,7 +49,7 @@ type ParagraphProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'paragraph'
     ];
     

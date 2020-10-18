@@ -41,7 +41,7 @@ export default class Text extends React.Component {
     
     
     _getClasses(props) {
-        let classNames = [];
+        const classNames = [];
         
         classNames.push(this._getType(props));
         

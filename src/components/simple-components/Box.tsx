@@ -26,7 +26,7 @@ class Box extends React.Component<BoxProps> {
     //PRIVATE METHODS
     
     getClassNames(props) {
-        let classNames = [
+        const classNames = [
             'box'
         ];
         
@@ -49,10 +49,10 @@ class Box extends React.Component<BoxProps> {
 //PROPS
 
 type BoxProps = {
-    className?: string | Array<String>,
+    className?: string | Array<string>,
     style?: React.CSSProperties,
     children?: React.ReactNode,
-    shadow?: Boolean | 1 | 2 | 3 | 4 | 5,
+    shadow?: boolean | 1 | 2 | 3 | 4 | 5,
     title?: string,
     id?: string,
     ref?: any,

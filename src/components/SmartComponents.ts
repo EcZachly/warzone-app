@@ -104,14 +104,14 @@ export {SmartCard};
 //Z
 
 export default {
-    Breadcrumbs: <Function>Breadcrumbs,
-    Input: <Function>Input,
-    LabelValue: <Function>LabelValue,
-    MediaItem: <Function>MediaItem,
-    Modal: <Function>Modal,
-    Placeholder: <Function>Placeholder,
-    ProgressBar: <Function>ProgressBar,
-    Sidebar: <Function>Sidebar,
-    SidebarCompanion: <Function>SidebarCompanion,
-    SmartCard: <Function>SmartCard,
-}
+    Breadcrumbs: Breadcrumbs,
+    Input: Input,
+    LabelValue: LabelValue,
+    MediaItem: MediaItem,
+    Modal: Modal,
+    Placeholder: Placeholder,
+    ProgressBar: ProgressBar,
+    Sidebar: Sidebar,
+    SidebarCompanion: SidebarCompanion,
+    SmartCard: SmartCard,
+};

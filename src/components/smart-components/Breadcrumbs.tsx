@@ -32,7 +32,7 @@ Breadcrumbs.propTypes = {
 
 
 function generateChildren(props) {
-    let items = props.items;
+    const items = props.items;
     
     if (TypeService.isArray(items) && items.length > 0) {
         validateItems(items);
@@ -48,11 +48,11 @@ function generateChildren(props) {
 function generateBreadcrumbList(items, props) {
     const totalItems = items.length;
     
-    let masterItemList = [];
+    const masterItemList = [];
     
     items.forEach((item, i) => {
         const isLastItem = i + 1 === totalItems;
-        let key = '' + item.key;
+        const key = '' + item.key;
         const {name, url} = item;
         
         masterItemList.push(
@@ -79,7 +79,7 @@ function generateBreadcrumbList(items, props) {
 
 function validateItems(items) {
     let generateKeys = false;
-    let totalItems = items.length;
+    const totalItems = items.length;
     
     items.forEach((item, i) => {
         const isLastItem = i + 1 === totalItems;

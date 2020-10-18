@@ -3,7 +3,7 @@ import React from 'react';
 import ListItem from './ListItem';
 import Badge from './Badge';
 import Button from './Button';
-import TypeService from "../../services/TypeService";
+import TypeService from '../../services/TypeService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -36,7 +36,7 @@ type ListGroupItemProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    onClick?: Function,
+    onClick?:  () => void,
     badge?: string,
     badgeType?: string,
     badgeColor?: string
@@ -57,7 +57,7 @@ function overrideDefaultType(props) {
 
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'list-group-item'
     ];
 
@@ -83,7 +83,7 @@ function isClickable(props) {
 
 
 function getStyle(props) {
-    let style = {};
+    const style = {};
 
     if (badgeValueExists(props)) {
         style['display'] = 'flex';

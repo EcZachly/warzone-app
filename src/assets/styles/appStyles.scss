@@ -8,6 +8,8 @@ body {
 
 html, body {
   font: normal 100% / 1.65 'Roboto', 'Arial', sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 #section-display {

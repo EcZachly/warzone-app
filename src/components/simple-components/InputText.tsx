@@ -63,7 +63,7 @@ class InputText extends React.Component<InputTextProps> {
     
     
     getClasses(props) {
-        let classNames = [
+        const classNames = [
             'form-control'
         ];
         
@@ -116,14 +116,14 @@ class InputText extends React.Component<InputTextProps> {
 //PROPS
 type InputTextProps = {
     className?: string,
-    style?: object,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
     innerRef?: any,
 
     //When the input changes, this function will be called
-    onChange?: Function,
+    onChange?:  (string, InputTextProps, {value, event, props}) => void,
 
-    onEnter?: Function,
+    onEnter?:  (Record) => void,
     
     //The value of the input
     value?: string,

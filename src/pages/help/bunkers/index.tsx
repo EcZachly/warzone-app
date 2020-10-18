@@ -1,8 +1,8 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
 import {Footer, Navbar, Page} from './../../../components/AppComponents';
 import {Container, Header, Small, Main, Image} from './../../../components/SimpleComponents';
-import React from "react";
+import React from 'react';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -19,7 +19,7 @@ export default function Home() {
                         Red Access Card Bunker Locations
                     </Header>
 
-                    <Image style={{width: "100%", height: "auto"}}
+                    <Image style={{width: '100%', height: 'auto'}}
                            alt="This shows where each Warzone bunker is that can be accessed via the loot drop called Red Access Card"
                            src={'/images/help/red-access-card.jpeg'}/>
 

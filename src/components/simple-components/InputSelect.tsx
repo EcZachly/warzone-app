@@ -4,23 +4,23 @@ import React from 'react';
 
 
 class InputSelect extends React.Component<InputSelectProps> {
-    
+
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
-    
-    
+
+
     constructor(props: InputSelectProps) {
         super(props);
     }
-    
+
     componentDidMount() {
-    
+
     }
-    
+
     render() {
         const props = this.props as InputSelectProps;
         const classNames = this._getClasses(props);
         const selectOptions = this._getSelectOptions(props);
-        
+
         return (
             <select className={classNames}
                     disabled={props.disabled}
@@ -36,40 +36,40 @@ class InputSelect extends React.Component<InputSelectProps> {
             </select>
         );
     }
-    
+
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     //PUBLIC METHODS
-    
-    
-    
+
+
+
     //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
     //PRIVATE METHODS
-    
+
     _getClasses(props) {
-        let classNames = [
+        const classNames = [
             'form-control'
         ];
-        
+
         if (props.className) {
             classNames.push(props.className);
         }
-    
+
         if (props.mode === 'plain') {
             classNames.push('input-plain');
         }
-        
+
         if (props.hasError) {
             classNames.push('has-error');
         }
-        
+
         return classNames.join(' ');
     }
-    
-    
-    
+
+
+
     _getSelectOptions(props) {
         const options = props.options;
-        
+
         if (Array.isArray(options) === false) {
             console.warn('InputRadio.props.options (Array) is required');
         } else if (options.length <= 0) {
@@ -80,14 +80,14 @@ class InputSelect extends React.Component<InputSelectProps> {
                     console.warn(`InputRadio.props.options[${index}] (Object) is required`);
                 } else {
                     const optionKeys = Object.keys(option);
-                    
+
                     if (optionKeys.includes('value') === false) {
                         console.warn(`InputRadio.props.options[${index}].value (*) is required`);
                     } else if (optionKeys.includes('text') === false) {
                         console.warn(`InputRadio.props.options[${index}].text (String) is required`);
                     } else {
                         const {value, text} = option;
-                        
+
                         return (
                             <option value={value} key={`${index}-${value}`}>{text}</option>
                         );
@@ -96,9 +96,9 @@ class InputSelect extends React.Component<InputSelectProps> {
             });
         }
     }
-    
-    
-    
+
+
+
 }
 
 
@@ -106,30 +106,35 @@ class InputSelect extends React.Component<InputSelectProps> {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
+type Option = {
+    value: string,
+    text: string
+}
+
 type InputSelectProps = {
     className?: string,
-    style?: object,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
-    
+
     //When the input changes, this function will be called
-    onChange?: Function,
-    
+    onChange?: (string, InputSelectProps, {value, event, props}) => void,
+
     //The list of possible radio options that the user can select from
-    options: Array<object>
-    
+    options: Option[],
+
     //The value of the input
-    value: string |number | boolean
-    
+    value: string | number | boolean,
+
     //If true, this will set the focus automatically when the input is loaded
     focus?: boolean,
-    
+
     //disables the input and prevents the user from entering any information
     disabled?: boolean,
-    
+
     //Adds some error stylings to the input
     hasError?: boolean,
 
-    innerRef?: Function,
+    innerRef?: () => void,
 
     mode?: string
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import CSS from "csstype";
+import CSS from 'csstype';
 
 import {Media, MediaBody, MediaImage} from './../SimpleComponents';
 

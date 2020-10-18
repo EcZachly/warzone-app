@@ -48,7 +48,7 @@ export default ProgressBar;
 
 type ProgressBarProps = {
     className?: string,
-    style?: object,
+    style?: React.CSSProperties,
     children?: React.ReactNode,
     color?: string,
     //Make the progress bar striped
@@ -68,7 +68,7 @@ type ProgressBarProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'progress-bar'
     ];
     

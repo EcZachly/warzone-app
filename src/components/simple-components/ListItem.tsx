@@ -30,7 +30,7 @@ ListItem.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [];
+    const classNames = [];
     
     if (props.className) {
         classNames.push(props.className);

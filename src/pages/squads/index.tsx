@@ -1,30 +1,30 @@
-import {GetServerSideProps} from 'next'
+import {GetServerSideProps} from 'next';
 import SquadCard from '../../components/squad/SquadCard';
 import {Container, Main} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import {getBaseUrlWithProtocol} from "../../services/UtilityService";
+import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
 export default function Squads({squads, baseUrl, limit}) {
-    let [feedHasMore, setFeedHasMore] = useState(true);
-    let [squadValues, setSquads] = useState(squads);
+    const [feedHasMore, setFeedHasMore] = useState(true);
+    const [squadValues, setSquads] = useState(squads);
 
     const fetchMoreSquads = async (page) => {
-        let dataUrl = baseUrl + '/api/squads?limit=' + limit + "&offset=" + limit*page
+        const dataUrl = baseUrl + '/api/squads?limit=' + limit + '&offset=' + limit*page;
         const response = await fetch(dataUrl);
-        let newSquads =  await response.json();
+        const newSquads =  await response.json();
         if(newSquads.length === 0){
             setFeedHasMore(false);
         }
         else{
-            let allGamers = [...squadValues, ...newSquads];
+            const allGamers = [...squadValues, ...newSquads];
             setSquads(allGamers);
         }
-    }
+    };
 
     return (
         <Page title={'Squads'}>
@@ -46,13 +46,12 @@ export default function Squads({squads, baseUrl, limit}) {
 
             <Footer/>
         </Page>
-    )
+    );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    let baseUrl = getBaseUrlWithProtocol(context.req);
-    let rawSquadList = await fetch(baseUrl + '/api/squads');
-    console.log(rawSquadList);
-    let squadJson = await rawSquadList.json();
-    return {props: {squads: squadJson, limit: 10, baseUrl: baseUrl}}
-}
+    const baseUrl = getBaseUrlWithProtocol(context.req);
+    const rawSquadList = await fetch(baseUrl + '/api/squads');
+    const squadJson = await rawSquadList.json();
+    return {props: {squads: squadJson, limit: 10, baseUrl: baseUrl}};
+};

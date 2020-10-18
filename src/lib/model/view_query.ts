@@ -1,17 +1,17 @@
-import {queryView} from "./analysis";
+import {queryView} from './analysis';
 
-export class ViewQuery{
+export class ViewQuery {
     view: string;
-    query: object;
-    data: Array<any> | object;
+    query: Record<string, unknown>;
+    data: Array<any> | Record<string, unknown>;
 
     constructor(view, query) {
         this.view = view;
         this.query = query;
     }
 
-    async executeQuery(){
-        this.data = await queryView(this.view, this.query)
+    async executeQuery() {
+        this.data = await queryView(this.view, this.query);
     }
 
 }

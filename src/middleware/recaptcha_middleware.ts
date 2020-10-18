@@ -7,6 +7,6 @@ const handleRecaptchaVerify = async (token) => {
     return await fetch(url, {
         method: 'POST'
     }).then(response => response.json());
-}
+};
 
-export {handleRecaptchaVerify}
+export {handleRecaptchaVerify};

@@ -29,7 +29,7 @@ ListGroup.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'list-group'
     ];
     

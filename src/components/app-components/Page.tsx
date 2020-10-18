@@ -4,7 +4,7 @@ import {withRouter} from 'next/router';
 
 import React from 'react';
 import {Box} from './../SimpleComponents';
-import CSS from "csstype";
+import CSS from 'csstype';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -42,7 +42,7 @@ class Page extends React.Component<PageProps> {
 
 
     _getClassNames(props) {
-        let classNames = [
+        const classNames = [
             'app-container'
         ];
 
@@ -52,7 +52,7 @@ class Page extends React.Component<PageProps> {
 
 
 type PageProps = {
-    className?: string | Array<String>,
+    className?: string | Array<string>,
     style?: CSS.Properties,
     children?: React.ReactNode,
     title?: string,

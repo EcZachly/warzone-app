@@ -1,8 +1,8 @@
-import WarzoneMapper from "../etl/mapper";
-import {insertIntoDatabase, queryDatabase} from "../etl/utils";
+import WarzoneMapper from '../etl/mapper';
+import {insertIntoDatabase, queryDatabase} from '../etl/utils';
 import UtilityService from '../../services/UtilityService';
-import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from "../constants";
-import  Bluebird from "bluebird";
+import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from '../constants';
+import  Bluebird from 'bluebird';
 import ApiWrapper from '../api_wrapper';
 
 
@@ -13,8 +13,8 @@ import ApiWrapper from '../api_wrapper';
  * @returns {PromiseLike<any> | Promise<any>}
  */
 export function writeGamerMatchesToDatabase(matches, gamer) {
-    let gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
-    let gamerMatchPromises = gamerMatches.map((m) => insertIntoDatabase(m, GAMER_MATCH_TABLE));
+    const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
+    const gamerMatchPromises = gamerMatches.map((m) => insertIntoDatabase(m, GAMER_MATCH_TABLE));
     return Bluebird.all(gamerMatchPromises);
 }
 
@@ -25,8 +25,8 @@ export function writeGamerMatchesToDatabase(matches, gamer) {
  * @returns {PromiseLike<any> | Promise<any>}
  */
 export function writeMatchesToDatabase(matches) {
-    let mappedMatches = matches.map(WarzoneMapper.mapMatch);
-    let matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, MATCH_TABLE));
+    const mappedMatches = matches.map(WarzoneMapper.mapMatch);
+    const matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, MATCH_TABLE));
     return Bluebird.all(matchPromises);
 }
 
@@ -38,7 +38,7 @@ export function writeMatchesToDatabase(matches) {
  * @returns {*}
  */
 export async function getMinMaxMatchTimestamps(gamer){
-    let gamers = await queryDatabase(MIN_MAX_TIMESTAMPS_VIEW, {
+    const gamers = await queryDatabase(MIN_MAX_TIMESTAMPS_VIEW, {
         query_username: gamer.username,
         query_platform: gamer.platform
     });
@@ -55,12 +55,12 @@ export async function getMinMaxMatchTimestamps(gamer){
  */
 export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepTime = MATCH_DETAILS_SLEEP_TIME) {
     console.log('# of Details API calls needed for gamer:' + gamer.username + ' on platform:' + gamer.platform + ': ' + queryTimeframes.length);
-    console.log("getting match details for: " + gamer.username + ' on platform:' + gamer.platform)
-    let matches = await Bluebird.mapSeries(queryTimeframes, async (item) => {
-        let output = await api.MWcombatwzdate(gamer.username, item.start, item.end, gamer.platform);
-        let matches =  output.matches || [];
+    console.log('getting match details for: ' + gamer.username + ' on platform:' + gamer.platform);
+    const matches = await Bluebird.mapSeries(queryTimeframes, async (item) => {
+        const output = await api.MWcombatwzdate(gamer.username, item.start, item.end, gamer.platform);
+        const matches =  output.matches || [];
         console.log('Num matches for interval for gamer:' + gamer.username + ' on platform:' + gamer.platform + ':' + matches.length);
-        UtilityService.sleep(sleepTime)
+        UtilityService.sleep(sleepTime);
         return matches;
     });
     return matches.flatMap((matchArr)=> matchArr);
@@ -70,9 +70,9 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
 
 
 export async function initializeMatches(gamer){
-    let API = await ApiWrapper.getInstance();
-    let timestampList = [{start: 0, end:0}];
-    let matches = await getMatchDetailsFromAPI(timestampList, gamer, API, 5);
+    const API = await ApiWrapper.getInstance();
+    const timestampList = [{start: 0, end:0}];
+    const matches = await getMatchDetailsFromAPI(timestampList, gamer, API, 5);
     await writeMatchesToDatabase(matches);
     await writeGamerMatchesToDatabase(matches, gamer);
 }

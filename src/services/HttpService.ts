@@ -1,17 +1,32 @@
-let fetch;
-
-if (typeof window !== 'undefined') {
-    //browser
-    fetch = require('unfetch');
-} else {
-    //server
-    fetch = require('node-fetch').default;
-}
-
-const TypeService = require('./TypeService');
+import TypeService from './TypeService';
 
 //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
 //PUBLIC METHODS
+
+
+type HttpRequestResponse = {
+    status: number,
+    data: Record<string, unknown>,
+    response: Record<string, unknown>,
+    ok: boolean,
+    request: HttpRequestConfig
+}
+
+
+type HttpRequestConfig = {
+    method: string,
+    url: string,
+
+    body?: Record<string, unknown>,
+    data?: Record<string, unknown>,
+    params?: Record<string, unknown>,
+    parameters?: Record<string, unknown>,
+    query?: Record<string, unknown>,
+    header?: Record<string, unknown>,
+    headers?: Record<string, unknown>,
+    useDefaultHeaders?: boolean
+}
+
 
 
 /**
@@ -31,7 +46,7 @@ const TypeService = require('./TypeService');
  * @param {Object} [options.header]
  * @returns {Promise<any>}
  */
-async function http(options) {
+export async function http(options: HttpRequestConfig): Promise<HttpRequestResponse> {
     return new Promise(async (resolve, reject) => {
         const validMethods = ['GET', 'PUT', 'POST', 'DELETE'];
 
@@ -95,7 +110,7 @@ async function http(options) {
             }
 
 
-            let method = options.method.toUpperCase();
+            const method = options.method.toUpperCase();
 
             if (method === 'GET') {
                 headers['Accept'] = 'application/x-www-form-urlencoded';
@@ -113,7 +128,7 @@ async function http(options) {
                 headers,
                 body
             }).then((responseData) => {
-                let status = responseData.status;
+                const status = responseData.status;
 
                 response = {
                     status: responseData.status,
@@ -143,7 +158,7 @@ async function http(options) {
 
                 return jsonResponse;
             }).then((responseJson) => {
-                const responseObject = {
+                const responseObject: HttpRequestResponse = {
                     status: response.status,
                     data: responseJson,
                     response: response,
@@ -163,8 +178,6 @@ async function http(options) {
     });
 }
 
-export {http};
-
 
 //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
 //PRIVATE METHODS
@@ -176,12 +189,12 @@ export {http};
  * @param {Array} responseData.headers
  * @private
  */
-function _getAllHeaders(responseData: { headers }) {
+export function _getAllHeaders(responseData: { headers }) {
     if (!TypeService.isObject(responseData)) {
         throw Error('responseData (Object) is required');
     }
 
-    let headers = {};
+    const headers = {};
 
     responseData.headers.forEach((value, name) => {
         headers[name] = value;
@@ -190,10 +203,9 @@ function _getAllHeaders(responseData: { headers }) {
     return headers;
 }
 
-export {_getAllHeaders};
 
 
 export default {
-    http: <Function>http,
-    _getAllHeaders: <Function>_getAllHeaders,
-}
+    http: http,
+    _getAllHeaders: _getAllHeaders,
+};

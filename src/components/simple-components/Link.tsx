@@ -52,8 +52,8 @@ type PageLinkProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    href?: Function,
-    onClick?: Function,
+    href?:  () => void,
+    onClick?:  () => void,
     notHref?: boolean,
     textCenter?: boolean,
     title?: string
@@ -63,7 +63,7 @@ type PageLinkProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'link'
     ];
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TypeService from "../../services/TypeService";
+import TypeService from '../../services/TypeService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -49,7 +49,7 @@ ModalHeader.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'modal-header'
     ];
     

@@ -51,7 +51,7 @@ Placeholder.propTypes = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = [
+    const classNames = [
         'placeholder'
     ];
     
@@ -80,7 +80,7 @@ function getClassNames(props) {
 
 
 function getStyle(props) {
-    let defaultStyle = {
+    const defaultStyle = {
         width: '10rem'
     };
     

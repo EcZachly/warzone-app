@@ -1,5 +1,5 @@
 import {exampleData} from './etl/example_data';
-import WarzoneMapper from "../src/lib/etl/mapper";
+import WarzoneMapper from '../src/lib/etl/mapper';
 import chai from 'chai';
 let expect = chai.expect;
 

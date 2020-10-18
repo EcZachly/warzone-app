@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CSS from "csstype";
+import CSS from 'csstype';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -32,7 +32,7 @@ type LabelProps = {
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    let classNames = ['label'];
+    const classNames = ['label'];
     
     if (props.className) {
         classNames.push(props.className);
