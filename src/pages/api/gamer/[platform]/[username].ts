@@ -23,7 +23,8 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
         'teammates': 'teammate_analysis',
         'placements': 'gamer_stats_graded',
         'stats': 'gamer_stats_graded',
-        'time': 'time_analysis'
+        'time': 'time_analysis',
+        'classes': 'gamer_class_aggregation'
     };
 
     const sqlView = viewMap[view as string];
@@ -39,6 +40,7 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const queryableViews = [
         new ViewQuery('player_stat_summary', userQuery),
+        new ViewQuery('gamer_class_aggregation', userQuery),
         new ViewQuery('gamer_stats_graded', userQuery),
         new ViewQuery('teammate_analysis', userQuery),
         new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery})
@@ -58,8 +60,9 @@ const gamerDetail = async (req: NextApiRequest, res: NextApiResponse) => {
             const sanitizationLookup = {
                 'gamer_stats_graded': () => viewData,
                 'time_analysis': () => viewData,
-                'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS)
-            };
+                'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS),
+                'gamer_class_aggregation': () => viewData
+            }
             viewData = sanitizationLookup[sqlView]();
             await updateGamerUponRequest(gamerData);
             const seoMetadata = {

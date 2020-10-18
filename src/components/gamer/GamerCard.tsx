@@ -14,6 +14,13 @@ type GamerCardProps = {
 
 
 export default function GamerCard({gamer} : GamerCardProps) {
+    let classes = Object.keys(gamer.gamer_class_object).map((key)=>
+       <div>
+           <small>{key + ' : ' + gamer.gamer_class_object[key]}</small>
+           <br/>
+       </div>
+
+    )
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 
@@ -23,6 +30,8 @@ export default function GamerCard({gamer} : GamerCardProps) {
                 <br/>
 
                 <small className="aliases">({gamer.aliases.join(',')})</small>
+
+                {classes}
             </CardHeader>
             <CardBody>
                 <Table>
