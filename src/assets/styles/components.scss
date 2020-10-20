@@ -583,8 +583,8 @@ a:focus, a:active {
 .badge {
   display: inline-block;
   padding: .25em .4em;
-  font-size: 75%;
-  font-weight: 600;
+  font-size: 70%;
+  margin: .1em;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
@@ -592,10 +592,38 @@ a:focus, a:active {
   border-radius: .25rem;
 }
 
+.badge:first-child {
+  margin-left: 0;
+}
+
+.badge:last-child {
+  margin-right: 0;
+}
+
 .badge.badge-pill {
   padding-left: .6em;
   padding-right: .6em;
   border-radius: 10rem;
+}
+
+.badge.badge-xs {
+  padding: .175em .3em;
+  font-size: 60%;
+}
+
+.badge.badge-sm {
+  padding: .2em .35em;
+  font-size: 65%;
+}
+
+.badge.badge-lg {
+  padding: .3em .45em;
+  font-size: 75%;
+}
+
+.badge.badge-xl {
+  padding: .35em .5em;
+  font-size: 80%;
 }
 
 .badge-primary {
@@ -3278,6 +3306,22 @@ hr.line-break.no-margins {
   margin-top: 0;
   margin-bottom: 0;
 }
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//TOOLTIP
+
+.tooltip {
+  z-index: 1070;
+  display: block;
+  margin: 0;
+  font-size: .875em;
+  padding: .25em .4em;
+  position: absolute;
+  background: #ddd;
+  color: #333;
+}
+
 
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//

@@ -1,6 +1,11 @@
 import React from 'react';
+
 import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
-import {GamerLink} from '../AppComponents';
+import {Tooltip} from '../SmartComponents';
+
+// import {GamerLink} from '../AppComponents';
+
+import {GamerLink, GamerClassBadge} from './../gamer/index';
 
 import {Gamer} from './GamerTypes';
 
@@ -13,16 +18,17 @@ type GamerCardProps = {
 
 
 
-export default function GamerCard({gamer} : GamerCardProps) {
-    let keys = Object.keys(gamer).filter((key)=> key.includes('class'));
+export default function GamerCard({gamer}: GamerCardProps) {
+    let keys = Object.keys(gamer).filter((key) => key.includes('class'));
     keys.sort();
-    let classes = keys.map((key)=>{
-          return  <Badge key={key} style={{margin: '2px'}}>
-                <small>{gamer[key]}</small>
-            </Badge>
-    }
 
+    let classBadgeList = keys.map((key) => {
+            return (
+                <GamerClassBadge gamerClass={gamer[key]}/>
+            );
+        }
     );
+
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 
@@ -33,7 +39,7 @@ export default function GamerCard({gamer} : GamerCardProps) {
 
                 <small className="aliases">({gamer.aliases.join(',')})</small>
 
-                {classes}
+                {classBadgeList}
             </CardHeader>
             <CardBody>
                 <Table>

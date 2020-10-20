@@ -6,6 +6,10 @@ import GamerGradeChart from './GamerGradeChart';
 export {GamerGradeChart};
 
 
+import GamerClassBadge from './GamerClassBadge';
+export {GamerClassBadge};
+
+
 import GamerLink from './GamerLink';
 export {GamerLink};
 
@@ -35,6 +39,7 @@ export default {
     GamerCard: GamerCard,
     GamerGradeChart: GamerGradeChart,
     GamerLink: GamerLink,
+    GamerClassBadge: GamerClassBadge,
     GamerPlatformImage: GamerPlatformImage,
     GamerService: GamerService,
     GamerTimeChart: GamerTimeChart,

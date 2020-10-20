@@ -1,0 +1,14 @@
+10/19/2020
+Attendees: Wesley, Zach, Ben
+
+---
+
+Pre-meeting notes & ideas
+- We should have some simple percentiles for our classes, then generate the names dynamically
+    instead of being so hard-coded into the sql, this way we could also add descriptions too!
+- I think we should start on the logged-in experience now
+    - How do we limit the usernames that someone can mark as "theirs"?
+
+---
+
+Notes

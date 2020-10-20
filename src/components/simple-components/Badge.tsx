@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Paragraph from './Paragraph';
+
 const CONSTANTS = {
     VALID_TYPES: {
         'primary': 'primary',
@@ -17,6 +19,16 @@ const CONSTANTS = {
         'pink': 'pink',
         'light': 'light',
         'dark': 'dark'
+    },
+    VALID_SIZES: {
+        'xs': 'xs',
+        'extra-small': 'xs',
+        'sm': 'sm',
+        'small': 'sm',
+        'lg': 'lg',
+        'large': 'lg',
+        'xl': 'xl',
+        'extra-large': 'xl'
     }
 };
 
@@ -26,7 +38,7 @@ const Badge = (props:BadgeProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div className={classNames} style={props.style} title={props.title}>
             {props.children}
         </div>
     );
@@ -38,14 +50,17 @@ export default Badge;
 //PROPS
 
 const VALID_TYPE_ENTRIES = [...Object.keys(CONSTANTS.VALID_TYPES)] as const;
+const VALID_SIZE_ENTRIES = [...Object.keys(CONSTANTS.VALID_SIZES)] as const;
 
 type BadgeProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     pill?: boolean,
+    title?: string,
     color?: string,
-    type?: (typeof VALID_TYPE_ENTRIES)[number]
+    type?: (typeof VALID_TYPE_ENTRIES)[number],
+    size?: (typeof VALID_SIZE_ENTRIES)[number]
 }
 
 
@@ -67,6 +82,10 @@ function getClassNames(props) {
     if (props.className) {
         classNames.push(props.className);
     }
+
+    if (props.size) {
+        classNames.push(getSize(props));
+    }
     
     return classNames.join(' ');
 }
@@ -79,4 +98,14 @@ function getType(props) {
     const validTypes = CONSTANTS.VALID_TYPES;
     
     return 'badge-' + ((validTypes[propType]) ? validTypes[propType] : validTypes[defaultType]);
+}
+
+function getSize(props) {
+    const defaultType = 'md';
+    const propSize = props.size;
+
+
+    const validSizes = CONSTANTS.VALID_SIZES;
+
+    return 'badge-' + ((validSizes[propSize]) ? validSizes[propSize] : validSizes[defaultType]);
 }

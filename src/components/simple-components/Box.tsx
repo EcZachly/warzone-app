@@ -15,7 +15,14 @@ class Box extends React.Component<BoxProps> {
         const classNames = this.getClassNames(props);
     
         return (
-            <div id={props.id} className={classNames} style={props.style} title={props.title} ref={props.innerRef}>
+            <div id={props.id}
+                 className={classNames}
+                 style={props.style}
+                 title={props.title}
+                 onMouseOver={props.onMouseOver}
+                 onMouseEnter={props.onMouseEnter}
+                 onMouseLeave={props.onMouseLeave}
+                 ref={props.innerRef}>
                 {props.children}
             </div>
         );
@@ -54,6 +61,9 @@ type BoxProps = {
     children?: React.ReactNode,
     shadow?: boolean | 1 | 2 | 3 | 4 | 5,
     title?: string,
+    onMouseOver?: any,
+    onMouseEnter?: any,
+    onMouseLeave?: any,
     id?: string,
     ref?: any,
     innerRef?: any

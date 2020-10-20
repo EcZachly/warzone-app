@@ -84,7 +84,8 @@ export {SmartCard};
 
 
 //T
-
+import Tooltip from './smart-components/Tooltip';
+export {Tooltip};
 
 //U
 
@@ -114,4 +115,5 @@ export default {
     Sidebar: Sidebar,
     SidebarCompanion: SidebarCompanion,
     SmartCard: SmartCard,
+    Tooltip: Tooltip,
 };
