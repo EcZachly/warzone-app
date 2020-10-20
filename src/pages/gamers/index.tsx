@@ -22,9 +22,11 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 
 
     const fetchMoreGamers = async (page) => {
-        const dataUrl = baseUrl + '/api/gamers?limit=' + limit + '&offset=' + limit * page;
+        const dataUrl = baseUrl + '/api/gamer?limit=' + limit + '&offset=' + limit * page;
+
         const response = await fetch(dataUrl);
         const newGamers = await response.json();
+
         if (newGamers.length === 0) {
             setFeedHasMore(false);
         } else {
@@ -69,13 +71,11 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
                     </Sidebar>
 
                     <SidebarCompanion>
-                        <InfiniteScroll
-                            pageStart={0}
-                            loadMore={(page) => fetchMoreGamers(page)}
-                            hasMore={feedHasMore}
-                            loader={<div className="loader" key={0}>Loading ...</div>}
-                            useWindow={true}
-                        >
+                        <InfiniteScroll pageStart={0}
+                                        loadMore={(page) => fetchMoreGamers(page)}
+                                        hasMore={feedHasMore}
+                                        loader={<div className="loader" key={0}>Loading ...</div>}
+                                        useWindow={true}>
                             {gamerList}
                         </InfiniteScroll>
                     </SidebarCompanion>
@@ -91,8 +91,11 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
-    const rawGamerList = await fetch(baseUrl + '/api/gamers');
+
+    console.log(baseUrl + '/api/gamer');
+    const rawGamerList = await fetch(baseUrl + '/api/gamer');
     const gamerJson = await rawGamerList.json();
+
     return {
         props: {
             offset: 0,

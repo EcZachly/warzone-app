@@ -9,10 +9,11 @@
       "dom.iterable",
       "esnext"
     ],
+    "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -21,9 +22,14 @@
   },
   "include": [
     "./routes/**/*",
-    "./src/**/*"
+    "./src/**/*",
+    "./bin/**/*",
+    "./config/**/*",
+    "./lib/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    "src/.next"
   ]
 }

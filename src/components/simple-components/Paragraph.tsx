@@ -14,7 +14,11 @@ const Paragraph = (props: ParagraphProps) => {
     const classes = getClassNames(props);
     
     return (
-        <p className={classes} style={props.style}>
+        <p className={classes} style={props.style} onClick={() => {
+            if (props.onClick){
+                props.onClick(props, {});
+            }
+        }}>
             {props.children}
         </p>
     );
@@ -30,7 +34,6 @@ type ParagraphProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode,
-    
     //text align to the center
     textCenter?: boolean,
     
@@ -41,7 +44,8 @@ type ParagraphProps = {
     textRight?: boolean,
     
     //A simple additional styling option to quickly format the text as a certain type
-    type?: string
+    type?: string,
+    onClick?: (props, event) => void
 };
 
 

@@ -38,11 +38,13 @@ export default class Modal extends React.Component {
     }
     
     componentDidMount() {
-        document.addEventListener('keydown', this.keydown, false);
+        if (typeof window !== 'undefined') {
+            document.addEventListener('keydown', this.keydown, false);
+        }
     }
     
     componentWillUnmount() {
-        if (this.props['show'] === true) {
+        if (this.props['show'] === true && typeof window !== 'undefined') {
             document.removeEventListener('keydown', this.keydown, false);
         }
     }

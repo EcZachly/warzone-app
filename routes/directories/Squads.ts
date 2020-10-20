@@ -1,8 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import {NextApiRequest, NextApiResponse} from 'next';
 import {queryView} from '../../lib/model/analysis';
 import {sanitizeSquad} from '../../lib/model/gamers';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+//===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
+export async function findSquads(req: NextApiRequest, res: NextApiResponse) {
     const viewName = 'full_squad_stat_summary';
     const queryParams = req.query;
     const limit = req.query.limit || 10;
@@ -12,4 +15,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const rawSquadList = await queryView(viewName, queryParams, {limit, offset});
     const squadList = rawSquadList.map(sanitizeSquad);
     res.json(squadList);
+}
+
+
+export default {
+    findSquads
 };

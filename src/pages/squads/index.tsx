@@ -14,13 +14,14 @@ export default function Squads({squads, baseUrl, limit}) {
     const [squadValues, setSquads] = useState(squads);
 
     const fetchMoreSquads = async (page) => {
-        const dataUrl = baseUrl + '/api/squads?limit=' + limit + '&offset=' + limit*page;
+        const dataUrl = baseUrl + '/api/squad?limit=' + limit + '&offset=' + limit * page;
+
         const response = await fetch(dataUrl);
-        const newSquads =  await response.json();
-        if(newSquads.length === 0){
+        const newSquads = await response.json();
+
+        if (newSquads.length === 0) {
             setFeedHasMore(false);
-        }
-        else{
+        } else {
             const allGamers = [...squadValues, ...newSquads];
             setSquads(allGamers);
         }
@@ -51,7 +52,14 @@ export default function Squads({squads, baseUrl, limit}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
-    const rawSquadList = await fetch(baseUrl + '/api/squads');
+
+    const rawSquadList = await fetch(baseUrl + '/api/squad');
     const squadJson = await rawSquadList.json();
-    return {props: {squads: squadJson, limit: 10, baseUrl: baseUrl}};
+    return {
+        props: {
+            squads: squadJson,
+            limit: 10,
+            baseUrl: baseUrl
+        }
+    };
 };

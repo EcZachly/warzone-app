@@ -58,10 +58,10 @@ export async function queryDatabase(table, query, options = {}) {
 
 export async function insertIntoDatabase(data, table) {
 	const db = await database;
-
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
 	} catch (failure) {
+		console.log(failure);
 		const isDuplicateRecordError = failure.code === '23505';
 
 		if (!isDuplicateRecordError) {

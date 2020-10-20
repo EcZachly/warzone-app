@@ -71,10 +71,10 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
             if (response.status === 200) {
                 Router.push(response.data.url || ['gamer', newUserConfig.platform, encodeURIComponent(newUserConfig.username)].join('/'));
             } else {
-                let message = 'An unknown error occurred while trying to create the user';
+                let message: unknown = 'An unknown error occurred while trying to create the user';
 
                 if (response.data && response.data.userMessage) {
-                    message = response.data.userMessage;
+                    message = response.data.userMessage as string;
                 }
 
                 setLoading(false);

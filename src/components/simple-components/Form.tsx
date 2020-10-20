@@ -30,7 +30,7 @@ type FormProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    onSubmit?:  () => void,
+    onSubmit?:  (FormProps, any) => void
 }
 
 

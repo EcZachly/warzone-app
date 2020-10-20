@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader} from '../SimpleComponents';
+import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
 import {GamerLink} from '../AppComponents';
 
 import {Gamer} from './GamerTypes';
@@ -14,6 +14,15 @@ type GamerCardProps = {
 
 
 export default function GamerCard({gamer} : GamerCardProps) {
+    let keys = Object.keys(gamer).filter((key)=> key.includes('class'));
+    keys.sort();
+    let classes = keys.map((key)=>{
+          return  <Badge key={key} style={{margin: '2px'}}>
+                <small>{gamer[key]}</small>
+            </Badge>
+    }
+
+    );
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 
@@ -23,6 +32,8 @@ export default function GamerCard({gamer} : GamerCardProps) {
                 <br/>
 
                 <small className="aliases">({gamer.aliases.join(',')})</small>
+
+                {classes}
             </CardHeader>
             <CardBody>
                 <Table>

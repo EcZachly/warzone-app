@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 
 import {Navbar, Page, Footer} from './../components/AppComponents';
 import {Container, Header, Box, Text, Small, Main, LineBreak} from './../components/SimpleComponents';
@@ -7,7 +7,7 @@ import {Input} from './../components/SmartComponents';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-export default function Home() {
+const Home = () => {
     const [searchInputValue, updateSearchInputValue] = useState('');
     return (
         <Page title={'Warzone'}>
@@ -77,3 +77,4 @@ export default function Home() {
         </Page>
     );
 }
+export default Home;
