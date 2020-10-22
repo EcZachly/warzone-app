@@ -28,7 +28,8 @@ WITH agg AS (
            AVG(CAST(objective->>'missions_started' AS INTEGER)) as missions_started,
            AVG(CAST(objective->>'teams_wiped' AS INTEGER)) as teams_wiped,
            AVG(damage_taken) as damage_taken,
-           AVG(headshots) as headshots
+           AVG(headshots) as headshots,
+           CAST(SUM(CASE WHEN team_placement = 1 THEN 1 ELSE 0 END) AS REAL)/COUNT(DISTINCT gm.match_id)          AS  win_percentage
     FROM warzone.gamer_matches gm
              JOIN warzone.matches_augmented m
                   ON gm.match_id = m.match_id AND m.is_warzone_match = TRUE

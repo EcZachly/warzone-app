@@ -105,5 +105,15 @@ SELECT
             'deadeye', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY headshots), 'percentile', .75),
             'headshot_hacker', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY headshots), 'percentile', .90)
           )
-    ) as headshots_cutoffs
+    ) as headshots_cutoffs,
+        JSON_BUILD_OBJECT(
+            'category', 'win_percentage',
+            'description', '',
+            'percentiles', JSON_BUILD_OBJECT(
+                'bad_luck', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .10),
+                'winner', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .33),
+                'champion', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .66),
+                'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
+              )
+        ) as win_percentage_cutoffs
 FROM gamer_agg
