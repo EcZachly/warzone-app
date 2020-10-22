@@ -1,21 +1,4 @@
-CREATE OR REPLACE VIEW warzone.gamer_class_description_values AS
-    WITH gamer_agg AS (
-       SELECT
-            query_username,
-            query_platform,
-            AVG(team_survival_time) AS team_survival_time,
-            AVG(percent_time_moving) as percent_time_moving,
-            AVG(distance_traveled) AS distance_traveled,
-            AVG(CAST(objective->>'down_enemy_circle_1' AS INTEGER)) as down_enemy_circle_1,
-            AVG(CAST(objective->>'caches_open' AS INTEGER)) as caches_open,
-            AVG(CAST(objective->>'missions_started' AS INTEGER)) as missions_started,
-            AVG(CAST(objective->>'teams_wiped' AS INTEGER)) as teams_wiped,
-            AVG(damage_taken) as damage_taken,
-            AVG(headshots) as headshots
-        FROM warzone.gamer_matches
-        GROUP BY query_username, query_platform
-)
-
+CREATE MATERIALIZED VIEW warzone.gamer_class_description_values AS
 SELECT
     JSON_BUILD_OBJECT(
         'category', 'team_survival_time',
@@ -27,7 +10,6 @@ SELECT
             'tortoise', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY team_survival_time), 'percentile', .90)
             )
     ) as team_survival_cutoffs,
-
        JSON_BUILD_OBJECT(
         'category', 'percent_time_moving',
         'description', '',
@@ -110,10 +92,10 @@ SELECT
             'category', 'win_percentage',
             'description', '',
             'percentiles', JSON_BUILD_OBJECT(
-                'bad_luck', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .10),
-                'winner', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .33),
-                'champion', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .66),
+                'bad_luck', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .25),
+                'winner', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .50),
+                'champion', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .75),
                 'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
               )
         ) as win_percentage_cutoffs
-FROM gamer_agg
+FROM warzone.player_stat_summary
