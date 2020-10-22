@@ -7,7 +7,7 @@ export default function GamerClassBadgeList({gamer, classDescriptions}: GamerCar
             const percentiles = classDescriptions[key]['percentiles'];
             let statValue = gamer[classDescriptions[key]['category']];
             return (
-                <GamerClassBadge gamerCategory={percentiles} gamerStat={statValue}/>
+                <GamerClassBadge statName={classDescriptions[key]['category']} gamerCategory={percentiles} gamerStat={statValue}/>
             );
         }
     );

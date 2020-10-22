@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-
-import {Paragraph, Label, Link, Show, Text, Box} from './../SimpleComponents';
-
-import Placeholder from './Placeholder';
-
-const CONSTANTS = {};
+import {Box} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -17,18 +12,9 @@ const Tooltip = (props) => {
              style={props.style}
              onMouseEnter={() => updateShow(true)}
              onMouseLeave={() => updateShow(false)}>
-            {(show === true) ? generateTooltip(props) : null}
+            {(show === true) ? props.showFunction() : null}
             {props.children}
         </Box>
     );
 };
 export default Tooltip;
-
-
-function generateTooltip(props) {
-    return (
-        <div className={'tooltip'}>
-            {props.value}
-        </div>
-    )
-}

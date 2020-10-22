@@ -20,7 +20,7 @@ WITH agg AS (
            CAST(SUM(kills) AS REAL) / NULLIF(SUM(deaths)  , 0)                                                              as KDR,
            CAST(SUM(gulag_kills) AS REAL) /
            NULLIF(SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)  ,0)                                as gulag_win_rate,
-           AVG(team_survival_time) AS team_survival_time,
+           AVG(team_survival_time)/1000/60 AS team_survival_time_mins,
            AVG(percent_time_moving) as percent_time_moving,
            AVG(distance_traveled) AS distance_traveled,
            AVG(CAST(objective->>'down_enemy_circle_1' AS INTEGER)) as down_enemy_circle_1,
@@ -29,7 +29,7 @@ WITH agg AS (
            AVG(CAST(objective->>'teams_wiped' AS INTEGER)) as teams_wiped,
            AVG(damage_taken) as damage_taken,
            AVG(headshots) as headshots,
-           CAST(SUM(CASE WHEN team_placement = 1 THEN 1 ELSE 0 END) AS REAL)/COUNT(DISTINCT gm.match_id)          AS  win_percentage
+           CAST(SUM(CASE WHEN team_placement = 1 THEN 1 ELSE 0 END) AS REAL)*100/COUNT(DISTINCT gm.match_id)          AS  win_percentage
     FROM warzone.gamer_matches gm
              JOIN warzone.matches_augmented m
                   ON gm.match_id = m.match_id AND m.is_warzone_match = TRUE

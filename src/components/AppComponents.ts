@@ -37,6 +37,10 @@ export {GamerTimeChart};
 import GamerClassBadgeList from './gamer/GamerClassBadgeList';
 export {GamerClassBadgeList};
 
+
+import GamerClassDetail from './gamer/GamerClassDetail';
+export {GamerClassDetail};
+
 //H
 
 

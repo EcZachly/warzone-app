@@ -1,7 +1,7 @@
 CREATE MATERIALIZED VIEW warzone.gamer_class_description_values AS
 SELECT
     JSON_BUILD_OBJECT(
-        'category', 'team_survival_time',
+        'category', 'team_survival_time_mins',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
             'goldfish', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY team_survival_time), 'percentile', .1),
