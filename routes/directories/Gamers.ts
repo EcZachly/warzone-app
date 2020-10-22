@@ -69,15 +69,17 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
 
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const viewName = 'player_stat_summary';
+    const descriptionConfig = 'gamer_class_description_values';
     const queryParams = req.query;
     const offset = req.query.offset || 0;
     const limit = req.query.limit || 10;
     delete queryParams.offset;
     delete queryParams.limit;
+    const descriptionData = await queryView(descriptionConfig, {}, {});
     const rawGamerList = await queryView(viewName, queryParams, {offset, limit});
     const sanitizedGamers = rawGamerList.map(sanitizeGamer);
 
-    handleResponse(req, res, sanitizedGamers);
+    handleResponse(req, res, {'gamers': sanitizedGamers, 'classDescriptions': descriptionData[0]});
 }
 
 
@@ -125,12 +127,13 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
 
         const queryableViews = [
             new ViewQuery('player_stat_summary', userQuery),
+            new ViewQuery('gamer_class_description_values', {}),
             new ViewQuery('gamer_stats_graded', userQuery),
             new ViewQuery('teammate_analysis', userQuery),
             new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery})
         ];
 
-        const viewNamesToQuery = ['player_stat_summary', sqlView as string];
+        const viewNamesToQuery = ['player_stat_summary', 'gamer_class_description_values', sqlView as string];
         const viewsToQuery = queryableViews.filter((v: ViewQuery) => viewNamesToQuery.includes(v.view));
 
         const gamerList = await queryGamers({username: username, platform: platform});
@@ -141,9 +144,9 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             const gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
 
             Bluebird.all(gamerMatchDataPromises).then(async () => {
-                const gamer = sanitizeGamer(viewsToQuery[0].data[0]);
-
-                let viewData = viewsToQuery[1].data;
+                const gamer =  sanitizeGamer(viewsToQuery[0].data[0]);
+                const gamerClassDescriptions = viewsToQuery[1].data[0];
+                let viewData = viewsToQuery[2].data;
 
                 const sanitizationLookup = {
                     'gamer_stats_graded': () => viewData,
@@ -164,7 +167,8 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
                 handleResponse(req, res, {
                     gamer: gamer,
                     viewData: viewData,
-                    seoMetadata: seoMetadata
+                    seoMetadata: seoMetadata,
+                    classDescriptions: gamerClassDescriptions,
                 });
             });
         } else {

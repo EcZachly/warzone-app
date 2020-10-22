@@ -6,7 +6,7 @@ import {Container, Main, Box, Header, Text, Button, Small, Image} from './../../
 import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
-    GamerCard,
+    GamerClassBadgeList,
     GamerGradeChart,
     GamerTimeChart,
     TeammateTable,
@@ -18,7 +18,8 @@ import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 export default function GamerDetail({gamerData, view, baseUrl}) {
-    const {gamer, viewData, errorMessage} = gamerData;
+
+    const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
     const tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
 
@@ -132,7 +133,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
-
+                            <GamerClassBadgeList gamer={gamer} classDescriptions={classDescriptions}/>
                         </Sidebar>
                         <SidebarCompanion>
                             <Box>
@@ -158,7 +159,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
     const gamerJson = await rawGamerList.json();
-
     return {
         props: {
             gamerData: gamerJson,

@@ -21,6 +21,9 @@ export {GamerPlatformImage};
 import GamerService from './GamerService';
 export {GamerService};
 
+import GamerClassBadgeList from './GamerClassBadgeList'
+export {GamerClassBadgeList}
+
 
 import GamerTimeChart from './GamerTimeChart';
 export {GamerTimeChart};
@@ -41,6 +44,7 @@ export default {
     GamerLink: GamerLink,
     GamerClassBadge: GamerClassBadge,
     GamerPlatformImage: GamerPlatformImage,
+    GamerClassBadgeList: GamerClassBadgeList,
     GamerService: GamerService,
     GamerTimeChart: GamerTimeChart,
     TeammateTable: TeammateTable,

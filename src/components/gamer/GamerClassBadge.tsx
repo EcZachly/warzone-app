@@ -1,37 +1,31 @@
 import React from 'react';
-
-import {Card, Badge} from '../SimpleComponents';
-
-import {Gamer} from './GamerTypes';
-import GamerService from './GamerService';
-
+import {Badge} from '../SimpleComponents';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function GamerClassBadge(props: GamerClassBadgeProps) {
-    let gamerClassConfig;
-    let style = {color: undefined};
+export default function GamerClassBadge({gamerCategory, gamerStat}: GamerClassBadgeProps) {
+    let style = {color: 'blue'};
+    let categoryName = '';
+    let keys = Object.keys(gamerCategory);
+    keys.sort((left, right) => gamerCategory[left]['percentile'] < gamerCategory[right]['percentile'] ? -1 : 1)
+    keys.forEach((percentileKey) => {
+        if(gamerStat >= parseFloat(gamerCategory[percentileKey]['value'])){
+            categoryName = percentileKey
+        }
+    })
 
-    try {
-        gamerClassConfig = GamerService.getClassConfigurationByID(props.gamerClass);
-    } catch (error) {
-        gamerClassConfig = {};
-        style.color = 'red';
-        console.log('needs to be added: '  + props.gamerClass);
+    if(!categoryName){
+        categoryName = keys[0];
     }
-
-    if (gamerClassConfig.needsUpdate) {
-        style.color = 'blue';
-    }
-
+    let description = gamerCategory['description'] ? gamerCategory['description'] : '';
     return (
-        <Badge size={'sm'} title={gamerClassConfig.description || props.gamerClass} style={style}>
-            {gamerClassConfig.name || props.gamerClass}
+        <Badge size={'sm'} title={description} style={style}>
+            {categoryName || ''}
         </Badge>
     );
 }
 
-
 type GamerClassBadgeProps = {
-    gamerClass: string
+    gamerCategory: object,
+    gamerStat: number
 }

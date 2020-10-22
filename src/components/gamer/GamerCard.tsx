@@ -1,34 +1,22 @@
 import React from 'react';
 
 import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
-import {Tooltip} from '../SmartComponents';
-
-// import {GamerLink} from '../AppComponents';
-
-import {GamerLink, GamerClassBadge} from './../gamer/index';
+import {GamerLink, GamerClassBadge, GamerClassBadgeList} from './../gamer/index';
 
 import {Gamer} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 //TODO CREATE Gamer type and enforce it here
-type GamerCardProps = {
-    gamer: Gamer
+export type GamerCardProps = {
+    gamer: Gamer,
+    classDescriptions?: object
 }
 
 
 
-export default function GamerCard({gamer}: GamerCardProps) {
-    let keys = Object.keys(gamer).filter((key) => key.includes('class'));
-    keys.sort();
-
-    let classBadgeList = keys.map((key) => {
-            return (
-                <GamerClassBadge gamerClass={gamer[key]}/>
-            );
-        }
-    );
-
+export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
+    let classBadgeList = <GamerClassBadgeList gamer={gamer} classDescriptions={classDescriptions} />
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 

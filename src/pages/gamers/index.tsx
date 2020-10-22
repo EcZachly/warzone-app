@@ -14,7 +14,7 @@ import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
 
 
-export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
+export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classDescriptions}) {
     const [usernameSearchValue, updateUsernameSearchValue] = useState('');
     const [gamerValues, setGamers] = useState(gamers);
     const [feedHasMore, setFeedHasMore] = useState(true);
@@ -26,11 +26,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
 
         const response = await fetch(dataUrl);
         const newGamers = await response.json();
-
-        if (newGamers.length === 0) {
+        if (newGamers.gamers.length === 0) {
             setFeedHasMore(false);
         } else {
-            const allGamers = [...gamerValues, ...newGamers];
+            const allGamers = [...gamerValues, ...newGamers.gamers];
             setGamers(allGamers);
         }
     };
@@ -45,7 +44,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit}) {
         } else {
             return true;
         }
-    }).map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}/>);
+    }).map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer} classDescriptions={classDescriptions}/>);
 
 
     return (
@@ -100,7 +99,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         props: {
             offset: 0,
             limit: 10,
-            gamers: gamerJson,
+            gamers: gamerJson['gamers'],
+            classDescriptions: gamerJson['classDescriptions'],
             baseUrl: baseUrl,
             recaptchaSiteKey: process.env.WARZONE_RECAPTCHA_SITE_KEY
         }

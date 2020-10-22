@@ -1,5 +1,4 @@
 CREATE VIEW  warzone.gamer_classes AS
-
 SELECT
 
    PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY team_survival_time) AS goldfish,
