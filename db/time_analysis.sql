@@ -76,7 +76,7 @@ SELECT gm.query_username as username,
        CAST(AVG(score) AS REAL) as avg_score,
            CAST(SUM(gulag_kills) AS REAL) /
                                  SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)                                  as gulag_win_rate,
-       COUNT(1)                                                                 AS num_games
+       CAST(COUNT(1)            AS REAL)                                                      AS num_games
 FROM combined gm
 GROUP BY 1, 2, 3, 4, 5, 6
 HAVING COUNT(1) >= $4
