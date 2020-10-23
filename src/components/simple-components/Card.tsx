@@ -6,7 +6,7 @@ const Card = (props: CardProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <div className={classNames} style={props.style} onClick={() => {
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef} onClick={() => {
             if (props.onClick) {
                 props.onClick();
             }
@@ -26,6 +26,7 @@ type CardProps = {
     style?: React.CSSProperties,
     isClickable?: boolean,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
     shadow?: 1 | 2 | 3 | 4 | 5,
     onClick?:  () => void
 }

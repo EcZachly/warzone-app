@@ -6,7 +6,7 @@ const Column = (props: ColumnProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -21,6 +21,7 @@ type ColumnProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
     'size-xs'?: number,
     'size-sm'?: number,
     'size-md'?: number,

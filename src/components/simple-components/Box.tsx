@@ -15,7 +15,8 @@ class Box extends React.Component<BoxProps> {
         const classNames = this.getClassNames(props);
     
         return (
-            <div id={props.id}
+            <div {...props}
+                 id={props.id}
                  className={classNames}
                  style={props.style}
                  title={props.title}
@@ -65,7 +66,6 @@ type BoxProps = {
     onMouseEnter?: any,
     onMouseLeave?: any,
     id?: string,
-    ref?: any,
     innerRef?: any
 }
 

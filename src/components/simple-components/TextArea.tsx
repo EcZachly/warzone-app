@@ -15,7 +15,8 @@ class TextArea extends React.Component<TextAreaProps> {
         const classNames = this.getClassNames(props);
         
         return (
-            <textarea className={classNames}
+            <textarea {...props}
+                      className={classNames}
                       style={props.style}
                       value={props.value}
                       ref={props.innerRef}

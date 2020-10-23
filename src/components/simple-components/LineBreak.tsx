@@ -9,7 +9,7 @@ export default function LineBreak(props: LineBreakProps) {
     const Tag = getTag(props);
 
     return (
-        <Tag className={classNames} style={props.style}/>
+        <Tag {...props} className={classNames} style={props.style} ref={props.innerRef}/>
     );
 }
 
@@ -24,6 +24,7 @@ type LineBreakProps = {
     noMargins?: boolean,
     noMargin?: boolean,
     clear?: boolean,
+    innerRef?: any,
     blank?: boolean,
     br?: boolean
 }

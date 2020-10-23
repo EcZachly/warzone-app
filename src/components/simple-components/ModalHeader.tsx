@@ -10,7 +10,7 @@ const ModalHeader = (props) => {
     
     
     return (
-        <div className={classNames} style={props.style} data-has-on-close={!!props.onClose}>
+        <div {...props} className={classNames} style={props.style} data-has-on-close={!!props.onClose} ref={props.innerRef}>
             {props.children}
             {closeButton}
         </div>

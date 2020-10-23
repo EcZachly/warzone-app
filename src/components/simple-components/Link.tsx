@@ -8,10 +8,12 @@ const PageLink = (props: PageLinkProps) => {
 
     if (props.notHref) {
         return (
-            <span onClick={() => linkClicked(props)}
+            <span {...props}
+                  onClick={() => linkClicked(props)}
                   title={props.title}
                   className={classNames}
-                  data-has-on-click={!!props.href || !!props.onClick}>
+                  data-has-on-click={!!props.href || !!props.onClick}
+                  ref={props.innerRef}>
                 {props.children}
             </span>
         );
@@ -20,6 +22,7 @@ const PageLink = (props: PageLinkProps) => {
             <a className={classNames}
                style={props.style}
                title={props.title}
+               ref={props.innerRef}
                onClick={() => linkClicked(props)}>
                 {props.children}
             </a>
@@ -54,6 +57,7 @@ type PageLinkProps = {
     children?: React.ReactNode | React.ReactNodeArray,
     href?:  () => void,
     onClick?:  () => void,
+    innerRef?: any,
     notHref?: boolean,
     textCenter?: boolean,
     title?: string

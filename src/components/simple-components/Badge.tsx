@@ -38,7 +38,7 @@ const Badge = (props:BadgeProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style} title={props.title}>
+        <div {...props} className={classNames} style={props.style} title={props.title} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -57,6 +57,7 @@ type BadgeProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     pill?: boolean,
+    innerRef?: any,
     title?: string,
     color?: string,
     type?: (typeof VALID_TYPE_ENTRIES)[number],

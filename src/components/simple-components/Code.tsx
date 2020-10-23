@@ -6,7 +6,7 @@ const Code = (props: CodeProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <code className={classNames} style={props.style}>
+        <code {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </code>
     );
@@ -21,6 +21,7 @@ type CodeProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
 }
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

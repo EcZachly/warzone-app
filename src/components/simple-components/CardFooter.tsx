@@ -7,7 +7,7 @@ const CardFooter = (props:CardFooterProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -22,6 +22,7 @@ type CardFooterProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
 }
 
 

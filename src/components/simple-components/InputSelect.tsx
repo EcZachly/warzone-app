@@ -22,10 +22,12 @@ class InputSelect extends React.Component<InputSelectProps> {
         const selectOptions = this._getSelectOptions(props);
 
         return (
-            <select className={classNames}
+            <select {...props}
+                    className={classNames}
                     disabled={props.disabled}
                     style={props.style}
                     value={props.value as string}
+                    ref={props.innerRef}
                     onChange={(event) => {
                         if (props.onChange) {
                             const value = event.target.value;
@@ -134,7 +136,7 @@ type InputSelectProps = {
     //Adds some error stylings to the input
     hasError?: boolean,
 
-    innerRef?: () => void,
+    innerRef?: any,
 
     mode?: string
 };

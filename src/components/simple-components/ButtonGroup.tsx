@@ -6,7 +6,7 @@ const ButtonGroup = (props:ButtonGroupProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -21,6 +21,7 @@ type ButtonGroupProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
 }
 
 

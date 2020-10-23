@@ -14,7 +14,7 @@ const Paragraph = (props: ParagraphProps) => {
     const classes = getClassNames(props);
     
     return (
-        <p className={classes} style={props.style} onClick={() => {
+        <p {...props} className={classes} style={props.style} ref={props.innerRef} onClick={() => {
             if (props.onClick){
                 props.onClick(props, {});
             }
@@ -39,6 +39,7 @@ type ParagraphProps = {
     
     //text align to the left
     textLeft?: boolean,
+    innerRef?: any,
     
     //text align to the right
     textRight?: boolean,

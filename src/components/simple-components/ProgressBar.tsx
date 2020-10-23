@@ -30,9 +30,11 @@ const ProgressBar = (props: ProgressBarProps) => {
     const label = getLabel(props);
     
     return (
-        <div className={classNames}
+        <div {...props}
+             className={classNames}
              style={style}
              role={'progressbar'}
+             ref={props.innerRef}
              aria-valuenow={props.value}
              aria-valuemin={0}
              aria-valuemax={100}>
@@ -58,6 +60,7 @@ type ProgressBarProps = {
     animated?: boolean,
     
     type?: string,
+    innerRef?: any,
     
     value?: number,
     showLabel?: boolean

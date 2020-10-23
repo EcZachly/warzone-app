@@ -4,40 +4,40 @@ import PropTypes from 'prop-types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-class Main extends React.Component {
-    
-    constructor(props) {
-        super(props);
-    }
 
-    render() {
-        const props = this.props;
-    
-        const classNames = this.getClassNames(props);
-    
-        return (
-            <main className={classNames} style={props['style']} ref={props['innerRef']}>
-                {props.children}
-            </main>
-        );
-    }
-    
-    
-    //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
-    //PRIVATE METHODS
-    
-    getClassNames(props) {
-        const classNames = [
-            'main'
-        ];
-        
-        if (props.className) {
-            classNames.push(props.className);
-        }
 
-        return classNames.join(' ');
-    }
+const Main = (props: MainProps) => {
+    const classNames = getClassNames(props);
+
+    return (
+        <main {...props} className={classNames} style={props['style']} ref={props.innerRef}>
+            {props.children}
+        </main>
+    );
+};
+
+export default Main;
+
+
+type MainProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
 }
 
 
-export default Main;
+//===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
+//PRIVATE METHODS
+
+function getClassNames(props) {
+    const classNames = [
+        'main'
+    ];
+
+    if (props.className) {
+        classNames.push(props.className);
+    }
+
+    return classNames.join(' ');
+}

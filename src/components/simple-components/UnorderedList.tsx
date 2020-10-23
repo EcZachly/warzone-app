@@ -7,7 +7,7 @@ const UnorderedList = (props) => {
     const classNames = getClassNames(props);
     
     return (
-        <ul className={classNames} style={props.style}>
+        <ul {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </ul>
     );

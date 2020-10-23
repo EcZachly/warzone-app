@@ -7,7 +7,7 @@ const ListItem = (props) => {
     const classNames = getClassNames(props);
     
     return (
-        <li className={classNames} style={props.style} data-has-on-click={!!props.onClick}>
+        <li {...props} className={classNames} style={props.style} data-has-on-click={!!props.onClick} ref={props.innerRef}>
             {props.children}
         </li>
     );

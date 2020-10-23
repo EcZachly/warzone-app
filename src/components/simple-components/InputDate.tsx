@@ -43,7 +43,8 @@ class InputDate extends React.Component<InputDateProps> {
         
         return (
             <>
-                <input value={this.state['dateObj']['input']}
+                <input {...props}
+                       value={this.state['dateObj']['input']}
                        placeholder={props['placeholder']}
                        type={'date'}
                        style={{marginBottom: 5, ...props['style']}}

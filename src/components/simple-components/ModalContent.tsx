@@ -12,7 +12,7 @@ const ModalContent = (props) => {
         <ModalShouldBeClosedContext.Consumer>
             {(({ModalShouldBeClosedContext, changeModalCloseValue}) => {
                 return (
-                    <div className={classNames} style={props.style} onClick={() => {
+                    <div {...props} className={classNames} style={props.style} ref={props.innerRef} onClick={() => {
                         changeModalCloseValue(false);
                     }}>
                         {props.children}
