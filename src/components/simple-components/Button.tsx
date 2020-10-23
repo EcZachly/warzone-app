@@ -38,11 +38,13 @@ const Button = (props: ButtonProps) => {
     const buttonType = getButtonType(props);
 
     return (
-        <button className={classNames}
+        <button {...props}
+                className={classNames}
                 type={buttonType}
                 style={props.style}
                 disabled={props.disabled}
                 data-has-on-click={!!props.onClick}
+                ref={props.innerRef}
                 onClick={(event) => {
                     if (props.onClick) {
                         props.onClick(props, event);
@@ -65,7 +67,7 @@ type ButtonProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-
+    innerRef?: any,
     buttonType?: (typeof CONSTANTS.VALID_BUTTON_TYPES) | string,
     noDefaultType?: boolean,
     block?: boolean,

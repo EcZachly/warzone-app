@@ -13,7 +13,7 @@ const CONSTANTS = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-export default class Text extends React.Component {
+export default class Text extends React.Component<TextProps> {
     constructor(props) {
         super(props);
     }
@@ -25,7 +25,7 @@ export default class Text extends React.Component {
         const classes = this._getClasses(props);
         
         return (
-            <span className={classes}
+            <span {...props} className={classes}
                   style={props['style']}
                   title={props['title']}
                   onClick={(event) => {
@@ -81,18 +81,27 @@ export default class Text extends React.Component {
 }
 
 
-Text['propTypes'] = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-    children: PropTypes.node,
-    
-    onClick: PropTypes.func,
-    
-    bold: PropTypes.bool,
-    
-    italic: PropTypes.bool,
-    
-    disabled: PropTypes.bool,
-    
-    type: PropTypes.oneOf(CONSTANTS.VALID_TYPES.concat(['', null, undefined]))
-};
+type TextProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode,
+    //text align to the center
+    textCenter?: boolean,
+
+    //text align to the left
+    textLeft?: boolean,
+    innerRef?: any,
+
+    bold?: boolean,
+
+    italic?: boolean,
+
+    disabled?: boolean,
+
+    //text align to the right
+    textRight?: boolean,
+
+    //A simple additional styling option to quickly format the text as a certain type
+    type?: string,
+    onClick?: (props, event) => void
+}

@@ -7,7 +7,7 @@ const TableBody = (props) => {
     const classNames = getClassNames(props);
 
     return (
-        <tbody className={classNames} style={props.style}>
+        <tbody {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </tbody>
     );
@@ -21,7 +21,7 @@ export default TableBody;
 TableBody.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
-    children: PropTypes.node,
+    children: PropTypes.node
 };
 
 
@@ -32,7 +32,7 @@ function getClassNames(props) {
     const classNames = [
         'table-body'
     ];
-    
+
     if (props.className) {
         classNames.push(props.className);
     }

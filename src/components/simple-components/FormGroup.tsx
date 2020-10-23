@@ -6,7 +6,7 @@ const FormGroup = (props: FormGroupProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -21,6 +21,7 @@ type FormGroupProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
     mode: string
 }
 

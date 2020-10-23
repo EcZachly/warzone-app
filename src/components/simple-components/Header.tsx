@@ -33,7 +33,7 @@ function Header(props: HeaderProps) {
     const classNames = getClassNames(props, HeaderTag);
     
     return (
-        <HeaderTag id={props.id} className={classNames} style={props.style}>
+        <HeaderTag {...props} id={props.id} className={classNames} style={props.style}>
             {textTitle}
         </HeaderTag>
     );
@@ -52,6 +52,7 @@ type HeaderProps = {
     children?: React.ReactNode | React.ReactNodeArray,
     size?: string,
     id?: string,
+    innerRef?: any,
     textCenter?: boolean,
     noTopPadding?: boolean,
     bold?: boolean,

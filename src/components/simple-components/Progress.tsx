@@ -10,7 +10,7 @@ const ProgressBar = (props) => {
     const style = getStyle(props);
     
     return (
-        <div className={classNames} style={{...style, ...props.style}}>
+        <div {...props} className={classNames} style={{...style, ...props.style}} ref={props.innerRef}>
             {props.children}
         </div>
     );

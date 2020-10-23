@@ -8,7 +8,7 @@ const BreadcrumbItem = (props: BreadcrumbItemProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <Link className={classNames} style={props.style} onClick={props.onClick}>
+        <Link {...props} className={classNames} style={props.style} onClick={props.onClick}>
             {props.children}
         </Link>
     );

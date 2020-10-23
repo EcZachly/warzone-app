@@ -23,6 +23,7 @@ type CardHeaderProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
     size?: string
 }
 

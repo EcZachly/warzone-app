@@ -7,7 +7,7 @@ const BreadcrumbSeparator = (props:BreadcrumbSeparatorProps) => {
     const separator = getSeparator(props);
     
     return (
-        <span className={classNames} style={props.style}>
+        <span {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {separator}
         </span>
     );
@@ -23,6 +23,7 @@ type BreadcrumbSeparatorProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
     separator?: string
 }
 

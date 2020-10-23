@@ -7,7 +7,7 @@ const Table = (props) => {
     const classNames = getClassNames(props);
 
     return (
-        <table className={classNames} style={props.style}>
+        <table {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </table>
     );

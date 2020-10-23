@@ -7,7 +7,7 @@ const InputGroupText = (props: InputGroupTextProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -21,6 +21,7 @@ export default InputGroupText;
 type InputGroupTextProps = {
     className: string,
     style?: React.CSSProperties,
+    innerRef?: any,
     children: React.ReactNode
 };
 

@@ -24,7 +24,8 @@ class InputCheckbox extends React.Component<InputCheckboxProps> {
         const hasOnChange = TypeService.isFunction(props.onChange);
 
         return (
-            <input type={'checkbox'}
+            <input {...props}
+                   type={'checkbox'}
                    checked={!!props.value}
                    style={props.style}
                    disabled={props.disabled}

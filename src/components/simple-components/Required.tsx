@@ -7,7 +7,7 @@ const Required = (props) => {
     const classNames = getClassNames(props);
 
     return (
-        <sup className={classNames} style={props.style}>*</sup>
+        <sup {...props} className={classNames} style={props.style} ref={props.innerRef}>*</sup>
     );
 };
 

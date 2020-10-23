@@ -6,7 +6,7 @@ const TableData = (props: TableDataProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <td className={classNames} style={props.style} colSpan={props.colspan}>
+        <td {...props} className={classNames} style={props.style} colSpan={props.colspan} ref={props.innerRef}>
             {props.children}
         </td>
     );
@@ -23,6 +23,7 @@ type TableDataProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     colspan?: number,
+    innerRef?: any
     align?: 'left' | 'center' | 'right'
 };
 

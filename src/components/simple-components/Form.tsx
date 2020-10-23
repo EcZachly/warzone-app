@@ -6,16 +6,18 @@ const Form = (props: FormProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <form className={classNames}
-              style={props.style}
-              data-has-on-submit={!!props.onSubmit}
-              onSubmit={(event) => {
-                  event.preventDefault();
+        <form  {...props}
+               className={classNames}
+               style={props.style}
+               data-has-on-submit={!!props.onSubmit}
+               ref={props.innerRef}
+               onSubmit={(event) => {
+                   event.preventDefault();
 
-                  if (props.onSubmit) {
-                      props.onSubmit(props, event);
-                  }
-              }}>
+                   if (props.onSubmit) {
+                       props.onSubmit(props, event);
+                   }
+               }}>
             {props.children}
         </form>
     );
@@ -30,7 +32,8 @@ type FormProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    onSubmit?:  (FormProps, any) => void
+    innerRef?: any,
+    onSubmit?: (FormProps, any) => void
 }
 
 

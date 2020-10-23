@@ -7,7 +7,7 @@ const OrderedList = (props) => {
     const classNames = getClassNames(props);
     
     return (
-        <ol className={classNames} style={props.style}>
+        <ol {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </ol>
     );

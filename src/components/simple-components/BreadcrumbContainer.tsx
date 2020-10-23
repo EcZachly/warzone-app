@@ -6,7 +6,7 @@ const BreadcrumbContainer = (props:BreadcrumbContainerProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -19,6 +19,7 @@ export default BreadcrumbContainer;
 
 type BreadcrumbContainerProps = {
     className?: string,
+    innerRef?: any,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     withBackground?: boolean

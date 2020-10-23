@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
+import {Card, CardBody, Small, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
 import {GamerLink, GamerClassBadge, GamerClassBadgeList} from './../gamer/index';
 
 import {Gamer} from './GamerTypes';
@@ -23,9 +23,7 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
             <CardHeader>
                 <GamerLink gamer={gamer}/>
 
-                <br/>
-
-                <small className="aliases">({gamer.aliases.join(',')})</small>
+                <Small className="aliases">({gamer.aliases.join(',')})</Small>
 
                 {classBadgeList}
             </CardHeader>

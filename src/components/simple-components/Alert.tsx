@@ -26,7 +26,7 @@ export function Alert(props: AlertProps) {
     const classNames = getClassNames(props);
     
     return (
-        <div className={classNames} style={props.style}>
+        <div {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </div>
     );
@@ -44,6 +44,7 @@ type AlertProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
+    innerRef?: any,
     hideIfEmpty?: boolean,
     type?: (typeof VALID_TYPE_ENTRIES)[number]
 }

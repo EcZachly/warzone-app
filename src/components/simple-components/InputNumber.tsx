@@ -23,7 +23,8 @@ class InputNumber extends React.Component<InputNumberProps> {
         const classes = this.getClasses(props);
         
         return (
-            <input value={props.value}
+            <input {...props}
+                   value={props.value}
                    style={props.style}
                    placeholder={props.placeholder}
                    type={'number'}

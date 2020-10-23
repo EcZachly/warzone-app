@@ -7,7 +7,7 @@ const Small = (props) => {
     const classNames = getClassNames(props);
     
     return (
-        <small className={classNames} style={props.style}>
+        <small {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </small>
     );

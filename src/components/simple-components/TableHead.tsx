@@ -7,7 +7,7 @@ const TableHead = (props) => {
     const classNames = getClassNames(props);
 
     return (
-        <thead className={classNames} style={props.style}>
+        <thead {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </thead>
     );

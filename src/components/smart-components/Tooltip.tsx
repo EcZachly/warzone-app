@@ -4,17 +4,30 @@ import {Box} from './../SimpleComponents';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-const Tooltip = (props) => {
+const Tooltip = (props: TooltipProps) => {
     const [show, updateShow] = useState(false);
 
     return (
         <Box className={'tooltip-container'}
-             style={props.style}
+             style={{...props.style}}
              onMouseEnter={() => updateShow(true)}
              onMouseLeave={() => updateShow(false)}>
-            {(show === true) ? props.showFunction() : null}
+            {(show === true) ? props.showFunction({
+                style: {
+                    pointerEvents: 'none'
+                }
+            }) : null}
             {props.children}
         </Box>
     );
 };
 export default Tooltip;
+
+
+
+type TooltipProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    showFunction: (tooltipProps) => {},
+}

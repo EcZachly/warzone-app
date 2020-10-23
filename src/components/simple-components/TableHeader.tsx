@@ -7,7 +7,7 @@ const TableHeader = (props: TableHeaderProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <th className={classNames} style={props.style}>
+        <th {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </th>
     );
@@ -22,7 +22,8 @@ type TableHeaderProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    align?: 'left' | 'center' | 'right'
+    align?: 'left' | 'center' | 'right',
+    innerRef?: any
 };
 
 

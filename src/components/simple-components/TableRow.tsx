@@ -7,8 +7,10 @@ const TableRow = (props) => {
     const classNames = getClassNames(props);
     
     return (
-        <tr className={classNames}
+        <tr {...props}
+            className={classNames}
             style={props.style}
+            ref={props.innerRef}
             onClick={(event) => {
                 if (props.onClick) {
                     props.onClick(props, event);
