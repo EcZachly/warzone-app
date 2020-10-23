@@ -42,7 +42,7 @@ SELECT
             )
     ) as down_enemy_circle_1_cutoffs,
         JSON_BUILD_OBJECT(
-        'category', 'caches_open',
+        'category', 'caches_opened',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
             'looter', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .1),
