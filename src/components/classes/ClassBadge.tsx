@@ -1,17 +1,21 @@
 import React from 'react';
 import {Badge} from '../SimpleComponents';
 import {Tooltip} from '../SmartComponents';
-import {GamerClassDetail} from '../AppComponents';
+import {ClassDetail} from "./index";
 //===---==--=-=--==---===----===---==--=-=--==---===----//
+type GamerClassBadgeProps = {
+    category: object,
+    stat: number,
+    statName: string
+}
 
-
-export default function GamerClassBadge({gamerCategory, gamerStat, statName}: GamerClassBadgeProps) {
+export default function ClassBadge({category, stat, statName}: GamerClassBadgeProps) {
     let style = {color: 'blue'};
     let categoryName = '';
-    let keys = Object.keys(gamerCategory);
-    keys.sort((left, right) => gamerCategory[left]['percentile'] < gamerCategory[right]['percentile'] ? -1 : 1);
+    let keys = Object.keys(category);
+    keys.sort((left, right) => category[left]['percentile'] < category[right]['percentile'] ? -1 : 1);
     keys.forEach((percentileKey) => {
-        if (gamerStat >= parseFloat(gamerCategory[percentileKey]['value'])) {
+        if (stat >= parseFloat(category[percentileKey]['value'])) {
             categoryName = percentileKey;
         }
     });
@@ -20,18 +24,20 @@ export default function GamerClassBadge({gamerCategory, gamerStat, statName}: Ga
         return <></>;
     }
 
-    let description = gamerCategory['description'] ? gamerCategory['description'] : '';
+    let description = category['description'] ? category['description'] : '';
     let badgeRef;
 
     return (
         <Tooltip style={{display: 'inline-block', marginRight: '3px'}} showFunction={(tooltipProps) => {
             return (
-                <GamerClassDetail {...tooltipProps}
+                <ClassDetail {...tooltipProps}
                                   height={250}
                                   width={500}
                                   badgeRef={badgeRef}
                                   statName={statName}
-                                  gamerCategory={gamerCategory} keys={keys} gamerStat={gamerStat}/>
+                                  category={category}
+                                  keys={keys}
+                                  stat={stat}/>
             );
         }}>
             <Badge innerRef={(ref) => badgeRef = ref} size={'sm'} title={description} style={style}>
@@ -41,8 +47,3 @@ export default function GamerClassBadge({gamerCategory, gamerStat, statName}: Ga
     );
 }
 
-type GamerClassBadgeProps = {
-    gamerCategory: object,
-    gamerStat: number,
-    statName: string
-}

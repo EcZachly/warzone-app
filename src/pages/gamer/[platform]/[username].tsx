@@ -6,7 +6,6 @@ import {Container, Main, Box, Header, Text, Button, Small, Image} from './../../
 import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
-    GamerClassBadgeList,
     GamerGradeChart,
     GamerTimeChart,
     TeammateTable,
@@ -14,6 +13,7 @@ import {
     Navbar, Footer
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
+import {ClassBadgeList} from "../../../components/classes";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -133,7 +133,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
-                            <GamerClassBadgeList gamer={gamer} classDescriptions={classDescriptions}/>
+                            <ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>
                         </Sidebar>
                         <SidebarCompanion>
                             <Box>

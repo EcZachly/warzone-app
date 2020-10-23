@@ -33,14 +33,6 @@ export {GamerPlatformImage};
 import GamerTimeChart from './gamer/GamerTimeChart';
 export {GamerTimeChart};
 
-
-import GamerClassBadgeList from './gamer/GamerClassBadgeList';
-export {GamerClassBadgeList};
-
-
-import GamerClassDetail from './gamer/GamerClassDetail';
-export {GamerClassDetail};
-
 //H
 
 

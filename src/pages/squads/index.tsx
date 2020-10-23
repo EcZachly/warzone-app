@@ -9,7 +9,7 @@ import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function Squads({squads, baseUrl, limit}) {
+export default function Squads({squads, baseUrl, limit, classDescriptions}) {
     const [feedHasMore, setFeedHasMore] = useState(true);
     const [squadValues, setSquads] = useState(squads);
 
@@ -22,7 +22,7 @@ export default function Squads({squads, baseUrl, limit}) {
         if (newSquads.length === 0) {
             setFeedHasMore(false);
         } else {
-            const allGamers = [...squadValues, ...newSquads];
+            const allGamers = [...squadValues, ...newSquads['squads']];
             setSquads(allGamers);
         }
     };
@@ -40,7 +40,7 @@ export default function Squads({squads, baseUrl, limit}) {
                         loader={<div className="loader" key={0}>Loading ...</div>}
                         useWindow={true}
                     >
-                        {squadValues.map((squad, index) => <SquadCard key={squad.team_grain + index} squad={squad}/>)}
+                        {squadValues.map((squad, index) => <SquadCard key={squad.team_grain + index} squad={squad} classDescriptions={classDescriptions}/>)}
                     </InfiniteScroll>
                 </Main>
             </Container>
@@ -52,12 +52,12 @@ export default function Squads({squads, baseUrl, limit}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
-
     const rawSquadList = await fetch(baseUrl + '/api/squad');
     const squadJson = await rawSquadList.json();
     return {
         props: {
-            squads: squadJson,
+            squads: squadJson['squads'],
+            classDescriptions: squadJson['classDescriptions'],
             limit: 10,
             baseUrl: baseUrl
         }

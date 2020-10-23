@@ -1,7 +1,12 @@
 import React from 'react';
 import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Box} from '../SimpleComponents';
 import {GamerLink} from '../AppComponents';
-export default function SquadCard({squad}) {
+import {ClassBadgeList} from "../classes";
+export default function SquadCard({squad, classDescriptions}) {
+    //Only use classes that correspond with the right team type, otherwise we'd be comparing duos to quads, etc
+    let filteredDescriptions = classDescriptions.filter((description)=> description.team_type == squad.team_type)[0];
+
+    let classBadgeList = <ClassBadgeList subject={squad as object} classDescriptions={filteredDescriptions} />
     const gamerLinks = squad.gamers.map((gamer)=>{
         const [platform, username] = gamer.split('-');
         return <GamerLink gamer={{platform: platform, username: username}}/>;
@@ -11,6 +16,7 @@ export default function SquadCard({squad}) {
 
             <CardHeader>
                 {gamerLinks}
+                {classBadgeList}
             </CardHeader>
 
             <CardBody>
@@ -22,7 +28,7 @@ export default function SquadCard({squad}) {
                     <TableBody>
                         <TableData>{squad.kdr}</TableData>
                         <TableData>{squad.gulag_win_rate}</TableData>
-                        <TableData>{squad.win_percentage}</TableData>
+                        <TableData>{squad.win_percentage.toFixed(2) + '%'}</TableData>
                         <TableData>{squad.total_wins}</TableData>
                     </TableBody>
                 </Table>
