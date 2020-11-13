@@ -14,10 +14,15 @@ const Home = ({baseUrl}) => {
     const [gamerResults, setGamerResults] = useState([]);
 
     const searchGamers = async (inputValue) => {
-        const dataUrl = baseUrl + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%');
-        const response = await fetch(dataUrl);
-        const newGamers = await response.json();
-        setGamerResults(newGamers.gamers);
+        if(inputValue.length > 1){
+            const dataUrl = baseUrl + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%');
+            const response = await fetch(dataUrl);
+            const newGamers = await response.json();
+            setGamerResults(newGamers.gamers);
+        }
+        else{
+            setGamerResults([]);
+        }
     };
     let gamerCards = gamerResults.map((gamer) => <GamerCard gamer={gamer} classDescriptions={{}}/>)
 

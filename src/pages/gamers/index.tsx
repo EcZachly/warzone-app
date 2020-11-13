@@ -1,6 +1,7 @@
 import {GetServerSideProps} from 'next';
 import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+import { useRouter } from 'next/router'
 
 import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
@@ -9,15 +10,15 @@ import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
-
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classDescriptions}) {
+export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, limit, classDescriptions}) {
     const [gamerValues, setGamers] = useState(gamers);
     const [feedHasMore, setFeedHasMore] = useState(true);
-    const [searchValue, setSearchValue] = useState("");
-
+    const [searchValue, setSearchValue] = useState(username);
+    const router = useRouter();
+    
     const fetchMoreGamers = async (page) => {
         let searchQuery = '&username.ilike=' + encodeURIComponent('%' + searchValue + '%')
         const dataUrl = baseUrl + '/api/gamer?limit=' + limit + '&offset=' + limit * page + searchQuery;
@@ -32,6 +33,18 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
     };
 
     const searchGamers = async (inputValue) => {
+        if(inputValue.length){
+            router.replace({
+                pathname: '/gamers',
+                query: { username: inputValue }
+            })
+        }
+        else{
+            router.replace({
+                pathname: '/gamers'
+            })
+        }
+
         setSearchValue(inputValue);
         setGamers([]);
     };
@@ -61,6 +74,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
                         <LineBreak/>
 
                         <Input type={'text'}
+                               value={searchValue}
                                onChange={searchGamers}
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
@@ -86,16 +100,16 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
-
-    console.log(baseUrl + '/api/gamer');
-    const rawGamerList = await fetch(baseUrl + '/api/gamer');
+    let username = context.query.username || '';
+    let searchQuery = '?username.ilike=' + encodeURIComponent('%' + username + '%')
+    const rawGamerList = await fetch(baseUrl + '/api/gamer' + searchQuery);
     const gamerJson = await rawGamerList.json();
-
     return {
         props: {
             offset: 0,
             limit: 10,
             gamers: gamerJson['gamers'],
+            username: context.query.username || '',
             classDescriptions: gamerJson['classDescriptions'],
             baseUrl: baseUrl,
             recaptchaSiteKey: process.env.WARZONE_RECAPTCHA_SITE_KEY
