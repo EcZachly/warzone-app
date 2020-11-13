@@ -12,9 +12,7 @@ export function include(server) {
 
     router.post('/api/gamer', Gamers.createGamer)
     router.get('/api/gamer', Gamers.findGamers)
-
     router.get('/api/gamer/:platform/:username', Gamers.getGamerDetails);
-
     router.get('/api/squad', Squads.findSquads)
 
     configure(server);

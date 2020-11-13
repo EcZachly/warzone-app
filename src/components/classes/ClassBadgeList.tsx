@@ -14,6 +14,5 @@ export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeP
             );
         }
     );
-
     return <div>{badges}</div>;
 }

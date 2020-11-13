@@ -66,6 +66,21 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
+/**
+ * This function translates REST friendly parameters like
+ * username.ilike into massiveJS friendly querying
+ * @param queryParams -- the query parameters that you are trying to pass
+ */
+function manageComplexQueryParameters(queryParams){
+    Object.keys(queryParams).forEach((key)=>{
+        if(key.includes('.')){
+            let column = key.split('.')[0];
+            let operator = key.split('.')[1];
+            queryParams[column + ' ' + operator] =  queryParams[key];
+            delete queryParams[key];
+        }
+    });
+}
 
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const viewName = 'player_stat_summary';
@@ -75,6 +90,8 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const limit = req.query.limit || 10;
     delete queryParams.offset;
     delete queryParams.limit;
+    manageComplexQueryParameters(queryParams);
+
     const descriptionData = await queryView(descriptionConfig, {}, {});
     const rawGamerList = await queryView(viewName, queryParams, {offset, limit});
     const sanitizedGamers = rawGamerList.map(sanitizeGamer);

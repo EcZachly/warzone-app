@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader, Box} from '../SimpleComponents';
+import {Card, CardBody, CardHeader, Table, TableBody, TableData, TableHeader} from '../SimpleComponents';
 import {GamerLink} from '../AppComponents';
 import {ClassBadgeList} from "../classes";
 export default function SquadCard({squad, classDescriptions}) {

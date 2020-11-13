@@ -13,17 +13,14 @@ import {GamerCard, GamerAdd} from './../../components/gamer/index';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-
 export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classDescriptions}) {
-    const [usernameSearchValue, updateUsernameSearchValue] = useState('');
     const [gamerValues, setGamers] = useState(gamers);
     const [feedHasMore, setFeedHasMore] = useState(true);
-    const tempUsernameSearchValue = usernameSearchValue.toLowerCase();
-
+    const [searchValue, setSearchValue] = useState("");
 
     const fetchMoreGamers = async (page) => {
-        const dataUrl = baseUrl + '/api/gamer?limit=' + limit + '&offset=' + limit * page;
-
+        let searchQuery = '&username.ilike=' + encodeURIComponent('%' + searchValue + '%')
+        const dataUrl = baseUrl + '/api/gamer?limit=' + limit + '&offset=' + limit * page + searchQuery;
         const response = await fetch(dataUrl);
         const newGamers = await response.json();
         if (newGamers.gamers.length === 0) {
@@ -34,17 +31,18 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
         }
     };
 
+    const searchGamers = async (inputValue) => {
+        setSearchValue(inputValue);
+        setGamers([]);
+    };
 
-    const gamerList = gamerValues.filter(({username, aliases}) => {
-        if (!!usernameSearchValue) {
-            const gamerUsernameIncludes = username.toLowerCase().includes(tempUsernameSearchValue);
-            const aliasesIncludes = aliases.filter((name) => name.toLowerCase().includes(tempUsernameSearchValue)).length > 0;
 
-            return gamerUsernameIncludes || aliasesIncludes;
-        } else {
-            return true;
-        }
-    }).map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer} classDescriptions={classDescriptions}/>);
+    if(gamerValues.length === 0){
+        fetchMoreGamers(0);
+    }
+
+    const gamerList = gamerValues.map((gamer) => <GamerCard key={gamer.username + '-' + gamer.platform} gamer={gamer}
+                                                            classDescriptions={classDescriptions}/>);
 
 
     return (
@@ -63,8 +61,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
                         <LineBreak/>
 
                         <Input type={'text'}
-                               value={usernameSearchValue}
-                               onChange={(value) => updateUsernameSearchValue(value)}
+                               onChange={searchGamers}
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
                     </Sidebar>
@@ -85,7 +82,6 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
         </Page>
     );
 }
-
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
