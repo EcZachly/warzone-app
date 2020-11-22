@@ -10,7 +10,7 @@ import {
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
-    Navbar, Footer
+    Navbar, Footer, SquadList
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 import {ClassBadgeList} from "../../../components/classes";
@@ -21,8 +21,9 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
+    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads'];
 
+    console.log(viewData);
     const [chartState, setChartState] = useState({
         viewData: viewData,
         baseUrl: baseUrl,
@@ -50,6 +51,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         } else {
             const fetchedData = await fetchViewData(tabId);
             newState.viewData = fetchedData.viewData;
+            console.log(fetchedData);
             setChartState(newState);
         }
     };
@@ -86,7 +88,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 key={'placement_chart'}
                                 viewData={chartState.viewData}
                                 options={['hour_of_day', 'day_of_week']}
-                                selectedValue="hour_of_day"/>
+                                selectedValue="hour_of_day"/>,
+        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]} />
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -154,7 +157,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view} = context.query;
-    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'classes'];
+    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'squads'];
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);

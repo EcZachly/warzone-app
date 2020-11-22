@@ -25,11 +25,13 @@ export default function SquadCard({squad, classDescriptions}) {
                     <TableHeader>Gulag Win Rate</TableHeader>
                     <TableHeader>Win Rate</TableHeader>
                     <TableHeader>Total Wins</TableHeader>
+                    <TableHeader># of matches</TableHeader>
                     <TableBody>
                         <TableData>{squad.kdr}</TableData>
                         <TableData>{squad.gulag_win_rate}</TableData>
                         <TableData>{squad.win_percentage.toFixed(2) + '%'}</TableData>
                         <TableData>{squad.total_wins}</TableData>
+                        <TableData>{squad.num_matches}</TableData>
                     </TableBody>
                 </Table>
             </CardBody>

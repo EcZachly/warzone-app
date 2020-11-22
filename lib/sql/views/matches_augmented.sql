@@ -19,6 +19,6 @@ SELECT matches.match_id,
            ELSE NULL::text
            END                                            AS team_type,
        CASE WHEN mode NOT LIKE '%plnd%' AND mode NOT LIKE '%jugg&'  AND mode NOT LIKE '%rmbl%'  AND mode NOT LIKE '%mini%' and mode NOT LIKE '%kingslayer%'
-                 AND mode NOT LIKE '%dmz%'   AND mode NOT LIKE  '%stim%' AND mode NOT LIKE '%truckwar%' THEN TRUE
+                 AND mode NOT LIKE '%dmz%'   AND mode NOT LIKE  '%stim%' AND mode NOT LIKE '%truckwar%'  AND mode NOT LIKE '%zmbroy%' AND mode <> 'br_25' THEN TRUE
                  ELSE FALSE END as is_warzone_match
 FROM warzone.matches;

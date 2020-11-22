@@ -5,8 +5,6 @@ SELECT
         'category', 'team_survival_time_mins',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'goldfish', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .1),
-            'lemming', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .33),
             'elephant', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .66),
             'tortoise', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .90)
             )
@@ -45,8 +43,6 @@ SELECT
         'category', 'caches_opened',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'looter', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .1),
-            'scavenger', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .33),
             'pirate', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .66),
             'tomb_raider', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .90)
             )
@@ -65,7 +61,6 @@ SELECT
         'category', 'teams_wiped',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'surrenderer', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .1),
             'vanquisher', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .50),
             'conqueror', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .90)
             )
@@ -84,7 +79,6 @@ SELECT
         'category', 'headshots',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'trainee', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY headshots), 'percentile', .50),
             'deadeye', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY headshots), 'percentile', .75),
             'headshot_hacker', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY headshots), 'percentile', .90)
           )
@@ -93,7 +87,6 @@ SELECT
             'category', 'win_percentage',
             'description', '',
             'percentiles', JSON_BUILD_OBJECT(
-                'bad_luck', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .25),
                 'winner', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .50),
                 'champion', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .75),
                 'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
