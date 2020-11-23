@@ -1,13 +1,12 @@
-CREATE MATERIALIZED VIEW warzone.gamer_class_description_values AS
+CREATE MATERIALIZED VIEW warzone.squad_class_description_values AS
 SELECT
+    team_type,
     JSON_BUILD_OBJECT(
         'category', 'team_survival_time_mins',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'goldfish', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY team_survival_time), 'percentile', .1),
-            'lemming', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY team_survival_time), 'percentile', .33),
-            'elephant', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY team_survival_time), 'percentile', .66),
-            'tortoise', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY team_survival_time), 'percentile', .90)
+            'elephant', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .66),
+            'tortoise', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .90)
             )
     ) as team_survival_cutoffs,
        JSON_BUILD_OBJECT(
@@ -41,13 +40,11 @@ SELECT
             )
     ) as down_enemy_circle_1_cutoffs,
         JSON_BUILD_OBJECT(
-        'category', 'caches_open',
+        'category', 'caches_opened',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'looter', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY caches_open), 'percentile', .1),
-            'scavenger', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY caches_open), 'percentile', .33),
-            'pirate', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY caches_open), 'percentile', .66),
-            'tomb_raider', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY caches_open), 'percentile', .90)
+            'pirate', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .66),
+            'tomb_raider', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY caches_opened), 'percentile', .90)
             )
     ) as looting_cutoffs,
     JSON_BUILD_OBJECT(
@@ -64,7 +61,6 @@ SELECT
         'category', 'teams_wiped',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'surrenderer', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .1),
             'vanquisher', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .50),
             'conqueror', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .90)
             )
@@ -83,7 +79,6 @@ SELECT
         'category', 'headshots',
         'description', '',
         'percentiles', JSON_BUILD_OBJECT(
-            'trainee', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY headshots), 'percentile', .50),
             'deadeye', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY headshots), 'percentile', .75),
             'headshot_hacker', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY headshots), 'percentile', .90)
           )
@@ -92,10 +87,11 @@ SELECT
             'category', 'win_percentage',
             'description', '',
             'percentiles', JSON_BUILD_OBJECT(
-                'bad_luck', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .25),
                 'winner', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .50),
                 'champion', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .75),
                 'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
               )
         ) as win_percentage_cutoffs
-FROM warzone.player_stat_summary
+FROM warzone.full_squad_stat_summary
+WHERE num_matches >= 5
+GROUP BY team_type

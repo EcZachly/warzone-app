@@ -1,8 +1,8 @@
 import React from 'react';
 
 import {Card, CardBody, Small, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
-import {GamerLink, GamerClassBadge, GamerClassBadgeList} from './../gamer/index';
-
+import {GamerLink} from './../gamer/index';
+import {ClassBadgeList} from '../classes/index';
 import {Gamer} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
@@ -16,7 +16,7 @@ export type GamerCardProps = {
 
 
 export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
-    let classBadgeList = <GamerClassBadgeList gamer={gamer} classDescriptions={classDescriptions} />
+    let classBadgeList = <ClassBadgeList subject={gamer as object} classDescriptions={classDescriptions} />
     return (
         <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 

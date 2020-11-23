@@ -1,14 +1,31 @@
 import React, {useState, Component} from 'react';
 
-import {Navbar, Page, Footer} from './../components/AppComponents';
+import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
 import {Container, Header, Box, Text, Small, Main, LineBreak} from './../components/SimpleComponents';
 import {Input} from './../components/SmartComponents';
+import {GetServerSideProps} from "next";
+import {getBaseUrlWithProtocol} from "../services/UtilityService";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-const Home = () => {
+const Home = ({baseUrl}) => {
     const [searchInputValue, updateSearchInputValue] = useState('');
+    const [gamerResults, setGamerResults] = useState([]);
+
+    const searchGamers = async (inputValue) => {
+        if(inputValue.length > 1){
+            const dataUrl = baseUrl + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%');
+            const response = await fetch(dataUrl);
+            const newGamers = await response.json();
+            setGamerResults(newGamers.gamers);
+        }
+        else{
+            setGamerResults([]);
+        }
+    };
+    let gamerCards = gamerResults.map((gamer) => <GamerCard gamer={gamer} classDescriptions={{}}/>)
+
     return (
         <Page title={'Warzone'}>
             <Navbar/>
@@ -28,13 +45,14 @@ const Home = () => {
 
                         <LineBreak clear/>
 
-                        <Input onChange={updateSearchInputValue}
+                        <Input onChange={searchGamers}
                                placeholder={'Search Gamers'}
                                mode={'plain'}
                                focus
                                inputStyle={{borderRadius: 0, borderBottom: '1px solid #888'}}
                                size={'xl'}
-                               helpMessage={'This input does nothing yet'}/>
+                        />
+                        {gamerCards}
                     </Container>
 
                 </Box>
@@ -77,4 +95,15 @@ const Home = () => {
         </Page>
     );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const baseUrl = getBaseUrlWithProtocol(context.req);
+    return {
+        props: {
+            baseUrl: baseUrl,
+            recaptchaSiteKey: process.env.WARZONE_RECAPTCHA_SITE_KEY
+        }
+    };
+};
+
 export default Home;

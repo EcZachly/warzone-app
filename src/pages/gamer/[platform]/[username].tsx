@@ -6,14 +6,15 @@ import {Container, Main, Box, Header, Text, Button, Small, Image} from './../../
 import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
-    GamerClassBadgeList,
     GamerGradeChart,
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
-    Navbar, Footer
+    Navbar, Footer, SquadList, GamerTrendChart
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
+import {ClassBadgeList} from "../../../components/classes";
+import TrendChart from "../../../components/charting/TrendChart";
 
 import {GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
@@ -26,7 +27,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time'];
+    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
 
     const [chartState, setChartState] = useState({
         viewData: viewData,
@@ -69,7 +70,12 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 key={'placement_chart'}
                                 viewData={chartState.viewData}
                                 options={['hour_of_day', 'day_of_week']}
-                                selectedValue="hour_of_day"/>
+                                selectedValue="hour_of_day"/>,
+        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]} />,
+        'trends': <GamerTrendChart
+                            height={260}
+                            width={chartWidth}
+                            data={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -116,10 +122,14 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
+<<<<<<< HEAD
 
                             <LabelValue label={'Classes'} value={<GamerClassBadgeList gamer={gamer}
                                                                                       classDescriptions={classDescriptions}/>}/>
 
+=======
+                            <ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>
+>>>>>>> d972876d220aac067ab34a2ce608679d208e13d2
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>
                             <Box>
@@ -192,7 +202,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view} = context.query;
-    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'classes'];
+    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);

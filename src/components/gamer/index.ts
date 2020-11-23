@@ -10,10 +10,6 @@ import GamerPlacementChart from './GamerPlacementChart';
 export {GamerPlacementChart};
 
 
-import GamerClassBadge from './GamerClassBadge';
-export {GamerClassBadge};
-
-
 import GamerLink from './GamerLink';
 export {GamerLink};
 
@@ -24,9 +20,6 @@ export {GamerPlatformImage};
 
 import GamerService from './GamerService';
 export {GamerService};
-
-import GamerClassBadgeList from './GamerClassBadgeList'
-export {GamerClassBadgeList}
 
 
 import GamerTimeChart from './GamerTimeChart';
@@ -47,9 +40,7 @@ export default {
     GamerGradeChart: GamerGradeChart,
     GamerPlacementChart: GamerPlacementChart,
     GamerLink: GamerLink,
-    GamerClassBadge: GamerClassBadge,
     GamerPlatformImage: GamerPlatformImage,
-    GamerClassBadgeList: GamerClassBadgeList,
     GamerService: GamerService,
     GamerTimeChart: GamerTimeChart,
     TeammateTable: TeammateTable,

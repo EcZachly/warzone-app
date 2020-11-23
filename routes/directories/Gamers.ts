@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 import Bluebird from 'bluebird';
 
-import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../lib/model/gamers';
+import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeSquad, sanitizeTeammates} from '../../lib/model/gamers';
 import {queryView} from '../../lib/model/analysis';
 import {ViewQuery} from '../../lib/model/view_query';
 import {initializeMatches} from '../../lib/model/matches';
@@ -66,6 +66,21 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
+/**
+ * This function translates REST friendly parameters like
+ * username.ilike into massiveJS friendly querying
+ * @param queryParams -- the query parameters that you are trying to pass
+ */
+function manageComplexQueryParameters(queryParams){
+    Object.keys(queryParams).forEach((key)=>{
+        if(key.includes('.')){
+            let column = key.split('.')[0];
+            let operator = key.split('.')[1];
+            queryParams[column + ' ' + operator] =  queryParams[key];
+            delete queryParams[key];
+        }
+    });
+}
 
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const viewName = 'player_stat_summary';
@@ -75,6 +90,8 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const limit = req.query.limit || 10;
     delete queryParams.offset;
     delete queryParams.limit;
+    manageComplexQueryParameters(queryParams);
+
     const descriptionData = await queryView(descriptionConfig, {}, {});
     const rawGamerList = await queryView(viewName, queryParams, {offset, limit});
     const sanitizedGamers = rawGamerList.map(sanitizeGamer);
@@ -111,7 +128,9 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             'teammates': 'teammate_analysis',
             'placements': 'gamer_stats_graded',
             'stats': 'gamer_stats_graded',
-            'time': 'time_analysis'
+            'time': 'time_analysis',
+            'squads': 'full_squad_stat_summary',
+            'trends': 'trend_analysis'
         };
 
         const sqlView = viewMap[view as string];
@@ -120,9 +139,17 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             username: username,
             platform: platform
         };
+        const userString = '%' + platform + '-' + username + '%';
+        const squadQuery = {'team_grain LIKE': userString}
+
+
         const timezoneQuery = {
             timezone: timeZone || 'America/Los_Angeles',
             cutoff: '10'
+        };
+
+        const trendQuery = {
+            lookback: 30
         };
 
         const queryableViews = [
@@ -130,7 +157,9 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             new ViewQuery('gamer_class_description_values', {}),
             new ViewQuery('gamer_stats_graded', userQuery),
             new ViewQuery('teammate_analysis', userQuery),
-            new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery})
+            new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery}),
+            new ViewQuery('full_squad_stat_summary', squadQuery),
+            new ViewQuery('trend_analysis', {...userQuery, ...trendQuery}),
         ];
 
         const viewNamesToQuery = ['player_stat_summary', 'gamer_class_description_values', sqlView as string];
@@ -146,12 +175,14 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             Bluebird.all(gamerMatchDataPromises).then(async () => {
                 const gamer =  sanitizeGamer(viewsToQuery[0].data[0]);
                 const gamerClassDescriptions = viewsToQuery[1].data[0];
-                let viewData = viewsToQuery[2].data;
+                let viewData = viewsToQuery[2].data as Array<object>;
 
                 const sanitizationLookup = {
                     'gamer_stats_graded': () => viewData,
                     'time_analysis': () => viewData,
-                    'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS)
+                    'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS),
+                    'full_squad_stat_summary': () => viewData.map(sanitizeSquad),
+                    'trend_analysis': ()=> viewData
                 };
 
                 viewData = sanitizationLookup[sqlView]();

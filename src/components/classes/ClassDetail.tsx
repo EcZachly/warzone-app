@@ -8,26 +8,20 @@ import HtmlService from './../../services/HtmlService';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function GamerClassDetail({gamerCategory, style, statName, width, height, gamerStat, badgeRef, keys}: GamerClassDetailProps) {
-    let categoryName = '';
-
-    if (!categoryName) {
-        categoryName = keys[0];
-    }
-
-    let gamerStatDisplayValue = parseFloat(gamerStat.toString()).toFixed(2).toString();
+export default function ClassDetail({category, style, statName, width, height, stat, badgeRef, keys}: GamerClassDetailProps) {
+    let gamerStatDisplayValue = parseFloat(stat.toString()).toFixed(2).toString();
 
     if (statName.includes('percent')) {
         gamerStatDisplayValue = gamerStatDisplayValue.toString() + '%';
     }
 
-    let description = gamerCategory['description'] || gamerCategory['category'] || '';
+    let description = category['description'] || category['category'] || '';
     let statDisplayName = statName.split('_').map(_.capitalize).join(' ');
 
     let displayPercentiles = keys.map((val) => {
         let displayName = val.split('_').map(_.capitalize).join(' ');
-        let percentile = gamerCategory[val]['percentile'];
-        let percentileVal = gamerCategory[val]['value'];
+        let percentile = category[val]['percentile'];
+        let percentileVal = category[val]['value'];
 
         let displayValue = percentileVal.toFixed(2);
         let perMessage = ' per game';
@@ -73,7 +67,7 @@ export default function GamerClassDetail({gamerCategory, style, statName, width,
                     </Text>
                     <LineBreak clear/>
                     <Text>
-                        This gamer averages: <Text bold>{gamerStatDisplayValue}</Text>
+                        Average: <Text bold>{gamerStatDisplayValue}</Text>
                     </Text>
                 </Paragraph>
             </CardHeader>
@@ -90,8 +84,8 @@ export default function GamerClassDetail({gamerCategory, style, statName, width,
 }
 
 type GamerClassDetailProps = {
-    gamerCategory?: object,
-    gamerStat?: number,
+    category?: object,
+    stat?: number,
     style?: React.CSSProperties,
     badgeRef?: React.LegacyRef<HTMLDivElement>,
     statName?: string,
