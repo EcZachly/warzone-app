@@ -21,8 +21,6 @@ const typescriptLoader = {
 
 let PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
 
-// const withSass = require('@zeit/next-sass');
-
 const app = next({
     dev,
     dir: CONSTANTS.PAGES_DIRECTORY,

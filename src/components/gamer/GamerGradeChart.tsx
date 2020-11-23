@@ -9,23 +9,16 @@ import {InputRadio, Box} from '../SimpleComponents';
 
 export default function GamerGradeChart({data, options, selectedValue, height, width}) {
     const [selectedChart, setActiveChart] = useState(selectedValue);
-    const chartData = [];
-    Object.keys(data[0]).filter((key) => key.includes(selectedChart)).forEach((key) => {
-        chartData.push({'# of Games': parseFloat(data[0][key]), name: key.charAt(0).toUpperCase()});
-    });
-    const radioOptions = options.map((option) => {
-        return {
-            value: option,
-            text: option.split('_').map(_.capitalize).join(' '),
-            className: ''
-        };
-    });
+
+    const chartData = getChartData(data, selectedChart);
+    const radioOptions = getRadioOptions(options);
+
     return (
         <Box style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
 
             <BarChart width={width} height={height} data={chartData}>
 
-                <Bar dataKey="# of Games" fill="#8884d8"/>
+                <Bar dataKey="# of Games" label={{fill: 'white'}} fill="#778877"/>
 
                 <XAxis dataKey="name"/>
 
@@ -44,9 +37,24 @@ export default function GamerGradeChart({data, options, selectedValue, height, w
 
 
 
-function renderTooltip(props) {
-    console.log(props);
-    return (
-        <div>{'Number of games:' + JSON.stringify(props)}</div>
-    );
+function getRadioOptions(options) {
+    return options.map((option) => {
+        return {
+            value: option,
+            text: option.split('_').map(_.capitalize).join(' '),
+            className: ''
+        };
+    });
+}
+
+
+
+function getChartData(data, selectedChart) {
+    const chartData = [];
+
+    Object.keys(data[0]).filter((key) => key.includes(selectedChart)).forEach((key) => {
+        chartData.push({'# of Games': parseFloat(data[0][key]), name: key.charAt(0).toUpperCase()});
+    });
+
+    return chartData;
 }

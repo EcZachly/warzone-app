@@ -23,6 +23,7 @@ type TableHeaderProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     align?: 'left' | 'center' | 'right',
+    verticalAlign?: 'top' | 'bottom' | 'middle',
     innerRef?: any
 };
 
@@ -42,6 +43,13 @@ function getClassNames(props) {
 
     if (validTextAlignPositions.includes(alignPropValue)) {
         classNames.push('text-' + alignPropValue);
+    }
+
+    const validVerticalAlignPositions = ['top', 'bottom', 'middle'];
+    const verticalAlignPropValue = (props.verticalAlign || '').toLowerCase();
+
+    if (validVerticalAlignPositions.includes(verticalAlignPropValue)) {
+        classNames.push('vertical-align-' + verticalAlignPropValue);
     }
 
     return classNames.join(' ');

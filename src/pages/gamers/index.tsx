@@ -88,6 +88,12 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, limit, classD
 
 
 
+
+
+
+
+
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
 

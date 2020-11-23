@@ -69,18 +69,21 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const componentMap = {
         'teammates': <TeammateTable teammates={chartState.viewData}/>,
+
         'placements': <GamerGradeChart height={260}
                                        width={chartWidth}
                                        key={'placement_chart'}
                                        data={chartState.viewData}
                                        options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
                                        selectedValue="duo_placements"/>,
+
         'stats': <GamerGradeChart height={260}
                                   width={chartWidth}
                                   key={'stat_chart'}
                                   data={chartState.viewData}
                                   options={['kdr', 'damage', 'kills', 'score']}
                                   selectedValue="kdr"/>,
+
         'time': <GamerTimeChart height={260}
                                 width={chartWidth}
                                 key={'placement_chart'}
