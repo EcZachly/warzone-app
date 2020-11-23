@@ -23,7 +23,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads'];
 
-    console.log(viewData);
     const [chartState, setChartState] = useState({
         viewData: viewData,
         baseUrl: baseUrl,
@@ -51,7 +50,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         } else {
             const fetchedData = await fetchViewData(tabId);
             newState.viewData = fetchedData.viewData;
-            console.log(fetchedData);
             setChartState(newState);
         }
     };

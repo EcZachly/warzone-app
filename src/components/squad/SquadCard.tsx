@@ -30,13 +30,13 @@ export default function SquadCard({squad, classDescriptions}) {
         'Total Wins': squad.total_wins,
         'Number of Matches': squad.num_matches,
         'Average Placement': squad.avg_placement.toFixed(2) ,
-        'Kills per Game': squad.kills_per_game.toFixed(2) ,
+        'Kills per Game': squad.kills_per_game && squad.kills_per_game.toFixed(2) ,
         'Score per Game': squad.score_per_game.toFixed(0) ,
-        'Teams Wiped per Game': squad.teams_wiped.toFixed(2) ,
+        'Teams Wiped per Game': squad.teams_wiped && squad.teams_wiped.toFixed(2) ,
         'Total Teams Wiped': squad.total_teams_wiped,
-        'Legendary Crates Looted per Game': squad.caches_opened.toFixed(2) ,
+        'Legendary Crates Looted per Game': squad.caches_opened && squad.caches_opened.toFixed(2) ,
         'Total Legendary Crates Looted': squad.total_caches_opened,
-        'Headshots per Game': squad.headshots.toFixed(2) ,
+        'Headshots per Game': squad.headshots && squad.headshots.toFixed(2) ,
         'Total Headshots': squad.total_headshots,
     };
 
