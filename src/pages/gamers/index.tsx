@@ -101,7 +101,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
     let username = context.query.username || '';
-    let searchQuery = '?username.ilike=' + encodeURIComponent('%' + username + '%')
+    let searchQuery = !!username ? '?username.ilike=' + encodeURIComponent('%' + username + '%') : ''
     const rawGamerList = await fetch(baseUrl + '/api/gamer' + searchQuery);
     const gamerJson = await rawGamerList.json();
     return {
