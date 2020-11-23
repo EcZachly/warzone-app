@@ -129,7 +129,8 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             'placements': 'gamer_stats_graded',
             'stats': 'gamer_stats_graded',
             'time': 'time_analysis',
-            'squads': 'full_squad_stat_summary'
+            'squads': 'full_squad_stat_summary',
+            'trends': 'trend_analysis'
         };
 
         const sqlView = viewMap[view as string];
@@ -147,13 +148,18 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             cutoff: '10'
         };
 
+        const trendQuery = {
+            lookback: 30
+        };
+
         const queryableViews = [
             new ViewQuery('player_stat_summary', userQuery),
             new ViewQuery('gamer_class_description_values', {}),
             new ViewQuery('gamer_stats_graded', userQuery),
             new ViewQuery('teammate_analysis', userQuery),
             new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery}),
-            new ViewQuery('full_squad_stat_summary', squadQuery)
+            new ViewQuery('full_squad_stat_summary', squadQuery),
+            new ViewQuery('trend_analysis', {...userQuery, ...trendQuery}),
         ];
 
         const viewNamesToQuery = ['player_stat_summary', 'gamer_class_description_values', sqlView as string];
@@ -175,7 +181,8 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
                     'gamer_stats_graded': () => viewData,
                     'time_analysis': () => viewData,
                     'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS),
-                    'full_squad_stat_summary': () => viewData.map(sanitizeSquad)
+                    'full_squad_stat_summary': () => viewData.map(sanitizeSquad),
+                    'trend_analysis': ()=> viewData
                 };
 
                 viewData = sanitizationLookup[sqlView]();

@@ -30,6 +30,9 @@ export {GamerLink};
 import GamerPlatformImage from './gamer/GamerPlatformImage';
 export {GamerPlatformImage};
 
+import GamerTrendChart from './gamer/GamerTrendChart';
+export {GamerTrendChart}
+
 import GamerTimeChart from './gamer/GamerTimeChart';
 export {GamerTimeChart};
 
@@ -102,6 +105,7 @@ export default {
     GamerTimeChart: GamerTimeChart,
     GamerPlatformImage: GamerPlatformImage,
     GamerLink: GamerLink,
+    GamerTrendChart: GamerTrendChart,
     SquadCard: SquadCard,
     SquadList: SquadList,
     Navbar: Navbar,

@@ -10,10 +10,11 @@ import {
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
-    Navbar, Footer, SquadList
+    Navbar, Footer, SquadList, GamerTrendChart
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 import {ClassBadgeList} from "../../../components/classes";
+import TrendChart from "../../../components/charting/TrendChart";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -21,7 +22,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads'];
+    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
 
     const [chartState, setChartState] = useState({
         viewData: viewData,
@@ -90,7 +91,11 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 viewData={chartState.viewData}
                                 options={['hour_of_day', 'day_of_week']}
                                 selectedValue="hour_of_day"/>,
-        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]} />
+        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]} />,
+        'trends': <GamerTrendChart
+                            height={260}
+                            width={chartWidth}
+                            data={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -158,7 +163,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view} = context.query;
-    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'squads'];
+    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
