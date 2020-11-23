@@ -75,6 +75,7 @@ export {Page};
 //S
 import SquadCard from "./squad/SquadCard";
 export {SquadCard};
+
 import SquadList from "./squad/SquadList";
 export {SquadList};
 //T

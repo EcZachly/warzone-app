@@ -10,7 +10,10 @@ import {
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
-    Navbar, Footer, SquadList, GamerTrendChart
+    Navbar,
+    Footer,
+    SquadList, 
+    GamerTrendChart
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 import {ClassBadgeList} from "../../../components/classes";
@@ -122,14 +125,9 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
-<<<<<<< HEAD
 
-                            <LabelValue label={'Classes'} value={<GamerClassBadgeList gamer={gamer}
-                                                                                      classDescriptions={classDescriptions}/>}/>
+                            <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>}/>
 
-=======
-                            <ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>
->>>>>>> d972876d220aac067ab34a2ce608679d208e13d2
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>
                             <Box>
