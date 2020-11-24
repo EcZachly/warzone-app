@@ -11,16 +11,17 @@ const CONSTANTS = {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Container = (props: ContainerProps) => {
+export default React.forwardRef((props: ContainerProps, ref) => {
     const classNames = getClassNames(props);
 
     return (
-        <div  {...props} id={props.id} className={classNames} style={props.style} ref={props.innerRef}>
+        // @ts-ignore
+        <div {...props} id={props.id} className={classNames} style={props.style} ref={ref}>
             {props.children}
         </div>
     );
-};
-export default Container;
+});
+
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -33,7 +34,6 @@ type ContainerProps = {
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     id?: string,
-    innerRef?: any,
     size?: typeof TS_VALID_SIZES | string,
     centerContent?: boolean,
     inline?: boolean,

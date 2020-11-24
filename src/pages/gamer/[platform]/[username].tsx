@@ -1,5 +1,5 @@
 import {GetServerSideProps} from 'next';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import _ from 'lodash';
 
 import {Container, Main, Box, Header, Text, Button, Small, Image} from './../../../components/SimpleComponents';
@@ -10,15 +10,23 @@ import {
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
-    Navbar, Footer, SquadList, GamerTrendChart
+    Navbar,
+    Footer,
+    SquadList, 
+    GamerTrendChart
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 import {ClassBadgeList} from "../../../components/classes";
 import TrendChart from "../../../components/charting/TrendChart";
 
+import {GamerPlacementChart} from './../../../components/gamer/index';
+import HtmlService from '../../../services/HtmlService';
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 export default function GamerDetail({gamerData, view, baseUrl}) {
+
+    let containerRef = React.useRef<HTMLDivElement>();
 
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
@@ -31,52 +39,27 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         activeTab: view
     });
 
+    const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
-    const fetchViewData = async (tabId) => {
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
-        const response = await fetch(dataUrl);
-        return await response.json();
-    };
+    useEffect(() => {
+        componentDidUpdate();
+    });
 
-    const setTabAndFetchData = async (tabId) => {
-        const newState = Object.assign({}, chartState);
-        newState.activeTab = tabId;
-        if (tabId === chartState.activeTab) {
-            //Do nothing since we aren't changing tabs
-        } else if (tabId === 'placements' && chartState.activeTab === 'stats') {
-            setChartState(newState);
-        } else if (tabId === 'stats' && chartState.activeTab === 'placements') {
-            setChartState(newState);
-        } else {
-            const fetchedData = await fetchViewData(tabId);
-            newState.viewData = fetchedData.viewData;
-            setChartState(newState);
-        }
-    };
 
-    let windowWidth = 0;
-
-    try {
-        windowWidth = window && window.innerWidth ? window.innerWidth : 0;
-    } catch (e) {
-
+    function componentDidUpdate() {
+        console.log('componentDidUpdate');
+        setComponentDidUpdate(true);
     }
 
-    const maxWidth = 550;
-    const chartSidePadding = 25 * 2;
-    const chartWidth = ((windowWidth > 0 && windowWidth > maxWidth) ? maxWidth : windowWidth) - (chartSidePadding);
 
+    const chartWidth = getChartWidth();
 
     const componentMap = {
         'teammates': <TeammateTable teammates={chartState.viewData}/>,
 
-        'placements': <GamerGradeChart height={260}
-                                       width={chartWidth}
-                                       key={'placement_chart'}
-                                       data={chartState.viewData}
-                                       options={['solo_placements', 'duo_placements', 'trio_placements', 'quad_placements']}
-                                       selectedValue="duo_placements"/>,
+        'placements': <GamerPlacementChart height={260}
+                                           width={chartWidth}
+                                           data={chartState.viewData[0]}/>,
 
         'stats': <GamerGradeChart height={260}
                                   width={chartWidth}
@@ -142,9 +125,11 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
-                            <ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>
+
+                            <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>}/>
+
                         </Sidebar>
-                        <SidebarCompanion>
+                        <SidebarCompanion innerRef={containerRef}>
                             <Box>
                                 {buttonTabs}
                             </Box>
@@ -158,6 +143,58 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                 <Footer/>
             </Page>
         );
+    }
+
+
+
+    function getChartWidth() {
+        let windowWidth = 0;
+        let containerPosition;
+
+        try {
+            windowWidth = window && window.innerWidth ? window.innerWidth : 0;
+        } catch (e) {
+
+        }
+
+        try {
+            containerPosition = HtmlService.getElementPosition(containerRef.current);
+        } catch (e) {
+
+        }
+
+        const maxWidth = containerPosition.width || 600;
+        const chartSidePadding = 15 * 2;
+        return ((windowWidth > 0 && windowWidth > maxWidth) ? maxWidth : windowWidth) - (chartSidePadding);
+    }
+
+
+
+    async function fetchViewData(tabId) {
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
+        const response = await fetch(dataUrl);
+        return await response.json();
+    }
+
+
+
+    async function setTabAndFetchData(tabId) {
+        const newState = Object.assign({}, chartState);
+
+        newState.activeTab = tabId;
+
+        if (tabId === chartState.activeTab) {
+            //Do nothing since we aren't changing tabs
+        } else if (tabId === 'placements' && chartState.activeTab === 'stats') {
+            setChartState(newState);
+        } else if (tabId === 'stats' && chartState.activeTab === 'placements') {
+            setChartState(newState);
+        } else {
+            const fetchedData = await fetchViewData(tabId);
+            newState.viewData = fetchedData.viewData;
+            setChartState(newState);
+        }
     }
 }
 

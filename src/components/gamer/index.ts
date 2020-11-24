@@ -5,6 +5,11 @@ export {GamerCard};
 import GamerGradeChart from './GamerGradeChart';
 export {GamerGradeChart};
 
+
+import GamerPlacementChart from './GamerPlacementChart';
+export {GamerPlacementChart};
+
+
 import GamerLink from './GamerLink';
 export {GamerLink};
 
@@ -33,6 +38,7 @@ export {GamerAdd};
 export default {
     GamerCard: GamerCard,
     GamerGradeChart: GamerGradeChart,
+    GamerPlacementChart: GamerPlacementChart,
     GamerLink: GamerLink,
     GamerPlatformImage: GamerPlatformImage,
     GamerService: GamerService,
