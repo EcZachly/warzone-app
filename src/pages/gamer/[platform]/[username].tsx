@@ -12,12 +12,12 @@ import {
     GamerPlatformImage,
     Navbar,
     Footer,
-    SquadList, 
+    SquadList,
     GamerTrendChart
 } from './../../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
-import {ClassBadgeList} from "../../../components/classes";
-import TrendChart from "../../../components/charting/TrendChart";
+import {ClassBadgeList} from '../../../components/classes';
+import TrendChart from '../../../components/charting/TrendChart';
 
 import {GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
@@ -74,11 +74,12 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 viewData={chartState.viewData}
                                 options={['hour_of_day', 'day_of_week']}
                                 selectedValue="hour_of_day"/>,
-        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]} />,
-        'trends': <GamerTrendChart
-                            height={260}
-                            width={chartWidth}
-                            data={chartState.viewData}/>
+
+        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]}/>,
+
+        'trends': <GamerTrendChart height={260}
+                                   width={chartWidth}
+                                   data={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -86,7 +87,15 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     const buttonTabs = tabNames.map((tabName) => {
         const isActive = (chartState.activeTab === tabName);
         return (
-            <Button key={tabName} type={isActive ? 'purple' : 'light'}
+            <Button key={tabName}
+                    type={isActive ? 'dark' : 'link'}
+                    style={{
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                        marginBottom: 0
+                    }}
                     onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
                 {_.capitalize(tabName)}
             </Button>
@@ -117,7 +126,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 </Small>
                             </Header>
 
-
                             <LabelValue label={'aliases'} value={gamer.aliases.join(', ')}/>
 
                             <LabelValue label={'KDR'} value={gamer.kdr}/>
@@ -126,11 +134,12 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
                             <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
 
-                            <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer} classDescriptions={classDescriptions}/>}/>
+                            <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer}
+                                                                                 classDescriptions={classDescriptions}/>}/>
 
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>
-                            <Box>
+                            <Box style={{borderBottom: '1px solid #666', marginBottom: '10px'}}>
                                 {buttonTabs}
                             </Box>
                             <Box>

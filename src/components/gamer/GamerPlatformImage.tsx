@@ -28,7 +28,7 @@ export default function GamerPlatformImage({gamer, size, color}: GamerPlatformIm
     const url = '/assets/images/platform/' + [platformImageName, selectedColor, selectedSize].join('-') + '.png';
 
     return (
-        <Image style={{width: '20px', height: '20px', marginLeft: '10px'}}
+        <Image style={{width: '18px', height: '18px', marginLeft: '10px'}}
                title={platformPretty}
                alt={'platform ' + platformPretty}
                src={url}/>

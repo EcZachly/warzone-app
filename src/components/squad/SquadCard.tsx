@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
+
 import {
     Button,
+    Box,
     Card,
+    Show,
     CardBody,
     CardHeader,
     Table,
@@ -10,76 +13,128 @@ import {
     TableHeader,
     TableRow
 } from '../SimpleComponents';
+import {LabelValue} from './../SmartComponents';
 import {GamerLink} from '../AppComponents';
-import {ClassBadgeList} from "../classes";
+
+import {ClassBadgeList} from '../classes';
+
+//===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
 export default function SquadCard({squad, classDescriptions}) {
     //Only use classes that correspond with the right team type, otherwise we'd be comparing duos to quads, etc
-    let filteredDescriptions = classDescriptions.filter((description)=> description.team_type == squad.team_type)[0];
-
-    let [statCnt, setStatCnt] = useState(5)
-    let classBadgeList = <ClassBadgeList subject={squad as object} classDescriptions={filteredDescriptions} />
-    const gamerLinks = squad.gamers.map((gamer)=>{
-        const [platform, username] = gamer.split('-');
-        return <GamerLink gamer={{platform: platform, username: username}}/>;
-    });
+    let filteredDescriptions = classDescriptions.filter((description) => description.team_type == squad.team_type)[0];
 
     let stats = {
-        'KDR': squad.kdr,
-        'Win Percentage': squad.win_percentage.toFixed(2) + '%',
-        'Gulag Win Rate': squad.gulag_win_rate,
-        'Total Wins': squad.total_wins,
-        'Number of Matches': squad.num_matches,
-        'Average Placement': squad.avg_placement.toFixed(2) ,
-        'Kills per Game': squad.kills_per_game && squad.kills_per_game.toFixed(2) ,
-        'Score per Game': squad.score_per_game.toFixed(0) ,
-        'Teams Wiped per Game': squad.teams_wiped && squad.teams_wiped.toFixed(2) ,
-        'Total Teams Wiped': squad.total_teams_wiped,
-        'Legendary Crates Looted per Game': squad.caches_opened && squad.caches_opened.toFixed(2) ,
-        'Total Legendary Crates Looted': squad.total_caches_opened,
-        'Headshots per Game': squad.headshots && squad.headshots.toFixed(2) ,
-        'Total Headshots': squad.total_headshots,
+        'Total Matches': {
+            value: squad.num_matches,
+            placement: 'left'
+        },
+        'Win Percentage': {
+            value: squad.win_percentage.toFixed(2) + '% (' + squad.total_wins + ' game' + (squad.total_wins === 1 ? '' : 's') + ')',
+            placement: 'left'
+        },
+        'Average Placement': {
+            value: squad.avg_placement.toFixed(1),
+            placement: 'left'
+        },
+        'Average KDR': {
+            value: squad.kdr,
+            placement: 'left'
+        },
+        'Gulag Win Rate': {
+            value: squad.gulag_win_rate,
+            placement: 'left'
+        },
+
+        'Average Kills per Game': {
+            value: squad.kills_per_game && squad.kills_per_game.toFixed(2),
+            placement: 'right'
+        },
+        'Average Score per Game': {
+            value: squad.score_per_game.toFixed(0),
+            placement: 'right'
+        },
+        'Average Teams Wiped per Game': {
+            value: squad.teams_wiped && squad.teams_wiped.toFixed(2),
+            placement: 'right'
+        },
+        'Total Teams Wiped': {
+            value: squad.total_teams_wiped,
+            placement: 'right'
+        },
+        'Average Legendary Crates Looted per Game': {
+            value: squad.caches_opened && squad.caches_opened.toFixed(2),
+            placement: 'right'
+        },
+        'Total Legendary Crates Looted': {
+            value: squad.total_caches_opened,
+            placement: 'right'
+        },
+        'Average Headshots per Game': {
+            value: squad.headshots && squad.headshots.toFixed(2),
+            placement: 'right'
+        },
+        'Total Headshots': {
+            value: squad.total_headshots,
+            placement: 'right'
+        },
     };
 
 
-    let rows = Object.keys(stats).filter((val, index)=> index < statCnt).map((key)=>{
-        return (
-            <TableRow>
-                <TableData>{key}</TableData>
-                <TableData>{stats[key]}</TableData>
-            </TableRow>
-        );
-    });
 
-    let table = <Table style={{width: '50%', float: 'right'}}>
-        <TableHeader>Stat</TableHeader>
-        <TableHeader>Value</TableHeader>
-        <TableBody>
-            {rows}
-        </TableBody>
-    </Table>
-
-
-
-    let showMore =  statCnt < Object.keys(stats).length ? <Button onClick={() => setStatCnt(statCnt + 10)}>{"Show more stats"}</Button> : <div/>;
 
     return (
-        <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
-
+        <Card style={{marginBottom: '15px'}}>
             <CardHeader>
-                <div style={{width: '50%', float: 'left'}}>
-                    {gamerLinks}
-                    {classBadgeList}
-                </div>
-                <div>
-                    {showMore}
-                    {table}
-                </div>
+                <Box>
+                    {
+                        squad.gamers.map((gamer) => {
+                            const [platform, username] = gamer.split('-');
+
+                            return (
+                                <GamerLink inline gamer={{platform: platform, username: username}}/>
+                            );
+                        })
+                    }
+
+                    <ClassBadgeList subject={squad as object}
+                                    classDescriptions={filteredDescriptions}/>
+                </Box>
             </CardHeader>
 
             <CardBody>
+                <Box style={{display: 'flex', flexFlow: 'wrap'}}>
 
+                    <Box style={{width: '35%'}}>
+                        {getSquadStatsByColumn('left').map(({value, label}) => {
+                            return (
+                                <LabelValue label={label} value={value}/>
+                            )
+                        })}
+                    </Box>
+
+                    <Box style={{height: 'auto', width: '60%', display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', justifyContent: 'space-between'}}>
+                        {getSquadStatsByColumn('right').map(({value, label}) => {
+                            return (
+                                <LabelValue size={'sm'} style={{width: '45%'}} label={label} value={value}/>
+                            )
+                        })}
+                    </Box>
+                </Box>
             </CardBody>
 
         </Card>
     );
+
+
+    function getSquadStatsByColumn(column: 'left' | 'right') {
+        let labels = Object.keys(stats);
+
+        return labels.map((label) => {
+            let statConfig = stats[label];
+            statConfig.label = label;
+            return statConfig;
+        }).filter(({placement}) => placement === column);
+    }
 }
