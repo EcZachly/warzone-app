@@ -116,7 +116,7 @@ async function updateGamerUponRequest(gamerData) {
 
 
 export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
-    const {view, timeZone} = req.query;
+    const {view, timeZone, lookback} = req.query;
     const {username, platform} = req.params;
 
     if (!platform) {
@@ -149,7 +149,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         };
 
         const trendQuery = {
-            lookback: 30
+            lookback: parseFloat(lookback as string) || 30
         };
 
         const queryableViews = [

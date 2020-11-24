@@ -11,7 +11,7 @@ import ApiWrapper from '../api_wrapper';
 
 //How many gamers we will process at one time
 //Setting to 1 will only do one gamer concurrently
-const THREAD_CONCURRENCY_LIMIT = 2;
+const THREAD_CONCURRENCY_LIMIT = 1;
 
 /***
  Hits the Call of Duty API for the entire match history. Is limited to the most recent 1000 games.
@@ -31,6 +31,7 @@ async function getMatchHistory(gamer, api) {
         return history;
     } catch (e) {
         console.log('err', e);
+        return {errorMessage: e}
     }
 }
 
@@ -86,20 +87,27 @@ async function getMatchDetails(queryTimeframes, gamer, API){
 async function executePipeline(gamer) {
     const API = await ApiWrapper.getInstance();
     const history = await getMatchHistory(gamer, API);
-    const queriedTimestamps = await getMinMaxMatchTimestamps(gamer);
-    const queryTimeframes = getQueryTimeframes(history, queriedTimestamps, gamer);
+    if(history.errorMessage){
+        console.log(history)
+    }
+    else{
+        const queriedTimestamps = await getMinMaxMatchTimestamps(gamer);
+        const queryTimeframes = getQueryTimeframes(history, queriedTimestamps, gamer);
 
-    if (queryTimeframes.length > 0) {
-        const matches = await getMatchDetails(queryTimeframes, gamer, API);
-        console.log('Found ' + matches.length + ' matches for player: ' + gamer.username + ' on platform: ' + gamer.platform);
-    } else {
-        console.log('No new games found for gamer: ' + gamer.username  + ' on platform: ' + gamer.platform + ', doing nothing');
+        if (queryTimeframes.length > 0) {
+            const matches = await getMatchDetails(queryTimeframes, gamer, API);
+            console.log('Found ' + matches.length + ' matches for player: ' + gamer.username + ' on platform: ' + gamer.platform);
+        } else {
+            console.log('No new games found for gamer: ' + gamer.username  + ' on platform: ' + gamer.platform + ', doing nothing');
+        }
+
+        if (gamer.needs_update) {
+            await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_update: false});
+        }
+        return gamer;
     }
 
-    if (gamer.needs_update) {
-        await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_update: false});
-    }
-    return gamer;
+
 }
 
 /**

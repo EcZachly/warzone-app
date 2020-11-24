@@ -93,6 +93,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 selectedValue="hour_of_day"/>,
         'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]} />,
         'trends': <GamerTrendChart
+                            gamer={gamer}
+                            baseUrl={baseUrl}
                             height={260}
                             width={chartWidth}
                             data={chartState.viewData}/>
