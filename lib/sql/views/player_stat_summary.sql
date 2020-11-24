@@ -41,7 +41,10 @@ WITH agg AS (
 SELECT a.*,
        COALESCE(gsh.num_hits, 0)         AS num_site_hits,
        COALESCE(gsh.num_distinct_users, 0) AS num_distinct_viewing_users,
-       ghr.heat_rating
+       ghr.heat_rating,
+       ghr.last_10_rolling_average_kdr,
+       ghr.last_30_rolling_average_kdr,
+       ghr.last_100_rolling_average_kdr
 FROM agg a
         LEFT JOIN warzone.gamer_site_hits gsh
             ON a.username = gsh.username AND a.platform = gsh.platform

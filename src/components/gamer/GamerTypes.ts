@@ -23,5 +23,9 @@ export type Gamer = {
     looting?:number,
     team_wipe?:number,
     distance?:number,
-    aggressiveness?:number
+    aggressiveness?:number,
+    heat_rating?: number,
+    last_10_rolling_average_kdr?: number,
+    last_30_rolling_average_kdr?: number,
+    last_100_rolling_average_kdr?: number
 }
