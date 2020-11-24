@@ -2,6 +2,8 @@ import React from 'react';
 import {Badge} from '../SimpleComponents';
 import {Tooltip} from '../SmartComponents';
 import {ClassDetail} from "./index";
+import UtilityService from '../../services/UtilityService';
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 type GamerClassBadgeProps = {
     category: object,
@@ -41,7 +43,7 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
             );
         }}>
             <Badge innerRef={(ref) => badgeRef = ref} size={'sm'} title={description} style={style}>
-                {categoryName || ''}
+                {UtilityService.camelToProperCase(categoryName)}
             </Badge>
         </Tooltip>
     );
