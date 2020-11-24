@@ -5,6 +5,9 @@ export type Gamer = {
     kdr?: number
     max_kills?: number
     gulag_win_rate?: number,
+    win_percentage?:number,
+    total_kills?:number,
+    avg_kills?:number,
     platform: string,
     username: string,
     gamer_class_object?: object,

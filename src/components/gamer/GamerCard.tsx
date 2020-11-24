@@ -1,9 +1,26 @@
 import React from 'react';
 
-import {Card, CardBody, Small, CardHeader, Table, TableBody, TableData, TableHeader, Badge} from '../SimpleComponents';
+import {
+    Card,
+    CardBody,
+    Small,
+    CardHeader,
+    Show,
+    Box,
+    TableHead,
+    Table,
+    TableBody,
+    TableData,
+    TableHeader,
+    Badge
+} from '../SimpleComponents';
+
+import {LabelValue} from './../SmartComponents';
+
 import {GamerLink} from './../gamer/index';
 import {ClassBadgeList} from '../classes/index';
 import {Gamer} from './GamerTypes';
+import TypeService from '../../services/TypeService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -16,30 +33,41 @@ export type GamerCardProps = {
 
 
 export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
-    let classBadgeList = <ClassBadgeList subject={gamer as object} classDescriptions={classDescriptions} />
+    console.log(gamer);
+    let aliases = gamer.aliases.filter((alias) => alias !== gamer.username);
+
+    let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
+    let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
+
     return (
-        <Card style={{'marginLeft': 'auto', 'marginRight': 'auto', 'marginBottom': '10px'}}>
+        <Card style={{marginBottom: '10px'}}>
 
             <CardHeader>
                 <GamerLink gamer={gamer}/>
 
-                <Small className="aliases">({gamer.aliases.join(',')})</Small>
+                <Show show={aliases.length > 0}>
+                    <Small className="aliases">({aliases.join(',')})</Small>
+                </Show>
 
-                {classBadgeList}
+                <ClassBadgeList subject={gamer as object}
+                                classDescriptions={classDescriptions}/>
             </CardHeader>
-            <CardBody>
-                <Table>
-                    <TableHeader>KDR</TableHeader>
-                    <TableHeader>Max Kills</TableHeader>
-                    <TableHeader>Gulag Win Rate</TableHeader>
-                    <TableBody>
-                        <TableData>{gamer['kdr']}</TableData>
-                        <TableData>{gamer['max_kills']}</TableData>
-                        <TableData>{gamer['gulag_win_rate']}</TableData>
-                    </TableBody>
-                </Table>
-            </CardBody>
 
+            <CardBody>
+
+                <Box style={{display: 'flex'}}>
+                    <LabelValue style={{marginRight: '50px'}} label={'KDR'} value={gamer.kdr}/>
+
+                    <LabelValue style={{marginRight: '50px'}} label={'Max Kills'} value={gamer.max_kills}/>
+
+                    <LabelValue style={{marginRight: '50px'}} label={'Overall Win Rate'} value={overallWinRate}/>
+
+                    <LabelValue style={{marginRight: '50px'}} label={'Total Games'} value={gamesPlayed}/>
+
+                    <LabelValue style={{marginRight: '50px'}} label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
+                </Box>
+
+            </CardBody>
         </Card>
     );
 }
