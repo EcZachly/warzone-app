@@ -67,6 +67,8 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
         );
     }
 
+    const showHeatScore = gamer.heat_rating > 0;
+    const showAliases = aliases.length > 0;
 
     return (
         <Card style={{marginBottom: '10px'}}>
@@ -74,15 +76,14 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
             <CardHeader>
                 <GamerLink gamer={gamer}/>
 
-                <Show show={aliases.length > 0}>
+                <Show show={showAliases}>
                     <Small className="aliases">({aliases.join(',')})</Small>
                 </Show>
 
-                <Show show={gamer.heat_rating > 0}>
+                <Show show={showHeatScore}>
                     {heatFlames}
+                    <LineBreak clear/>
                 </Show>
-
-                <LineBreak clear/>
 
                 <ClassBadgeList subject={gamer as object}
                                 classDescriptions={classDescriptions}/>

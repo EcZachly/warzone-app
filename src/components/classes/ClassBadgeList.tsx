@@ -22,9 +22,14 @@ export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeP
                 );
             }
         );
-        return <Box style={{display: 'flex', width: '100%', flexFlow: 'row wrap'}}>{badges}</Box>;
+
+        return (
+            <Box style={{display: 'flex', width: '100%', flexFlow: 'row wrap'}}>
+                {badges}
+            </Box>
+        );
     }
     else{
-        return <Box></Box>;
+        return (<></>);
     }
 }
