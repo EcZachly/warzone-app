@@ -61,9 +61,7 @@ export async function insertIntoDatabase(data, table) {
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
 	} catch (failure) {
-		console.log(failure);
 		const isDuplicateRecordError = failure.code === '23505';
-
 		if (!isDuplicateRecordError) {
 			console.log(failure);
 		}

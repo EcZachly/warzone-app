@@ -3,9 +3,11 @@ import TrendChart from "../charting/TrendChart";
 import {Box, InputRadio} from "../SimpleComponents";
 import _ from 'lodash';
 
-export default function GamerTrendChart({data, height, width}) {
+export default function GamerTrendChart({gamer, baseUrl, data, height, width}) {
     let [chosenChart, setChosenChart] = useState("kills")
     let rollingViews = ['last_10_rolling_average', 'last_30_rolling_average', 'last_100_rolling_average']
+
+
 
     let trends = {
         'kills': rollingViews.map((view) => view + '_' + 'kills'),
@@ -26,9 +28,12 @@ export default function GamerTrendChart({data, height, width}) {
     return <div>
 
 
-        <TrendChart data={viewData} height={height} width={width} keysToChart={capitalKeys}/>
-        <InputRadio name="demo" value={chosenChart} options={radioOptions}
-                    onChange={(val) => setChosenChart(val)}/>
+        <TrendChart gamer={gamer} baseUrl={baseUrl} data={viewData} height={height} width={width} keysToChart={capitalKeys}/>
+        <div style={{clear: 'both'}}>
+            <InputRadio name="demo" value={chosenChart} options={radioOptions}
+                        onChange={(val) => setChosenChart(val)}/>
+        </div>
+
     </div>
 }
 

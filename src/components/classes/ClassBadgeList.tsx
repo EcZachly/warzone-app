@@ -1,5 +1,12 @@
-import ClassBadge from "./ClassBadge";
 import React from "react";
+
+import ClassBadge from "./ClassBadge";
+
+import {Box} from './../SimpleComponents';
+
+//===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
 export type ClassBadgeProps = {
     subject: object,
     classDescriptions?: object
@@ -15,9 +22,9 @@ export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeP
                 );
             }
         );
-        return <div>{badges}</div>;
+        return <Box style={{display: 'flex', width: '100%', flexFlow: 'row wrap'}}>{badges}</Box>;
     }
     else{
-        return <div></div>;
+        return <Box></Box>;
     }
 }

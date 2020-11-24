@@ -77,9 +77,11 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
         'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]}/>,
 
-        'trends': <GamerTrendChart height={260}
-                                   width={chartWidth}
-                                   data={chartState.viewData}/>
+        'trends': <GamerTrendChart gamer={gamer}
+                            baseUrl={baseUrl}
+                            height={260}
+                            width={chartWidth}
+                            data={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];

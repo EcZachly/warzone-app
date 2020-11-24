@@ -33,8 +33,7 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
     let loadingComponent = <div/>;
 
     if (loading) {
-        //TODO make this a spinner
-        loadingComponent = <Image style={{width: '50px', height: '50px'}} src={'/images/spinner_gif.gif'}/>;
+        loadingComponent = <Image style={{width: '50px', height: '50px'}} src={'/assets/images/spinner.gif'}/>;
     }
 
     const addGamer = async () => {
