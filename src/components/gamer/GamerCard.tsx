@@ -48,7 +48,9 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
         let array = [];
 
         while (cnt < gamer.heat_rating) {
-            array.push(<Image style={{width: '25px', height: '25px'}} src={'/assets/images/flame.jpeg'}
+            array.push(<Image className={'heat-indicator'}
+                              style={{width: '16px', height: '18px', opacity: (52 + (cnt * 12)) + '%'}}
+                              src={'/assets/images/icons/heat-sm.png'}
                               alt={'number of flames means this player is on a hot streak'}/>);
             cnt = cnt + 1;
         }
@@ -58,11 +60,14 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
         let viewDelta = delta.toFixed(1) + '%';
 
         heatFlames = (
-            <Box>
-                <Box style={{float: 'left'}}>{array}</Box>
-                <Box style={{marginLeft: '10px', float: 'left'}}>
-                    KDR <Text bold style={{color: 'green'}}>+{viewDelta}</Text> better than usual
+            <Box className={'heat-container'}>
+                <Box className={'heat-scores'}>
+                    {array}
                 </Box>
+
+                <Small className={'details'}>
+                    KDR <Text className={'percentage'}>+{viewDelta}</Text> better than usual
+                </Small>
             </Box>
         );
     }
@@ -71,18 +76,17 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
     const showAliases = aliases.length > 0;
 
     return (
-        <Card style={{marginBottom: '10px'}}>
+        <Card className={'gamer-card'} style={{marginBottom: '10px'}}>
 
             <CardHeader>
                 <GamerLink gamer={gamer}/>
 
                 <Show show={showAliases}>
-                    <Small className="aliases">({aliases.join(',')})</Small>
+                    <Small title={'aliases'} className="aliases">{aliases.join(',')}</Small>
                 </Show>
 
                 <Show show={showHeatScore}>
                     {heatFlames}
-                    <LineBreak clear/>
                 </Show>
 
                 <ClassBadgeList subject={gamer as object}
@@ -92,16 +96,16 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
 
             <CardBody>
 
-                <Box style={{display: 'flex'}}>
-                    <LabelValue style={{marginRight: '50px'}} label={'KDR'} value={gamer.kdr}/>
+                <Box className={'details'}>
+                    <LabelValue label={'KDR'} value={gamer.kdr}/>
 
-                    <LabelValue style={{marginRight: '50px'}} label={'Max Kills'} value={gamer.max_kills}/>
+                    <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
-                    <LabelValue style={{marginRight: '50px'}} label={'Overall Win Rate'} value={overallWinRate}/>
+                    <LabelValue label={'Overall Win Rate'} value={overallWinRate}/>
 
-                    <LabelValue style={{marginRight: '50px'}} label={'Total Games'} value={gamesPlayed}/>
+                    <LabelValue label={'Total Games'} value={gamesPlayed}/>
 
-                    <LabelValue style={{marginRight: '50px'}} label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
+                    <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
                 </Box>
 
             </CardBody>

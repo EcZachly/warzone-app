@@ -85,7 +85,7 @@ export default function SquadCard({squad, classDescriptions}) {
 
 
     return (
-        <Card style={{marginBottom: '15px'}}>
+        <Card className={'squad-card'} style={{marginBottom: '15px'}}>
             <CardHeader>
                 <Box>
                     {
@@ -106,7 +106,7 @@ export default function SquadCard({squad, classDescriptions}) {
             <CardBody>
                 <Box style={{display: 'flex', flexFlow: 'wrap'}}>
 
-                    <Box style={{width: '35%'}}>
+                    <Box className={'details main-details'}>
                         {getSquadStatsByColumn('left').map(({value, label}) => {
                             return (
                                 <LabelValue label={label} value={value}/>
@@ -114,7 +114,7 @@ export default function SquadCard({squad, classDescriptions}) {
                         })}
                     </Box>
 
-                    <Box style={{height: 'auto', width: '60%', display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', justifyContent: 'space-between'}}>
+                    <Box className={'details support-details'} style={{height: 'auto', display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', justifyContent: 'space-between'}}>
                         {getSquadStatsByColumn('right').map(({value, label}) => {
                             return (
                                 <LabelValue size={'sm'} style={{width: '45%'}} label={label} value={value}/>

@@ -8,7 +8,7 @@ const CONFIG = {
     PRETTY_PLATFORM_MAP: {
         'xbl': 'Xbox Live',
         'psn': 'Playstation Network',
-        'battle': 'Battle.net',
+        'battle': 'Battle.net'
     }
 };
 
@@ -28,7 +28,8 @@ export default function GamerPlatformImage({gamer, size, color}: GamerPlatformIm
     const url = '/assets/images/platform/' + [platformImageName, selectedColor, selectedSize].join('-') + '.png';
 
     return (
-        <Image style={{width: '18px', height: '18px', marginLeft: '10px'}}
+        <Image className={'gamer-platform ' + platformCode}
+               style={{width: '18px', height: '18px', marginLeft: '10px'}}
                title={platformPretty}
                alt={'platform ' + platformPretty}
                src={url}/>

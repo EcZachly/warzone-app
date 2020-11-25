@@ -13,11 +13,11 @@ export default function GamerLink(props: { gamer: Gamer, inline?: boolean }) {
     const {gamer, inline} = props;
 
     return (
-        <Box style={{
+        <Box className={'gamer-link-container'} style={{
             display: inline === true ? 'inline' : 'block',
             marginRight: inline === true ? '10px' : 'inherit'
         }}>
-            <a href={'/gamer/' + encodeURIComponent(gamer.platform) + '/' + encodeURIComponent(gamer.username)}>
+            <a className={'gamer-link'} href={'/gamer/' + encodeURIComponent(gamer.platform) + '/' + encodeURIComponent(gamer.username)}>
                 {gamer.username}
             </a>
 

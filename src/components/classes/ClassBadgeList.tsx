@@ -24,7 +24,7 @@ export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeP
         );
 
         return (
-            <Box style={{display: 'flex', width: '100%', flexFlow: 'row wrap'}}>
+            <Box className={'gamer-class-badge-list-container'} style={{display: 'flex', width: '100%', flexFlow: 'row wrap'}}>
                 {badges}
             </Box>
         );

@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 const Small = (props) => {
     const classNames = getClassNames(props);
-    
+
     return (
-        <small {...props} className={classNames} style={props.style} ref={props.innerRef}>
+        <small title={props.title} {...props} className={classNames} style={props.style} ref={props.innerRef}>
             {props.children}
         </small>
     );
@@ -22,7 +22,8 @@ export default Small;
 Small.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
-    children: PropTypes.node
+    children: PropTypes.node,
+    title: PropTypes.string,
 };
 
 
@@ -33,10 +34,10 @@ function getClassNames(props) {
     const classNames = [
         'small'
     ];
-    
+
     if (props.className) {
         classNames.push(props.className);
     }
-    
+
     return classNames.join(' ');
 }
