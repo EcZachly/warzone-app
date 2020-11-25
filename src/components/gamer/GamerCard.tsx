@@ -82,7 +82,7 @@ export default function GamerCard({gamer, classDescriptions}: GamerCardProps) {
                 <GamerLink gamer={gamer}/>
 
                 <Show show={showAliases}>
-                    <Small title={'aliases'} className="aliases">{aliases.join(',')}</Small>
+                    <Small title={'aliases'} className="aliases">{aliases.join(', ')}</Small>
                 </Show>
 
                 <Show show={showHeatScore}>
