@@ -6,8 +6,8 @@ import TypeService from './TypeService';
 
 type HttpRequestResponse = {
     status: number,
-    data: Record<string, unknown>,
-    response: Record<string, unknown>,
+    data: any,
+    response: Record<any, unknown>,
     ok: boolean,
     request: HttpRequestConfig
 }
@@ -89,10 +89,10 @@ export async function http(options: HttpRequestConfig): Promise<HttpRequestRespo
             if (TypeService.isObject(params, true)) {
                 const stringParams = Object.entries(params).map(([key, val]) => {
                     val = (TypeService.isArray(val) || TypeService.isObject(val)) ? JSON.stringify(val) : val;
-                    return `${key}=${val}`;
+                    return `${key}=${encodeURIComponent(val as any)}`;
                 }).join('&');
 
-                url = url + '?' + encodeURI(stringParams);
+                url = url + '?' + stringParams;
             }
 
 

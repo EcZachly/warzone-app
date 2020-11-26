@@ -7,11 +7,7 @@ import {
     Show,
     CardBody,
     CardHeader,
-    Table,
-    TableBody,
-    TableData,
-    TableHeader,
-    TableRow
+    Small,
 } from '../SimpleComponents';
 import {LabelValue} from './../SmartComponents';
 import {GamerLink} from '../AppComponents';
@@ -43,7 +39,7 @@ export default function SquadCard({squad, classDescriptions}) {
             placement: 'left'
         },
         'Gulag Win Rate': {
-            value: squad.gulag_win_rate,
+            value: squad.pretty_gulag_win_rate,
             placement: 'left'
         },
 
@@ -100,6 +96,10 @@ export default function SquadCard({squad, classDescriptions}) {
 
                     <ClassBadgeList subject={squad as object}
                                     classDescriptions={filteredDescriptions}/>
+
+                    <Small>
+                        <a href={'/squad/' + encodeURIComponent(squad.team_grain as string)}>View squad details</a>
+                    </Small>
                 </Box>
             </CardHeader>
 
