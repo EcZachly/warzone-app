@@ -15,12 +15,14 @@ import {
     SquadList,
     GamerTrendChart
 } from './../../../components/AppComponents';
-import {getBaseUrlWithProtocol} from '../../../services/UtilityService';
+import UtilityService, {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 import {ClassBadgeList} from '../../../components/classes';
 import TrendChart from '../../../components/charting/TrendChart';
 
 import {GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
+import GamerMatchService from '../../../components/gamer_match/GamerMatchService';
+import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -30,7 +32,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
+    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends', 'recent_matches'];
 
     const [chartState, setChartState] = useState({
         viewData: viewData,
@@ -38,6 +40,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         gamer: gamer,
         activeTab: view
     });
+
+    console.log(chartState.viewData);
 
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
@@ -75,13 +79,18 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 options={['hour_of_day', 'day_of_week']}
                                 selectedValue="hour_of_day"/>,
 
-        'squads': <SquadList baseUrl={baseUrl} squads={chartState.viewData} classDescriptions={[]}/>,
+        'squads': <SquadList baseUrl={baseUrl}
+                             squads={chartState.viewData}
+                             classDescriptions={[]}/>,
 
         'trends': <GamerTrendChart gamer={gamer}
-                            baseUrl={baseUrl}
-                            height={260}
-                            width={chartWidth}
-                            data={chartState.viewData}/>
+                                   baseUrl={baseUrl}
+                                   height={260}
+                                   width={chartWidth}
+                                   data={chartState.viewData}/>,
+
+        'recent_matches': <GamerMatchCardList gamer={gamer}
+                                       gamerMatchList={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -99,7 +108,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                         marginBottom: 0
                     }}
                     onClick={() => isActive ? '' : setTabAndFetchData(tabName)}>
-                {_.capitalize(tabName)}
+                {UtilityService.camelToProperCase(tabName)}
             </Button>
         );
     });
@@ -181,11 +190,33 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 
 
-    async function fetchViewData(tabId) {
-        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
-        const response = await fetch(dataUrl);
-        return await response.json();
+    async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
+        return new Promise(async (resolve, reject) => {
+
+            if (tabId === 'recent_matches') {
+                let response;
+
+                try {
+                    response = await GamerMatchService.queryGamerMatches({
+                        query_username: gamer.username,
+                        query_platform: gamer.platform
+                    }, {baseUrl: baseUrl});
+                } catch (error) {
+                    response = [{error}];
+                }
+
+                resolve({
+                    viewData: response
+                });
+            } else {
+                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
+                const response = await fetch(dataUrl);
+                let finalResponse = await response.json();
+
+                resolve(finalResponse);
+            }
+        });
     }
 
 

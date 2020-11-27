@@ -1,12 +1,22 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 
+type ValidResponse = Record<any, unknown> | any[] | string | number;
 
-function handleResponse(req: NextApiRequest, res: NextApiResponse, data: Record<string, unknown>, options: Record<string, unknown> = {}) {
+export function handleResponse(req: NextApiRequest, res: NextApiResponse, data: ValidResponse, options: Record<string, unknown> = {}) {
     res.status(200).json(data);
 }
 
 
-function handleError(req: NextApiRequest, res: NextApiResponse, data: Record<string, unknown>, status = 500, options: Record<string, unknown> = {}) {
+export function handleError(req: NextApiRequest, res: NextApiResponse, data: ValidResponse, status = 500, options: Record<string, unknown> = {}) {
+    if (status === 204) {
+        data = '';
+    }
+
     res.status(status).json(data);
 }
-export {handleResponse, handleError};
+
+
+export default {
+    handleResponse,
+    handleError
+};

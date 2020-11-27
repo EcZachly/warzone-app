@@ -117,7 +117,7 @@ export default function SquadCard({squad, classDescriptions}) {
                     <Box className={'details support-details'} style={{height: 'auto', display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', justifyContent: 'space-between'}}>
                         {getSquadStatsByColumn('right').map(({value, label}) => {
                             return (
-                                <LabelValue size={'sm'} style={{width: '45%'}} label={label} value={value}/>
+                                <LabelValue size={'sm'} label={label} value={value}/>
                             )
                         })}
                     </Box>

@@ -14,6 +14,25 @@ export function sleep(milliseconds: number) {
 }
 
 
+
+export function numberToPercentage(number, decimals) {
+    return round(number * 100, decimals) + '%';
+}
+
+
+
+export function round(number, decimals) {
+    return +(Math.round(number + ('e+' + decimals) as any) + 'e-' + decimals);
+}
+
+
+
+export function numberWithCommas(number: number = 0) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+
+
 export function getBaseUrlWithProtocol(request: IncomingMessage) {
     const host = request.headers.host;
     const protocol = host.includes('localhost') ? 'http://' : 'https://';
@@ -59,8 +78,11 @@ export function validateItem(item: any, type: string, defaultValue: any) {
 }
 
 export default {
-    validateItem: validateItem,
-    sleep: sleep,
-    getBaseUrlWithProtocol: getBaseUrlWithProtocol,
-    camelToProperCase: camelToProperCase
+    validateItem,
+    sleep,
+    getBaseUrlWithProtocol,
+    camelToProperCase,
+    numberToPercentage,
+    round,
+    numberWithCommas
 };

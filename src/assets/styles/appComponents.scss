@@ -217,6 +217,66 @@ main.main {
   .squad-card .support-details {
     width: 60%;
   }
+
+  .squad-card .support-details .label-value-container {
+    width: 45%;
+  }
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//GAMER MATCH CARD
+
+.gamer-match-card {
+
+}
+
+.gamer-match-card .details {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.gamer-match-card .main-details {
+  width: 100%;
+}
+
+.gamer-match-card .main-details .label-value-container {
+  width: 45%;
+}
+
+.gamer-match-card .support-details {
+  width: 100%;
+}
+
+
+@media (min-width: 576px) {
+  .gamer-match-card .main-details {
+    width: 35%;
+  }
+
+  .gamer-match-card .main-details .label-value-container {
+    width: 100%;
+  }
+
+  .gamer-match-card .support-details {
+    width: 60%;
+  }
+
+  .gamer-match-card .support-details .label-value-container {
+    width: 45%;
+  }
 }
 
 @media (min-width: 768px) {

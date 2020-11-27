@@ -5,6 +5,9 @@ const express = require('express');
 const Gamers = require('./directories/Gamers');
 const Squads = require('./directories/Squads');
 
+const MatchRoutes = require('./../lib/components/Matches/MatchRoutes');
+const GamerMatchRoutes = require('./../lib/components/GamerMatches/GamerMatchRoutes');
+
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 export function include(server) {
@@ -13,7 +16,12 @@ export function include(server) {
     router.post('/api/gamer', Gamers.createGamer)
     router.get('/api/gamer', Gamers.findGamers)
     router.get('/api/gamer/:platform/:username', Gamers.getGamerDetails);
+
     router.get('/api/squad', Squads.findSquads)
+
+    router.get('/api/match', MatchRoutes.queryMatches)
+
+    router.get('/api/gamer-match', GamerMatchRoutes.queryGamerMatches)
 
     configure(server);
     server.use('/', router);

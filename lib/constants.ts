@@ -1,4 +1,13 @@
-export const MATCH_DETAILS_SLEEP_TIME = 2*1000;
+export const MATCH_DETAILS_SLEEP_TIME = 2 * 1000;
+
+export const TABLES = {
+    GAMER_MATCHES: 'gamer_matches'
+};
+
+export const VIEWS = {
+    MATCHES_AUGMENTED: 'matches_augmented'
+};
+
 export const GAMER_TABLE = 'gamers';
 export const ETL_JOBS = 'etl_jobs';
 export const MATCH_TABLE = 'matches';

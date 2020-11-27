@@ -28,16 +28,19 @@ export default function SquadList({squads, baseUrl, limit = 10, hasMore = false,
     };
 
     return (
-        <InfiniteScroll
-            pageStart={0}
-            loadMore={(page) => fetchMoreSquads(page)}
-            hasMore={feedHasMore}
-            loader={<div className="loader" key={0}>Loading ...</div>}
-            useWindow={true}>
+        <InfiniteScroll pageStart={0}
+                        loadMore={(page) => fetchMoreSquads(page)}
+                        hasMore={feedHasMore}
+                        loader={<div className="loader" key={0}>Loading ...</div>}
+                        useWindow={true}>
 
-            {squadValues.map((squad, index) => <SquadCard key={squad.team_grain + index}
-                                                          squad={squad}
-                                                          classDescriptions={classDescriptions}/>)}
+            {squadValues.map((squad, index) => {
+                return (
+                    <SquadCard key={squad.team_grain + index}
+                               squad={squad}
+                               classDescriptions={classDescriptions}/>
+                );
+            })}
 
         </InfiniteScroll>
     );
