@@ -37,8 +37,6 @@ export type GamerMatchCardProps = {
 
 
 export default function GamerMatchCard({gamer, gamerMatch}: GamerMatchCardProps) {
-
-
     const kdr = UtilityService.numberToPercentage((gamerMatch.kills / gamerMatch.deaths), 2);
     const damageRatio = UtilityService.numberToPercentage(gamerMatch.damage_done / gamerMatch.damage_taken, 2);
 
@@ -68,7 +66,7 @@ export default function GamerMatchCard({gamer, gamerMatch}: GamerMatchCardProps)
                             <LabelValue size={'sm'} label={'Headshots'} value={gamerMatch.headshots}/>
                             <LabelValue size={'sm'} label={'Caches Opened'} value={gamerMatch.objective.caches_open || 0}/>
                             <LabelValue size={'sm'} label={'Missions Started'} value={gamerMatch.objective.missions_started || 0}/>
-                            <LabelValue size={'sm'} label={'Downed Enemies in First Circle'} value={gamerMatch.objective.down_enemy_circle_2 || 0}/>
+                            <LabelValue size={'sm'} label={'Downed Enemies in First Circle'} value={gamerMatch.objective.down_enemy_circle_1 || 0}/>
                             <LabelValue size={'sm'} label={'Teams Wiped'} value={gamerMatch.objective.teams_wiped || 0}/>
                         </Box>
                     </Box>

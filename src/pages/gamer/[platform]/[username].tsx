@@ -200,7 +200,14 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                     response = await GamerMatchService.queryGamerMatches({
                         query_username: gamer.username,
                         query_platform: gamer.platform
-                    }, {baseUrl: baseUrl});
+                    }, {
+                        baseUrl: baseUrl,
+                        order: [{
+                            field: 'match_id',
+                            direction: 'desc',
+                            nulls: 'last'
+                        }]
+                    });
                 } catch (error) {
                     response = [{error}];
                 }

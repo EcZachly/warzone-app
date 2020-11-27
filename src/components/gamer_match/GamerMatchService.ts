@@ -12,7 +12,7 @@ export function sanitizeGamerMatch(match: Partial<GamerMatch>): Partial<GamerMat
 
 
 
-export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options: { baseUrl: string, limit?: number, offset?: number }): Promise<GamerMatchList> {
+export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options: { baseUrl: string, limit?: number, offset?: number, order: any[] }): Promise<GamerMatchList> {
     return new Promise(async (resolve, reject) => {
         options = UtilityService.validateItem(options, 'object', {});
         options.baseUrl = UtilityService.validateItem(options.baseUrl, 'string', '');
