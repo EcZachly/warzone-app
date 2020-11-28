@@ -4,6 +4,7 @@ import responseHandler from './../../../routes/responseHandler';
 
 import {GamerMatchList, RawGamerMatchList} from './GamerMatchTypes';
 import GamerMatchController from './GamerMatchController';
+import TypeService from '../../../src/services/TypeService';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -12,18 +13,27 @@ import GamerMatchController from './GamerMatchController';
 
 export async function queryGamerMatches(req: NextApiRequest, res: NextApiResponse) {
     const queryParams = req.query;
+    let options = {
+        limit: undefined,
+        offset: undefined,
+        order: undefined
+    };
 
-    const limit = req.query.limit || 10;
+    options.limit = req.query.limit || 10;
     delete queryParams.limit;
 
-    const offset = req.query.offset || 0;
+    options.offset = req.query.offset || 0;
     delete queryParams.offset;
 
-    console.log(queryParams);
+    // @ts-ignore
+    options.order = JSON.parse(req.query.order);
+    delete queryParams.order;
 
-    GamerMatchController.queryGamerMatches(queryParams, {limit, offset}).then((gamerMatches) => {
-        console.log('gamerMatches', gamerMatches)
+    if (TypeService.isArray(options.order) === false) {
+        delete options.order;
+    }
 
+    GamerMatchController.queryGamerMatches(queryParams, options).then((gamerMatches) => {
         if (gamerMatches.length > 0) {
             responseHandler.handleResponse(req, res, gamerMatches);
         } else {

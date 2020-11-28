@@ -1,6 +1,6 @@
 import {DAO} from './../Database';
 
-import {TABLES} from '../../constants';
+import {VIEWS} from '../../constants';
 
 import {GamerMatchList, RawGamerMatchList} from './GamerMatchTypes';
 
@@ -9,7 +9,9 @@ import {GamerMatchList, RawGamerMatchList} from './GamerMatchTypes';
 
 
 export async function queryGamerMatches(query, options): Promise<GamerMatchList> {
-    return DAO.find(TABLES.GAMER_MATCHES, query, options);
+    console.log('query', query);
+    console.log('options', options);
+    return DAO.find(VIEWS.GAMER_MATCHES_AUGMENTED, query, options);
 }
 
 

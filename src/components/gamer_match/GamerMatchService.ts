@@ -20,13 +20,13 @@ export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options
 
         let query = UtilityService.validateItem(queryInput, 'object', {});
 
-        if (options.limit) {
-            query.limit = options.limit;
-        }
+        let qualifiers = ['limit', 'offset', 'order'];
 
-        if (options.offset) {
-            query.offset = options.offset;
-        }
+        qualifiers.forEach((key) => {
+            if (options[key]) {
+                query[key] = options[key];
+            }
+        });
 
         HttpService.http({
             method: 'GET',

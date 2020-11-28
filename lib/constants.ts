@@ -5,7 +5,8 @@ export const TABLES = {
 };
 
 export const VIEWS = {
-    MATCHES_AUGMENTED: 'matches_augmented'
+    MATCHES_AUGMENTED: 'matches_augmented',
+    GAMER_MATCHES_AUGMENTED: '_gamer_matches_augmented',
 };
 
 export const GAMER_TABLE = 'gamers';

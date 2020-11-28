@@ -1,4 +1,4 @@
-import {MatchID} from './../match/MatchTypes';
+import {MatchID, RawMatch} from './../match/MatchTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -40,7 +40,7 @@ export type RawGamerMatch = {
 export type RawGamerMatchList = RawGamerMatch[];
 
 
-export type GamerMatch = RawGamerMatch & {};
+export type GamerMatch = RawGamerMatch & RawMatch & {};
 
 
 export type GamerMatchList = GamerMatch[];

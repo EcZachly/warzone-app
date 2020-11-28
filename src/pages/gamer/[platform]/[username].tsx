@@ -24,6 +24,18 @@ import HtmlService from '../../../services/HtmlService';
 import GamerMatchService from '../../../components/gamer_match/GamerMatchService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
 
+const CONFIG = {
+    VIEW_NAME_CONFIG: {
+        teammates: {},
+        placements: {},
+        stats: {},
+        time: {},
+        squads: {},
+        trends: {},
+        recent_matches: {},
+    }
+}
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 export default function GamerDetail({gamerData, view, baseUrl}) {
@@ -32,7 +44,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends', 'recent_matches'];
+    const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
 
     const [chartState, setChartState] = useState({
         viewData: viewData,
@@ -203,7 +215,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                     }, {
                         baseUrl: baseUrl,
                         order: [{
-                            field: 'match_id',
+                            field: 'start_timestamp',
                             direction: 'desc',
                             nulls: 'last'
                         }]
@@ -249,7 +261,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view} = context.query;
-    const validViewNames = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
+    const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
