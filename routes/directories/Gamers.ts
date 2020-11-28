@@ -12,6 +12,8 @@ import {handleError, handleResponse} from '../responseHandler';
 import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
+import {VIEWS} from './../../lib/constants';
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
@@ -73,12 +75,12 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
  * username.ilike into massiveJS friendly querying
  * @param queryParams -- the query parameters that you are trying to pass
  */
-function manageComplexQueryParameters(queryParams){
-    Object.keys(queryParams).forEach((key)=>{
-        if(key.includes('.')){
+function manageComplexQueryParameters(queryParams) {
+    Object.keys(queryParams).forEach((key) => {
+        if (key.includes('.')) {
             let column = key.split('.')[0];
             let operator = key.split('.')[1];
-            queryParams[column + ' ' + operator] =  queryParams[key];
+            queryParams[column + ' ' + operator] = queryParams[key];
             delete queryParams[key];
         }
     });
@@ -132,7 +134,8 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             'stats': 'gamer_stats_graded',
             'time': 'time_analysis',
             'squads': 'full_squad_stat_summary',
-            'trends': 'trend_analysis'
+            'trends': 'trend_analysis',
+            'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED
         };
 
         const sqlView = viewMap[view as string];
@@ -142,7 +145,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             platform: platform
         };
         const userString = '%' + platform + '-' + username + '%';
-        const squadQuery = {'team_grain LIKE': userString}
+        const squadQuery = {'team_grain LIKE': userString};
 
 
         const timezoneQuery = {
@@ -162,6 +165,17 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery}),
             new ViewQuery('full_squad_stat_summary', squadQuery),
             new ViewQuery('trend_analysis', {...userQuery, ...trendQuery}),
+            new ViewQuery(VIEWS.GAMER_MATCHES_AUGMENTED, {
+                query_username: username,
+                query_platform: platform
+            }, {
+                limit: 10,
+                order: [{
+                    field: 'start_timestamp',
+                    direction: 'desc',
+                    nulls: 'last'
+                }]
+            })
         ];
 
         const viewNamesToQuery = ['player_stat_summary', 'gamer_class_description_values', sqlView as string];
@@ -175,16 +189,19 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
             const gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
 
             Bluebird.all(gamerMatchDataPromises).then(async () => {
-                const gamer =  sanitizeGamer(viewsToQuery[0].data[0]);
+                console.log(viewsToQuery);
+
+                const gamer = sanitizeGamer(viewsToQuery[0].data[0]);
                 const gamerClassDescriptions = viewsToQuery[1].data[0];
-                let viewData = viewsToQuery[2].data as Array<object>;
+                let viewData = viewsToQuery[2].data as Record<any, unknown>[];
 
                 const sanitizationLookup = {
                     'gamer_stats_graded': () => viewData,
                     'time_analysis': () => viewData,
                     'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS),
                     'full_squad_stat_summary': () => viewData.map(sanitizeSquad),
-                    'trend_analysis': ()=> viewData
+                    'trend_analysis': () => viewData,
+                    [VIEWS.GAMER_MATCHES_AUGMENTED]: () => viewData
                 };
 
                 viewData = sanitizationLookup[sqlView]();
@@ -201,7 +218,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
                     gamer: gamer,
                     viewData: viewData,
                     seoMetadata: seoMetadata,
-                    classDescriptions: gamerClassDescriptions,
+                    classDescriptions: gamerClassDescriptions
                 });
             });
         } else {

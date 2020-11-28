@@ -32,9 +32,9 @@ const CONFIG = {
         time: {},
         squads: {},
         trends: {},
-        recent_matches: {},
+        recent_matches: {customGet: true}
     }
-}
+};
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -102,7 +102,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                    data={chartState.viewData}/>,
 
         'recent_matches': <GamerMatchCardList gamer={gamer}
-                                       gamerMatchList={chartState.viewData}/>
+                                              gamerMatchList={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -202,44 +202,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 
 
-    async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
-        return new Promise(async (resolve, reject) => {
-
-            if (tabId === 'recent_matches') {
-                let response;
-
-                try {
-                    response = await GamerMatchService.queryGamerMatches({
-                        query_username: gamer.username,
-                        query_platform: gamer.platform
-                    }, {
-                        baseUrl: baseUrl,
-                        order: [{
-                            field: 'start_timestamp',
-                            direction: 'desc',
-                            nulls: 'last'
-                        }]
-                    });
-                } catch (error) {
-                    response = [{error}];
-                }
-
-                resolve({
-                    viewData: response
-                });
-            } else {
-                const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
-                const response = await fetch(dataUrl);
-                let finalResponse = await response.json();
-
-                resolve(finalResponse);
-            }
-        });
-    }
-
-
-
     async function setTabAndFetchData(tabId) {
         const newState = Object.assign({}, chartState);
 
@@ -257,6 +219,20 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
             setChartState(newState);
         }
     }
+
+
+
+
+    async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
+        return new Promise(async (resolve, reject) => {
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
+            const response = await fetch(dataUrl);
+            let finalResponse = await response.json();
+
+            resolve(finalResponse);
+        });
+    }
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -264,8 +240,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
+
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
     const gamerJson = await rawGamerList.json();
+    
     return {
         props: {
             gamerData: gamerJson,
