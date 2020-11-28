@@ -66,13 +66,7 @@ export default function GamerMatchCard({gamer, gamerMatch}: GamerMatchCardProps)
 
             <CardHeader>
                 <Header size={'sm'}>
-                    {startTimestampPretty}
-
-                    <Show show={!!timeDifferencePretty}>
-                        <Small>
-                            {timeDifferencePretty}
-                        </Small>
-                    </Show>
+                    {startTimestampPretty} <Show show={!!timeDifferencePretty}><Small style={{fontStyle: 'italic', color: '#aaa'}}>({timeDifferencePretty})</Small></Show>
                 </Header>
                 <GamerLink gamer={gamer}/>
             </CardHeader>
