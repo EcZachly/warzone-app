@@ -33,11 +33,12 @@ import UtilityService from '../../services/UtilityService';
 
 export type GamerMatchCardProps = {
     gamer: Gamer,
-    gamerMatch: GamerMatch
+    gamerMatch: GamerMatch,
+    noLink?: boolean
 }
 
 
-export default function GamerMatchCard({gamer, gamerMatch}: GamerMatchCardProps) {
+export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCardProps) {
     const kdr = UtilityService.numberToPercentage((gamerMatch.kills / gamerMatch.deaths), 2);
     const damageRatio = UtilityService.numberToPercentage(gamerMatch.damage_done / gamerMatch.damage_taken, 2);
 
@@ -70,7 +71,7 @@ export default function GamerMatchCard({gamer, gamerMatch}: GamerMatchCardProps)
                     style={{fontStyle: 'italic', color: '#aaa'}}>({timeDifferencePretty})</Small></Show>
                 </Header>
 
-                <GamerLink gamer={gamer}/>
+                <GamerLink gamer={gamer} noLink={noLink}/>
             </CardHeader>
 
             <CardBody>
@@ -84,13 +85,7 @@ export default function GamerMatchCard({gamer, gamerMatch}: GamerMatchCardProps)
                                     value={`${damageRatio} (${UtilityService.numberWithCommas(gamerMatch.damage_done)} / ${UtilityService.numberWithCommas(gamerMatch.damage_taken)})`}/>
                     </Box>
 
-                    <Box className={'details support-details'} style={{
-                        height: 'auto',
-                        display: 'flex',
-                        alignContent: 'flex-start',
-                        flexFlow: 'row wrap',
-                        justifyContent: 'space-between'
-                    }}>
+                    <Box className={'details support-details'}>
                         <LabelValue size={'sm'} label={'Time Played'} value={getTimePlayedPretty()}/>
                         <LabelValue size={'sm'} label={'Assists'} value={gamerMatch.assists}/>
                         <LabelValue size={'sm'} label={'Gulag Deaths'} value={gamerMatch.gulag_deaths}/>

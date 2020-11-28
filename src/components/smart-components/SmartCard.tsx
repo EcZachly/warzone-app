@@ -73,7 +73,7 @@ function getImagePosition(props) {
 function getHeader(props) {
     if (props.header) {
         return (
-            <CardHeader style={props.headerStyle} size={props.size}>{props.header}</CardHeader>
+            <CardHeader style={props.headerStyle}>{props.header}</CardHeader>
         );
     } else {
         return '';

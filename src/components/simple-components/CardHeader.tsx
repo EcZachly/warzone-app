@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header from './Header';
+import Box from './Box';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -8,9 +8,9 @@ const CardHeader = (props:CardHeaderProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <Header {...props} className={classNames} size={props.size || 'sm'}>
+        <Box {...props} className={classNames}>
             {props.children}
-        </Header>
+        </Box>
     );
 };
 export default CardHeader;
@@ -23,8 +23,7 @@ type CardHeaderProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    innerRef?: any,
-    size?: string
+    innerRef?: any
 }
 
 

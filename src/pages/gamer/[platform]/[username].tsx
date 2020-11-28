@@ -102,6 +102,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                    data={chartState.viewData}/>,
 
         'recent_matches': <GamerMatchCardList gamer={gamer}
+                                              noLink={true}
                                               gamerMatchList={chartState.viewData}/>
     };
 
@@ -222,7 +223,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 
 
-
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
         return new Promise(async (resolve, reject) => {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -243,7 +243,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
     const gamerJson = await rawGamerList.json();
-    
+
     return {
         props: {
             gamerData: gamerJson,

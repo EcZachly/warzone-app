@@ -13,16 +13,17 @@ import {GamerMatchList} from './GamerMatchTypes';
 
 export type GamerMatchCardListProps = {
     gamer: Gamer,
-    gamerMatchList: GamerMatchList
+    gamerMatchList: GamerMatchList,
+    noLink?: boolean
 }
 
 
-export default function GamerMatchCardList({gamer, gamerMatchList}: GamerMatchCardListProps) {
+export default function GamerMatchCardList({gamer, noLink, gamerMatchList}: GamerMatchCardListProps) {
     return (
         <Box className={'gamer-match-list-container'}>
             {gamerMatchList.map((gamerMatch) => {
                 return (
-                    <GamerMatchCard gamer={gamer} gamerMatch={gamerMatch}/>
+                    <GamerMatchCard gamer={gamer} gamerMatch={gamerMatch} noLink={noLink}/>
                 );
             })}
         </Box>
