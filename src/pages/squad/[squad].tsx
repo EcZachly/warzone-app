@@ -133,7 +133,7 @@ export default function SquadDetail({squadData, errorMessage, view, baseUrl}) {
 
                             <LabelValue label={'Total Wins'} value={squad.total_wins}/>
 
-                            <LabelValue label={'Win Rate'} value={(squad.win_percentage * 100).toFixed(1) + '%'}/>
+                            <LabelValue label={'Win Rate'} value={(squad.win_percentage).toFixed(1) + '%'}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={squad.pretty_gulag_win_rate}/>
 
