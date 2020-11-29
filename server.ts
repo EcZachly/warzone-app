@@ -75,7 +75,7 @@ function run() {
                     }
                     const hostname = domains[req.hostname] ? 'www.brshooter.com' : req.hostname;
 
-                    if (req.headers['x-forwarded-proto'] === 'http' || domains[req.hostname]) {
+                    if (req.headers['x-forwarded-proto'] === 'http') {
                         res.redirect(301, `https://${hostname}${req.url}`);
                         return;
                     }
