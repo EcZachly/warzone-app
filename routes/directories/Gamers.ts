@@ -2,7 +2,7 @@ import {NextApiRequest, NextApiResponse} from 'next';
 import Bluebird from 'bluebird';
 
 import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../lib/model/gamers';
-import {sanitizeSquad} from './../../lib/components/Squads/SquadService';
+import {SquadService} from './../../lib/components/Squads';
 
 import {queryView} from '../../lib/model/analysis';
 import {ViewQuery} from '../../lib/model/view_query';
@@ -199,7 +199,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
                     'gamer_stats_graded': () => viewData,
                     'time_analysis': () => viewData,
                     'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS),
-                    'full_squad_stat_summary': () => viewData.map(sanitizeSquad),
+                    'full_squad_stat_summary': () => viewData.map(SquadService.sanitizeSquad),
                     'trend_analysis': () => viewData,
                     [VIEWS.GAMER_MATCHES_AUGMENTED]: () => viewData
                 };

@@ -2,7 +2,17 @@ import {GetServerSideProps} from 'next';
 import React, {useState, useEffect} from 'react';
 import _ from 'lodash';
 
-import {Container, Main, Box, Header, Text, Button, Small, Image} from './../../../components/SimpleComponents';
+import {
+    Container,
+    Main,
+    Box,
+    Header,
+    Text,
+    LineBreak,
+    Button,
+    Small,
+    Image
+} from './../../../components/SimpleComponents';
 import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
@@ -12,17 +22,22 @@ import {
     GamerPlatformImage,
     Navbar,
     Footer,
-    SquadList,
     GamerTrendChart
 } from './../../../components/AppComponents';
+
 import UtilityService, {getBaseUrlWithProtocol} from '../../../services/UtilityService';
+
 import {ClassBadgeList} from '../../../components/classes';
+
 import TrendChart from '../../../components/charting/TrendChart';
 
 import {GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
 import GamerMatchService from '../../../components/gamer_match/GamerMatchService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
+
+import {SquadCardList} from './../../../components/Squads';
+import TypeService from '../../../services/TypeService';
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
@@ -53,6 +68,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         activeTab: view
     });
 
+    let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
+    let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
     useEffect(() => {
@@ -88,9 +105,9 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 options={['hour_of_day', 'day_of_week']}
                                 selectedValue="hour_of_day"/>,
 
-        'squads': <SquadList baseUrl={baseUrl}
-                             squads={chartState.viewData}
-                             classDescriptions={[]}/>,
+        'squads': <SquadCardList baseUrl={baseUrl}
+                                 squads={chartState.viewData}
+                                 classDescriptions={[]}/>,
 
         'trends': <GamerTrendChart gamer={gamer}
                                    baseUrl={baseUrl}
@@ -149,14 +166,20 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
                             <LabelValue label={'aliases'} value={gamer.aliases.join(', ')}/>
 
+                            <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer}
+                                                                                 classDescriptions={classDescriptions}/>}/>
+
+                            <LineBreak/>
+
                             <LabelValue label={'KDR'} value={gamer.kdr}/>
 
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
-                            <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
+                            <LabelValue label={'Overall Win Rate'} value={overallWinRate}/>
 
-                            <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer}
-                                                                                 classDescriptions={classDescriptions}/>}/>
+                            <LabelValue label={'Total Games'} value={gamesPlayed}/>
+
+                            <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
 
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>

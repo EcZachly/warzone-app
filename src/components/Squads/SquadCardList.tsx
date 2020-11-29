@@ -1,15 +1,18 @@
 import {GetServerSideProps} from 'next';
-import SquadCard from '../../components/squad/SquadCard';
-import {Container, Main} from './../../components/SimpleComponents';
-import {Page, Navbar, Footer} from './../../components/AppComponents';
 import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
+
+import {Container, Main} from './../../components/SimpleComponents';
+import {Page, Navbar, Footer} from './../../components/AppComponents';
+
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
+
+import {SquadCard} from '../../components/Squads';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function SquadList({squads, baseUrl, limit = 10, hasMore = false, classDescriptions = [], query = {}}) {
+export default function SquadCardList({squads, baseUrl, limit = 10, hasMore = false, classDescriptions = [], query = {}}) {
     const [feedHasMore, setFeedHasMore] = useState(hasMore);
     const [squadValues, setSquads] = useState(squads);
 

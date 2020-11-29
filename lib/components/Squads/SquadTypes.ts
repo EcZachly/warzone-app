@@ -1,1 +1,1 @@
-export * from './../../../src/components/squad/SquadTypes';
+export * from './../../../src/components/Squads/SquadTypes';

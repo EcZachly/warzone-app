@@ -23,7 +23,10 @@ export default function GamerMatchCardList({gamer, noLink, gamerMatchList}: Game
         <Box className={'gamer-match-list-container'}>
             {gamerMatchList.map((gamerMatch) => {
                 return (
-                    <GamerMatchCard gamer={gamer} gamerMatch={gamerMatch} noLink={noLink}/>
+                    <GamerMatchCard key={gamerMatch.match_id}
+                                    gamer={gamer}
+                                    gamerMatch={gamerMatch}
+                                    noLink={noLink}/>
                 );
             })}
         </Box>

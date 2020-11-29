@@ -2,26 +2,23 @@ import {GetServerSideProps} from 'next';
 import React, {useState, useEffect} from 'react';
 import _ from 'lodash';
 
-import {Container, Main, Box, Header, Show, Button, Small, Image} from './../../components/SimpleComponents';
+import {Container, Main, Box, LineBreak, Show, Button, Small, Image} from './../../components/SimpleComponents';
 import {SidebarCompanion, LabelValue, Sidebar} from '../../components/SmartComponents';
 import {
     Page,
-    GamerGradeChart,
-    GamerTimeChart,
-    TeammateTable,
-    GamerPlatformImage,
     Navbar,
     Footer,
-    SquadList,
-    GamerTrendChart
 } from './../../components/AppComponents';
+
+import {SquadCard, SquadService} from './../../components/Squads/index';
+
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 import {ClassBadgeList} from '../../components/classes';
 import TrendChart from '../../components/charting/TrendChart';
 
-import {GamerPlacementChart} from './../../components/gamer/index';
+
+import {GamerLinkList, GamerPlacementChart} from './../../components/gamer/index';
 import HtmlService from '../../services/HtmlService';
-import SquadService from '../../components/squad/SquadService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -39,7 +36,11 @@ export default function SquadDetail({squadData, errorMessage, view, baseUrl}) {
         errorMessage = 'No squad was found';
     }
 
-    const pageTitle = (errorMessage) ? 'error' : 'Stats for ' + squad.gamers.join(', ');
+    let squadGamers = squad.gamers.map((gamerUsernameID) => {
+        let [platform, username] = gamerUsernameID.split('-');
+        return {platform, username};
+    });
+    const pageTitle = (errorMessage) ? 'error' : 'Stats for Squad: ' + squadGamers.map(({username}) => username).join(', ');
 
     const tabNames: string[] = ['teammates', 'placements', 'stats', 'time', 'squads', 'trends'];
 
@@ -124,19 +125,15 @@ export default function SquadDetail({squadData, errorMessage, view, baseUrl}) {
 
                     <Show show={!errorMessage}>
                         <Sidebar>
-                            <Header size={'lg'}>
-                                {squad.gamers.join(', ')}
+                            <GamerLinkList gamers={squadGamers} block/>
 
-                                <Small>
-                                    {/*<GamerPlatformImage gamer={gamer}/>*/}
-                                </Small>
-                            </Header>
+                            <LineBreak/>
 
                             <LabelValue label={'Games Played'} value={squad.num_matches}/>
 
                             <LabelValue label={'Total Wins'} value={squad.total_wins}/>
 
-                            <LabelValue label={'Win Rate'} value={(squad.win_percentage * 100).toFixed(1) + '%'}/>
+                            <LabelValue label={'Win Rate'} value={(squad.win_percentage).toFixed(1) + '%'}/>
 
                             <LabelValue label={'Gulag Win Rate'} value={squad.pretty_gulag_win_rate}/>
 

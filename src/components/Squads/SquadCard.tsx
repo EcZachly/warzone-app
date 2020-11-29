@@ -7,12 +7,14 @@ import {
     Show,
     CardBody,
     CardHeader,
-    Small,
+    Small
 } from '../SimpleComponents';
 import {LabelValue} from './../SmartComponents';
 import {GamerLink} from '../AppComponents';
+import UtilityService from '../../services/UtilityService';
 
 import {ClassBadgeList} from '../classes';
+import {GamerLinkList} from '../gamer';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -23,7 +25,7 @@ export default function SquadCard({squad, classDescriptions}) {
 
     let stats = {
         'Total Matches': {
-            value: squad.num_matches,
+            value: UtilityService.numberWithCommas(squad.num_matches),
             placement: 'left'
         },
         'Win Percentage': {
@@ -31,11 +33,11 @@ export default function SquadCard({squad, classDescriptions}) {
             placement: 'left'
         },
         'Average Placement': {
-            value: squad.avg_placement.toFixed(1),
+            value: UtilityService.round(squad.avg_placement, 1),
             placement: 'left'
         },
         'Average KDR': {
-            value: squad.kdr,
+            value: UtilityService.round(squad.kdr, 2),
             placement: 'left'
         },
         'Gulag Win Rate': {
@@ -44,59 +46,56 @@ export default function SquadCard({squad, classDescriptions}) {
         },
 
         'Average Kills per Game': {
-            value: squad.kills_per_game && squad.kills_per_game.toFixed(2),
+            value: UtilityService.round(squad.kills_per_game || 0, 2),
             placement: 'right'
         },
         'Average Score per Game': {
-            value: squad.score_per_game.toFixed(0),
+            value: UtilityService.numberWithCommas(UtilityService.round(squad.score_per_game || 0, 0)),
             placement: 'right'
         },
         'Average Teams Wiped per Game': {
-            value: squad.teams_wiped && squad.teams_wiped.toFixed(2),
+            value: UtilityService.round(squad.teams_wiped || 0, 2),
             placement: 'right'
         },
         'Total Teams Wiped': {
-            value: squad.total_teams_wiped,
+            value: UtilityService.numberWithCommas(squad.total_teams_wiped || 0),
             placement: 'right'
         },
         'Average Legendary Crates Looted per Game': {
-            value: squad.caches_opened && squad.caches_opened.toFixed(2),
+            value: squad.caches_opened && UtilityService.round(squad.caches_opened, 2),
             placement: 'right'
         },
         'Total Legendary Crates Looted': {
-            value: squad.total_caches_opened,
+            value: UtilityService.numberWithCommas(squad.total_caches_opened || 0),
             placement: 'right'
         },
         'Average Headshots per Game': {
-            value: squad.headshots && squad.headshots.toFixed(2),
+            value: squad.headshots && UtilityService.round(squad.headshots, 2),
             placement: 'right'
         },
         'Total Headshots': {
-            value: squad.total_headshots,
+            value: UtilityService.numberWithCommas(squad.total_headshots || 0),
             placement: 'right'
-        },
+        }
     };
 
 
-
+    let gamerList = squad.gamers.map((gamer) => {
+        const [platform, username] = gamer.split('-');
+        return {platform, username};
+    });
 
     return (
         <Card className={'squad-card'} style={{marginBottom: '15px'}}>
-            <CardHeader>
+            <CardHeader style={{display: 'flex', justifyContent: 'space-between'}}>
                 <Box>
-                    {
-                        squad.gamers.map((gamer) => {
-                            const [platform, username] = gamer.split('-');
-
-                            return (
-                                <GamerLink inline gamer={{platform: platform, username: username}}/>
-                            );
-                        })
-                    }
+                    <GamerLinkList gamers={gamerList}/>
 
                     <ClassBadgeList subject={squad as object}
                                     classDescriptions={filteredDescriptions}/>
+                </Box>
 
+                <Box>
                     <Small>
                         <a href={'/squad/' + encodeURIComponent(squad.team_grain as string)}>View squad details</a>
                     </Small>
@@ -110,15 +109,21 @@ export default function SquadCard({squad, classDescriptions}) {
                         {getSquadStatsByColumn('left').map(({value, label}) => {
                             return (
                                 <LabelValue label={label} value={value}/>
-                            )
+                            );
                         })}
                     </Box>
 
-                    <Box className={'details support-details'} style={{height: 'auto', display: 'flex', alignContent: 'flex-start', flexFlow: 'row wrap', justifyContent: 'space-between'}}>
+                    <Box className={'details support-details'} style={{
+                        height: 'auto',
+                        display: 'flex',
+                        alignContent: 'flex-start',
+                        flexFlow: 'row wrap',
+                        justifyContent: 'space-between'
+                    }}>
                         {getSquadStatsByColumn('right').map(({value, label}) => {
                             return (
                                 <LabelValue size={'sm'} label={label} value={value}/>
-                            )
+                            );
                         })}
                     </Box>
                 </Box>
