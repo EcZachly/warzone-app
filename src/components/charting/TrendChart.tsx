@@ -104,11 +104,13 @@ export default function TrendChart({gamer, data, baseUrl, keysToChart, height, w
         return d;
     })
 
+    let lines = [];
+    if(viewData.length > 0){
+        lines = Object.keys(viewData[0]).filter((key) => keysToChart.includes(key)).map((key, index) => {
+            return <Line type="monotone" dot={false} dataKey={key} stroke={colors[index]}/>
+        })
+    }
 
-
-    let lines = Object.keys(viewData[0]).filter((key) => keysToChart.includes(key)).map((key, index) => {
-        return <Line type="monotone" dot={false} dataKey={key} stroke={colors[index]}/>
-    })
 
     return (
         <Box>

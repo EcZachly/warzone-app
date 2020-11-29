@@ -24,17 +24,21 @@ export default function GamerTrendChart({gamer, baseUrl, data, height, width}) {
     })
 
 
-    let capitalKeys = trends[chosenChart].map((key)=> key.split('_').map(_.capitalize).join(' '))
-    return <div>
+    if(viewData.length){
+        let capitalKeys = trends[chosenChart].map((key)=> key.split('_').map(_.capitalize).join(' '))
+        return <div>
+            <TrendChart gamer={gamer} baseUrl={baseUrl} data={viewData} height={height} width={width} keysToChart={capitalKeys}/>
+            <div style={{clear: 'both'}}>
+                <InputRadio name="demo" value={chosenChart} options={radioOptions}
+                            onChange={(val) => setChosenChart(val)}/>
+            </div>
 
-
-        <TrendChart gamer={gamer} baseUrl={baseUrl} data={viewData} height={height} width={width} keysToChart={capitalKeys}/>
-        <div style={{clear: 'both'}}>
-            <InputRadio name="demo" value={chosenChart} options={radioOptions}
-                        onChange={(val) => setChosenChart(val)}/>
         </div>
+    }
+    else{
+        return <p>No data found for this time frame</p>
+    }
 
-    </div>
 }
 
 function getRadioOptions(options) {

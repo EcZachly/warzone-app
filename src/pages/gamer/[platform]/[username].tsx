@@ -53,8 +53,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         activeTab: view
     });
 
-    console.log(chartState.viewData);
-
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
     useEffect(() => {
@@ -63,7 +61,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
 
     function componentDidUpdate() {
-        console.log('componentDidUpdate');
         setComponentDidUpdate(true);
     }
 
