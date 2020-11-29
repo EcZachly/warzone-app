@@ -10,8 +10,20 @@ import GamerPlacementChart from './GamerPlacementChart';
 export {GamerPlacementChart};
 
 
+import GamerAliasList from './GamerAliasList';
+export {GamerAliasList};
+
+
+import GamerHeat from './GamerHeat';
+export {GamerHeat};
+
+
 import GamerLink from './GamerLink';
 export {GamerLink};
+
+
+import GamerLinkList from './GamerLinkList';
+export {GamerLinkList};
 
 
 import GamerPlatformImage from './GamerPlatformImage';
@@ -39,7 +51,10 @@ export default {
     GamerCard: GamerCard,
     GamerGradeChart: GamerGradeChart,
     GamerPlacementChart: GamerPlacementChart,
+    GamerAliasList: GamerAliasList,
+    GamerHeat: GamerHeat,
     GamerLink: GamerLink,
+    GamerLinkList: GamerLinkList,
     GamerPlatformImage: GamerPlatformImage,
     GamerService: GamerService,
     GamerTimeChart: GamerTimeChart,

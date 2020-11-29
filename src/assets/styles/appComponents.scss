@@ -184,7 +184,7 @@ main.main {
 //SQUAD CARD
 
 .squad-card {
-
+  margin-bottom: 15px;
 }
 
 .squad-card .details {
@@ -293,10 +293,80 @@ main.main {
 
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//GAMER LINK LIST CONTAINER
+
+.gamer-link-list-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.gamer-link-list-container.block {
+  flex-flow: column;
+}
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//GAMER LINK CONTAINER
+
+.gamer-link-container {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.gamer-list-link-container.block .gamer-link-container {
+
+}
+
+.gamer-link-container.single {
+  //display: inline-block;
+  flex: 1 1 auto;
+}
+
+.gamer-link-container .username {
+  font-size: 1.25em;
+}
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
 //GAMER CARD
 
 .gamer-card {
-
+  margin-bottom: 15px;
 }
 
 .gamer-card .card-header {
@@ -314,7 +384,7 @@ main.main {
 }
 
 .gamer-card .details .label-value-container {
-    width: 45%;
+  width: 45%;
 }
 
 
@@ -323,6 +393,54 @@ main.main {
     width: auto;
     margin-right: 40px;
   }
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//GAMER PLATFORM
+
+.gamer-platform {
+  width: 18px;
+  height: 18px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.gamer-platform.xs {
+  width: 12px;
+  height: 12px;
+}
+
+.gamer-platform.sm {
+  width: 15px;
+  height: 15px;
+}
+
+.gamer-platform.lg {
+  width: 21px;
+  height: 21px;
+}
+
+.gamer-platform.lg {
+  width: 24px;
+  height: 24px;
+}
+
+
+@media (min-width: 576px) {
+
 }
 
 @media (min-width: 768px) {

@@ -19,7 +19,6 @@ export default function GamerPlatformImage({gamer, size, color}: GamerPlatformIm
     const platformCode = gamer['platform'];
     const platformConfig = GamerService.getPlatformObjByID(platformCode);
 
-
     const platformPretty = platformConfig.name;
     const platformImageName = platformConfig.image;
     const selectedSize = getSize(size);
@@ -28,8 +27,7 @@ export default function GamerPlatformImage({gamer, size, color}: GamerPlatformIm
     const url = '/assets/images/platform/' + [platformImageName, selectedColor, selectedSize].join('-') + '.png';
 
     return (
-        <Image className={'gamer-platform ' + platformCode}
-               style={{width: '18px', height: '18px', marginLeft: '10px'}}
+        <Image className={['gamer-platform', platformCode, selectedSize].join(' ')}
                title={platformPretty}
                alt={'platform ' + platformPretty}
                src={url}/>

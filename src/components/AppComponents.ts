@@ -73,11 +73,8 @@ export {Page};
 
 
 //S
-import SquadCard from "./squad/SquadCard";
-export {SquadCard};
 
-import SquadList from "./squad/SquadList";
-export {SquadList};
+
 //T
 import TeammateTable from './gamer/TeammateTable';
 export {TeammateTable};
@@ -107,8 +104,6 @@ export default {
     GamerPlatformImage: GamerPlatformImage,
     GamerLink: GamerLink,
     GamerTrendChart: GamerTrendChart,
-    SquadCard: SquadCard,
-    SquadList: SquadList,
     Navbar: Navbar,
     TeammateTable: TeammateTable,
     Page: Page,

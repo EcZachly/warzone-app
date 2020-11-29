@@ -5,10 +5,10 @@ import InfiniteScroll from 'react-infinite-scroller';
 import {Container, Main} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 
-import SquadCard from '../../components/squad/SquadCard';
-
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
-import SquadService from '../../components/squad/SquadService';
+
+import {SquadCard, SquadService} from './../../components/Squads';
+
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -16,7 +16,6 @@ import SquadService from '../../components/squad/SquadService';
 export default function Squads({squads, baseUrl, limit, classDescriptions}) {
     const [feedHasMore, setFeedHasMore] = useState(true);
     const [squadList, setSquadList] = useState(squads);
-
 
 
     return (

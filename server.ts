@@ -2,10 +2,11 @@ import tracer from 'tracer';
 const logger = tracer.colorConsole({format: '{{message}}'});
 
 const express = require('express');
-const next = require('next');
 const path = require('path');
 
 let server = express();
+
+import {generateNextConfig} from './config/server/nextConfig';
 
 const dev = (process.env.NODE_ENV !== 'production');
 const CONSTANTS = {
@@ -13,39 +14,14 @@ const CONSTANTS = {
     UNSECURED_PORT: 3000
 };
 
-const typescriptLoader = {
-    test: /\.ts(x?)$/,
-    use: 'ts-loader',
-    exclude: /node_modules/
-};
-
 let PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
 
-const app = next({
+const app = generateNextConfig({
     dev,
-    dir: CONSTANTS.PAGES_DIRECTORY,
-    conf: {
-        pageExtensions: ['tsx', 'ts', 'js', 'jsx'],
-        webpack: (config, options) => {
-            config.module.rules.push(typescriptLoader);
-
-            return config;
-        },
-        env: {
-            WARZONE_DATABASE_URL: process.env.WARZONE_DATABASE_URL,
-            WARZONE_EMAIL: process.env.WARZONE_EMAIL,
-            WARZONE_PASSWORD: process.env.WARZONE_PASSWORD,
-            WARZONE_RECAPTCHA_SITE_KEY: process.env.WARZONE_RECAPTCHA_SITE_KEY,
-            WARZONE_RECAPTCHA_SECRET_KEY: process.env.WARZONE_RECAPTCHA_SECRET_KEY,
-            PORT: PORT
-        },
-        api: {
-            bodyParser: {
-                sizeLimit: '500kb'
-            }
-        }
-    }
+    directory: CONSTANTS.PAGES_DIRECTORY,
+    port: PORT
 });
+
 const handle = app.getRequestHandler();
 
 const StaticFiles = require('./config/server/staticFiles');
@@ -72,7 +48,7 @@ function run() {
                     let domains = {
                         'brshooter.com': true,
                         'www.brshooter.com': true
-                    }
+                    };
                     const hostname = domains[req.hostname] ? 'www.brshooter.com' : req.hostname;
 
                     if (req.headers['x-forwarded-proto'] === 'http') {
