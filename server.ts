@@ -68,6 +68,20 @@ function run() {
                 Security.configure(server);
                 Routes.include(server);
 
+                server.use((req, res, next) => {
+                    let domains = {
+                        'brshooter.com': true,
+                        'www.brshooter.com': true
+                    }
+                    const hostname = domains[req.hostname] ? 'www.brshooter.com' : req.hostname;
+
+                    if (req.headers['x-forwarded-proto'] === 'http' || domains[req.hostname]) {
+                        res.redirect(301, `https://${hostname}${req.url}`);
+                        return;
+                    }
+                    next();
+                });
+
                 server.get('*', (req, res) => {
                     return handle(req, res);
                 });
