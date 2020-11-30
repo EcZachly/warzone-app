@@ -298,10 +298,37 @@ main.main {
 .gamer-link-list-container {
   display: flex;
   justify-content: flex-start;
+  flex-flow: row wrap;
 }
 
 .gamer-link-list-container.block {
   flex-flow: column;
+}
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//gamer-class-badge-list-container
+
+.gamer-class-badge-list-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
 }
 
 @media (min-width: 576px) {
