@@ -2,6 +2,7 @@ const dividerLine = '//==---=-=--==--=------===--==-=--=---=-==---===--=-=-=-==-
 const lb = '\r\n';
 
 console.log([
+	lb,
 	dividerLine,
 	lb,
 	lb,
@@ -14,5 +15,6 @@ console.log([
 	lb,
 	lb,
 	lb,
-	dividerLine
+	dividerLine,
+	lb,
 ].join(lb));
