@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import ClassBadge from "./ClassBadge";
+import ClassBadge from './ClassBadge';
 
 import {Box} from './../SimpleComponents';
 
@@ -13,8 +13,8 @@ export type ClassBadgeProps = {
 }
 
 export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeProps) {
-    if(classDescriptions){
-        let badges = Object.keys(classDescriptions).filter((key)=> key.includes('cutoff')).map((key) => {
+    if (classDescriptions) {
+        let badges = Object.keys(classDescriptions).filter((key) => key.includes('cutoff')).map((key) => {
                 const percentiles = classDescriptions[key]['percentiles'];
                 let statValue = subject[classDescriptions[key]['category']];
                 return (
@@ -28,8 +28,7 @@ export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeP
                 {badges}
             </Box>
         );
-    }
-    else{
+    } else {
         return (<></>);
     }
 }
