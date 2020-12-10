@@ -129,3 +129,7 @@ export async function runUpdates(){
 export async function runBackfills() {
     await refreshData({needs_backfill: true});
 }
+
+export async function runRefresh(){
+    await refreshData({});
+}

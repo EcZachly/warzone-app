@@ -1,4 +1,4 @@
-import { runBackfills, runUpdates } from '../user_match_scrape';
+import {runBackfills, runRefresh, runUpdates} from '../user_match_scrape';
 import { createEtlJob, updateEtlJob } from '../../model/etl_jobs';
 import { argv } from 'yargs';
 import md5 from 'md5';
@@ -24,7 +24,8 @@ const newJob = {
 
 const jobFunctions = {
     update: runUpdates,
-    backfill: runBackfills
+    backfill: runBackfills,
+    refresh: runRefresh
 };
 async function run() {
     const jobFunction = jobFunctions[jobType];

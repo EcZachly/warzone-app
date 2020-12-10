@@ -55,11 +55,19 @@ export async function queryDatabase(table, query, options = {}) {
 }
 
 
-
+export async function executeRawQuery(query){
+	const db = await database;
+	try{
+		return await db.query(query);
+	} catch(failure){
+		return failure
+	}
+}
 export async function insertIntoDatabase(data, table) {
 	const db = await database;
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
+
 	} catch (failure) {
 		const isDuplicateRecordError = failure.code === '23505';
 		if (!isDuplicateRecordError) {

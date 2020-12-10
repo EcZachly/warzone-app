@@ -30,7 +30,6 @@ export function queryGamers(query, options = {}) {
 }
 
 
-
 export function sanitizeGamer(gamer) {
     gamer = UtilityService.validateItem(gamer, 'object', {});
     gamer.gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
@@ -41,8 +40,8 @@ export function sanitizeGamer(gamer) {
 }
 
 
-
-export function sanitizeTeammates(teammates, filterKeys: string[] = []) {
+const TEAMMATE_FILTER_KEYS = ['username', 'platform', 'aliases'];
+export function sanitizeTeammates(teammates) {
     return teammates.map((teammate) => {
         teammate = sanitizeGamer(teammate);
         teammate.helping_player = {
@@ -50,7 +49,7 @@ export function sanitizeTeammates(teammates, filterKeys: string[] = []) {
             platform: teammate.helping_player_platform
         };
         delete teammate.helping_player_platform;
-        filterKeys.forEach((key) => {
+        TEAMMATE_FILTER_KEYS.forEach((key) => {
             delete teammate[key];
         });
         return teammate;
