@@ -29,7 +29,7 @@ import TypeService from '../services/TypeService';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-let Signup = ({baseUrl}) => {
+let SignUpPage = ({baseUrl}) => {
     const MAX_LENGTH = 130;
     const MIN_PASSWORD_LENGTH = 8;
 
@@ -118,7 +118,7 @@ let Signup = ({baseUrl}) => {
                 <Container size={'sm'}>
                     <Card style={{marginTop: '20px', marginBottom: '100px'}}>
                         <CardHeader>
-                            <Header>Signup</Header>
+                            <Header>Sign Up</Header>
 
                             <Paragraph type={'help'}>
                                 Signing up for an account will give you insight to your gameplay, friend tracking, and personalized recommendations to improve your Warzone performance. <Text bold>You will be able to add and manage your Warzone accounts when you log in.</Text>
@@ -332,4 +332,4 @@ let Signup = ({baseUrl}) => {
 };
 
 
-export default Signup;
+export default SignUpPage;

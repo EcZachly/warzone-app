@@ -45,12 +45,12 @@ class Navbar extends React.Component {
 
                     <Box className={'navbar-items'} id={'navbar-right'}>
                         <a>
-                            Login
+                            Log In
                         </a>
 
                         <a href={'/signup'}>
                             <Button type={['dark']} style={{fontWeight: 500}}>
-                                Signup
+                                Sign Up
                             </Button>
                         </a>
                     </Box>
