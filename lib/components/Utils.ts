@@ -15,9 +15,18 @@ export function restKeyToSQLView(key: string){
 }
 
 export function restToMassiveQuery(view: string, params: object){
-    let userQuery = {
-        username: params['username'],
-        platform: params['platform']
+    let userQuery;
+
+    // if params specifies username exactly, then we query for it
+    if(params['username']){
+        userQuery = {
+            username: params['username'],
+            platform: params['platform']
+        };
+    }
+    // otherwise it's probably a LIKE match
+    else{
+        userQuery = params;
     }
     const userString = '%' + params['platform'] + '-' + params['username'] + '%';
     const squadQuery = {'team_grain LIKE': userString};

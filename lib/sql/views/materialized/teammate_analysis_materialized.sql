@@ -1,0 +1,1 @@
+CREATE MATERIALIZED VIEW warzone.teammate_analysis_materialized AS SELECT * FROM warzone.teammate_analysis

@@ -86,18 +86,17 @@ function manageComplexQueryParameters(queryParams) {
 }
 
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
-    const viewName = VIEWS.PLAYER_STAT_SUMMARY;
-    const descriptionConfig = VIEWS.GAMER_CLASS_DESCRIPTIONS;
     const queryParams = req.query;
     const offset = req.query.offset || 0;
     const limit = req.query.limit || 10;
     delete queryParams.offset;
     delete queryParams.limit;
     manageComplexQueryParameters(queryParams);
-    const descriptionData = await queryView(descriptionConfig, {}, {});
-    const rawGamerList = await queryView(viewName, queryParams, {offset, limit});
-    const sanitizedGamers = rawGamerList.map(sanitizeGamer);
-    handleResponse(req, res, {'gamers': sanitizedGamers, 'classDescriptions': descriptionData[0]});
+    let descriptionQuery = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS);
+    await descriptionQuery.executeQuery();
+    let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, {offset, limit});
+    await playerQuery.executeQuery();
+    handleResponse(req, res, {'gamers': playerQuery.data, 'classDescriptions': descriptionQuery.data[0]});
 }
 
 

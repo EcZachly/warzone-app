@@ -16,7 +16,7 @@ export const VIEWS = {
     TIME_ANALYSIS: 'time_analysis',
     TREND_ANALYSIS: 'trend_analysis',
     SQUADS: 'full_squad_stat_summary',
-    TEAMMATES: 'teammate_analysis',
+    TEAMMATES: 'teammate_analysis_materialized',
     GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends'
 };
@@ -37,5 +37,6 @@ export const MATERIALIZED_VIEWS_DEPENDENCIES: object = {
     [VIEWS.SQUAD_CLASS_DESCRIPTIONS]: [],
     [VIEWS.GAMER_CLASS_DESCRIPTIONS]: [],
     [VIEWS.GAMER_SITE_HITS]: [],
-    [VIEWS.PLAYER_STAT_SUMMARY]: []
+    [VIEWS.PLAYER_STAT_SUMMARY]: [],
+    [VIEWS.TEAMMATES]: []
 }
