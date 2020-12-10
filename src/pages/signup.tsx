@@ -10,6 +10,7 @@ import {
     Alert,
     CardFooter,
     Button,
+    Paragraph,
     CardHeader,
     Box,
     Text,
@@ -115,9 +116,13 @@ let Signup = ({baseUrl}) => {
 
             <Main>
                 <Container size={'sm'}>
-                    <Card style={{marginTop: '20px'}}>
+                    <Card style={{marginTop: '20px', marginBottom: '100px'}}>
                         <CardHeader>
                             <Header>Signup</Header>
+
+                            <Paragraph type={'help'}>
+                                Signing up for an account will give you insight to your gameplay, friend tracking, and personalized recommendations to improve your Warzone performance
+                            </Paragraph>
 
                             <Alert hideIfEmpty={true} type={formMessage.type}>
                                 {formMessage.message}
