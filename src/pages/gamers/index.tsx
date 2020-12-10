@@ -50,17 +50,6 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
 
-                        <Button>Default</Button>
-                        <Button type={'light'}>Light</Button>
-                        <Button type={'blue'}>blue</Button>
-                        <Button type={'green'}>green</Button>
-                        <Button type={'yellow'}>yellow</Button>
-                        <Button type={'orange'}>orange</Button>
-                        <Button type={'red'}>red</Button>
-                        <Button type={'purple'}>purple</Button>
-                        <Button type={'pink'}>pink</Button>
-                        <Button type={'dark'}>dark</Button>
-                        <Button type={'secondary'}>secondary</Button>
                     </Sidebar>
 
                     <SidebarCompanion>
