@@ -3,17 +3,18 @@ import {queryView} from './analysis';
 export class ViewQuery {
     view: string;
     query: Record<string, unknown>;
-    options: Record<string, unknown>;
-    data: Array<any> | Record<string, unknown>;
+    options: object;
+    data: Array<any> | object;
+    sanitize: (input: Array<any>| object) => Array<any> | object;
 
-    constructor(view, query, options: Record<any, unknown>={}) {
+    constructor(view, query, options: object={}, sanitize=(record: Array<any>) => record) {
         this.view = view;
         this.query = query;
         this.options = options;
+        this.sanitize = sanitize
     }
 
     async executeQuery() {
-        this.data = await queryView(this.view, this.query, this.options);
+        this.data = this.sanitize(await queryView(this.view, this.query, this.options));
     }
-
 }

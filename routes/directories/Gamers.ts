@@ -2,10 +2,8 @@ import {NextApiRequest, NextApiResponse} from 'next';
 import Bluebird from 'bluebird';
 
 import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../lib/model/gamers';
-import {SquadService} from './../../lib/components/Squads';
-
+import {restKeyToSQLView, restToMassiveQuery} from '../../lib/components/Utils';
 import {queryView} from '../../lib/model/analysis';
-import {ViewQuery} from '../../lib/model/view_query';
 import {initializeMatches} from '../../lib/model/matches';
 
 import {handleError, handleResponse} from '../responseHandler';
@@ -13,6 +11,7 @@ import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
 import {VIEWS} from './../../lib/constants';
+import {getGamerDetailViewQuery} from "../../lib/components/Gamers/GamerService";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -87,25 +86,23 @@ function manageComplexQueryParameters(queryParams) {
 }
 
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
-    const viewName = 'player_stat_summary';
-    const descriptionConfig = 'gamer_class_description_values';
+    const viewName = VIEWS.PLAYER_STAT_SUMMARY;
+    const descriptionConfig = VIEWS.GAMER_CLASS_DESCRIPTIONS;
     const queryParams = req.query;
     const offset = req.query.offset || 0;
     const limit = req.query.limit || 10;
     delete queryParams.offset;
     delete queryParams.limit;
     manageComplexQueryParameters(queryParams);
-
     const descriptionData = await queryView(descriptionConfig, {}, {});
     const rawGamerList = await queryView(viewName, queryParams, {offset, limit});
     const sanitizedGamers = rawGamerList.map(sanitizeGamer);
-
     handleResponse(req, res, {'gamers': sanitizedGamers, 'classDescriptions': descriptionData[0]});
 }
 
 
 
-const TEAMMATE_FILTER_KEYS = ['username', 'platform', 'aliases'];
+
 
 async function updateGamerUponRequest(gamerData) {
     let gamerPromise = Bluebird.resolve(gamerData);
@@ -120,100 +117,36 @@ async function updateGamerUponRequest(gamerData) {
 
 
 export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
-    const {view, timeZone, lookback} = req.query;
+    const {view} = req.query;
+    delete req.query.view;
     const {username, platform} = req.params;
-
+    let allParams = {...req.params, ...req.query}
     if (!platform) {
         handleError(req, res, {message: 'platform (/gamers/:platform/:username, String) is required and cannot be empty'});
     } else if (!username) {
         handleError(req, res, {message: 'username (/gamers/:platform/:username, String) is required and cannot be empty'});
     } else {
-        const viewMap = {
-            'teammates': 'teammate_analysis',
-            'placements': 'gamer_stats_graded',
-            'stats': 'gamer_stats_graded',
-            'time': 'time_analysis',
-            'squads': 'full_squad_stat_summary',
-            'trends': 'trend_analysis',
-            'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED
-        };
-
-        const sqlView = viewMap[view as string];
-
-        const userQuery = {
-            username: username,
-            platform: platform
-        };
-        const userString = '%' + platform + '-' + username + '%';
-        const squadQuery = {'team_grain LIKE': userString};
-
-
-        const timezoneQuery = {
-            timezone: timeZone || 'America/Los_Angeles',
-            cutoff: '10'
-        };
-
-        const trendQuery = {
-            lookback: parseFloat(lookback as string) || 30
-        };
-
-        const queryableViews = [
-            new ViewQuery('player_stat_summary', userQuery),
-            new ViewQuery('gamer_class_description_values', {}),
-            new ViewQuery('gamer_stats_graded', userQuery),
-            new ViewQuery('teammate_analysis', userQuery),
-            new ViewQuery('time_analysis', {...userQuery, ...timezoneQuery}),
-            new ViewQuery('full_squad_stat_summary', squadQuery),
-            new ViewQuery('trend_analysis', {...userQuery, ...trendQuery}),
-            new ViewQuery(VIEWS.GAMER_MATCHES_AUGMENTED, {
-                query_username: username,
-                query_platform: platform
-            }, {
-                limit: 10,
-                order: [{
-                    field: 'start_timestamp',
-                    direction: 'desc',
-                    nulls: 'last'
-                }]
-            })
-        ];
-
-        const viewNamesToQuery = ['player_stat_summary', 'gamer_class_description_values', sqlView as string];
-        const viewsToQuery = queryableViews.filter((v: ViewQuery) => viewNamesToQuery.includes(v.view));
-
-        const gamerList = await queryGamers({username: username, platform: platform});
+        const sqlView = restKeyToSQLView(view as string)
+        const viewsToQuery = {
+            [VIEWS.PLAYER_STAT_SUMMARY]:   getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, allParams),
+            [VIEWS.GAMER_CLASS_DESCRIPTIONS]:  getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, allParams),
+            [sqlView]:  getGamerDetailViewQuery(sqlView, allParams)
+        }
+        const gamerList = await queryGamers({username, platform});
         const gamerData = gamerList[0];
         const gamerExists = !!gamerData;
-
         if (gamerExists) {
-            const gamerMatchDataPromises = viewsToQuery.map(async (view: ViewQuery) => await view.executeQuery());
-
+            const gamerMatchDataPromises = Object.keys(viewsToQuery).map(async (key: string) => await viewsToQuery[key].executeQuery());
             Bluebird.all(gamerMatchDataPromises).then(async () => {
-                console.log(viewsToQuery);
-
-                const gamer = sanitizeGamer(viewsToQuery[0].data[0]);
-                const gamerClassDescriptions = viewsToQuery[1].data[0];
-                let viewData = viewsToQuery[2].data as Record<any, unknown>[];
-
-                const sanitizationLookup = {
-                    'gamer_stats_graded': () => viewData,
-                    'time_analysis': () => viewData,
-                    'teammate_analysis': () => sanitizeTeammates(viewData, TEAMMATE_FILTER_KEYS),
-                    'full_squad_stat_summary': () => viewData.map(SquadService.sanitizeSquad),
-                    'trend_analysis': () => viewData,
-                    [VIEWS.GAMER_MATCHES_AUGMENTED]: () => viewData
-                };
-
-                viewData = sanitizationLookup[sqlView]();
-
+                const gamer = viewsToQuery[VIEWS.PLAYER_STAT_SUMMARY].data[0];
+                const gamerClassDescriptions = viewsToQuery[VIEWS.GAMER_CLASS_DESCRIPTIONS].data[0];
+                const viewData = viewsToQuery[sqlView].data;
                 await updateGamerUponRequest(gamerData);
-
                 const seoMetadata = {
-                    title: 'Warzone stats for ' + gamer.username,
+                    title: 'Warzone stats for ' + gamer['username'],
                     keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
-                    description: 'KDR: ' + gamer.kdr + ' Gulag Win Rate: ' + gamer.gulag_win_rate
+                    description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
                 };
-
                 handleResponse(req, res, {
                     gamer: gamer,
                     viewData: viewData,

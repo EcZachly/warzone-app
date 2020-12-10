@@ -37,9 +37,9 @@ CREATE MATERIALIZED VIEW warzone.gamer_rolling_trends AS
     )
 
 SELECT *,
-       CAST(last_10_rolling_average_kills/last_10_rolling_average_deaths AS REAL) AS last_10_rolling_average_kdr,
-       CAST(last_30_rolling_average_kills/last_30_rolling_average_deaths AS REAL) AS last_30_rolling_average_kdr,
-       CAST(last_100_rolling_average_kills/last_100_rolling_average_deaths AS REAL) AS last_100_rolling_average_kdr,
+       CAST(last_10_rolling_average_kills/NULLIF(last_10_rolling_average_deaths, 0) AS REAL) AS last_10_rolling_average_kdr,
+       CAST(last_30_rolling_average_kills/NULLIF(last_30_rolling_average_deaths, 0) AS REAL) AS last_30_rolling_average_kdr,
+       CAST(last_100_rolling_average_kills/NULLIF(last_100_rolling_average_deaths, 0) AS REAL) AS last_100_rolling_average_kdr,
 
-       CAST(since_start_rolling_average_kills/since_start_rolling_average_deaths AS REAL) AS since_start_rolling_average_kdr
+       CAST(since_start_rolling_average_kills/NULLIF(since_start_rolling_average_deaths, 0) AS REAL) AS since_start_rolling_average_kdr
     FROM rolling
