@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import {useRouter} from 'next/router';
 
-import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
+import {Container, Header, LineBreak, Main, Button} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
 
@@ -49,6 +49,18 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
                                onChange={searchGamers}
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
+
+                        <Button>Default</Button>
+                        <Button type={'light'}>Light</Button>
+                        <Button type={'blue'}>blue</Button>
+                        <Button type={'green'}>green</Button>
+                        <Button type={'yellow'}>yellow</Button>
+                        <Button type={'orange'}>orange</Button>
+                        <Button type={'red'}>red</Button>
+                        <Button type={'purple'}>purple</Button>
+                        <Button type={'pink'}>pink</Button>
+                        <Button type={'dark'}>dark</Button>
+                        <Button type={'secondary'}>secondary</Button>
                     </Sidebar>
 
                     <SidebarCompanion>

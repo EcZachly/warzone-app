@@ -412,9 +412,9 @@ a:focus, a:active {
 
 
 .alert.alert-danger {
-  $borderColor: adjust-color($theme-red, $saturation: -35%, $lightness: 37%);
-  $backgroundColor: adjust-color($theme-red, $saturation: -35%, $lightness: 41%);
-  $textColor: adjust-color($theme-red, $saturation: -35%, $lightness: -20%);
+  $borderColor: adjust-color($theme-red, $saturation: -5%);
+  $backgroundColor: adjust-color($theme-red, $saturation: -10%, $lightness: 41%);
+  $textColor: adjust-color($theme-red, $saturation: -10%, $lightness: -20%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
   & {
@@ -1278,7 +1278,7 @@ a:focus, a:active {
 
 .button.button-pink {
   $button-color: $theme-pink;
-  $text-color: $theme-white;
+  $text-color: $theme-gray-90;
   $alpha-value: .5;
 
   & {
@@ -1338,9 +1338,9 @@ a:focus, a:active {
 
 
 .button.button-light {
-  $button-color: $theme-very-light-gray;
-  $text-color: $theme-dark-gray;
-  $border-color: #cccccc;
+  $button-color: $theme-gray;
+  $text-color: $theme-gray-90;
+  $border-color: $theme-light-gray;
   $alpha-value: .1;
 
   & {
@@ -1572,12 +1572,13 @@ a:focus, a:active {
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  border: 1px solid $theme-line-break;
+  border: 1px solid $theme-border-color;
   min-width: 0;
   word-wrap: break-word;
   background-color: $theme-background-color;
   background-clip: border-box;
   border-radius: 0.25rem;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, .25);
 }
 
 .card > hr {
@@ -1629,8 +1630,8 @@ a:focus, a:active {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(40, 40, 40);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #393939;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .card-header:first-child {
@@ -1643,8 +1644,8 @@ a:focus, a:active {
 
 .card-footer {
   padding: 0.75rem 1.25rem;
-  background-color: rgba(0, 0, 0, 0.03);
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: #393939;
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .card-footer:last-child {
@@ -2275,48 +2276,6 @@ label, label.text-link {
 
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
-//SYSTEM STATUS INDICATOR
-
-.system-status-indicator {
-  border-radius: 100%;
-  height: 13px;
-  width: 13px;
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.system-status-indicator.loading {
-  background: $theme-status-loading;
-  border: 1px solid adjust-color($theme-status-loading, $lightness: -2%);
-  box-shadow: 0 0 2px 1px adjust-color($theme-status-loading, $lightness: 10%, $saturation: -10%);
-}
-
-.system-status-indicator.down {
-  background: $theme-status-down;
-  border: 1px solid adjust-color($theme-status-down, $lightness: -2%);
-  box-shadow: 0 0 2px 1px adjust-color($theme-status-down, $lightness: 10%, $saturation: -10%);
-}
-
-.system-status-indicator.issues {
-  background: $theme-status-disruption;
-  border: 1px solid adjust-color($theme-status-disruption, $lightness: -2%);
-  box-shadow: 0 0 2px 1px adjust-color($theme-status-disruption, $lightness: 10%, $saturation: -10%);
-}
-
-.system-status-indicator.maintenance {
-  background: $theme-status-maintenance;
-  border: 1px solid adjust-color($theme-status-maintenance, $lightness: -2%);
-  box-shadow: 0 0 2px 1px adjust-color($theme-status-maintenance, $lightness: 10%, $saturation: -10%);
-}
-
-.system-status-indicator.resolved {
-  background: $theme-status-resolved;
-  border: 1px solid adjust-color($theme-status-resolved, $lightness: -2%);
-  box-shadow: 0 0 2px 1px adjust-color($theme-status-resolved, $lightness: 10%, $saturation: -10%);
-}
-
-
-//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
 //TEXTAREA
 
 textarea.form-control {
@@ -2334,7 +2293,7 @@ textarea.form-control, input.form-control, select.form-control {
   color: $theme-text-color;
   background-color: lighten($theme-background-color, 5);
   display: block;
-  border: 1px solid $theme-line-break;
+  border: 1px solid $theme-border-color;
   border-radius: .25rem;
   margin-bottom: 1rem;
 }
@@ -2359,7 +2318,7 @@ select.form-control {
 .form-control:focus {
   outline: 0;
   box-shadow: 0 0 0 .2rem rgba(0, 85, 255, 0.25);
-  border-color: lighten($theme-blue, 25);
+  border-color: lighten($theme-blue, 10);
 }
 
 .form-control:disabled {
@@ -2409,7 +2368,7 @@ input.form-control {
 }
 
 .form-control.has-error {
-  border: 1px solid $theme-red;
+  border: 1px solid $theme-error;
 }
 
 .form-control.has-error:focus {
@@ -2628,7 +2587,7 @@ image {
 }
 
 .text-error {
-  color: adjust-color($theme-red, $lightness: -11%, $saturation: -5%)
+  color: $theme-error;
 }
 
 .text-link {

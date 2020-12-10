@@ -48,9 +48,11 @@ class Navbar extends React.Component {
                             Login
                         </a>
 
-                        <Button type={['dark']} style={{fontWeight: 500}}>
-                            Signup
-                        </Button>
+                        <a href={'/signup'}>
+                            <Button type={['dark']} style={{fontWeight: 500}}>
+                                Signup
+                            </Button>
+                        </a>
                     </Box>
                 </Box>
             </Box>

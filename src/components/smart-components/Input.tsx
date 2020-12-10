@@ -102,7 +102,7 @@ class Input extends React.Component<InputType> {
                            size={props.size}
                            innerRef={props.innerRef}
                            mode={props.mode}
-                           type={props.type}
+                           type={props.subtype || props.type}
                            textCenter={props.textCenter}
                            hasError={!!props.errorMessage}
                            onEnter={props.onEnter}
@@ -236,6 +236,7 @@ type InputType = {
     inputStyle?: CSS.Properties,
     children?: React.ReactNode,
     type?: 'text' | 'number' | 'date' | 'checkbox' | 'select' | 'radio' | 'textarea',
+    subtype?: 'password' | 'email',
     focus?: boolean,
     onChange: (string) => void,
     ref?: any,
