@@ -95,10 +95,62 @@ export function copyObject(value) {
 }
 
 
+/**
+ *
+ * @param {Number} length
+ * @returns {string}
+ */
+export function generateRandomNumberString(length) {
+    if (TypeService.isInteger(length, true) === false) {
+        throw new Error('length (Integer) is required');
+    }
+
+    return repeatFunction(generateRandomInteger, length).join('');
+}
+
+
+
+/**
+ *
+ * @param {Function} callback
+ * @param {Number} count
+ * @returns {Array}
+ */
+export function repeatFunction(callback: Function, count) {
+    if (TypeService.isFunction(callback) === false) {
+        throw new Error('callback (Function) is required');
+    }
+
+    if (TypeService.isInteger(count) === false) {
+        throw new Error('count (Integer) is required');
+    }
+
+    const values = [];
+
+    for (let i = 0; i < count; i++) {
+        // @ts-ignore
+        values.push(callback());
+    }
+
+    return values;
+}
+
+
+
+function generateRandomInteger(min, max) {
+    min = validateItem(min, 'integer', 0);
+    max = validateItem(max, 'integer', 9);
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 
 export default {
     validateItem,
     sleep,
+    generateRandomNumberString,
+    repeatFunction,
+    generateRandomInteger,
     getBaseUrlWithProtocol,
     copyObject,
     isValidEmail,

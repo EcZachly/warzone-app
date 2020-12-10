@@ -24,7 +24,14 @@ export function createUser(user: Partial<RawUser>): Promise<User> {
 }
 
 
+export function sanitizeUser(user) {
+    delete user.password;
+    return user;
+}
+
+
 
 export default {
-    createUser
+    createUser,
+    sanitizeUser
 };
