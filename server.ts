@@ -58,7 +58,7 @@ function run() {
                     }
                     next();
                 });
-                server.use(createAPIEventMiddleware)
+                server.use((req, res, next) => createAPIEventMiddleware(req, res, next))
                 server.get('*', (req, res) => {
                     return handle(req, res);
                 });

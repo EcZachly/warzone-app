@@ -4,8 +4,8 @@ import SiteTrafficMiddleware from './siteTrafficMiddlware';
 
 
 
-const defaultMiddleware = (handler) => async(req, res)=> {
-    await SiteTrafficMiddleware(req, res);
+const defaultMiddleware = (handler) => async(req, res, next)=> {
+    await SiteTrafficMiddleware(req, res, next);
     return handler(req, res);
 };
 export default defaultMiddleware;
