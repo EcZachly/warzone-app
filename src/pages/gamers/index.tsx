@@ -16,14 +16,13 @@ import {GamerCard, GamerAdd} from './../../components/gamer/index';
 
 export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, limit, classDescriptions}) {
     const [gamerValues, setGamers] = useState(gamers);
-    const [feedHasMore, setFeedHasMore] = useState(true);
+    const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
     const [searchValue, setSearchValue] = useState(username);
     const router = useRouter();
 
 
-
     if (gamerValues.length === 0) {
-        fetchMoreGamers(0);
+        fetchMoreGamers(searchValue, 0);
     }
 
 
@@ -46,14 +45,14 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
 
                         <Input type={'text'}
                                value={searchValue}
-                               onChange={searchGamers}
+                               onChange={(value) => searchGamers(value)}
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
                     </Sidebar>
 
                     <SidebarCompanion>
                         <InfiniteScroll pageStart={0}
-                                        loadMore={(page) => fetchMoreGamers(page)}
+                                        loadMore={(page) => fetchMoreGamers(searchValue, page)}
                                         hasMore={feedHasMore}
                                         loader={<div className="loader" key={0}>Loading ...</div>}
                                         useWindow={true}>
@@ -78,8 +77,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
     );
 
 
-
     async function searchGamers(inputValue) {
+        if(inputValue.length == 0){
+            setFeedHasMore(true);
+        }
         if (inputValue.length) {
             router.replace({
                 pathname: '/gamers',
@@ -90,14 +91,14 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
                 pathname: '/gamers'
             });
         }
-
+        setFeedHasMore(false);
         setSearchValue(inputValue);
         setGamers([]);
+
     }
 
 
-
-    async function fetchMoreGamers(page) {
+    async function fetchMoreGamers(searchTerm, page) {
         let searchQuery = '&username.ilike=' + encodeURIComponent('%' + searchValue + '%');
         const dataUrl = baseUrl + '/api/gamer?limit=' + limit + '&offset=' + limit * page + searchQuery;
 
@@ -107,8 +108,17 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
         if (newGamers.gamers.length === 0) {
             setFeedHasMore(false);
         } else {
-            const allGamers = [...gamerValues, ...newGamers.gamers];
-            setGamers(allGamers);
+            const filteredGamers = [];
+            const totalGamers = [...gamerValues, ...newGamers.gamers]
+            let seenGamerTags = {};
+            totalGamers.forEach((gamer) => {
+                let gamerTag = gamer['platform'] + '-' + gamer['username'];
+                if (!seenGamerTags[gamerTag]) {
+                    filteredGamers.push(gamer)
+                    seenGamerTags[gamerTag] = true
+                }
+            })
+            setGamers(filteredGamers);
         }
     }
 }
