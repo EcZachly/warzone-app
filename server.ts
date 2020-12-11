@@ -7,6 +7,7 @@ const path = require('path');
 let server = express();
 
 import {generateNextConfig} from './config/server/nextConfig';
+import createAPIEventMiddleware from "./routes/siteTrafficMiddlware";
 
 const dev = (process.env.NODE_ENV !== 'production');
 const CONSTANTS = {
@@ -57,7 +58,7 @@ function run() {
                     }
                     next();
                 });
-
+                server.use(createAPIEventMiddleware)
                 server.get('*', (req, res) => {
                     return handle(req, res);
                 });
