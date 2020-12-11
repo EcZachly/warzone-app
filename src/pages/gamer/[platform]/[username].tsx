@@ -31,7 +31,7 @@ import {ClassBadgeList} from '../../../components/classes';
 
 import TrendChart from '../../../components/charting/TrendChart';
 
-import {GamerPlacementChart} from './../../../components/gamer/index';
+import {GamerAliasList, GamerHeat, GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
 import GamerMatchService from '../../../components/gamer_match/GamerMatchService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
@@ -164,7 +164,9 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
                                 </Small>
                             </Header>
 
-                            <LabelValue label={'aliases'} value={gamer.aliases.join(', ')}/>
+                            <GamerHeat gamer={gamer}/>
+
+                            <GamerAliasList gamer={gamer}/>
 
                             <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer}
                                                                                  classDescriptions={classDescriptions}/>}/>

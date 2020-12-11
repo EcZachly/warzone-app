@@ -39,7 +39,9 @@ export type GamerMatchCardProps = {
 
 
 export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCardProps) {
-    const kdr = UtilityService.numberToPercentage((gamerMatch.kills / gamerMatch.deaths), 2);
+    console.log('gamerMatch', gamerMatch);
+
+    const kdr = UtilityService.numberToPercentage((gamerMatch.kills / (gamerMatch.deaths || 1)), 2);
     const damageRatio = UtilityService.numberToPercentage(gamerMatch.damage_done / gamerMatch.damage_taken, 2);
 
     const startTimestamp = moment(gamerMatch.start_timestamp);
@@ -62,6 +64,8 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
         timeDifferencePretty = (useMinutes) ? timeDifference + ' minute' + sQualifier + ' ago' : timeDifference + ' hour' + sQualifier + ' ago';
     }
 
+    let placementPercentage = 'Top ' + UtilityService.numberToPercentage(gamerMatch.team_placement / gamerMatch.team_count, 0);
+
     return (
         <Card className={'gamer-match-card'} style={{marginBottom: '10px'}}>
 
@@ -77,7 +81,9 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
             <CardBody>
                 <Box style={{display: 'flex', flexFlow: 'wrap'}}>
                     <Box className={'details main-details'}>
-                        <LabelValue label={'Placement'} value={gamerMatch.team_placement}/>
+                        <LabelValue label={'Game Type'} value={UtilityService.camelToProperCase(gamerMatch.team_type)}/>
+
+                        <LabelValue label={'Placement'} value={`${gamerMatch.team_placement} of ${gamerMatch.team_count} (${placementPercentage})`}/>
 
                         <LabelValue label={'KDR (Kills / Deaths)'}
                                     value={`${kdr} (${gamerMatch.kills} / ${gamerMatch.deaths})`}/>
