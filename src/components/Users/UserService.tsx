@@ -9,9 +9,9 @@ export function createUser(user: Partial<RawUser>): Promise<User> {
     return new Promise((resolve, reject) => {
         HttpService.http({
             method: 'POST',
-            url: '/api/v1/users',
+            url: '/api/users',
             body: {
-                user: user
+                user
             }
         }).then((response) => {
             if (response.status === 200) {
@@ -24,7 +24,14 @@ export function createUser(user: Partial<RawUser>): Promise<User> {
 }
 
 
+export function sanitizeUser(user) {
+    delete user.password;
+    return user;
+}
+
+
 
 export default {
-    createUser
+    createUser,
+    sanitizeUser
 };

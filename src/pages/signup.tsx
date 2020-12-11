@@ -11,6 +11,7 @@ import {
     CardFooter,
     Button,
     Paragraph,
+    Form,
     CardHeader,
     Box,
     Text,
@@ -121,7 +122,16 @@ let SignUpPage = ({baseUrl}) => {
                             <Header>Sign Up</Header>
 
                             <Paragraph type={'help'}>
-                                Signing up for an account will give you insight to your gameplay, friend tracking, and personalized recommendations to improve your Warzone performance. <Text bold>You will be able to add and manage your Warzone accounts when you log in.</Text>
+                                Signing up for an account will give you insight to your gameplay, friend tracking, and
+                                personalized recommendations to improve your Warzone performance. <Text bold>You will be
+                                                                                                             able to add
+                                                                                                             and manage
+                                                                                                             your
+                                                                                                             Warzone
+                                                                                                             accounts
+                                                                                                             when you
+                                                                                                             log
+                                                                                                             in.</Text>
                             </Paragraph>
 
                             <Alert hideIfEmpty={true} type={formMessage.type}>
@@ -135,6 +145,7 @@ let SignUpPage = ({baseUrl}) => {
                                    errorMessage={errors.first_name}
                                    onChange={(value) => updateFormInput('first_name', value)}
                                    label={'First Name'}
+                                   onEnter={signupButtonClick}
                                    focus={true}
                                    required={true}
                                    disabled={isDisabled}
@@ -152,6 +163,7 @@ let SignUpPage = ({baseUrl}) => {
                                    errorMessage={errors.email}
                                    onChange={(value) => updateFormInput('email', value)}
                                    label={'Email'}
+                                   onEnter={signupButtonClick}
                                    required={true}
                                    disabled={isDisabled}
                                    placeholder={'domino@warcom.wz'}/>
@@ -163,6 +175,7 @@ let SignUpPage = ({baseUrl}) => {
                                    errorMessage={errors.validate_email}
                                    onChange={(value) => updateFormInput('validate_email', value)}
                                    label={'Validate Email'}
+                                   onEnter={signupButtonClick}
                                    required={true}
                                    disabled={isDisabled}
                                    placeholder={'domino@warcom.wz'}/>
@@ -179,6 +192,7 @@ let SignUpPage = ({baseUrl}) => {
                                    errorMessage={errors.password}
                                    onChange={(value) => updateFormInput('password', value)}
                                    label={'Password'}
+                                   onEnter={signupButtonClick}
                                    required={true}
                                    disabled={isDisabled}/>
 
@@ -189,6 +203,7 @@ let SignUpPage = ({baseUrl}) => {
                                    errorMessage={errors.validate_password}
                                    onChange={(value) => updateFormInput('validate_password', value)}
                                    label={'Validate Password'}
+                                   onEnter={signupButtonClick}
                                    required={true}
                                    disabled={isDisabled}/>
 
@@ -198,9 +213,10 @@ let SignUpPage = ({baseUrl}) => {
                                 </ListItem>
 
                                 <ListItem>
-                                    Please use a completely <Text style={{color: CONSTANTS.COLORS.ORANGE}} italic bold>
-                                        unique password
-                                    </Text> that isn't used anywhere else.
+                                    Please use a completely <Text style={{color: CONSTANTS.COLORS.ORANGE}} italic
+                                                                  bold>
+                                    unique password
+                                </Text> that isn't used anywhere else.
                                 </ListItem>
 
                                 <ListItem>
@@ -259,7 +275,7 @@ let SignUpPage = ({baseUrl}) => {
                 }, 2500);
             }).catch((error) => {
                 console.error(error);
-                let errorMessage = CONSTANTS.DEFAULT_ERROR_MESSAGE;
+                let errorMessage = CONSTANTS.DEFAULT_ERROR_MESSAGE + '. Please try again later.';
 
                 if (error && error.data && error.data.userMessage) {
                     errorMessage = error.data.userMessage;
