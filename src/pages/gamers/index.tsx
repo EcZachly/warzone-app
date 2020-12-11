@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import {useRouter} from 'next/router';
 
-import {Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
+import {Container, Header, LineBreak, Main, Button} from './../../components/SimpleComponents';
 import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
 
@@ -48,6 +48,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, username, lim
                                onChange={(value) => searchGamers(value)}
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
+
                     </Sidebar>
 
                     <SidebarCompanion>

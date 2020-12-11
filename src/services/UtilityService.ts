@@ -15,6 +15,18 @@ export function sleep(milliseconds: number) {
 
 
 
+export function isValidEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (TypeService.isString(email)) {
+        return re.test(email.trim());
+    } else {
+        return false;
+    }
+}
+
+
+
 export function numberToPercentage(number, decimals) {
     return round(number * 100, decimals) + '%';
 }
@@ -77,10 +89,19 @@ export function validateItem(item: any, type: string, defaultValue: any) {
     }
 }
 
+
+export function copyObject(value) {
+    return {...{item: value}}['item'];
+}
+
+
+
 export default {
     validateItem,
     sleep,
     getBaseUrlWithProtocol,
+    copyObject,
+    isValidEmail,
     camelToProperCase,
     numberToPercentage,
     round,
