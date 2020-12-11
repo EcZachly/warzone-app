@@ -21,7 +21,7 @@ function isFileRequest(req) {
  * @param next
  * @returns {Promise<void>}
  */
-const createAPIEventMiddleware = async (req, res) => {
+const createAPIEventMiddleware = async (req, res, next) => {
     const shouldBeLogged = req.url && !isFileRequest(req) && !req.headers.host.includes('localhost');
     const event = {
         url: req.url,
@@ -36,9 +36,10 @@ const createAPIEventMiddleware = async (req, res) => {
     };
 
     if (shouldBeLogged) {
-        return await createEvent(event);
+        await createEvent(event);
+        next();
     } else {
-        return;
+        next();
     }
 };
 export default createAPIEventMiddleware;
