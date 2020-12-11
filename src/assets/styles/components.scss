@@ -413,7 +413,7 @@ a:focus, a:active {
 
 .alert.alert-danger {
   $borderColor: adjust-color($theme-red, $saturation: -5%);
-  $backgroundColor: adjust-color($theme-red, $saturation: -10%, $lightness: 41%);
+  $backgroundColor: adjust-color($theme-red, $saturation: -20%, $lightness: 22%);
   $textColor: adjust-color($theme-red, $saturation: -10%, $lightness: -20%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 

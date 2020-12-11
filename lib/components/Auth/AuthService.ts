@@ -19,7 +19,7 @@ const CONFIG = {
 //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
 
 
-export function validatePassword(password) {
+export function validatePassword(password): boolean | string {
     if (TypeService.isString(password, true) === false) {
         return 'password (String) is required and cannot be empty';
     } else if (password.length < MIN_PASSWORD_LENGTH) {
@@ -35,7 +35,7 @@ export function validatePassword(password) {
 
 
 
-export function encryptPassword(password, iterations?: number, salt?: string) {
+export function encryptPassword(password: string, iterations?: number, salt?: string): Promise<string> {
     return new Promise((resolve, reject) => {
         if (TypeService.isString(password, true) === false) {
             reject(new Error('password (String) is required'));
@@ -60,7 +60,7 @@ export function encryptPassword(password, iterations?: number, salt?: string) {
 
 
 
-export function comparePassword(unencryptedPassword, encryptedPassword) {
+export function comparePassword(unencryptedPassword: string, encryptedPassword: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
         const {iterations, salt} = extractDetailsFromStoredPassword(encryptedPassword);
 
@@ -72,7 +72,7 @@ export function comparePassword(unencryptedPassword, encryptedPassword) {
 
 
 
-export function generateStorablePasswordString(iterations, salt, hash) {
+export function generateStorablePasswordString(iterations: number, salt: string, hash: Buffer | string): string {
     if (TypeService.isInteger(iterations) === false && TypeService.isString(iterations) === false) {
         throw new Error('iterations (Integer) is required');
     } else if (TypeService.isString(salt) === false && TypeService.isInteger(salt) === false) {
@@ -90,7 +90,7 @@ export function generateStorablePasswordString(iterations, salt, hash) {
 
 
 
-export function extractDetailsFromStoredPassword(encryptedPassword) {
+export function extractDetailsFromStoredPassword(encryptedPassword: string): { iterations, salt, hash } {
     if (TypeService.isString(encryptedPassword) === false) {
         throw new Error('encryptedPassword (String) is required');
     }
@@ -117,13 +117,13 @@ export function extractDetailsFromStoredPassword(encryptedPassword) {
 }
 
 
-export function generateSalt() {
+export function generateSalt(): string {
     return UtilityService.generateRandomNumberString(CONFIG.ENCRYPTION.SALT_LENGTH);
 }
 
 
 
-export function passwordIsInListOfMostCommonPasswords(password) {
+export function passwordIsInListOfMostCommonPasswords(password): boolean {
     return MOST_COMMON_PASSWORDS[password];
 }
 

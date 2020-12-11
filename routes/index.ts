@@ -24,7 +24,7 @@ export function include(server) {
 
     router.get('/api/gamer-match', GamerMatchRoutes.queryGamerMatches)
 
-    router.get('/api/users', Users.createUser);
+    router.post('/api/users', Users.createUser);
 
     configure(server);
     server.use('/', router);
