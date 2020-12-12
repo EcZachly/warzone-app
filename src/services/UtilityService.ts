@@ -137,11 +137,23 @@ export function repeatFunction(callback: Function, count) {
 
 
 
-function generateRandomInteger(min, max) {
+export function generateRandomInteger(min, max) {
     min = validateItem(min, 'integer', 0);
     max = validateItem(max, 'integer', 9);
 
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+
+export function isJson(item) {
+    try {
+        item = JSON.parse(item);
+    } catch (e) {
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -152,6 +164,7 @@ export default {
     repeatFunction,
     generateRandomInteger,
     getBaseUrlWithProtocol,
+    isJson,
     copyObject,
     isValidEmail,
     camelToProperCase,
