@@ -2169,7 +2169,20 @@ a:focus, a:active {
 
 .label-value-container.size-sm .value {
   font-size: .875rem;
+}
 
+
+
+.label-value-container.inline {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+}
+
+.label-value-container.inline .label {
+  margin-right: 5px;
 }
 
 

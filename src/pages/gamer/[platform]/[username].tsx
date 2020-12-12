@@ -8,6 +8,7 @@ import {
     Box,
     Header,
     Text,
+    Show,
     LineBreak,
     Button,
     Small,
@@ -38,6 +39,8 @@ import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardLi
 
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
+
+import {COLORS} from '../../../config/CONSTANTS';
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
@@ -149,6 +152,11 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
             </div>
         );
     } else {
+        const damageDoneRatio = UtilityService.round(Number(gamer.avg_damage_done) / Number(gamer.avg_damage_taken), 3);
+        // const last100GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_100_rolling_average_kdr - gamer.kdr) / gamer.kdr, 1);
+        const last30GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_30_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
+        const last10GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_10_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
+
         return (
             <Page title={'Stats for ' + gamer.username}>
                 <Navbar/>
@@ -173,7 +181,60 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
                             <LineBreak/>
 
-                            <LabelValue label={'KDR'} value={gamer.kdr}/>
+                            <LabelValue style={{marginBottom: '15px'}} label={'KDR'} value={
+                                <>
+                                    <LabelValue style={{marginBottom: '0px'}}
+                                                inline={true}
+                                                size={'sm'}
+                                                label={'All Games'}
+                                                value={
+                                                    <Text>{UtilityService.round(gamer.kdr, 2)}</Text>
+                                                }/>
+
+                                    <LabelValue style={{marginBottom: '0px'}}
+                                                inline={true}
+                                                size={'sm'}
+                                                label={'Last 100 games'}
+                                                value={
+                                                    <Text>
+                                                        {UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}
+                                                    </Text>
+                                                }/>
+
+                                    <LabelValue style={{marginBottom: '0px'}}
+                                                inline={true}
+                                                size={'sm'}
+                                                label={'Last 30 games'}
+                                                value={
+                                                    <Text>
+                                                        {UtilityService.round(gamer.last_30_rolling_average_kdr, 2)}
+                                                        <Text title={'compared to the last 100 games'} bold style={{marginLeft: '5px', color: gamer.last_30_rolling_average_kdr > gamer.kdr ? COLORS.GREEN : COLORS.RED}}>
+                                                            <Show show={gamer.last_30_rolling_average_kdr > gamer.kdr}>+</Show>{last30GamesPercentageDifference}
+                                                        </Text>
+                                                    </Text>
+                                                }/>
+
+                                    <LabelValue style={{marginBottom: '0px'}}
+                                                inline={true}
+                                                size={'sm'}
+                                                label={'Last 10 games'}
+                                                value={
+                                                    <Text>
+                                                        {UtilityService.round(gamer.last_10_rolling_average_kdr, 2)}
+
+                                                        <Text title={'compared to the last 100 games'} bold style={{marginLeft: '5px', color: gamer.last_10_rolling_average_kdr > gamer.kdr ? COLORS.GREEN : COLORS.RED}}>
+                                                            <Show show={gamer.last_10_rolling_average_kdr > gamer.kdr}>+</Show>{last10GamesPercentageDifference}
+                                                        </Text>
+                                                    </Text>
+                                                }/>
+
+                                </>
+                            }/>
+
+                            <LabelValue label={'Average Kills / Deaths per game'}
+                                        value={`${UtilityService.round(gamer.avg_kills, 2)} / ${UtilityService.round(gamer.avg_deaths, 2)}`}/>
+
+                            <LabelValue label={'Damage Done/Taken Ratio'} value={damageDoneRatio}/>
 
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 

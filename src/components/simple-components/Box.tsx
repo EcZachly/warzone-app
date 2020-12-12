@@ -23,6 +23,11 @@ class Box extends React.Component<BoxProps> {
                  onMouseOver={props.onMouseOver}
                  onMouseEnter={props.onMouseEnter}
                  onMouseLeave={props.onMouseLeave}
+                 onClick={() => {
+                     if (props.onClick) {
+                         props.onClick();
+                     }
+                 }}
                  ref={props.innerRef}>
                 {props.children}
             </div>
@@ -62,6 +67,7 @@ type BoxProps = {
     children?: React.ReactNode,
     shadow?: boolean | 1 | 2 | 3 | 4 | 5,
     title?: string,
+    onClick?: () => void,
     onMouseOver?: any,
     onMouseEnter?: any,
     onMouseLeave?: any,
