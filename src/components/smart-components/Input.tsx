@@ -226,7 +226,7 @@ class Input extends React.Component<InputType> {
 
 
 type Option = {
-    value: string,
+    value: any,
     text: string
 }
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import TypeService from '../../services/TypeService';
+import UtilityService from '../../services/UtilityService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -30,7 +32,12 @@ class InputSelect extends React.Component<InputSelectProps> {
                     ref={props.innerRef}
                     onChange={(event) => {
                         if (props.onChange) {
-                            const value = event.target.value;
+                            let value = event.target.value;
+
+                            if (UtilityService.isJson(value)) {
+                                value = JSON.parse(value);
+                            }
+
                             props.onChange(value, props, {value, event, props});
                         }
                     }}>
@@ -88,7 +95,9 @@ class InputSelect extends React.Component<InputSelectProps> {
                     } else if (optionKeys.includes('text') === false) {
                         console.warn(`InputRadio.props.options[${index}].text (String) is required`);
                     } else {
-                        const {value, text} = option;
+                        let {value, text} = option;
+                        let valueIsJson = (TypeService.isArray(value) || TypeService.isObject(value));
+                        value = (valueIsJson) ? JSON.stringify(value) : value;
 
                         return (
                             <option value={value} key={`${index}-${value}`}>{text}</option>

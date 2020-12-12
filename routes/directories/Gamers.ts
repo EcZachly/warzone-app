@@ -11,7 +11,7 @@ import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
 import {VIEWS} from './../../lib/constants';
-import {getGamerDetailViewQuery} from "../../lib/components/Gamers/GamerService";
+import {getGamerDetailViewQuery} from '../../lib/components/Gamers/GamerService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -85,21 +85,48 @@ function manageComplexQueryParameters(queryParams) {
     });
 }
 
+
+
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const queryParams = req.query;
-    const offset = req.query.offset || 0;
-    const limit = req.query.limit || 10;
+
+    const offset = queryParams.offset || 0;
     delete queryParams.offset;
+
+    const limit = queryParams.limit || 10;
     delete queryParams.limit;
+
+    const sort = queryParams.sort || null;
+    delete queryParams.sort;
+
+    const sortDirection = queryParams.direction || null;
+    delete queryParams.direction;
+
     manageComplexQueryParameters(queryParams);
+
     let descriptionQuery = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS);
     await descriptionQuery.executeQuery();
-    let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, {offset, limit});
+
+    let queryOptions = {offset, limit, order: undefined};
+
+    if (sort) {
+        let sortObj = {
+            field: sort,
+            direction: undefined
+        };
+
+        if (sortDirection) {
+            sortObj.direction = sortDirection;
+        }
+
+        queryOptions.order = [sortObj];
+    }
+
+    let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
     await playerQuery.executeQuery();
+
     handleResponse(req, res, {'gamers': playerQuery.data, 'classDescriptions': descriptionQuery.data[0]});
 }
-
-
 
 
 
@@ -119,18 +146,18 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     const {view} = req.query;
     delete req.query.view;
     const {username, platform} = req.params;
-    let allParams = {...req.params, ...req.query}
+    let allParams = {...req.params, ...req.query};
     if (!platform) {
         handleError(req, res, {message: 'platform (/gamers/:platform/:username, String) is required and cannot be empty'});
     } else if (!username) {
         handleError(req, res, {message: 'username (/gamers/:platform/:username, String) is required and cannot be empty'});
     } else {
-        const sqlView = restKeyToSQLView(view as string)
+        const sqlView = restKeyToSQLView(view as string);
         const viewsToQuery = {
-            [VIEWS.PLAYER_STAT_SUMMARY]:   getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, allParams),
-            [VIEWS.GAMER_CLASS_DESCRIPTIONS]:  getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, allParams),
-            [sqlView]:  getGamerDetailViewQuery(sqlView, allParams)
-        }
+            [VIEWS.PLAYER_STAT_SUMMARY]: getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, allParams),
+            [VIEWS.GAMER_CLASS_DESCRIPTIONS]: getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, allParams),
+            [sqlView]: getGamerDetailViewQuery(sqlView, allParams)
+        };
         const gamerList = await queryGamers({username, platform});
         const gamerData = gamerList[0];
         const gamerExists = !!gamerData;
