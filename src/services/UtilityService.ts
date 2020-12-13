@@ -157,14 +157,23 @@ export function isJson(item) {
 }
 
 
+
+export function objectToUrlParameters(params: Record<any, string | number | boolean>) {
+    // @ts-ignore
+    return Object.entries(params).filter(([key, val]) => !!val).map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`).join('&');
+}
+
+
+
 export default {
     validateItem,
     sleep,
     generateRandomNumberString,
+    objectToUrlParameters,
+    isJson,
     repeatFunction,
     generateRandomInteger,
     getBaseUrlWithProtocol,
-    isJson,
     copyObject,
     isValidEmail,
     camelToProperCase,

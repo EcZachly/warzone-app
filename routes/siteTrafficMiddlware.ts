@@ -36,7 +36,12 @@ const createAPIEventMiddleware = async (req, res, next) => {
     };
 
     if (shouldBeLogged) {
-        await createEvent(event);
+        try{
+            await createEvent(event);
+        }
+        catch(e){
+            console.log(e);
+        }
         next();
     } else {
         next();
