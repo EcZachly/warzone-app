@@ -14,6 +14,8 @@ const Users = require('./../lib/components/Users/UserRoutes');
 export function include(server) {
     let router = express.Router();
 
+    router.post('/api/login', Users.login);
+
     router.post('/api/gamer', Gamers.createGamer)
     router.get('/api/gamer', Gamers.findGamers)
     router.get('/api/gamer/:platform/:username', Gamers.getGamerDetails);

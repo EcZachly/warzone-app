@@ -1,4 +1,7 @@
+import {NextApiRequest, NextApiResponse} from 'next';
 import crypto from 'crypto';
+import moment from 'moment';
+import jwt from 'jsonwebtoken';
 
 import TypeService from '../../../src/services/TypeService';
 import MOST_COMMON_PASSWORDS from './MOST_COMMON_PASSWORDS';
@@ -6,6 +9,9 @@ import UtilityService from '../../../src/services/UtilityService';
 
 const MIN_PASSWORD_LENGTH = 8;
 const MAX_PASSWORD_LENGTH = 130;
+
+import CONSTANTS from './../../../config/CONSTANTS';
+import {UserID} from '../../../src/components/Users/UserTypes';
 
 const CONFIG = {
     ENCRYPTION: {
@@ -72,6 +78,38 @@ export function comparePassword(unencryptedPassword: string, encryptedPassword: 
 
 
 
+export function setJWTTokenCookie(tokenStorageObj, res) {
+    const token = generateAuthToken({
+        user_id: tokenStorageObj.user_id
+    });
+
+    res.cookie('jwt', token, {
+        expires: _generateExpirationDate(),
+        httpOnly: true
+    });
+}
+
+
+export function generateAuthToken(tokenStorageObj) {
+    if (TypeService.isObject(tokenStorageObj) === false) {
+        throw new Error('tokenStorageObj (Object) is required');
+    } else if (TypeService.isInteger(tokenStorageObj.user_id) === false) {
+        throw new Error('tokenStorageObj.user_id (Integer) is required');
+    } else {
+        tokenStorageObj.expiration_timestamp = _generateExpirationDate();
+        return jwt.sign(tokenStorageObj, CONSTANTS.JWT_SECRET);
+    }
+}
+
+
+
+export function _generateExpirationDate() {
+    return moment().add(7, 'days').toDate();
+}
+
+
+
+
 export function generateStorablePasswordString(iterations: number, salt: string, hash: Buffer | string): string {
     if (TypeService.isInteger(iterations) === false && TypeService.isString(iterations) === false) {
         throw new Error('iterations (Integer) is required');
@@ -132,6 +170,7 @@ export function passwordIsInListOfMostCommonPasswords(password): boolean {
 export default {
     validatePassword,
     encryptPassword,
+    setJWTTokenCookie,
     passwordIsInListOfMostCommonPasswords,
     generateStorablePasswordString,
     extractDetailsFromStoredPassword,

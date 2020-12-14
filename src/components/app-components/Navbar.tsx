@@ -44,7 +44,7 @@ class Navbar extends React.Component {
 
 
                     <Box className={'navbar-items'} id={'navbar-right'}>
-                        <a>
+                        <a href={'/login'}>
                             Log In
                         </a>
 
