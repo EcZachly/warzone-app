@@ -21,7 +21,7 @@ export const VIEWS = {
     GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
-    MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships'
+    MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships_materialized'
 };
 
 export const GAMER_TABLE = 'gamers';
@@ -42,5 +42,6 @@ export const MATERIALIZED_VIEWS_DEPENDENCIES: object = {
     [VIEWS.GAMER_SITE_HITS]: [],
     [VIEWS.PLAYER_STAT_SUMMARY]: [],
     [VIEWS.TEAMMATES]: [],
-    [VIEWS.DAILY_PLAYER_STAT_SUMMARY]: []
+    [VIEWS.DAILY_PLAYER_STAT_SUMMARY]: [],
+    [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: []
 }

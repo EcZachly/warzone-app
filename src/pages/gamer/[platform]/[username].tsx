@@ -5,11 +5,13 @@ import {
     Main,
     Box,
     Header,
+    Text,
+    Show,
     LineBreak,
     Button,
     Small
 } from './../../../components/SimpleComponents';
-import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
+import {SidebarCompanion, LabelValue, StatLabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
     GamerGradeChart,
@@ -30,6 +32,8 @@ import HtmlService from '../../../services/HtmlService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
+
+import {COLORS} from '../../../config/CONSTANTS';
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
@@ -143,6 +147,11 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
             </div>
         );
     } else {
+        const damageDoneRatio = UtilityService.round(Number(gamer.avg_damage_done) / Number(gamer.avg_damage_taken), 3);
+        // const last100GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_100_rolling_average_kdr - gamer.kdr) / gamer.kdr, 1);
+        const last30GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_30_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
+        const last10GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_10_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
+
         return (
             <Page title={'Stats for ' + gamer.username}>
                 <Navbar/>
@@ -167,7 +176,46 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
                             <LineBreak/>
 
-                            <LabelValue label={'KDR'} value={gamer.kdr}/>
+                            <LabelValue style={{marginBottom: '15px'}} label={'KDR'} value={
+                                <>
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'All Games'}
+                                                    statValue={gamer.kdr}
+                                    />
+
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'Last 100 games'}
+                                                    statValue={gamer.last_100_rolling_average_kdr}
+                                    />
+
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'Last 30 games'}
+                                                    statValue={gamer.last_30_rolling_average_kdr}
+                                                    compareStatValue={gamer.last_100_rolling_average_kdr}
+                                                    compareStatLabel={'compared to the last 100 games'}
+                                    />
+
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'Last 10 games'}
+                                                    statValue={gamer.last_10_rolling_average_kdr}
+                                                    compareStatValue={gamer.last_100_rolling_average_kdr}
+                                                    compareStatLabel={'compared to the last 100 games'}
+                                    />
+                                </>
+                            }/>
+
+                            <LabelValue label={'Average Kills / Deaths per game'}
+                                        value={`${UtilityService.round(gamer.avg_kills, 2)} / ${UtilityService.round(gamer.avg_deaths, 2)}`}/>
+
+                            <LabelValue label={'Damage Done/Taken Ratio'} value={damageDoneRatio}/>
 
                             <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
 
@@ -195,7 +243,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     }
 
 
-
     function getChartWidth() {
         let windowWidth = 0;
         let containerPosition;
@@ -218,7 +265,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     }
 
 
-
     async function setTabAndFetchData(tabId) {
         const newState = Object.assign({}, chartState);
 
@@ -236,7 +282,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
             setChartState(newState);
         }
     }
-
 
 
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {

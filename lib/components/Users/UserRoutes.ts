@@ -60,6 +60,45 @@ export function createUser(req: NextApiRequest, res: NextApiResponse) {
 
 
 
+export function login(req: NextApiRequest, res: NextApiResponse) {
+    let {email, password} = req.body;
+
+    if (TypeService.isString(email, true) === false) {
+        responseHandler.handleError(req, res, {message: 'body.email (String) is required'}, 400);
+    } else if (TypeService.isString(password, true) === false) {
+        responseHandler.handleError(req, res, {message: 'body.password (String) is required'}, 400);
+    } else {
+        UserController.queryUsers({email: email}, {}, {sanitize: false}).then((users) => {
+            if (users && TypeService.isObject(users[0], true)) {
+                let user = users[0];
+
+                AuthService.comparePassword(password, user.password).then((passwordsMatch) => {
+                    if (passwordsMatch) {
+                        AuthService.setJWTTokenCookie({
+                            user_id: user.user_id
+                        }, res);
+
+                        responseHandler.handleResponse(req, res, {user: UserService.sanitizeUser(user)});
+                    } else {
+                        responseHandler.handleError(req, res, {userMessage: 'Invalid email/password combination'}, 400);
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                    responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE}, 500);
+                });
+
+            } else {
+                responseHandler.handleError(req, res, {userMessage: 'Invalid email/password combination'}, 400);
+            }
+        }).catch((error) => {
+            console.error(error);
+            responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE}, 500);
+        });
+    }
+}
+
+
+
 export default {
     createUser
 };

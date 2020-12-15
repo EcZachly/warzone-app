@@ -6,9 +6,14 @@ import {DATABASE_SCHEMA} from './../../constants';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export async function find(table: string, query?: Record<any, unknown>, options?: Record<any, unknown>) {
-    const db = await database;
-    return db[DATABASE_SCHEMA][table].find(query, options);
+export async function find(table: string, query?: Record<any, unknown>, options?: Record<any, unknown>): Promise<any[]> {
+    return new Promise(async (resolve, reject) => {
+        validateTable(table).then(async (isValid) => {
+            const db = await database;
+
+            db[DATABASE_SCHEMA][table].find(query, options).then(resolve).catch(reject);
+        }).catch(reject);
+    });
 }
 
 

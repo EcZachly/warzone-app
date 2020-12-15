@@ -7,6 +7,7 @@ const useragent = require('express-useragent');
 const requestIp = require('request-ip');
 const jwt = require('jsonwebtoken');
 
+import CONSTANTS from './../CONSTANTS';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -48,7 +49,7 @@ function validateSecureRequest(req, res, next) {
     let decodedToken = null;
 
     try {
-        // decodedToken = jwt.verify(token, CONSTANTS.JWT_SECRET);
+        decodedToken = jwt.verify(token, CONSTANTS.JWT_SECRET);
     } catch (error) {
         //no token
     }

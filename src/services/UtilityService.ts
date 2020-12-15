@@ -137,7 +137,7 @@ export function repeatFunction(callback: Function, count) {
 
 
 
-function generateRandomInteger(min, max) {
+export function generateRandomInteger(min, max) {
     min = validateItem(min, 'integer', 0);
     max = validateItem(max, 'integer', 9);
 
@@ -145,10 +145,32 @@ function generateRandomInteger(min, max) {
 }
 
 
+
+export function isJson(item) {
+    try {
+        item = JSON.parse(item);
+    } catch (e) {
+        return false;
+    }
+
+    return true;
+}
+
+
+
+export function objectToUrlParameters(params: Record<any, string | number | boolean>) {
+    // @ts-ignore
+    return Object.entries(params).filter(([key, val]) => !!val).map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`).join('&');
+}
+
+
+
 export default {
     validateItem,
     sleep,
     generateRandomNumberString,
+    objectToUrlParameters,
+    isJson,
     repeatFunction,
     generateRandomInteger,
     getBaseUrlWithProtocol,

@@ -11,7 +11,17 @@ const CONSTANTS = {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-const LabelValue = (props) => {
+type LabelValueProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    label: string,
+    value: any,
+    inline?: boolean,
+    size?: (typeof CONSTANTS.VALID_SIZES)[number]
+}
+
+const LabelValue = (props: LabelValueProps) => {
     
     const className = getClassName(props);
     const labelValue = getLabelValue(props);
@@ -33,6 +43,10 @@ function getClassName(props) {
     
     if (props.size && CONSTANTS.VALID_SIZES.includes(props.size)) {
         classes.push('size-' + props.size);
+    }
+
+    if (props.inline === true) {
+        classes.push('inline');
     }
 
     if (props.className) {
@@ -72,11 +86,13 @@ function getValueContents(props) {
                 {value}
             </Paragraph>
         );
-    } else if (React.isValidElement(value)) {
-        return value;
+    // } else if (React.isValidElement(value)) {
+    //     return value;
     } else {
         return (
-            <Paragraph style={props.valueStyle} className={valueClassName}>{value}</Paragraph>
+            <Box className={valueClassName} style={props.valueStyle} onClick={valueClick}>
+                {value}
+            </Box>
         );
     }
 }

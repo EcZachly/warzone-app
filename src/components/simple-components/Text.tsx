@@ -91,6 +91,7 @@ type TextProps = {
     //text align to the left
     textLeft?: boolean,
     innerRef?: any,
+    title?: string,
 
     bold?: boolean,
 
