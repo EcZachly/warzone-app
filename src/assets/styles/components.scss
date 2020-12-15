@@ -684,8 +684,8 @@ a:focus, a:active {
 }
 
 .badge-dark {
-  color: $theme-white;
-  background-color: $theme-dark-gray;
+  color: darken($theme-white, 5);
+  background-color: lighten($theme-dark-gray, 6);
 }
 
 
