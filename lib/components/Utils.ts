@@ -9,7 +9,8 @@ export function restKeyToSQLView(key: string){
         'time': VIEWS.TIME_ANALYSIS,
         'squads': VIEWS.SQUADS,
         'trends': VIEWS.TREND_ANALYSIS,
-        'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED
+        'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED,
+        'relationships': VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS
     };
     return viewMap[key];
 }
@@ -44,7 +45,8 @@ export function restToMassiveQuery(view: string, params: object){
         [VIEWS.TIME_ANALYSIS]: {...userQuery, ...timezoneQuery},
         [VIEWS.SQUADS]: squadQuery,
         [VIEWS.TREND_ANALYSIS]: {...userQuery, ...trendQuery},
-        [VIEWS.GAMER_MATCHES_AUGMENTED]: userQuery
+        [VIEWS.GAMER_MATCHES_AUGMENTED]: userQuery,
+        [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: userQuery
     }
     return queries[view]
 }

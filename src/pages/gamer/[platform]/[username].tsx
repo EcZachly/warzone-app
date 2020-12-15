@@ -1,41 +1,33 @@
 import {GetServerSideProps} from 'next';
 import React, {useState, useEffect} from 'react';
-import _ from 'lodash';
-
 import {
     Container,
     Main,
     Box,
     Header,
-    Text,
     LineBreak,
     Button,
-    Small,
-    Image
+    Small
 } from './../../../components/SimpleComponents';
 import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
     GamerGradeChart,
+    ClassBadgeList,
+    GamerAliasList,
+    GamerHeat,
+    GamerPlacementChart,
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
     Navbar,
     Footer,
-    GamerTrendChart
+    GamerTrendChart, GamerInfluenceList
 } from './../../../components/AppComponents';
 
 import UtilityService, {getBaseUrlWithProtocol} from '../../../services/UtilityService';
-
-import {ClassBadgeList} from '../../../components/classes';
-
-import TrendChart from '../../../components/charting/TrendChart';
-
-import {GamerAliasList, GamerHeat, GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
-import GamerMatchService from '../../../components/gamer_match/GamerMatchService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
-
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
 
@@ -47,7 +39,8 @@ const CONFIG = {
         time: {},
         squads: {},
         trends: {},
-        recent_matches: {customGet: true}
+        recent_matches: {customGet: true},
+        relationships: {}
     }
 };
 
@@ -117,7 +110,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
         'recent_matches': <GamerMatchCardList gamer={gamer}
                                               noLink={true}
-                                              gamerMatchList={chartState.viewData}/>
+                                              gamerMatchList={chartState.viewData}/>,
+        'relationships': <GamerInfluenceList gamer={gamer} viewData={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];

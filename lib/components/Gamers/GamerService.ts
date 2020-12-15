@@ -11,6 +11,7 @@ export {default} from './../../../src/components/gamer/GamerService';
 export const getGamerDetailViewQuery = (view: string, allParams:object={}, options:object={}) : ViewQuery => {
     let query = restToMassiveQuery(view, allParams)
     const queryableViews = {
+        [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]:  new ViewQuery(VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS, query, options),
         [VIEWS.PLAYER_STAT_SUMMARY]: new ViewQuery(VIEWS.PLAYER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: new ViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}),
         [VIEWS.GRADED_STATS]: new ViewQuery(VIEWS.GRADED_STATS, query),
