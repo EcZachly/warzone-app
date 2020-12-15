@@ -15,6 +15,7 @@ export function include(server) {
     let router = express.Router();
 
     router.post('/api/login', Users.login);
+    router.post('/api/v1/verify-user-token', Users.verifyUserToken);
 
     router.post('/api/gamer', Gamers.createGamer)
     router.get('/api/gamer', Gamers.findGamers)

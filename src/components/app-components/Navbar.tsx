@@ -4,7 +4,8 @@ import {withRouter} from 'next/router';
 
 import React from 'react';
 
-import {Box, Button, Text} from './../SimpleComponents';
+import {Box, Button, Show, Text} from './../SimpleComponents';
+import {UserService} from '../Users';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -25,6 +26,9 @@ class Navbar extends React.Component {
     render() {
         const props = this.props;
 
+        let userIsLoggedIn = UserService.userIsLoggedIn();
+        let user = userIsLoggedIn ? UserService.getUser() : {};
+
         return (
             <Box id={'navbar'} className={'navbar'} style={props['style']}>
                 <Box id={'navbar-container'}>
@@ -44,15 +48,27 @@ class Navbar extends React.Component {
 
 
                     <Box className={'navbar-items'} id={'navbar-right'}>
-                        <a href={'/login'}>
-                            Log In
-                        </a>
+                        <Show show={userIsLoggedIn !== true}>
+                            <a href={'/login'}>
+                                Log In
+                            </a>
 
-                        <a href={'/signup'}>
-                            <Button type={['dark']} style={{fontWeight: 500}}>
-                                Sign Up
+                            <a href={'/signup'}>
+                                <Button type={['dark']} style={{fontWeight: 500}}>
+                                    Sign Up
+                                </Button>
+                            </a>
+                        </Show>
+
+
+                        <Show show={userIsLoggedIn}>
+                            <Button type={['dark']} style={{fontWeight: 500}} onClick={() => {
+                                UserService.logout();
+                                Router.push('/?logout=true');
+                            }}>
+                                Log Out
                             </Button>
-                        </a>
+                        </Show>
                     </Box>
                 </Box>
             </Box>

@@ -13,6 +13,16 @@ export const COLORS = {
 
 
 
+export const STATUS_CODE = {
+    BAD_REQUEST: 400,
+    INTERNAL_ERROR: 500,
+    SUCCESS: 200,
+    OKAY: 200,
+    NO_CONTENT: 204
+}
+
+
+
 export default {
     DEFAULT_ERROR_MESSAGE,
     COLORS
