@@ -187,8 +187,6 @@ export function verifyJWTToken(decodedToken, options) {
             reject(new Error('decodedToken (Object) is required'));
         } else if (TypeService.isInteger(decodedToken.user_id) === false) {
             reject(new Error('decodedToken.user_id (Integer) is required'));
-        } else if (TypeService.isInteger(decodedToken.session_id) === false) {
-            reject(new Error('decodedToken.session_id (Integer) is required'));
         } else if (TypeService.isDate(decodedToken.expiration_timestamp, true) === false) {
             reject(new Error('decodedToken.expiration_timestamp (Timestamp) is required'));
         } else {
