@@ -1,0 +1,2 @@
+CREATE MATERIALIZED VIEW warzone.mutual_benefit_relationships_materialized
+AS SELECT * FROM warzone.mutual_benefit_relationships;

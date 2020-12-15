@@ -1,7 +1,5 @@
 import {GetServerSideProps} from 'next';
 import React, {useState, useEffect} from 'react';
-import _ from 'lodash';
-
 import {
     Container,
     Main,
@@ -11,32 +9,27 @@ import {
     Show,
     LineBreak,
     Button,
-    Small,
-    Image
+    Small
 } from './../../../components/SimpleComponents';
-import {SidebarCompanion, LabelValue, Sidebar} from '../../../components/SmartComponents';
+import {SidebarCompanion, LabelValue, StatLabelValue, Sidebar} from '../../../components/SmartComponents';
 import {
     Page,
     GamerGradeChart,
+    ClassBadgeList,
+    GamerAliasList,
+    GamerHeat,
+    GamerPlacementChart,
     GamerTimeChart,
     TeammateTable,
     GamerPlatformImage,
     Navbar,
     Footer,
-    GamerTrendChart
+    GamerTrendChart, GamerInfluenceList
 } from './../../../components/AppComponents';
 
 import UtilityService, {getBaseUrlWithProtocol} from '../../../services/UtilityService';
-
-import {ClassBadgeList} from '../../../components/classes';
-
-import TrendChart from '../../../components/charting/TrendChart';
-
-import {GamerAliasList, GamerHeat, GamerPlacementChart} from './../../../components/gamer/index';
 import HtmlService from '../../../services/HtmlService';
-import GamerMatchService from '../../../components/gamer_match/GamerMatchService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
-
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
 
@@ -50,7 +43,8 @@ const CONFIG = {
         time: {},
         squads: {},
         trends: {},
-        recent_matches: {customGet: true}
+        recent_matches: {customGet: true},
+        relationships: {}
     }
 };
 
@@ -120,7 +114,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
         'recent_matches': <GamerMatchCardList gamer={gamer}
                                               noLink={true}
-                                              gamerMatchList={chartState.viewData}/>
+                                              gamerMatchList={chartState.viewData}/>,
+        'relationships': <GamerInfluenceList gamer={gamer} viewData={chartState.viewData}/>
     };
 
     const TabData = componentMap[chartState.activeTab];
@@ -183,51 +178,37 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 
                             <LabelValue style={{marginBottom: '15px'}} label={'KDR'} value={
                                 <>
-                                    <LabelValue style={{marginBottom: '0px'}}
-                                                inline={true}
-                                                size={'sm'}
-                                                label={'All Games'}
-                                                value={
-                                                    <Text>{UtilityService.round(gamer.kdr, 2)}</Text>
-                                                }/>
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'All Games'}
+                                                    statValue={gamer.kdr}
+                                    />
 
-                                    <LabelValue style={{marginBottom: '0px'}}
-                                                inline={true}
-                                                size={'sm'}
-                                                label={'Last 100 games'}
-                                                value={
-                                                    <Text>
-                                                        {UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}
-                                                    </Text>
-                                                }/>
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'Last 100 games'}
+                                                    statValue={gamer.last_100_rolling_average_kdr}
+                                    />
 
-                                    <LabelValue style={{marginBottom: '0px'}}
-                                                inline={true}
-                                                size={'sm'}
-                                                label={'Last 30 games'}
-                                                value={
-                                                    <Text>
-                                                        {UtilityService.round(gamer.last_30_rolling_average_kdr, 2)}
-                                                        <Text title={'compared to the last 100 games'} bold style={{marginLeft: '5px', color: gamer.last_30_rolling_average_kdr > gamer.kdr ? COLORS.GREEN : COLORS.RED}}>
-                                                            <Show show={gamer.last_30_rolling_average_kdr > gamer.kdr}>+</Show>{last30GamesPercentageDifference}
-                                                        </Text>
-                                                    </Text>
-                                                }/>
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'Last 30 games'}
+                                                    statValue={gamer.last_30_rolling_average_kdr}
+                                                    compareStatValue={gamer.last_100_rolling_average_kdr}
+                                                    compareStatLabel={'compared to the last 100 games'}
+                                    />
 
-                                    <LabelValue style={{marginBottom: '0px'}}
-                                                inline={true}
-                                                size={'sm'}
-                                                label={'Last 10 games'}
-                                                value={
-                                                    <Text>
-                                                        {UtilityService.round(gamer.last_10_rolling_average_kdr, 2)}
-
-                                                        <Text title={'compared to the last 100 games'} bold style={{marginLeft: '5px', color: gamer.last_10_rolling_average_kdr > gamer.kdr ? COLORS.GREEN : COLORS.RED}}>
-                                                            <Show show={gamer.last_10_rolling_average_kdr > gamer.kdr}>+</Show>{last10GamesPercentageDifference}
-                                                        </Text>
-                                                    </Text>
-                                                }/>
-
+                                    <StatLabelValue style={{marginBottom: '0px'}}
+                                                    inline={true}
+                                                    size={'sm'}
+                                                    label={'Last 10 games'}
+                                                    statValue={gamer.last_10_rolling_average_kdr}
+                                                    compareStatValue={gamer.last_100_rolling_average_kdr}
+                                                    compareStatLabel={'compared to the last 100 games'}
+                                    />
                                 </>
                             }/>
 
@@ -262,7 +243,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     }
 
 
-
     function getChartWidth() {
         let windowWidth = 0;
         let containerPosition;
@@ -285,7 +265,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     }
 
 
-
     async function setTabAndFetchData(tabId) {
         const newState = Object.assign({}, chartState);
 
@@ -303,7 +282,6 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
             setChartState(newState);
         }
     }
-
 
 
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {

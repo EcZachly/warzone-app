@@ -53,14 +53,13 @@ function run() {
                         'www.brshooter.com': true
                     };
                     const hostname = domains[req.hostname] ? 'www.brshooter.com' : req.hostname;
-
                     if (req.headers['x-forwarded-proto'] === 'http') {
                         res.redirect(301, `https://${hostname}${req.url}`);
                         return;
                     }
                     next();
                 });
-                server.use((req, res, next) => createAPIEventMiddleware(req, res, next))
+                server.use('*', (req, res, next) => createAPIEventMiddleware(req, res, next))
                 server.get('*', (req, res) => {
                     return handle(req, res);
                 });

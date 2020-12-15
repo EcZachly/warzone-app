@@ -5,6 +5,11 @@
 
 
 //C
+import ClassBadgeList from './classes/ClassBadgeList';
+export {ClassBadgeList}
+
+import ClassBadge from './classes/ClassBadge';
+export {ClassBadge}
 
 
 //D
@@ -18,6 +23,10 @@ import Footer from './app-components/Footer';
 export {Footer};
 
 //G
+
+import {GamerAliasList, GamerHeat, GamerPlacementChart} from './../components/gamer/index';
+export {GamerAliasList, GamerHeat, GamerPlacementChart}
+
 import GamerCard from './gamer/GamerCard';
 export {GamerCard};
 
@@ -35,6 +44,9 @@ export {GamerTrendChart}
 
 import GamerTimeChart from './gamer/GamerTimeChart';
 export {GamerTimeChart};
+
+import GamerInfluenceList from './gamer/GamerInfluenceList';
+export {GamerInfluenceList};
 
 //H
 
@@ -98,12 +110,17 @@ export {TeammateTable};
 
 export default {
     Footer: Footer,
+    ClassBadgeList: ClassBadgeList,
+    GamerAliasList: GamerAliasList,
+    GamerHeat: GamerHeat,
+    ClassBadge: ClassBadge,
     GamerCard: GamerCard,
     GamerGradeChart: GamerGradeChart,
     GamerTimeChart: GamerTimeChart,
     GamerPlatformImage: GamerPlatformImage,
     GamerLink: GamerLink,
     GamerTrendChart: GamerTrendChart,
+    GamerInfluenceList: GamerInfluenceList,
     Navbar: Navbar,
     TeammateTable: TeammateTable,
     Page: Page,

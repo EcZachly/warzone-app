@@ -76,6 +76,9 @@ export {ProgressBar};
 import Sidebar from './smart-components/Sidebar';
 export {Sidebar};
 
+import StatLabelValue from './smart-components/StatLabelValue';
+export {StatLabelValue}
+
 import SidebarCompanion from './smart-components/SidebarCompanion';
 export {SidebarCompanion};
 
