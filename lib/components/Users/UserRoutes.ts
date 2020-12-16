@@ -9,8 +9,7 @@ import TypeService from '../../../src/services/TypeService';
 import UtilityService from '../../../src/services/UtilityService';
 
 import {AuthService} from './../Auth';
-import {DEFAULT_ERROR_MESSAGE} from '../../../src/config/CONSTANTS';
-
+import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../../src/config/CONSTANTS';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -99,6 +98,60 @@ export function login(req: NextApiRequest, res: NextApiResponse) {
 
 
 
+export function verifyUserToken(req, res) {
+    let {jwt} = req.cookies;
+    let {user_id} = req.body;
+
+    if (TypeService.isInteger(user_id)) {
+        if (TypeService.isString(jwt)) {
+            let decodedToken;
+
+            try {
+                decodedToken = AuthService.decodeJWTToken(jwt);
+            } catch (error) {
+                //invalid token
+            }
+
+            if (TypeService.isObject(decodedToken)) {
+                AuthService.verifyJWTToken(decodedToken, {
+                    user_id: user_id,
+                    verifySession: true,
+                    updateSession: true
+                }).then((response) => {
+                    AuthService.setJWTTokenCookie({
+                        user_id: decodedToken.user_id
+                    }, res);
+
+                    responseHandler.handleResponse(req, res, {message: 'valid token'});
+                }).catch((error) => {
+                    console.error('verify jwt token failed');
+                    let responseMessage = 'an unknown error occurred';
+
+                    if (error && error.message) {
+                        responseMessage = error.message;
+                    }
+
+                    console.error(error);
+                    res.clearCookie('jwt');
+                    responseHandler.handleError(req, res, responseMessage, STATUS_CODE.INTERNAL_ERROR);
+                });
+            } else {
+                res.clearCookie('jwt');
+                responseHandler.handleError(req, res, 'invalid token', STATUS_CODE.BAD_REQUEST);
+            }
+        } else {
+            responseHandler.handleError(req, res, 'no token found in the cookie', STATUS_CODE.BAD_REQUEST);
+        }
+    } else {
+        responseHandler.handleError(req, res, 'user_id (Integer) is required in the body', STATUS_CODE.BAD_REQUEST);
+    }
+}
+
+
+
+
 export default {
-    createUser
+    createUser,
+    login,
+
 };
