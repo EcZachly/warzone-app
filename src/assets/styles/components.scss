@@ -376,9 +376,9 @@ a:focus, a:active {
 
 
 .alert.alert-secondary {
-  $borderColor: adjust-color($theme-gray, $saturation: -20%, $lightness: 40%);
-  $backgroundColor: adjust-color($theme-gray, $saturation: -20%, $lightness: 45%);
-  $textColor: adjust-color($theme-gray, $saturation: -35%, $lightness: -25%);
+  $borderColor: adjust-color($theme-secondary, $saturation: -20%, $lightness: 40%);
+  $backgroundColor: adjust-color($theme-secondary, $saturation: -20%, $lightness: 45%);
+  $textColor: adjust-color($theme-secondary, $saturation: -35%, $lightness: -25%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
   & {
@@ -645,7 +645,7 @@ a:focus, a:active {
 
 .badge-secondary {
   color: $theme-white;
-  background-color: $theme-gray;
+  background-color: $theme-secondary;
 }
 
 .badge-success {
@@ -685,7 +685,8 @@ a:focus, a:active {
 
 .badge-dark {
   color: darken($theme-white, 5);
-  background-color: lighten($theme-dark-gray, 6);
+  background-color: lighten($theme-dark-gray, 3%);
+  border: 1px solid lighten($theme-dark-gray, 7%);
 }
 
 
@@ -911,14 +912,15 @@ a:focus, a:active {
 
 
 .button.button-secondary {
-  $button-color: $theme-gray;
+  $button-color: $theme-secondary;
   $text-color: $theme-white;
+  $border-color: lighten($button-color, 5%);
   $alpha-value: .4;
 
   & {
     color: $text-color;
     background-color: $button-color;
-    border-color: adjust-color($button-color, $lightness: -5%);
+    border-color: $border-color;
   }
 
   &:hover {
@@ -1279,12 +1281,13 @@ a:focus, a:active {
 .button.button-pink {
   $button-color: $theme-pink;
   $text-color: $theme-gray-90;
+  $border-color: lighten($button-color, 5%);
   $alpha-value: .5;
 
   & {
     color: $text-color;
     background-color: $button-color;
-    border-color: adjust-color($button-color, $lightness: -5%);
+    border-color: $border-color;
   }
 
   &:hover {
@@ -1340,7 +1343,7 @@ a:focus, a:active {
 .button.button-light {
   $button-color: $theme-gray;
   $text-color: $theme-gray-90;
-  $border-color: $theme-light-gray;
+  $border-color: lighten($button-color, 5%);
   $alpha-value: .1;
 
   & {
@@ -1400,14 +1403,15 @@ a:focus, a:active {
 
 
 .button.button-dark {
-  $button-color: $theme-dark-gray;
+  $button-color: lighten($theme-dark-gray, 3%);
   $text-color: $theme-white;
+  $border-color: lighten($button-color, 5%);
   $alpha-value: .4;
 
   & {
     color: $text-color;
     background-color: $button-color;
-    border-color: adjust-color($button-color, $lightness: -5%);
+    border-color: $border-color;
   }
 
   &:hover {
@@ -3222,7 +3226,7 @@ image {
 
 
 .bg-secondary {
-  background-color: $theme-gray;
+  background-color: $theme-secondary;
 }
 
 

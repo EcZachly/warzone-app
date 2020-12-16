@@ -50,7 +50,7 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
             <Badge className={'gamer-class-badge'}
                    innerRef={(ref) => badgeRef = ref}
                    size={'sm'}
-                   color={'secondary'}
+                   color={'dark'}
                    title={description}
                    style={style}>
                 {UtilityService.camelToProperCase(categoryName)}

@@ -54,7 +54,7 @@ class Navbar extends React.Component {
                             </a>
 
                             <a href={'/signup'}>
-                                <Button type={['dark']} style={{fontWeight: 500}}>
+                                <Button type={'secondary'} style={{fontWeight: 500}}>
                                     Sign Up
                                 </Button>
                             </a>
@@ -62,7 +62,7 @@ class Navbar extends React.Component {
 
 
                         <Show show={userIsLoggedIn}>
-                            <Button type={['dark']} style={{fontWeight: 500}} onClick={() => {
+                            <Button type={'secondary'} style={{fontWeight: 500}} onClick={() => {
                                 UserService.logout();
                                 Router.push('/?logout=true');
                             }}>

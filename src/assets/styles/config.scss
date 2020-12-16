@@ -1,33 +1,29 @@
-//$theme-blue: #256bff;
-//$theme-green: #22C471;
-//$theme-red: #E6123F;
-//$theme-yellow: #FFB63F;
-//$theme-orange: #FF583E;
-//$theme-purple: #7F27DE;
-//$theme-pink: #FF3E7C;
+$theme-red: #CC294C;
+$theme-orange: #EB5842;
+$theme-yellow: #E6AC50;
+$theme-green: #30AB6B;
+$theme-blue: #4C7BD9;
+$theme-purple: #7A49BF;
+$theme-pink: #D95779;
+$theme-secondary: #4a5950;
 
-$theme-red: #9D3D3D;
-$theme-orange: #AF4937;
-$theme-yellow: #A78539;
-$theme-blue: #435486;
-$theme-green: #357B60;
-$theme-purple: #723181;
-$theme-pink: #AD4474;
-
-$theme-gray: #6c757d;
-$theme-light-gray: #999;
+$theme-white: #fafafa;
 $theme-very-light-gray: #f8f9fa;
-$theme-gray-90: #e6e6e6;
-$theme-gray-80: #cccccc;
-$theme-dark-gray: #343a40;
-$theme-white: #fff;
+$theme-gray-99: darken($theme-white, 1%);
+$theme-gray-98: darken($theme-white, 2%);
+$theme-gray-95: darken($theme-white, 5%);
+$theme-gray-90: darken($theme-white, 10%);
+$theme-gray-80: darken($theme-white, 20%);
+$theme-light-gray: #999;
+$theme-gray: #6c757d;
+$theme-dark-gray: #384047;
 $theme-black: #333333;
 
-$theme-link: #1d69bf;
+$theme-link: #1671d9;
 
 $theme-error: lighten($theme-red, 10);
 
 $theme-background-color: $theme-black;
-$theme-text-color: $theme-white;
+$theme-text-color: $theme-gray-98;
 $theme-line-break: lighten($theme-background-color, 25);
 $theme-border-color: lighten($theme-background-color, 13);
