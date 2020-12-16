@@ -1,8 +1,8 @@
 import {VIEWS} from "../constants";
 
 
-export function restKeyToSQLView(key: string){
-    const viewMap = {
+export function getQueryParamToSQLMap(){
+    return {
         'teammates': VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS,
         'placements': VIEWS.GRADED_STATS,
         'stats': VIEWS.GRADED_STATS,
@@ -11,7 +11,6 @@ export function restKeyToSQLView(key: string){
         'trends': VIEWS.TREND_ANALYSIS,
         'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED
     };
-    return viewMap[key];
 }
 
 export function restToMassiveQuery(view: string, params: object){

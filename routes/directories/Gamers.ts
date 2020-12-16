@@ -2,15 +2,19 @@ import {NextApiRequest, NextApiResponse} from 'next';
 import Bluebird from 'bluebird';
 
 import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../lib/model/gamers';
-import {restKeyToSQLView, restToMassiveQuery} from '../../lib/components/Utils';
+import {getQueryParamToSQLMap} from '../../lib/components/Utils';
 import {initializeMatches} from '../../lib/model/matches';
 
 import {handleError, handleResponse} from '../responseHandler';
 import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
-import {VIEWS} from './../../lib/constants';
-import {getGamerDetailViewQuery, getSingleGamerData} from '../../lib/components/Gamers/GamerService';
+import {VIEWS} from '../../lib/constants';
+import {
+    getGamerClassDescriptions,
+    getGamerDetailViewQuery,
+    getSingleGamerData
+} from '../../lib/components/Gamers/GamerService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -100,12 +104,8 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.direction;
 
     manageComplexQueryParameters(queryParams);
-
-    let descriptionQuery = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS);
-    await descriptionQuery.executeQuery();
-
+    let classDescriptions = await getGamerClassDescriptions();
     let queryOptions = {offset, limit, order: undefined};
-
     if (sort) {
         let sortObj = {
             field: sort,
@@ -121,8 +121,8 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
     await playerQuery.executeQuery();
-
-    handleResponse(req, res, {'gamers': playerQuery.data, 'classDescriptions': descriptionQuery.data[0]});
+    let gamers = playerQuery.data;
+    handleResponse(req, res, {gamers, classDescriptions});
 }
 
 
@@ -143,17 +143,24 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     delete req.query.view;
     const {username, platform} = req.params;
     let allParams = {...req.params, ...req.query};
+
+    let paramMap = getQueryParamToSQLMap()
     let errorObject = {
         'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
+        'invalid_view': 'invalid view query param needs to be in ' + Object.keys(paramMap).join(','),
         'not_found': username + ' on platform: ' + platform + ' was not found!'
     }
     if (!platform || !username) {
        return handleError(req, res, {message: errorObject['missing_data']});
     }
+    const sqlView = paramMap[view as string];
+    if(!sqlView){
+        return handleError(req, res, {message: errorObject['invalid_view']});
+    }
 
-    const sqlView = restKeyToSQLView(view as string);
     const viewToQuery = getGamerDetailViewQuery(sqlView, allParams)
     const gamer = await getSingleGamerData(username, platform)
+    const classDescriptions = await getGamerClassDescriptions()
 
     if (!gamer) {
        return handleError(req, res, {message: errorObject['not_found']});
@@ -171,9 +178,8 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         gamer,
         viewData,
         seoMetadata,
-        classDescriptions: gamer.classDescriptions
+        classDescriptions
     });
-
 }
 
 
