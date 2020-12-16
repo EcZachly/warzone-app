@@ -3,6 +3,8 @@ import {ViewQuery} from "../../model/view_query";
 import {sanitizeGamer, sanitizeTeammates} from "../../model/gamers";
 import {SquadService} from "../Squads";
 import {restToMassiveQuery} from "../Utils";
+
+export {default} from './../../../src/components/gamer/GamerService'
 export * from './../../../src/components/gamer/GamerService';
 import {Gamer} from "../../../src/components/gamer/GamerTypes";
 
