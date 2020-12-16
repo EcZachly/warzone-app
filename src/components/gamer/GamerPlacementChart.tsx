@@ -14,8 +14,6 @@ type GamerCardChartProps = {
 
 export default function GamerGradeChart({data, height, width}: GamerCardChartProps) {
     let chartData = generateChartData(data);
-    console.log('chartData', chartData);
-
     return (
         <Box style={{marginTop: 15}}>
 

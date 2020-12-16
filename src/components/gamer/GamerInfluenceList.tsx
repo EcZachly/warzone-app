@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import GamerInfluenceCard from "./GamerInfluenceCard";
-export default function GamerInfluenceList({gamer, viewData}) {
+export default function GamerInfluenceList({gamer, teammateRows}) {
 
     let relationships = {}
 
-    viewData.forEach((relationship)=>{
+    teammateRows.forEach((relationship)=>{
         let key = relationship['helping_player'] + '-' + relationship['helping_player_platform']
         if(!relationships[key]){
             relationships[key] = [relationship]

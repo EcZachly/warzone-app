@@ -3,15 +3,26 @@ import {ViewQuery} from "../../model/view_query";
 import {sanitizeGamer, sanitizeTeammates} from "../../model/gamers";
 import {SquadService} from "../Squads";
 import {restToMassiveQuery} from "../Utils";
-
 export * from './../../../src/components/gamer/GamerService';
-export {default} from './../../../src/components/gamer/GamerService';
+import {Gamer} from "../../../src/components/gamer/GamerTypes";
 
 
-export const getGamerDetailViewQuery = (view: string, allParams:object={}, options:object={}) : ViewQuery => {
+export const getGamerClassDescriptions = async() => {
+   let query = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}, {})
+   await query.executeQuery();
+   return query.data[0]
+}
+export const getSingleGamerData = async (username, platform): Promise<Gamer> => {
+    let val = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, {username, platform}, {})
+    await val.executeQuery()
+    return val.data[0] as Gamer
+}
+
+
+export const getGamerDetailViewQuery = (view: string, allParams: object = {}, options: object = {}): ViewQuery => {
     let query = restToMassiveQuery(view, allParams)
     const queryableViews = {
-        [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]:  new ViewQuery(VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS, query, options),
+        [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: new ViewQuery(VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS, query, options),
         [VIEWS.PLAYER_STAT_SUMMARY]: new ViewQuery(VIEWS.PLAYER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: new ViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}),
         [VIEWS.GRADED_STATS]: new ViewQuery(VIEWS.GRADED_STATS, query),

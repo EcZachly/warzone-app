@@ -5,8 +5,6 @@ import {
     Main,
     Box,
     Header,
-    Text,
-    Show,
     LineBreak,
     Button,
     Small
@@ -20,7 +18,6 @@ import {
     GamerHeat,
     GamerPlacementChart,
     GamerTimeChart,
-    TeammateTable,
     GamerPlatformImage,
     Navbar,
     Footer,
@@ -33,18 +30,36 @@ import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardLi
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
 
-import {COLORS} from '../../../config/CONSTANTS';
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
-        teammates: {},
-        placements: {},
-        stats: {},
-        time: {},
-        squads: {},
-        trends: {},
-        recent_matches: {customGet: true},
-        relationships: {}
+        teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer} teammateRows={chartState.viewData}/>,
+        placements: (gamer, chartState) =>  <GamerPlacementChart height={260}
+                                                                            width={chartState.width}
+                                                                            data={chartState.viewData[0]}/>,
+        stats: (gamer, chartState) => <GamerGradeChart height={260}
+                                                                       width={chartState.width}
+                                                                       key={'stat_chart'}
+                                                                       data={chartState.viewData}
+                                                                       options={['kdr', 'damage', 'kills', 'score']}
+                                                                       selectedValue="kdr"/>,
+        time:  (gamer, chartState) =>  <GamerTimeChart height={260}
+                                                                       width={chartState.width}
+                                                                       key={'placement_chart'}
+                                                                       viewData={chartState.viewData}
+                                                                       options={['hour_of_day', 'day_of_week']}
+                                                                       selectedValue="hour_of_day"/>,
+        squads: (gamer, chartState) => <SquadCardList baseUrl={chartState.baseUrl}
+                                                                     squads={chartState.viewData}
+                                                                     classDescriptions={[]}/>,
+        trends: (gamer, chartState) => <GamerTrendChart gamer={gamer}
+                                                                       baseUrl={chartState.baseUrl}
+                                                                       height={260}
+                                                                       width={chartState.width}
+                                                                       data={chartState.viewData}/>,
+        recent_matches:  (gamer, chartState) => <GamerMatchCardList gamer={gamer}
+                                                                          noLink={true}
+                                                                          gamerMatchList={chartState.viewData}/>
     }
 };
 
@@ -53,7 +68,6 @@ const CONFIG = {
 export default function GamerDetail({gamerData, view, baseUrl}) {
 
     let containerRef = React.useRef<HTMLDivElement>();
-
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
@@ -62,7 +76,8 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         viewData: viewData,
         baseUrl: baseUrl,
         gamer: gamer,
-        activeTab: view
+        activeTab: view,
+        width: 512
     });
 
     let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
@@ -70,56 +85,13 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
     useEffect(() => {
-        componentDidUpdate();
+        setComponentDidUpdate(true);
+        if(getChartWidth() !== chartState.width){
+            setChartState(Object.assign({}, chartState ,{width: getChartWidth()}))
+        }
     });
 
-
-    function componentDidUpdate() {
-        setComponentDidUpdate(true);
-    }
-
-
-    const chartWidth = getChartWidth();
-
-    const componentMap = {
-        'teammates': <TeammateTable teammates={chartState.viewData}/>,
-
-        'placements': <GamerPlacementChart height={260}
-                                           width={chartWidth}
-                                           data={chartState.viewData[0]}/>,
-
-        'stats': <GamerGradeChart height={260}
-                                  width={chartWidth}
-                                  key={'stat_chart'}
-                                  data={chartState.viewData}
-                                  options={['kdr', 'damage', 'kills', 'score']}
-                                  selectedValue="kdr"/>,
-
-        'time': <GamerTimeChart height={260}
-                                width={chartWidth}
-                                key={'placement_chart'}
-                                viewData={chartState.viewData}
-                                options={['hour_of_day', 'day_of_week']}
-                                selectedValue="hour_of_day"/>,
-
-        'squads': <SquadCardList baseUrl={baseUrl}
-                                 squads={chartState.viewData}
-                                 classDescriptions={[]}/>,
-
-        'trends': <GamerTrendChart gamer={gamer}
-                                   baseUrl={baseUrl}
-                                   height={260}
-                                   width={chartWidth}
-                                   data={chartState.viewData}/>,
-
-        'recent_matches': <GamerMatchCardList gamer={gamer}
-                                              noLink={true}
-                                              gamerMatchList={chartState.viewData}/>,
-        'relationships': <GamerInfluenceList gamer={gamer} viewData={chartState.viewData}/>
-    };
-
-    const TabData = componentMap[chartState.activeTab];
-
+    const TabData = CONFIG.VIEW_NAME_CONFIG[chartState.activeTab](gamer, chartState);
     const buttonTabs = tabNames.map((tabName) => {
         const isActive = (chartState.activeTab === tabName);
         return (
@@ -242,6 +214,23 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         );
     }
 
+    async function setTabAndFetchData(tabId) {
+        const newState = {...chartState}
+        newState.activeTab = tabId;
+
+        if (tabId === chartState.activeTab) {
+            //Do nothing since we aren't changing tabs
+        } else if (tabId === 'placements' && chartState.activeTab === 'stats') {
+            setChartState(newState);
+        } else if (tabId === 'stats' && chartState.activeTab === 'placements') {
+            setChartState(newState);
+        } else {
+            const fetchedData = await fetchViewData(tabId);
+            newState.viewData = fetchedData.viewData;
+            setChartState(newState);
+        }
+    }
+
 
     function getChartWidth() {
         let windowWidth = 0;
@@ -264,33 +253,12 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
         return ((windowWidth > 0 && windowWidth > maxWidth) ? maxWidth : windowWidth) - (chartSidePadding);
     }
 
-
-    async function setTabAndFetchData(tabId) {
-        const newState = Object.assign({}, chartState);
-
-        newState.activeTab = tabId;
-
-        if (tabId === chartState.activeTab) {
-            //Do nothing since we aren't changing tabs
-        } else if (tabId === 'placements' && chartState.activeTab === 'stats') {
-            setChartState(newState);
-        } else if (tabId === 'stats' && chartState.activeTab === 'placements') {
-            setChartState(newState);
-        } else {
-            const fetchedData = await fetchViewData(tabId);
-            newState.viewData = fetchedData.viewData;
-            setChartState(newState);
-        }
-    }
-
-
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
         return new Promise(async (resolve, reject) => {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
             const response = await fetch(dataUrl);
             let finalResponse = await response.json();
-
             resolve(finalResponse);
         });
     }
@@ -304,7 +272,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
     const gamerJson = await rawGamerList.json();
-
     return {
         props: {
             gamerData: gamerJson,
