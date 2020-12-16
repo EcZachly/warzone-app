@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW warzone.gamer_rolling_trends AS
+CREATE VIEW warzone.gamer_rolling_trends AS
     WITH rolling as (
         SELECT query_username,
                query_platform,

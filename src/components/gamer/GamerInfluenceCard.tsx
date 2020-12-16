@@ -14,7 +14,6 @@ export default function GamerInfluenceCard({gamer, relationships}) {
     let helpingPlayerLink = <GamerLink gamer={helpingGamer}/>
 
     let gamerLink = <GamerLink gamer={gamer}/>
-    console.log(relationships);
     let stats = relationships.map((relationship) => {
         let statName = relationship['relationship_stat'].split('_').map(_.capitalize).join(' ')
         return <StatLabelValue style={{marginBottom: '0px'}} lowerIsBetter={relationship.lower_is_better} size={"sm"}

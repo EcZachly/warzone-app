@@ -2,6 +2,7 @@ export const MATCH_DETAILS_SLEEP_TIME = 2 * 1000;
 
 export const TABLES = {
     GAMER_MATCHES: 'gamer_matches',
+    GAMERS: 'gamers',
     USERS: 'users'
 };
 
@@ -19,7 +20,7 @@ export const VIEWS = {
     SQUADS: 'full_squad_stat_summary',
     TEAMMATES: 'teammate_analysis_materialized',
     GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
-    GAMER_ROLLING_TRENDS: 'gamer_rolling_trends',
+    GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
     MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships_materialized'
 };
@@ -32,16 +33,16 @@ export const MIN_MAX_TIMESTAMPS_VIEW = 'min_max_timestamps';
 export const SITE_EVENTS = 'site_events';
 export const DATABASE_SCHEMA = 'warzone';
 
-export const MATERIALIZED_VIEWS_DEPENDENCIES: object = {
-    [VIEWS.GRADING_TABLE]: [],
-    [VIEWS.SQUADS]: [],
-    [VIEWS.GAMER_ROLLING_TRENDS]: [],
-    [VIEWS.GAMER_HEAT_RATINGS]: [VIEWS.GAMER_ROLLING_TRENDS],
-    [VIEWS.SQUAD_CLASS_DESCRIPTIONS]: [],
-    [VIEWS.GAMER_CLASS_DESCRIPTIONS]: [],
-    [VIEWS.GAMER_SITE_HITS]: [],
-    [VIEWS.PLAYER_STAT_SUMMARY]: [],
-    [VIEWS.TEAMMATES]: [],
-    [VIEWS.DAILY_PLAYER_STAT_SUMMARY]: [],
-    [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: []
-}
+export const MATERIALIZED_VIEWS_DEPENDENCIES: Array<string> = [
+    VIEWS.GRADING_TABLE,
+    VIEWS.SQUADS,
+    VIEWS.GAMER_ROLLING_TRENDS,
+    VIEWS.GAMER_HEAT_RATINGS,
+    VIEWS.SQUAD_CLASS_DESCRIPTIONS,
+    VIEWS.GAMER_CLASS_DESCRIPTIONS,
+    VIEWS.GAMER_SITE_HITS,
+    VIEWS.PLAYER_STAT_SUMMARY,
+    VIEWS.TEAMMATES,
+    VIEWS.DAILY_PLAYER_STAT_SUMMARY,
+    VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS
+]

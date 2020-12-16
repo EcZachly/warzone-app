@@ -3,7 +3,6 @@ import Bluebird from 'bluebird';
 
 import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../lib/model/gamers';
 import {restKeyToSQLView, restToMassiveQuery} from '../../lib/components/Utils';
-import {queryView} from '../../lib/model/analysis';
 import {initializeMatches} from '../../lib/model/matches';
 
 import {handleError, handleResponse} from '../responseHandler';
@@ -11,10 +10,9 @@ import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
 import {VIEWS} from './../../lib/constants';
-import {getGamerDetailViewQuery} from '../../lib/components/Gamers/GamerService';
+import {getGamerDetailViewQuery, getSingleGamerData} from '../../lib/components/Gamers/GamerService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-
 
 
 export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
@@ -86,7 +84,6 @@ function manageComplexQueryParameters(queryParams) {
 }
 
 
-
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const queryParams = req.query;
 
@@ -129,7 +126,6 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-
 async function updateGamerUponRequest(gamerData) {
     let gamerPromise = Bluebird.resolve(gamerData);
 
@@ -147,47 +143,38 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     delete req.query.view;
     const {username, platform} = req.params;
     let allParams = {...req.params, ...req.query};
-    if (!platform) {
-        handleError(req, res, {message: 'platform (/gamers/:platform/:username, String) is required and cannot be empty'});
-    } else if (!username) {
-        handleError(req, res, {message: 'username (/gamers/:platform/:username, String) is required and cannot be empty'});
-    } else {
-        const sqlView = restKeyToSQLView(view as string);
-        const viewsToQuery = {
-            [VIEWS.PLAYER_STAT_SUMMARY]: getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, allParams),
-            [VIEWS.GAMER_CLASS_DESCRIPTIONS]: getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, allParams),
-            [sqlView]: getGamerDetailViewQuery(sqlView, allParams)
-        };
-        const gamerList = await queryGamers({username, platform});
-        const gamerData = gamerList[0];
-        const gamerExists = !!gamerData;
-        if (gamerExists) {
-            const gamerMatchDataPromises = Object.keys(viewsToQuery).map(async (key: string) => await viewsToQuery[key].executeQuery());
-            Bluebird.all(gamerMatchDataPromises).then(async () => {
-                const gamer = viewsToQuery[VIEWS.PLAYER_STAT_SUMMARY].data[0];
-                const gamerClassDescriptions = viewsToQuery[VIEWS.GAMER_CLASS_DESCRIPTIONS].data[0];
-                const viewData = viewsToQuery[sqlView].data;
-                await updateGamerUponRequest(gamerData);
-                const seoMetadata = {
-                    title: 'Warzone stats for ' + gamer['username'],
-                    keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
-                    description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
-                };
-                handleResponse(req, res, {
-                    gamer: gamer,
-                    viewData: viewData,
-                    seoMetadata: seoMetadata,
-                    classDescriptions: gamerClassDescriptions
-                });
-            });
-        } else {
-            handleError(req, res, {
-                errorMessage: username + ' on platform: ' + platform + ' was not found!'
-            });
-        }
+    let errorObject = {
+        'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
+        'not_found': username + ' on platform: ' + platform + ' was not found!'
     }
-}
+    if (!platform || !username) {
+       return handleError(req, res, {message: errorObject['missing_data']});
+    }
 
+    const sqlView = restKeyToSQLView(view as string);
+    const viewToQuery = getGamerDetailViewQuery(sqlView, allParams)
+    const gamer = await getSingleGamerData(username, platform)
+
+    if (!gamer) {
+       return handleError(req, res, {message: errorObject['not_found']});
+    }
+
+    await viewToQuery.executeQuery();
+    const viewData = viewToQuery.data;
+    await updateGamerUponRequest({username, gamer});
+    const seoMetadata = {
+        title: 'Warzone stats for ' + gamer['username'],
+        keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
+        description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
+    };
+    handleResponse(req, res, {
+        gamer,
+        viewData,
+        seoMetadata,
+        classDescriptions: gamer.classDescriptions
+    });
+
+}
 
 
 export default {

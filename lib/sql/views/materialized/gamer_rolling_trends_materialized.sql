@@ -1,0 +1,2 @@
+CREATE MATERIALIZED VIEW warzone.gamer_rolling_trends_materialized AS
+SELECT * FROM warzone.gamer_rolling_trends
