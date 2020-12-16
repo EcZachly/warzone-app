@@ -5,19 +5,27 @@ import {withRouter} from 'next/router';
 import React from 'react';
 import {Box} from './../SimpleComponents';
 import CSS from 'csstype';
+import {UserService} from '../Users';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-class Page extends React.Component<PageProps> {
+
+class Page extends React.Component<PageProps, PageState> {
 
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            show: (!this.props.loginRequired === true)
+        };
     }
 
 
     componentDidMount() {
+        if (this.props.loginRequired) {
+            this._redirectIfUserIsNotLoggedIn();
+        }
+
 
     }
 
@@ -29,12 +37,15 @@ class Page extends React.Component<PageProps> {
         return (
             <Box style={props.style} className={classNames}>
                 <Head>
-                    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+                    <link rel="stylesheet"
+                          href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap"/>
 
-                    <title>{props.title}</title>
+                    <title>
+                        {props.title}
+                    </title>
                 </Head>
 
-                {props.children}
+                {this.state.show && props.children}
             </Box>
         );
     }
@@ -48,6 +59,34 @@ class Page extends React.Component<PageProps> {
 
         return classNames.join(' ');
     }
+
+
+
+    _redirectIfUserIsNotLoggedIn() {
+        if (UserService.userIsLoggedIn()) {
+            if (UserService.currentSessionTokenHasBeenVerified()) {
+                //user is okay to be here
+                this.setState({
+                    show: true
+                });
+            } else {
+                UserService.verifyCurrentUserAndToken().then((response) => {
+                    //user is okay to be here
+                    this.setState({
+                        show: true
+                    });
+                }, (error) => {
+                    console.log('session token is invalid');
+                    console.log(error);
+                    UserService.logout();
+                    Router.push('/');
+                });
+            }
+        } else {
+            UserService.logout();
+            Router.push('/');
+        }
+    }
 }
 
 
@@ -56,6 +95,12 @@ type PageProps = {
     style?: CSS.Properties,
     children?: React.ReactNode,
     title?: string,
+    loginRequired?: boolean
+}
+
+
+type PageState = {
+    show: boolean
 }
 
 

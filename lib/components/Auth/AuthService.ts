@@ -109,7 +109,6 @@ export function _generateExpirationDate() {
 
 
 
-
 export function generateStorablePasswordString(iterations: number, salt: string, hash: Buffer | string): string {
     if (TypeService.isInteger(iterations) === false && TypeService.isString(iterations) === false) {
         throw new Error('iterations (Integer) is required');
@@ -167,10 +166,58 @@ export function passwordIsInListOfMostCommonPasswords(password): boolean {
 
 
 
+export function decodeJWTToken(token) {
+    let decodedToken;
+
+    try {
+        decodedToken = jwt.verify(token, CONSTANTS.JWT_SECRET);
+    } catch (error) {
+        throw new Error('invalid token');
+    }
+
+    return decodedToken;
+}
+
+
+
+export function verifyJWTToken(decodedToken, options) {
+    return new Promise((resolve, reject) => {
+        options = (TypeService.isObject(options)) ? options : {};
+        if (TypeService.isObject(decodedToken) === false) {
+            reject(new Error('decodedToken (Object) is required'));
+        } else if (TypeService.isInteger(decodedToken.user_id) === false) {
+            reject(new Error('decodedToken.user_id (Integer) is required'));
+        } else if (TypeService.isDate(decodedToken.expiration_timestamp, true) === false) {
+            reject(new Error('decodedToken.expiration_timestamp (Timestamp) is required'));
+        } else {
+            const sessionStoredUserID = options.user_id;
+            const userIDsMatch = ((!!sessionStoredUserID && sessionStoredUserID === decodedToken.user_id) || !sessionStoredUserID);
+
+            if (userIDsMatch) {
+                const expirationTimestamp = decodedToken.expiration_timestamp;
+                const tokenHasExpired = new Date().getTime() > new Date(expirationTimestamp).getTime();
+
+                if (tokenHasExpired === false) {
+                    //todo: validate the session with the db, and update
+                    resolve('valid');
+                } else {
+                    reject(new Error('token has expired'));
+                }
+            } else {
+                reject(new Error('session stored user_id does not match the user_id in the token'));
+            }
+        }
+    });
+}
+
+
+
 export default {
     validatePassword,
     encryptPassword,
     setJWTTokenCookie,
+    decodeJWTToken,
+    verifyJWTToken,
     passwordIsInListOfMostCommonPasswords,
     generateStorablePasswordString,
     extractDetailsFromStoredPassword,

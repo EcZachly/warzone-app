@@ -67,8 +67,51 @@ export function getUser() {
 
 
 
+export function logout() {
+    StorageService.clear();
+}
+
+
+
+export function currentSessionTokenHasBeenVerified() {
+    return StorageService.get('auth-token-manually-verified', {session: true});
+}
+
+
+
+export function verifyCurrentUserAndToken() {
+    return new Promise((resolve, reject) => {
+        if (userIsLoggedIn()) {
+            let user = getUser();
+
+            HttpService.http({
+                url: '/api/v1/verify-user-token',
+                method: 'POST',
+                body: {
+                    user_id: user.user_id
+                }
+            }).then((response) => {
+                if (response.status === 200) {
+                    resolve(response);
+                } else {
+                    reject(response);
+                }
+            }, reject);
+        } else {
+            reject(new Error('user is not logged in'));
+        }
+    });
+}
+
+
+
 export default {
     createUser,
     sanitizeUser,
-    login
+    login,
+    getUser,
+    userIsLoggedIn,
+    currentSessionTokenHasBeenVerified,
+    verifyCurrentUserAndToken,
+    logout
 };
