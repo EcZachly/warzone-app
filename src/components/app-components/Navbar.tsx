@@ -62,6 +62,10 @@ class Navbar extends React.Component {
 
 
                         <Show show={userIsLoggedIn}>
+                            <a href={'/dashboard'} style={{marginRight: '15px'}}>
+                                Dashboard
+                            </a>
+
                             <Button type={'secondary'} style={{fontWeight: 500}} onClick={() => {
                                 UserService.logout();
                                 Router.push('/?logout=true');

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Component} from 'react';
 import {useRouter} from 'next/router';
+import dynamic from 'next/dynamic';
 
 import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
 import {
@@ -17,23 +18,27 @@ import {
     Text,
     Small,
     Main,
-    LineBreak, UnorderedList, ListItem
+    LineBreak, UnorderedList, ListItem, Show
 } from './../components/SimpleComponents';
-import {Input} from './../components/SmartComponents';
+import {Input, LabelValue, Sidebar, SidebarCompanion} from './../components/SmartComponents';
 
 import CONSTANTS from './../config/CONSTANTS';
 
 import {UserService} from './../components/Users';
-import UtilityService, {getBaseUrlWithProtocol} from '../services/UtilityService';
-import TypeService from '../services/TypeService';
+import {GamerRelationshipService} from './../components/GamerRelationships';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 let DashboardPage = ({baseUrl}) => {
-
     let router = useRouter();
+
     let user = UserService.getUser();
+
+    useEffect(() => {
+        getData();
+    });
+
     console.log(user);
 
     return (
@@ -41,11 +46,24 @@ let DashboardPage = ({baseUrl}) => {
             <Navbar/>
 
             <Main>
-                <Container size={'sm'}>
+                <Container size={'lg'} mode={'sidebar'}>
 
-                    <Header>Hello, {user && user.first_name}</Header>
+                    <Sidebar>
+                        <Header>{user.first_name}</Header>
 
-                    <Paragraph>Content Coming Soon</Paragraph>
+                        <LineBreak/>
+
+
+                    </Sidebar>
+
+
+
+                    <SidebarCompanion>
+
+
+
+                    </SidebarCompanion>
+
                 </Container>
             </Main>
 
@@ -54,7 +72,23 @@ let DashboardPage = ({baseUrl}) => {
     );
 
 
+
+    function getData() {
+        getGamerRelationships();
+    }
+
+
+
+    function getGamerRelationships() {
+        GamerRelationshipService.queryGamerRelationships({
+            user_id: user.user_id
+        }).then((gamerRelationships) => {
+            console.log('gamerRelationships', gamerRelationships);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
 };
 
 
-export default DashboardPage;
+export default dynamic(() => Promise.resolve(DashboardPage), {ssr: false});
