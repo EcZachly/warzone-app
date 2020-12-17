@@ -1,9 +1,14 @@
+import Bluebird from 'bluebird';
+
 import WarzoneMapper from '../etl/mapper';
 import {insertIntoDatabase, queryDatabase} from '../etl/utils';
-import UtilityService from './../../src/services/UtilityService';
 import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from '../constants';
-import  Bluebird from 'bluebird';
 import ApiWrapper from '../api_wrapper';
+
+import UtilityService from './../../src/services/UtilityService';
+
+//===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
+
 
 
 /**
@@ -37,7 +42,7 @@ export function writeMatchesToDatabase(matches) {
  * @param gamer
  * @returns {*}
  */
-export async function getMinMaxMatchTimestamps(gamer){
+export async function getMinMaxMatchTimestamps(gamer) {
     const gamers = await queryDatabase(MIN_MAX_TIMESTAMPS_VIEW, {
         query_username: gamer.username,
         query_platform: gamer.platform
@@ -56,22 +61,26 @@ export async function getMinMaxMatchTimestamps(gamer){
 export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepTime = MATCH_DETAILS_SLEEP_TIME) {
     console.log('# of Details API calls needed for gamer:' + gamer.username + ' on platform:' + gamer.platform + ': ' + queryTimeframes.length);
     console.log('getting match details for: ' + gamer.username + ' on platform:' + gamer.platform);
+
     const matches = await Bluebird.mapSeries(queryTimeframes, async (item) => {
         const output = await api.MWcombatwzdate(gamer.username, item.start, item.end, gamer.platform);
-        const matches =  output.matches || [];
+        const matches = UtilityService.validateItem(output.matches, 'array', []);
+
         console.log('Num matches for interval for gamer:' + gamer.username + ' on platform:' + gamer.platform + ':' + matches.length);
+
         UtilityService.sleep(sleepTime);
+
         return matches;
     });
-    return matches.flatMap((matchArr)=> matchArr);
+
+    return UtilityService.validateItem(matches, 'array', []).flatMap((matchArr) => matchArr);
 }
 
 
 
-
-export async function initializeMatches(gamer){
+export async function initializeMatches(gamer) {
     const API = await ApiWrapper.getInstance();
-    const timestampList = [{start: 0, end:0}];
+    const timestampList = [{start: 0, end: 0}];
     const matches = await getMatchDetailsFromAPI(timestampList, gamer, API, 5);
     await writeMatchesToDatabase(matches);
     await writeGamerMatchesToDatabase(matches, gamer);
