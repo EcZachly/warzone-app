@@ -45,7 +45,8 @@ export type RawGamer = {
     last_10_rolling_average_kdr?: number,
     last_30_rolling_average_kdr?: number,
     last_100_rolling_average_kdr?: number,
-    classDescriptions?: Array<object>
+    classDescriptions?: Array<object>,
+    needs_update?: boolean
 };
 
 

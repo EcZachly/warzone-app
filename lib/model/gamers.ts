@@ -3,6 +3,7 @@ import WarzoneMapper from '../etl/mapper';
 import {GAMER_TABLE} from '../constants';
 import ApiWrapper from '../api_wrapper';
 import UtilityService from './../../src/services/UtilityService';
+import {Gamer} from "../../src/components/gamer/GamerTypes";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -18,7 +19,7 @@ export async function initializeGamer(queryGamer) {
 
 
 
-export function updateGamer(query, gamer) {
+export function updateGamer(query:object, gamer:Gamer) {
     return updateDatabaseRecords(query, gamer, GAMER_TABLE);
 }
 
