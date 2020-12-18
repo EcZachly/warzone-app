@@ -17,6 +17,7 @@ export type GamerID = GamerPlatform & '-' & GamerUsername;
 export type RawGamer = {
     platform: GamerPlatform,
     username: GamerUsername,
+    needs_backfill?: boolean,
     aliases?: string[],
     kdr?: number
     max_kills?: number
