@@ -3,6 +3,7 @@ import {useRouter} from 'next/router';
 import dynamic from 'next/dynamic';
 
 import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
+
 import {
     Container,
     Header,
@@ -20,12 +21,14 @@ import {
     Main,
     LineBreak, UnorderedList, ListItem, Show
 } from './../components/SimpleComponents';
+
 import {Input, LabelValue, Sidebar, SidebarCompanion} from './../components/SmartComponents';
 
 import CONSTANTS from './../config/CONSTANTS';
 
 import {UserService} from './../components/Users';
 import {GamerRelationshipService} from './../components/GamerRelationships';
+import {GamerSearchInput} from '../components/gamer';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -33,11 +36,28 @@ import {GamerRelationshipService} from './../components/GamerRelationships';
 let DashboardPage = ({baseUrl}) => {
     let router = useRouter();
 
-    let user = UserService.getUser();
+    let [hasMounted, setHasMounted] = useState(false);
+    let [loading, setLoading] = useState(true);
+    let [dataHasLoaded, setDataHasLoaded] = useState(false);
+    let [error, setError] = useState(null);
+
+    let [user, setUser] = useState(null);
+    let [gamerRelationships, setGamerRelationships] = useState([]);
+
+    hasMounted === false && setHasMounted(true);
 
     useEffect(() => {
-        getData();
-    });
+        if (UserService.userIsLoggedIn()) {
+            setUser(UserService.getUser());
+        }
+    }, [hasMounted]);
+
+    useEffect(() => {
+        if (user && dataHasLoaded === false) {
+            console.log('user is logged in');
+            getData();
+        }
+    }, [user]);
 
     console.log(user);
 
@@ -47,23 +67,7 @@ let DashboardPage = ({baseUrl}) => {
 
             <Main>
                 <Container size={'lg'} mode={'sidebar'}>
-
-                    <Sidebar>
-                        <Header>{user.first_name}</Header>
-
-                        <LineBreak/>
-
-
-                    </Sidebar>
-
-
-
-                    <SidebarCompanion>
-
-
-
-                    </SidebarCompanion>
-
+                    {getContent()}
                 </Container>
             </Main>
 
@@ -73,19 +77,56 @@ let DashboardPage = ({baseUrl}) => {
 
 
 
+    function getContent() {
+        if (user && loading !== true) {
+            return (
+                <>
+                    <Sidebar>
+                        <Header>{user.first_name}</Header>
+
+                        <LineBreak/>
+
+                    </Sidebar>
+
+
+
+                    <SidebarCompanion>
+
+                        <GamerSearchInput size={'lg'}
+                                          baseUrl={baseUrl}
+                                          focus={false}/>
+
+                    </SidebarCompanion>
+                </>
+            );
+        }
+    }
+
+
+
     function getData() {
-        getGamerRelationships();
+        console.log('get data');
+        getGamerRelationships().finally(() => {
+            setLoading(false);
+            setDataHasLoaded(true);
+        });
     }
 
 
 
     function getGamerRelationships() {
-        GamerRelationshipService.queryGamerRelationships({
-            user_id: user.user_id
-        }).then((gamerRelationships) => {
-            console.log('gamerRelationships', gamerRelationships);
-        }).catch((error) => {
-            console.error(error);
+        return new Promise((resolve, reject) => {
+
+            GamerRelationshipService.queryGamerRelationships({
+                user_id: user.user_id
+            }).then((_gamerRelationships) => {
+                console.log('_gamerRelationships', _gamerRelationships);
+                setGamerRelationships(_gamerRelationships);
+                resolve();
+            }).catch((error) => {
+                console.error(error);
+                reject(error);
+            });
         });
     }
 };
