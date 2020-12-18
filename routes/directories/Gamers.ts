@@ -17,6 +17,7 @@ import {
 } from '../../lib/components/Gamers/GamerService';
 import {Gamer} from "../../src/components/gamer/GamerTypes";
 import {ViewQuery} from "../../lib/model/view_query";
+import { GamerClassDescription } from '../../lib/components/Classes/ClassDescriptionType';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -107,7 +108,7 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.direction;
 
     manageComplexQueryParameters(queryParams);
-    let classDescriptions = await getGamerClassDescriptions();
+    const classDescriptions: GamerClassDescription= await getGamerClassDescriptions();
     let queryOptions = {offset, limit, order: undefined};
     if (sort) {
         let sortObj = {
@@ -162,7 +163,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
 
     const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams)
     const gamer: Gamer = await getSingleGamerData(username, platform)
-    const classDescriptions = await getGamerClassDescriptions()
+    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions()
 
     if (!gamer) {
        return handleError(req, res, {message: errorObject['not_found']});
