@@ -1,7 +1,7 @@
 import React, {useState, Component} from 'react';
 
 import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
-import {Container, Header, Box, Text, Small, Main, LineBreak} from './../components/SimpleComponents';
+import {Container, Header, Box, Text, Small, Main, LineBreak, Button} from './../components/SimpleComponents';
 import {Input} from './../components/SmartComponents';
 import {GetServerSideProps} from "next";
 import {getBaseUrlWithProtocol} from "../services/UtilityService";

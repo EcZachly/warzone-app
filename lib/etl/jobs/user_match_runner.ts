@@ -1,46 +1,70 @@
-import {runBackfills, runRefresh, runUpdates} from '../user_match_scrape';
-import { createEtlJob, updateEtlJob } from '../../model/etl_jobs';
-import { argv } from 'yargs';
+import {argv} from 'yargs';
 import md5 from 'md5';
 
-const jobType: string = argv.jobType as string;
+import {runBackfills, runRefresh, runUpdates} from '../user_match_scrape';
+import {createEtlJob, updateEtlJob} from '../../model/etl_jobs';
 
-const validJobTypes: Array<string> = ['update','backfill'];
-if (!jobType || !validJobTypes.includes(jobType)) {
-    throw new Error('option jobType is required and needs to be in ' + validJobTypes.join(','));
+const CONFIG = {
+    JOBS: {
+        update: {
+            name: 'user_matches_update',
+            method: runUpdates
+        },
+        backfill: {
+            name: 'user_matches_backfill',
+            method: runBackfills
+        },
+        refresh: {
+            name: 'user_matches_refresh',
+            method: runRefresh
+        }
+    }
+};
+
+const VALID_JOB_KEYS = Object.keys(CONFIG.JOBS);
+
+//===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
+
+
+
+run();
+
+
+function run() {
+    const jobType = argv.jobType as string;
+    const jobConfig = CONFIG.JOBS[jobType];
+
+    if (jobConfig) {
+        executeJob(jobConfig);
+    } else {
+        throw new Error('option jobType is required and must be one of the following: ' + JSON.stringify(VALID_JOB_KEYS));
+    }
 }
-const jobNames = {
-    update: 'user_matches_update',
-    backfill: 'user_matches_backfill'
-};
-const jobTime: number = new Date().getTime();
-const newJob = {
-    job_name: jobNames[jobType],
-    job_id: md5(jobTime + jobNames[jobType]),
-    execution_start_time: jobTime,
-    is_successful: null,
-    execution_end_time: null
-};
 
-const jobFunctions = {
-    update: runUpdates,
-    backfill: runBackfills,
-    refresh: runRefresh
-};
-async function run() {
-    const jobFunction = jobFunctions[jobType];
+
+async function executeJob(jobConfig) {
+    const jobTime: number = new Date().getTime();
+
+    let newJob = {
+        job_name: jobConfig.name,
+        job_id: md5(jobTime + jobConfig.name),
+        execution_start_time: jobTime,
+        is_successful: null,
+        execution_end_time: null
+    };
+
+    const jobFunction = jobConfig.method;
     await createEtlJob(newJob);
+
     try {
         await jobFunction();
         newJob.is_successful = true;
-    }
-    catch (e) {
+    } catch (e) {
+        console.error(e);
         newJob.is_successful = false;
-
     }
-    const jobEndTime: number = new Date().getTime();
-    newJob.execution_end_time = jobEndTime;
+
+    newJob.execution_end_time = new Date().getTime();
+
     await updateEtlJob(newJob);
 }
-
-run();
