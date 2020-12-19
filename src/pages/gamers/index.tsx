@@ -87,17 +87,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
 
                             <GamerCardList gamers={gamerValues}
                                            classDescriptions={classDescriptions}/>
-
-                            {/*{*/}
-                            {/*    gamerValues.map((gamer) => {*/}
-                            {/*        return (*/}
-                            {/*            <GamerCard key={gamer.username + '-' + gamer.platform}*/}
-                            {/*                       gamer={gamer}*/}
-                            {/*                       classDescriptions={classDescriptions}/>*/}
-                            {/*        );*/}
-                            {/*    })*/}
-                            {/*}*/}
-
+                                           
                         </InfiniteScroll>
                     </SidebarCompanion>
                 </Container>
