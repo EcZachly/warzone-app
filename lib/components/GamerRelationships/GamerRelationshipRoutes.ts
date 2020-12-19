@@ -26,16 +26,8 @@ export async function queryGamerRelationships(req: NextApiRequest, res: NextApiR
     const queryParams = req.query;
 
     let options = {
-        limit: undefined,
-        offset: undefined,
         order: undefined
     };
-
-    options.limit = req.query.limit || 10;
-    delete queryParams.limit;
-
-    options.offset = req.query.offset || 0;
-    delete queryParams.offset;
 
     // @ts-ignore
     options.order = UtilityService.isJson(req.query.order) ? JSON.parse(req.query.order) : null;
