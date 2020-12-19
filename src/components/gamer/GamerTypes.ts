@@ -17,6 +17,7 @@ export type GamerID = GamerPlatform & '-' & GamerUsername;
 export type RawGamer = {
     platform: GamerPlatform,
     username: GamerUsername,
+    needs_backfill?: boolean,
     aliases?: string[],
     kdr?: number
     max_kills?: number
@@ -45,7 +46,8 @@ export type RawGamer = {
     last_10_rolling_average_kdr?: number,
     last_30_rolling_average_kdr?: number,
     last_100_rolling_average_kdr?: number,
-    classDescriptions?: Array<object>
+    classDescriptions?: Array<object>,
+    needs_update?: boolean
 };
 
 

@@ -15,6 +15,9 @@ import {
     getGamerDetailViewQuery,
     getSingleGamerData
 } from '../../lib/components/Gamers/GamerService';
+import {Gamer} from "../../src/components/gamer/GamerTypes";
+import {ViewQuery} from "../../lib/model/view_query";
+import { GamerClassDescription } from '../../lib/components/Classes/ClassDescriptionType';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -26,16 +29,17 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
     const {username, platform} = newUser;
     let error = null;
 
-    if (!username) {
-        error = {userMessage: 'body.username (String) is required', status: 400};
+    let errorObject = {
+        'missing_data': {userMessage:'body.username and body.platform (String) are required', status: 400},
+        'recaptcha_fail': {userMessage:'failed recaptcha verification', status: 400}
     }
 
-    if (!platform) {
-        error = {userMessage: 'body.platform (String) is required', status: 400};
+    if (!username || !platform) {
+        error = errorObject['missing_data']
     }
 
     if (!recaptchaSuccess) {
-        error = {userMessage: 'failed recaptcha verification', status: 400};
+        error = errorObject['recaptcha_fail']
     }
 
     if (!error) {
@@ -104,7 +108,7 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.direction;
 
     manageComplexQueryParameters(queryParams);
-    let classDescriptions = await getGamerClassDescriptions();
+    const classDescriptions: GamerClassDescription= await getGamerClassDescriptions();
     let queryOptions = {offset, limit, order: undefined};
     if (sort) {
         let sortObj = {
@@ -126,14 +130,13 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-async function updateGamerUponRequest(gamerData) {
-    let gamerPromise = Bluebird.resolve(gamerData);
+async function updateGamerUponRequest(gamer:Gamer) {
+    let gamerPromise = Bluebird.resolve(gamer);
 
-    if (!gamerData.needs_update) {
-        gamerData.needs_update = true;
-        gamerPromise = updateGamer({username: gamerData.username, platform: gamerData.platform}, gamerData);
+    if (!gamer.needs_update) {
+        gamer.needs_update = true;
+        gamerPromise = updateGamer({username: gamer.username, platform: gamer.platform}, gamer);
     }
-
     return await gamerPromise;
 }
 
@@ -158,9 +161,9 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
 
-    const viewToQuery = getGamerDetailViewQuery(sqlView, allParams)
-    const gamer = await getSingleGamerData(username, platform)
-    const classDescriptions = await getGamerClassDescriptions()
+    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams)
+    const gamer: Gamer = await getSingleGamerData(username, platform)
+    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions()
 
     if (!gamer) {
        return handleError(req, res, {message: errorObject['not_found']});
@@ -168,7 +171,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
 
     await viewToQuery.executeQuery();
     const viewData = viewToQuery.data;
-    await updateGamerUponRequest({username, gamer});
+    await updateGamerUponRequest(gamer);
     const seoMetadata = {
         title: 'Warzone stats for ' + gamer['username'],
         keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
