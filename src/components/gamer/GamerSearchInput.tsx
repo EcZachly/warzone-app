@@ -12,11 +12,19 @@ import {Input} from '../SmartComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
+type GamerSearchInputProps = {
+    size: 'xl' | 'lg' | 'md' | 'sm',
+    baseUrl?: string,
+    focus?: boolean,
+    mode?: null | 'condensed',
+    onGamerClick?: (gamer) => void
+}
 
-export default function GamerSearchInput(props: { size: 'xl' | 'lg' | 'md' | 'sm', baseUrl?: string, focus: boolean }) {
+export default function GamerSearchInput(props: GamerSearchInputProps) {
     let {size, baseUrl, focus} = props;
     const [gamerResults, setGamerResults] = useState([]);
 
+    const gamerClickMethodExists = TypeService.isFunction(props.onGamerClick);
 
 
     const searchGamers = async (inputValue) => {
@@ -41,7 +49,9 @@ export default function GamerSearchInput(props: { size: 'xl' | 'lg' | 'md' | 'sm
                    inputStyle={{borderRadius: 0, borderBottom: '1px solid #888'}}
                    size={size}/>
 
-            <GamerCardList gamers={gamerResults}/>
+            <GamerCardList gamers={gamerResults}
+                           mode={props.mode}
+                           onGamerClick={props.onGamerClick}/>
         </Box>
     );
 }

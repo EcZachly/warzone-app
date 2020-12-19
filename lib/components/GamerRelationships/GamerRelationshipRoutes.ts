@@ -15,6 +15,7 @@ import TypeService from '../../../src/services/TypeService';
 import UtilityService from '../../../src/services/UtilityService';
 
 import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../../src/config/CONSTANTS';
+import {RawGamer} from '../../../src/components/gamer/GamerTypes';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -52,13 +53,40 @@ export async function queryGamerRelationships(req: NextApiRequest, res: NextApiR
         }
     }).catch((error) => {
         console.log('error', error);
-
         responseHandler.handleError(req, res, error, 500);
     });
 }
 
 
 
+export async function createGamerRelationship(req: NextApiRequest, res: NextApiResponse) {
+    const gamerRelationship = req.body.gamerRelationship;
+
+    if (TypeService.isInteger(gamerRelationship.user_id) === false) {
+        responseHandler.handleError(req, res, {message: 'body.gamerRelationship.user_id (Integer) is required'}, 400);
+    } else if (TypeService.isString(gamerRelationship.username, true) === false) {
+        responseHandler.handleError(req, res, {message: 'body.gamerRelationship.username (String) is required'}, 400);
+    } else if (TypeService.isString(gamerRelationship.platform, true) === false) {
+        responseHandler.handleError(req, res, {message: 'body.gamerRelationship.platform (String) is required'}, 400);
+    } else if (GamerRelationshipService.isValidType(gamerRelationship.type) === false) {
+        responseHandler.handleError(req, res, {message: 'body.gamerRelationship.type (String) is required and must be one of the following: ' + JSON.stringify(GamerRelationshipService.getValidTypes())}, 400);
+    } else {
+        GamerRelationshipController.createGamerRelationship(gamerRelationship).then((newGamerRelationship) => {
+            if (newGamerRelationship) {
+                responseHandler.handleResponse(req, res, newGamerRelationship);
+            } else {
+                responseHandler.handleError(req, res, DEFAULT_ERROR_MESSAGE, 500);
+            }
+        }).catch((error) => {
+            console.log('error', error);
+            responseHandler.handleError(req, res, error, 500);
+        });
+    }
+}
+
+
+
 export default {
-    queryGamerRelationships
+    queryGamerRelationships,
+    createGamerRelationship
 };

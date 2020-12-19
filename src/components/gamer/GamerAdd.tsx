@@ -17,7 +17,7 @@ const CONFIG = {
 
 type GamerAddProps = {
     recaptchaSiteKey: string,
-    baseUrl: string
+    baseUrl?: string
 }
 
 export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
@@ -58,7 +58,7 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
             setMessage({message: '', type: ''});
 
             const response = await HttpService.http({
-                url: baseUrl + '/api/gamer',
+                url: (baseUrl || '') + '/api/gamer',
                 method: 'POST',
                 body: {
                     username: newUserConfig.username,

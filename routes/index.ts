@@ -1,3 +1,4 @@
+import {createGamerRelationship} from '../lib/components/GamerRelationships/GamerRelationshipRoutes';
 const logger = require('tracer').colorConsole();
 
 const express = require('express');
@@ -29,6 +30,7 @@ export function include(server) {
     router.get('/api/gamer-match', GamerMatchRoutes.queryGamerMatches)
 
     router.get('/api/v1/gamer-relationship', GamerRelationshipRoutes.queryGamerRelationships);
+    router.post('/api/v1/gamer-relationship', GamerRelationshipRoutes.createGamerRelationship);
 
     router.post('/api/users', Users.createUser);
 

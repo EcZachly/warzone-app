@@ -10,16 +10,24 @@ import {GamerList, Gamer} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
+type GamerCardListProps = {
+    gamers?: GamerList,
+    onGamerClick?: (gamer) => void,
+    mode?: null | 'condensed',
+    classDescriptions?: object
+};
 
-export default function GamerCardList(props: { gamers?: GamerList, gamer?: Gamer, block?: boolean, noLink?: boolean }) {
-    let {gamers} = props;
 
+export default function GamerCardList(props: GamerCardListProps) {
     return (
         <Box className={'gamer-card-list-container'}>
             {
-                gamers.map((gamer) => {
+                props.gamers.map((gamer) => {
                     return (
                         <GamerCard key={gamer.username + '-' + gamer.platform}
+                                   onGamerClick={props.onGamerClick}
+                                   mode={props.mode}
+                                   classDescriptions={props.classDescriptions}
                                    gamer={gamer}/>
                     );
                 })

@@ -31,6 +31,16 @@ export function sanitizeGamerRelationship(gamerRelationship) {
 }
 
 
+export function isValidType(type) {
+    return getValidTypes().includes(type);
+}
+
+
+export function getValidTypes() {
+    return ['self', 'friend'];
+}
+
+
 
 export function queryGamerRelationships(query: Record<any, unknown>, options?: Record<any, unknown>): Promise<GamerRelationshipList> {
     return new Promise((resolve, reject) => {
@@ -53,5 +63,7 @@ export function queryGamerRelationships(query: Record<any, unknown>, options?: R
 export default {
     createGamerRelationship,
     sanitizeGamerRelationship,
-    queryGamerRelationships
+    queryGamerRelationships,
+    isValidType,
+    getValidTypes
 };

@@ -27,6 +27,7 @@ export function generateNextConfig({directory, dev, port}) {
                 WARZONE_PASSWORD: process.env.WARZONE_PASSWORD,
                 WARZONE_RECAPTCHA_SITE_KEY: process.env.WARZONE_RECAPTCHA_SITE_KEY,
                 WARZONE_RECAPTCHA_SECRET_KEY: process.env.WARZONE_RECAPTCHA_SECRET_KEY,
+                NEXT_PUBLIC_WARZONE_RECAPTCHA_SITE_KEY: process.env.WARZONE_RECAPTCHA_SITE_KEY,
                 PORT: port
             },
             api: {

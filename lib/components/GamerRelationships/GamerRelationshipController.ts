@@ -2,7 +2,8 @@ import {DAO} from './../Database';
 
 import {TABLES, VIEWS} from '../../constants';
 
-import {GamerRelationshipList} from './GamerRelationshipTypes';
+import {GamerRelationshipList, RawGamerRelationship} from './GamerRelationshipTypes';
+import {MetadataService} from '../../../src/components/Metadata';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -12,6 +13,17 @@ export async function queryGamerRelationships(query, options): Promise<GamerRela
 }
 
 
+
+export async function createGamerRelationship(gamerRelationship: Partial<RawGamerRelationship>): Promise<RawGamerRelationship> {
+    if (!gamerRelationship.metadata) {
+        gamerRelationship.metadata = MetadataService.createNewMetadata();
+    }
+
+    return DAO.insert(TABLES.GAMER_RELATIONSHIPS, gamerRelationship);
+}
+
+
 export default {
-    queryGamerRelationships
+    queryGamerRelationships,
+    createGamerRelationship
 };
