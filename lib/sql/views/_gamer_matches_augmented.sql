@@ -1,7 +1,8 @@
-create view warzone._gamer_matches_augmented(username, platform, in_game_username, team, clan_tag, kills, assists, deaths, damage_taken, time_played, score, damage_done, team_placement, longest_streak, distance_traveled, team_survival_time, percent_time_moving, wall_bangs, gulag_deaths, gulag_kills, headshots, executions, objective, xp, match_id, start_time, end_time, map, mode, duration, version, game_type, player_count, team_count, start_timestamp, end_timestamp, team_type, is_warzone_match) as
+create view warzone._gamer_matches_augmented AS
 SELECT gm.query_username as username,
+
        gm.query_platform as platform,
-       gm.username as in_game_username,
+       gm.username       as in_game_username,
        gm.team,
        gm.clan_tag,
        gm.kills,
@@ -36,9 +37,6 @@ SELECT gm.query_username as username,
        m.start_timestamp,
        m.end_timestamp,
        m.team_type,
-       m.is_warzone_match
-FROM warzone.gamer_matches_augmented gm
+       m.game_category
+FROM warzone.gamer_matches gm
          JOIN warzone.matches_augmented m ON gm.match_id = m.match_id;
-
-alter table warzone._gamer_matches_augmented owner to fjcexshgdfbtia;
-

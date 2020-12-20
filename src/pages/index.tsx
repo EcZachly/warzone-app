@@ -5,6 +5,7 @@ import {Container, Header, Box, Text, Small, Main, LineBreak, Button} from './..
 import {Input} from './../components/SmartComponents';
 import {GetServerSideProps} from "next";
 import {getBaseUrlWithProtocol} from "../services/UtilityService";
+import {GAME_CATEGORIES} from "../../lib/constants";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -15,7 +16,7 @@ const Home = ({baseUrl}) => {
 
     const searchGamers = async (inputValue) => {
         if(inputValue.length > 1){
-            const dataUrl = baseUrl + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%');
+            const dataUrl = baseUrl + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%') + '&game_category=' + GAME_CATEGORIES.WARZONE;
             const response = await fetch(dataUrl);
             const newGamers = await response.json();
             setGamerResults(newGamers.gamers);

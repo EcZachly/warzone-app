@@ -8,7 +8,6 @@ WITH team_cnt AS (
            COUNT(DISTINCT gm.query_username )  AS num_players
     FROM warzone.gamer_matches gm
     JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
-    WHERE m.is_warzone_match = TRUE
     GROUP BY 1,2,3
 ),
      full_teams AS (
@@ -28,6 +27,7 @@ WITH team_cnt AS (
 
 SELECT team_grain,
        m.team_type,
+       COALESCE(m.game_category, '(all)') as game_category,
        ARRAY_AGG(DISTINCT  gm.query_platform || '-' || gm.query_username) AS gamers,
        CAST(COUNT(DISTINCT ft.match_id) AS REAL) AS num_matches,
        CAST(SUM(kills) AS REAL) AS total_kills,
@@ -58,5 +58,8 @@ FROM full_teams ft
     JOIN warzone.gamer_matches gm ON ft.match_id = gm.match_id and ft.team = gm.team
        JOIN warzone.matches_augmented m ON ft.match_id = m.match_id
 WHERE has_full_team_data = TRUE
-GROUP BY 1,2
+GROUP BY GROUPING SETS (
+   (team_grain, m.team_type, m.game_category),
+   (team_grain, m.team_type)
+)
 ORDER BY  CAST(COUNT(DISTINCT CASE WHEN team_placement = 1 THEN ft.match_id END) AS REAL)  DESC

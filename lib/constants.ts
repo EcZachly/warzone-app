@@ -25,6 +25,20 @@ export const VIEWS = {
     MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships_materialized'
 };
 
+export const GAME_CATEGORIES = {
+    WARZONE: 'Warzone',
+    ALL: '(all)',
+    MINI_ROYALE: 'Mini Royale',
+    RESURGENCE: 'Resurgence',
+    WARZONE_RUMBLE: 'Warzone Rumble',
+    STIMULUS: 'Stimulus/Buy Back',
+    TRUCK_WAR: 'Truck War',
+    ZOMBIE_ROYALE: 'Zombie Royale',
+    PLUNDER: 'Plunder',
+
+}
+
+
 export const GAMER_TABLE = 'gamers';
 export const ETL_JOBS = 'etl_jobs';
 export const MATCH_TABLE = 'matches';

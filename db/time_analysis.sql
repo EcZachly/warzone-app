@@ -6,8 +6,7 @@ SELECT *,
        EXTRACT(DOW FROM to_timestamp(m.start_time) AT TIME ZONE $3) as day_of_week
 FROM warzone.gamer_matches gm
          JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
-WHERE m.is_warzone_match = TRUE
-AND gm.query_username = $1
+WHERE gm.query_username = $1
 AND gm.query_platform = $2
 ),
 hours_mapped AS (
@@ -23,6 +22,7 @@ hours_mapped AS (
            END                                                       AS time_grain,
            hour_of_timestamp AS sorter
     FROM source
+    WHERE (game_category = $5 or  $5 = '(all)')
 ),
 day_of_week_mapped AS (
     SELECT *,
@@ -40,6 +40,7 @@ day_of_week_mapped AS (
             as time_grain,
            day_of_week AS sorter
     FROM source
+    WHERE (game_category = $5 or  $5 = '(all)')
 ),
 combined AS (
 
@@ -75,7 +76,7 @@ SELECT gm.query_username as username,
        CAST(MAX(score) AS REAL) AS max_score,
        CAST(AVG(score) AS REAL) as avg_score,
            CAST(SUM(gulag_kills) AS REAL) /
-                                 SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)                                  as gulag_win_rate,
+                                 NULLIF(SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills)   ,0)                               as gulag_win_rate,
        CAST(COUNT(1)            AS REAL)                                                      AS num_games
 FROM combined gm
 GROUP BY 1, 2, 3, 4, 5, 6

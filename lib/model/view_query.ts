@@ -15,6 +15,8 @@ export class ViewQuery {
     }
 
     async executeQuery() {
+
         this.data = this.sanitize(await queryView(this.view, this.query, this.options));
+        console.log('got data back from view', this.view);
     }
 }

@@ -29,6 +29,7 @@ import HtmlService from '../../../services/HtmlService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
+import {GAME_CATEGORIES} from "../../../../lib/constants";
 
 
 const CONFIG = {
@@ -65,7 +66,7 @@ const CONFIG = {
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-export default function GamerDetail({gamerData, view, baseUrl}) {
+export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
 
     let containerRef = React.useRef<HTMLDivElement>();
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
@@ -256,7 +257,7 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
         return new Promise(async (resolve, reject) => {
             const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone;
+            const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone + '&game_category=' + gameCategory;
             const response = await fetch(dataUrl);
             let finalResponse = await response.json();
             resolve(finalResponse);
@@ -265,16 +266,17 @@ export default function GamerDetail({gamerData, view, baseUrl}) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const {username, platform, view} = context.query;
+    const {username, platform, view, game_category} = context.query;
     const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
+    const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
-
-    const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView);
+    const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView + '&game_category=' + queryCategory);
     const gamerJson = await rawGamerList.json();
     return {
         props: {
             gamerData: gamerJson,
+            gameCategory: queryCategory,
             view: selectedView,
             baseUrl: baseUrl
         }
