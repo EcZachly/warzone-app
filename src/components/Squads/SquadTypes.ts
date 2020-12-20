@@ -42,6 +42,7 @@ export type RawSquad = {
     total_headshots: number,
     headshots: number,
     gulag_win_rate: number,
+    game_category: String
 };
 
 

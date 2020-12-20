@@ -1,6 +1,7 @@
 CREATE MATERIALIZED VIEW warzone.squad_class_description_values AS
 SELECT
     team_type,
+    COALESCE(game_category, '(all)') as game_category,
     JSON_BUILD_OBJECT(
         'category', 'team_survival_time_mins',
         'description', '',
@@ -94,4 +95,7 @@ SELECT
         ) as win_percentage_cutoffs
 FROM warzone.full_squad_stat_summary
 WHERE num_matches >= 5
-GROUP BY team_type
+GROUP BY GROUPING SETS (
+    (team_type),
+    (team_type, game_category)
+)

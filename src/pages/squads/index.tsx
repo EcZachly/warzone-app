@@ -8,12 +8,13 @@ import {Page, Navbar, Footer} from './../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {SquadCard, SquadService} from './../../components/Squads';
+import {GAME_CATEGORIES} from "../../../lib/constants";
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function Squads({squads, baseUrl, limit, classDescriptions}) {
+export default function Squads({squads, baseUrl, limit, classDescriptions, gameCategory}) {
     const [feedHasMore, setFeedHasMore] = useState(true);
     const [squadList, setSquadList] = useState(squads);
 
@@ -45,7 +46,9 @@ export default function Squads({squads, baseUrl, limit, classDescriptions}) {
 
 
     async function fetchMoreSquads(page) {
-        SquadService.querySquads({}, {
+        SquadService.querySquads({
+            game_category: gameCategory
+        }, {
             baseUrl: baseUrl,
             limit: limit,
             offset: limit * page
@@ -61,31 +64,18 @@ export default function Squads({squads, baseUrl, limit, classDescriptions}) {
         }).catch((error) => {
             console.log(error);
         });
-
-        // const dataUrl = baseUrl + '/api/squad?limit=' + limit + '&offset=' + limit * page;
-        //
-        // const response = await fetch(dataUrl);
-        // const jsonResponse = await response.json();
-        //
-        // const newSquadList = jsonResponse.squads;
-        //
-        // if (newSquadList.length === 0) {
-        //     setFeedHasMore(false);
-        // } else {
-        //     const combinedSquadList = [...squadList, ...newSquadList];
-        //     setSquadList(combinedSquadList);
-        // }
     }
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
-    const rawSquadList = await fetch(baseUrl + '/api/squad');
+    const rawSquadList = await fetch(baseUrl + '/api/squad?game_category=' + GAME_CATEGORIES.WARZONE);
     const squadJson = await rawSquadList.json();
     return {
         props: {
             squads: squadJson['squads'],
             classDescriptions: squadJson['classDescriptions'],
+            gameCategory: GAME_CATEGORIES.WARZONE,
             limit: 10,
             baseUrl: baseUrl
         }
