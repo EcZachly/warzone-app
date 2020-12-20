@@ -34,31 +34,38 @@ import {GAME_CATEGORIES} from "../../../../lib/constants";
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
-        teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer} teammateRows={chartState.viewData}/>,
+        teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer}
+                                                              teammateRows={chartState.viewData}/>,
+
         placements: (gamer, chartState) => <GamerPlacementChart height={260}
                                                                 width={chartState.width}
                                                                 data={chartState.viewData[0]}/>,
+
         stats: (gamer, chartState) => <GamerGradeChart height={260}
                                                        width={chartState.width}
                                                        key={'stat_chart'}
                                                        data={chartState.viewData}
                                                        options={['kdr', 'damage', 'kills', 'score']}
                                                        selectedValue="kdr"/>,
+
         time: (gamer, chartState) => <GamerTimeChart height={260}
                                                      width={chartState.width}
                                                      key={'placement_chart'}
                                                      viewData={chartState.viewData}
                                                      options={['hour_of_day', 'day_of_week']}
                                                      selectedValue="hour_of_day"/>,
+
         squads: (gamer, chartState) => <SquadCardList baseUrl={chartState.baseUrl}
                                                       squads={chartState.viewData}
                                                       classDescriptions={[]}/>,
+
         trends: (gamer, chartState) => <GamerTrendChart gamer={gamer}
                                                         gameCategory={chartState.gameCategory}
                                                         baseUrl={chartState.baseUrl}
                                                         height={260}
                                                         width={chartState.width}
                                                         data={chartState.viewData}/>,
+
         recent_matches: (gamer, chartState) => <GamerMatchCardList gamer={gamer}
                                                                    noLink={true}
                                                                    gamerMatchList={chartState.viewData}/>

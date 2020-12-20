@@ -561,3 +561,67 @@ main.main {
 @media (min-width: 1200px) {
 
 }
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//GAMER INFLUENCE CARD LIST CONTAINER
+
+.gamer-influence-card-list-container {
+
+}
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//GAMER INFLUENCE CARD
+
+.gamer-influence-card {
+  margin-bottom: 15px;
+}
+
+.gamer-influence-card .card-body {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.gamer-influence-card .gamer-helper-container {
+  width: 49.5%;
+}
+
+.gamer-influence-card .gamer-helper-container .stat-container {
+  margin-top: 10px;
+}
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}

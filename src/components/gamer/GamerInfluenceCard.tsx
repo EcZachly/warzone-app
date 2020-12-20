@@ -1,9 +1,14 @@
-import React, {useState} from "react";
-import {Card, CardBody, CardHeader, Small} from "../SimpleComponents";
-import {Gamer} from "./GamerTypes";
-import {GamerLink} from "./index";
-import {StatLabelValue} from "../SmartComponents";
+import React, {useState} from 'react';
 import _ from 'lodash';
+
+import {Card, CardBody, Box, Text, Small} from '../SimpleComponents';
+import {Gamer} from './GamerTypes';
+import {GamerLink, GamerLinkList} from './index';
+import {StatLabelValue} from '../SmartComponents';
+
+//===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
 
 export default function GamerInfluenceCard({gamer, relationships}) {
 
@@ -11,37 +16,76 @@ export default function GamerInfluenceCard({gamer, relationships}) {
         username: relationships[0].helping_player,
         platform: relationships[0].helping_player_platform
     } as Gamer;
-    let helpingPlayerLink = <GamerLink gamer={helpingGamer}/>
-
-    let gamerLink = <GamerLink gamer={gamer}/>
-    let stats = relationships.map((relationship) => {
-        let statName = relationship['relationship_stat'].split('_').map(_.capitalize).join(' ')
-        return <StatLabelValue style={{marginBottom: '0px'}} lowerIsBetter={relationship.lower_is_better} size={"sm"}
-                               label={statName} statValue={relationship.stat_with_player}
-                               compareStatLabel={"compared with overall " + statName}
-                               compareStatValue={relationship.overall_stat}/>
-    })
 
 
-    let helperStats = relationships.map((relationship) => {
-        let statName = relationship['relationship_stat'].split('_').map(_.capitalize).join(' ')
-        return <StatLabelValue style={{marginBottom: '0px'}} lowerIsBetter={relationship.lower_is_better} size={"sm"}
-                               label={statName} statValue={relationship.helper_stat_with_player}
-                               compareStatLabel={"compared with overall " + statName}
-                               compareStatValue={relationship.helper_overall_stat}/>
-    })
-    let playingWithComponent = <Small>while playing with</Small>
-    return <Card>
-        <CardBody>
-            <div style={{float: 'left', width: '50%', marginBottom: '25px'}}>
-                <h5>{gamerLink} {playingWithComponent} {helpingPlayerLink}</h5>
-                {stats}
-            </div>
-            <div style={{float: 'left', width: '50%',  marginBottom: '25px'}}>
-                <h5>{helpingPlayerLink} {playingWithComponent} {gamerLink}</h5>
-                {helperStats}
-            </div>
-        </CardBody>
-    </Card>
+
+    let gamerLink = (
+        <GamerLink gamer={gamer}/>
+    );
+    let gamerStats = getStatLabelValuesForPerson('gamer');
+
+
+
+    let helperLink = (
+        <GamerLink gamer={helpingGamer}/>
+    );
+    let helperStats = getStatLabelValuesForPerson('helper');
+
+    
+
+    return (
+        <Card className={'gamer-influence-card'}>
+            <CardBody>
+                {generateGamerHelperContainer(gamerLink, helperLink, gamerStats)}
+
+                {generateGamerHelperContainer(helperLink, gamerLink, helperStats)}
+            </CardBody>
+        </Card>
+    );
+
+
+
+    function generateGamerHelperContainer(gamer, helper, stats) {
+        return (
+            <Box className={'gamer-helper-container'}>
+                <Box>
+                    <Box>{gamer}</Box>
+
+                    <Box>
+                        <Text type={'help'}>
+                            <Small>
+                                while playing with
+                            </Small>
+                        </Text>
+                    </Box>
+
+                    <Box>{helper}</Box>
+                </Box>
+
+                <Box className={'stat-container'}>
+                    {stats}
+                </Box>
+            </Box>
+        );
+    }
+
+
+    function getStatLabelValuesForPerson(type: 'gamer' | 'helper') {
+        let isGamer = (type === 'gamer');
+
+        return relationships.map((relationship) => {
+            let statName = relationship['relationship_stat'].split('_').map(_.capitalize).join(' ');
+
+            return (
+                <StatLabelValue style={{marginBottom: '0px'}}
+                                lowerIsBetter={relationship.lower_is_better}
+                                size={'sm'}
+                                label={statName}
+                                statValue={isGamer ? relationship.stat_with_player : relationship.helper_stat_with_player}
+                                compareStatLabel={'compared with overall ' + statName}
+                                compareStatValue={isGamer ? relationship.overall_stat : relationship.helper_overall_stat}/>
+            );
+        });
+    }
 }
 
