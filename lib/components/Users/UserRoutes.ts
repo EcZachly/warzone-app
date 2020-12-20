@@ -153,5 +153,5 @@ export function verifyUserToken(req, res) {
 export default {
     createUser,
     login,
-
+    verifyUserToken
 };

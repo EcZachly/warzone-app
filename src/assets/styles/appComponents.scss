@@ -403,6 +403,35 @@ main.main {
   margin-bottom: 15px;
 }
 
+.gamer-card.clickable:hover .card-body {
+  background: #303f56;
+}
+
+.gamer-card.clickable:hover .card-header {
+  background: darken(#303f56, 5);
+}
+
+.gamer-card.clickable:active .card-body {
+  background: darken(#303f56, 5);
+}
+
+.gamer-card.clickable:active .card-header {
+  background: darken(#303f56, 10);
+}
+
+.gamer-card.condensed {
+
+}
+
+.gamer-card.condensed .card-header {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.gamer-card.condensed .card-header .gamer-link-container {
+  margin-right: 5px;
+}
+
 .gamer-card .card-header {
   font-size: 1.1em;
 }

@@ -9,8 +9,6 @@ import {GamerMatchList, RawGamerMatchList} from './GamerMatchTypes';
 
 
 export async function queryGamerMatches(query, options): Promise<GamerMatchList> {
-    console.log('query', query);
-    console.log('options', options);
     return DAO.find(VIEWS.GAMER_MATCHES_AUGMENTED, query, options);
 }
 

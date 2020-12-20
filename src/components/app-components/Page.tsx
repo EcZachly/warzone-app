@@ -25,8 +25,6 @@ class Page extends React.Component<PageProps, PageState> {
         if (this.props.loginRequired) {
             this._redirectIfUserIsNotLoggedIn();
         }
-
-
     }
 
 

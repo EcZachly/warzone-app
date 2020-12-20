@@ -39,6 +39,7 @@ const Button = (props: ButtonProps) => {
 
     return (
         <button {...props}
+                id={props.id}
                 className={classNames}
                 type={buttonType}
                 style={props.style}
@@ -63,11 +64,12 @@ export default Button;
 const TS_VALID_TYPES = [...Object.keys(CONSTANTS.VALID_TYPES)] as const;
 
 type ButtonProps = {
-    onClick?:  (ButtonProps, any) => void,
+    onClick?: (ButtonProps, any) => void,
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
     innerRef?: any,
+    id?: string,
     buttonType?: (typeof CONSTANTS.VALID_BUTTON_TYPES) | string,
     noDefaultType?: boolean,
     block?: boolean,

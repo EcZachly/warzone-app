@@ -3,28 +3,16 @@ import React, {useState, Component} from 'react';
 import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
 import {Container, Header, Box, Text, Small, Main, LineBreak, Button} from './../components/SimpleComponents';
 import {Input} from './../components/SmartComponents';
-import {GetServerSideProps} from "next";
-import {getBaseUrlWithProtocol} from "../services/UtilityService";
+import {GetServerSideProps} from 'next';
+import {getBaseUrlWithProtocol} from '../services/UtilityService';
+
+import {GamerSearchInput} from './../components/gamer';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 const Home = ({baseUrl}) => {
     const [searchInputValue, updateSearchInputValue] = useState('');
-    const [gamerResults, setGamerResults] = useState([]);
-
-    const searchGamers = async (inputValue) => {
-        if(inputValue.length > 1){
-            const dataUrl = baseUrl + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%');
-            const response = await fetch(dataUrl);
-            const newGamers = await response.json();
-            setGamerResults(newGamers.gamers);
-        }
-        else{
-            setGamerResults([]);
-        }
-    };
-    let gamerCards = gamerResults.map((gamer) => <GamerCard gamer={gamer} classDescriptions={{}}/>)
 
     return (
         <Page title={'Warzone'}>
@@ -45,14 +33,9 @@ const Home = ({baseUrl}) => {
 
                         <LineBreak clear/>
 
-                        <Input onChange={searchGamers}
-                               placeholder={'Search Gamers'}
-                               mode={'plain'}
-                               focus
-                               inputStyle={{borderRadius: 0, borderBottom: '1px solid #888'}}
-                               size={'xl'}
-                        />
-                        {gamerCards}
+                        <GamerSearchInput focus={true}
+                                          size={'xl'}
+                                          baseUrl={baseUrl}/>
                     </Container>
 
                 </Box>
@@ -94,7 +77,7 @@ const Home = ({baseUrl}) => {
             <Footer/>
         </Page>
     );
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);

@@ -6,11 +6,15 @@ const Card = (props: CardProps) => {
     const classNames = getClassNames(props);
 
     return (
-        <div {...props} className={classNames} style={props.style} ref={props.innerRef} onClick={() => {
-            if (props.onClick) {
-                props.onClick();
-            }
-        }}>
+        <div {...props}
+             className={classNames}
+             style={props.style}
+             ref={props.innerRef}
+             onClick={() => {
+                 if (props.onClick) {
+                     props.onClick();
+                 }
+             }}>
             {props.children}
         </div>
     );
@@ -28,7 +32,7 @@ type CardProps = {
     children?: React.ReactNode | React.ReactNodeArray,
     innerRef?: any,
     shadow?: 1 | 2 | 3 | 4 | 5,
-    onClick?:  () => void
+    onClick?: () => void
 }
 
 
@@ -44,7 +48,7 @@ function getClassNames(props) {
         classNames.push(props.className);
     }
 
-    if (props.onClick) {
+    if (!!props.onClick) {
         classNames.push('clickable');
     }
 

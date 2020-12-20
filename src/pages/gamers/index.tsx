@@ -10,6 +10,7 @@ import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents
 import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
+import GamerCardList from '../../components/gamer/GamerCardList';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -83,16 +84,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                                         loader={<div className="loader" key={0}>Loading ...</div>}
                                         useWindow={true}>
 
-                            {
-                                gamerValues.map((gamer) => {
-                                    return (
-                                        <GamerCard key={gamer.username + '-' + gamer.platform}
-                                                   gamer={gamer}
-                                                   classDescriptions={classDescriptions}/>
-                                    );
-                                })
-                            }
 
+                            <GamerCardList gamers={gamerValues}
+                                           classDescriptions={classDescriptions}/>
+                                           
                         </InfiniteScroll>
                     </SidebarCompanion>
                 </Container>

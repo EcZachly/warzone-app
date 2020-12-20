@@ -18,7 +18,7 @@ export async function find(table: string, query?: Record<any, unknown>, options?
 
 
 
-export async function insert(table: string, data: Record<any, unknown>) {
+export async function insert(table: string, data: Record<any, unknown>): Promise<any> {
     return new Promise(async (resolve, reject) => {
         validateTable(table).then(async (isValid) => {
             const db = await database;

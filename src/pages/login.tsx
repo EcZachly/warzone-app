@@ -97,8 +97,8 @@ let LoginPage = ({baseUrl}) => {
             <Navbar/>
 
             <Main>
-                <Container size={'sm'} style={{maxWidth: '600px'}}>
-                    <Card style={{marginTop: '20px', marginBottom: '100px'}}>
+                <Container size={'sm'} style={{maxWidth: '600px',  paddingBottom: '100px'}}>
+                    <Card style={{marginTop: '20px', marginBottom: '20px'}}>
                         <CardHeader>
                             <Header>Log In</Header>
 
@@ -146,6 +146,10 @@ let LoginPage = ({baseUrl}) => {
                             </Box>
                         </CardFooter>
                     </Card>
+
+                    <Paragraph>
+                        If you don't have an account, you can <a href={'/signup'}>sign up here for free</a>
+                    </Paragraph>
 
                 </Container>
             </Main>
