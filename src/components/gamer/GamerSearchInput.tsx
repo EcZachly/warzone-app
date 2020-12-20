@@ -16,20 +16,17 @@ type GamerSearchInputProps = {
     size: 'xl' | 'lg' | 'md' | 'sm',
     baseUrl?: string,
     focus?: boolean,
+    gameCategory?: String,
     mode?: null | 'condensed',
     onGamerClick?: (gamer) => void
 }
 
-export default function GamerSearchInput(props: GamerSearchInputProps) {
-    let {size, baseUrl, focus} = props;
+export default function GamerSearchInput({size, baseUrl, focus, mode, gameCategory, onGamerClick}: GamerSearchInputProps) {
     const [gamerResults, setGamerResults] = useState([]);
-
-    const gamerClickMethodExists = TypeService.isFunction(props.onGamerClick);
-
-
+    const gamerClickMethodExists = TypeService.isFunction(onGamerClick);
     const searchGamers = async (inputValue) => {
         if (inputValue && inputValue.length > 1) {
-            const dataUrl = (baseUrl || '') + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%');
+            const dataUrl = (baseUrl || '') + '/api/gamer?username.ilike=' + encodeURIComponent('%' + inputValue + '%') + '&game_category=' + gameCategory
             const response = await fetch(dataUrl);
             const newGamers = await response.json();
             setGamerResults(newGamers.gamers);
@@ -50,8 +47,8 @@ export default function GamerSearchInput(props: GamerSearchInputProps) {
                    size={size}/>
 
             <GamerCardList gamers={gamerResults}
-                           mode={props.mode}
-                           onGamerClick={props.onGamerClick}/>
+                           mode={mode}
+                           onGamerClick={onGamerClick}/>
         </Box>
     );
 }

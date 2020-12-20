@@ -3,12 +3,13 @@ WITH source AS (
     SELECT
             m.start_timestamp,
             m.team_type,
+            m.game_category,
             gm.*,
             COALESCE(gm2.query_username, 'without teammates')  AS helping_player,
             COALESCE(gm2.query_platform, 'without teammates') AS helping_player_platform
     FROM warzone.gamer_matches gm
          JOIN warzone.matches_augmented m
-            ON gm.match_id = m.match_id AND m.is_warzone_match = TRUE
+            ON gm.match_id = m.match_id
          LEFT JOIN warzone.gamer_matches gm2
                    ON gm.team = gm2.team
                        AND gm.match_id = gm2.match_id
@@ -16,6 +17,7 @@ WITH source AS (
 ),
      overall AS (
           SELECT
+          COALESCE(m.game_category, '(all)') as game_category,
           gm.query_username as username,
           gm.query_platform AS platform,
        '(overall)' as helping_player,
@@ -50,13 +52,17 @@ WITH source AS (
        MAX(start_timestamp)                                                                      AS last_game_time
     FROM warzone.gamer_matches gm
           JOIN warzone.matches_augmented m on gm.match_id = m.match_id
-          AND m.is_warzone_match = TRUE
-         GROUP BY gm.query_username, gm.query_platform, helping_player
+         GROUP BY GROUPING SETS (
+            (gm.query_username, gm.query_platform, helping_player),
+            (gm.query_username, gm.query_platform, helping_player, m.game_category)
+
+         )
 
      ),
      with_teammates AS (
 
          SELECT
+         COALESCE(game_category, '(all)') AS game_category,
          gm.query_username AS username,
          gm.query_platform AS platform,
        helping_player,
@@ -89,7 +95,11 @@ WITH source AS (
        MIN(start_timestamp)                                                                      AS first_game_time,
        MAX(start_timestamp)                                                                      AS last_game_time
 FROM source gm
-GROUP BY gm.query_username, gm.query_platform, helping_player, helping_player_platform
+GROUP BY GROUPING SETS (
+    (query_username, query_platform, helping_player, helping_player_platform),
+    (game_category, query_username, query_platform, helping_player, helping_player_platform)
+
+)
      ),
      combined AS (
 

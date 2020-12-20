@@ -95,6 +95,7 @@ function manageComplexQueryParameters(queryParams) {
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const queryParams = req.query;
 
+    console.log(queryParams);
     const offset = queryParams.offset || 0;
     delete queryParams.offset;
 
@@ -123,6 +124,7 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
         queryOptions.order = [sortObj];
     }
 
+    console.log('server query', queryParams);
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
     await playerQuery.executeQuery();
     let gamers = playerQuery.data;
@@ -142,7 +144,7 @@ async function updateGamerUponRequest(gamer:Gamer) {
 
 
 export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
-    const {view} = req.query;
+    const {view, game_category} = req.query;
     delete req.query.view;
     const {username, platform} = req.params;
     let allParams = {...req.params, ...req.query};
@@ -162,7 +164,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     }
 
     const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams)
-    const gamer: Gamer = await getSingleGamerData(username, platform)
+    const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string)
     const classDescriptions: GamerClassDescription = await getGamerClassDescriptions()
 
     if (!gamer) {

@@ -3,8 +3,9 @@ import React, {useState, Component} from 'react';
 import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
 import {Container, Header, Box, Text, Small, Main, LineBreak, Button} from './../components/SimpleComponents';
 import {Input} from './../components/SmartComponents';
-import {GetServerSideProps} from 'next';
-import {getBaseUrlWithProtocol} from '../services/UtilityService';
+import {GetServerSideProps} from "next";
+import {getBaseUrlWithProtocol} from "../services/UtilityService";
+import {GAME_CATEGORIES} from "../../lib/constants";
 
 import {GamerSearchInput} from './../components/gamer';
 
@@ -12,8 +13,6 @@ import {GamerSearchInput} from './../components/gamer';
 
 
 const Home = ({baseUrl}) => {
-    const [searchInputValue, updateSearchInputValue] = useState('');
-
     return (
         <Page title={'Warzone'}>
             <Navbar/>
@@ -33,7 +32,9 @@ const Home = ({baseUrl}) => {
 
                         <LineBreak clear/>
 
-                        <GamerSearchInput focus={true}
+                        <GamerSearchInput
+
+                                        focus={true}
                                           size={'xl'}
                                           baseUrl={baseUrl}/>
                     </Container>

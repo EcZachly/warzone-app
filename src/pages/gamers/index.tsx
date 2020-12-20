@@ -10,31 +10,49 @@ import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents
 import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
+import {GAME_CATEGORIES} from "../../../lib/constants";
 import GamerCardList from '../../components/gamer/GamerCardList';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, username, limit, classDescriptions}) {
-    const [gamerValues, setGamers] = useState(gamers);
+export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, username, limit, classDescriptions, gameCategory}) {
+    const [gamerValues, setGamers] = useState({[gameCategory]: gamers});
     const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
     const [searchValue, setSearchValue] = useState(username);
     const [sorting, updateSorting] = useState(sort);
+    const [filterCategory, setGameCategory] = useState(gameCategory)
 
     useEffect(() => {
         console.log('sorting value changed');
+        fetchMoreGamers(0, filterCategory, true);
 
-        fetchMoreGamers(0, true);
     }, [sorting]);
 
     const router = useRouter();
 
-
-    if (gamerValues.length === 0) {
-        fetchMoreGamers(0);
+    if (!gamerValues[filterCategory] || gamerValues[filterCategory].length === 0) {
+        fetchMoreGamers(0, filterCategory, true);
     }
 
-    console.log(gamerValues);
+
+    const buttonTabs = Object.values(GAME_CATEGORIES).map((value) => {
+        const isActive = (value === filterCategory);
+        return (
+            <Button key={value}
+                    type={isActive ? 'dark' : 'link'}
+                    style={{
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                        marginBottom: 0
+                    }}
+                    onClick={() => isActive ? '' : setGameCategory(value)}>
+                {value}
+            </Button>
+        );
+    });
 
     return (
         <Page title={'Gamers'}>
@@ -71,23 +89,47 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                                    options={[
                                        {value: {sort: 'kdr', direction: 'desc'}, text: 'KDR (High to Low)'},
                                        {value: {sort: 'kdr', direction: 'asc'}, text: 'KDR (Low to High)'},
-                                       {value: {sort: 'gulag_win_rate', direction: 'desc'}, text: 'Gulag Win Rate (High to Low)'},
-                                       {value: {sort: 'gulag_win_rate', direction: 'asc'}, text: 'Gulag Win Rate (Low to High)'},
-                                       {value: {sort: 'win_percentage', direction: 'desc'}, text: 'Win Rate (High to Low)'},
-                                       {value: {sort: 'win_percentage', direction: 'asc'}, text: 'Win Rate (Low to High)'},
+                                       {
+                                           value: {sort: 'gulag_win_rate', direction: 'desc'},
+                                           text: 'Gulag Win Rate (High to Low)'
+                                       },
+                                       {
+                                           value: {sort: 'gulag_win_rate', direction: 'asc'},
+                                           text: 'Gulag Win Rate (Low to High)'
+                                       },
+                                       {
+                                           value: {sort: 'win_percentage', direction: 'desc'},
+                                           text: 'Win Rate (High to Low)'
+                                       },
+                                       {
+                                           value: {sort: 'win_percentage', direction: 'asc'},
+                                           text: 'Win Rate (Low to High)'
+                                       },
                                    ]}/>
+                            <div>
+                                {buttonTabs}
+                            </div>
                         </Box>
 
+
                         <InfiniteScroll pageStart={0}
-                                        loadMore={(page) => fetchMoreGamers(page)}
+                                        loadMore={(page) => fetchMoreGamers(page, filterCategory)}
                                         hasMore={feedHasMore}
                                         loader={<div className="loader" key={0}>Loading ...</div>}
                                         useWindow={true}>
+                            {
+                                (gamerValues[filterCategory] || []).map((gamer) => {
+                                    return (
+                                        <GamerCard key={gamer.username + '-' + gamer.platform}
+                                                   gamer={gamer}
+                                                   classDescriptions={classDescriptions.filter((d) => d['game_category'] == filterCategory)[0]}/>
+                                    );
+                                })
+                            }
 
-
-                            <GamerCardList gamers={gamerValues}
+                            <GamerCardList gamers={gamerValues[filterCategory] || []}
                                            classDescriptions={classDescriptions}/>
-                                           
+
                         </InfiniteScroll>
                     </SidebarCompanion>
                 </Container>
@@ -105,11 +147,12 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
         if (inputValue.length) {
             router.replace({
                 pathname: '/gamers',
-                query: {username: inputValue}
+                query: {username: inputValue, game_category: filterCategory}
             });
         } else {
             router.replace({
-                pathname: '/gamers'
+                pathname: '/gamers',
+                query: {game_category: filterCategory}
             });
         }
         setFeedHasMore(false);
@@ -119,9 +162,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
     }
 
 
-    async function fetchMoreGamers(page: number = 0, restart?: boolean) {
+    async function fetchMoreGamers(page: number = 0, category = 'Warzone', restart?: boolean) {
         let searchQueryParams = {
             limit,
+            game_category: category,
             offset: limit * page,
             sort: sorting.sort,
             direction: sorting.direction
@@ -130,7 +174,6 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
         if (searchValue) {
             searchQueryParams['username.ilike'] = `%${searchValue}%`;
         }
-
         const dataUrl = baseUrl + '/api/gamer?' + UtilityService.objectToUrlParameters(searchQueryParams);
 
         const rawResponse = await fetch(dataUrl);
@@ -141,7 +184,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
             setFeedHasMore(false);
         } else {
             const filteredGamers = [];
-            let totalGamers = [...gamerValues, ...newGamerList];
+            let totalGamers = [...(gamerValues[category] || []), ...newGamerList];
 
             if (restart === true) {
                 totalGamers = newGamerList;
@@ -157,8 +200,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                     seenGamerTags[gamerTag] = true;
                 }
             });
-
-            setGamers(filteredGamers);
+            let copyGamers = JSON.parse(JSON.stringify(gamerValues));
+            copyGamers[filterCategory] = filteredGamers
+            setGamers(copyGamers);
+            setGameCategory(category);
         }
     }
 }
@@ -170,11 +215,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
     let username = query.username || '';
 
+    let gameCategory = query['game_category'] || 'Warzone';
     const sort = query.sort || 'kdr';
 
     const sortDirection = query.direction || 'desc';
 
-    let searchQueryParams = {sort: undefined, direction: undefined, 'username.ilike': undefined};
+    let searchQueryParams = {
+        sort: undefined,
+        direction: undefined,
+        'username.ilike': undefined,
+        game_category: gameCategory as string
+    };
 
     if (username) {
         searchQueryParams['username.ilike'] = `%${username}%`;
@@ -198,6 +249,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 direction: sortDirection
             },
             gamers: gamerJson['gamers'],
+            gameCategory: gameCategory,
             username: context.query.username || '',
             classDescriptions: gamerJson['classDescriptions'],
             baseUrl: baseUrl,
