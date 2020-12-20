@@ -35,43 +35,48 @@ import {GAME_CATEGORIES} from "../../../../lib/constants";
 const CONFIG = {
     VIEW_NAME_CONFIG: {
         teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer} teammateRows={chartState.viewData}/>,
-        placements: (gamer, chartState) =>  <GamerPlacementChart height={260}
-                                                                            width={chartState.width}
-                                                                            data={chartState.viewData[0]}/>,
+        placements: (gamer, chartState) => <GamerPlacementChart height={260}
+                                                                width={chartState.width}
+                                                                data={chartState.viewData[0]}/>,
         stats: (gamer, chartState) => <GamerGradeChart height={260}
-                                                                       width={chartState.width}
-                                                                       key={'stat_chart'}
-                                                                       data={chartState.viewData}
-                                                                       options={['kdr', 'damage', 'kills', 'score']}
-                                                                       selectedValue="kdr"/>,
-        time:  (gamer, chartState) =>  <GamerTimeChart height={260}
-                                                                       width={chartState.width}
-                                                                       key={'placement_chart'}
-                                                                       viewData={chartState.viewData}
-                                                                       options={['hour_of_day', 'day_of_week']}
-                                                                       selectedValue="hour_of_day"/>,
+                                                       width={chartState.width}
+                                                       key={'stat_chart'}
+                                                       data={chartState.viewData}
+                                                       options={['kdr', 'damage', 'kills', 'score']}
+                                                       selectedValue="kdr"/>,
+        time: (gamer, chartState) => <GamerTimeChart height={260}
+                                                     width={chartState.width}
+                                                     key={'placement_chart'}
+                                                     viewData={chartState.viewData}
+                                                     options={['hour_of_day', 'day_of_week']}
+                                                     selectedValue="hour_of_day"/>,
         squads: (gamer, chartState) => <SquadCardList baseUrl={chartState.baseUrl}
-                                                                     squads={chartState.viewData}
-                                                                     classDescriptions={[]}/>,
+                                                      squads={chartState.viewData}
+                                                      classDescriptions={[]}/>,
         trends: (gamer, chartState) => <GamerTrendChart gamer={gamer}
                                                         gameCategory={chartState.gameCategory}
-                                                                       baseUrl={chartState.baseUrl}
-                                                                       height={260}
-                                                                       width={chartState.width}
-                                                                       data={chartState.viewData}/>,
-        recent_matches:  (gamer, chartState) => <GamerMatchCardList gamer={gamer}
-                                                                          noLink={true}
-                                                                          gamerMatchList={chartState.viewData}/>
+                                                        baseUrl={chartState.baseUrl}
+                                                        height={260}
+                                                        width={chartState.width}
+                                                        data={chartState.viewData}/>,
+        recent_matches: (gamer, chartState) => <GamerMatchCardList gamer={gamer}
+                                                                   noLink={true}
+                                                                   gamerMatchList={chartState.viewData}/>
     }
 };
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
+export default function GamerDetail({gamerData, view, gameCategory, baseUrl, error}) {
 
     let containerRef = React.useRef<HTMLDivElement>();
+    if (error) {
+        return <div>{error}</div>
+    }
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
+
+    console.log(classDescriptions);
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
 
     const [chartState, setChartState] = useState({
@@ -87,10 +92,11 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
     let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
+
     useEffect(() => {
         setComponentDidUpdate(true);
-        if(getChartWidth() !== chartState.width){
-            setChartState(Object.assign({}, chartState ,{width: getChartWidth()}))
+        if (getChartWidth() !== chartState.width) {
+            setChartState(Object.assign({}, chartState, {width: getChartWidth()}))
         }
     });
 
@@ -122,19 +128,25 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
             </div>
         );
     } else {
-        const damageDoneRatio = UtilityService.round(Number(gamer.avg_damage_done) / Number(gamer.avg_damage_taken), 3);
-        // const last100GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_100_rolling_average_kdr - gamer.kdr) / gamer.kdr, 1);
-        const last30GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_30_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
-        const last10GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_10_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
+        let damageDoneRatio = 0;
+
+        if (gamer) {
+            damageDoneRatio = UtilityService.round(Number(gamer.avg_damage_done) / Number(gamer.avg_damage_taken), 3);
+        }
+        let username = '';
+        if (gamer) {
+            username = gamer.username;
+        }
+
         return (
-            <Page title={'Stats for ' + gamer.username}>
+            <Page title={'Stats for ' + username}>
                 <Navbar/>
 
                 <Main>
                     <Container size={'lg'} mode={'sidebar'}>
                         <Sidebar>
                             <Header size={'lg'}>
-                                {gamer.username}
+                                {username}
 
                                 <Small>
                                     <GamerPlatformImage gamer={gamer}/>
@@ -146,7 +158,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
                             <GamerAliasList gamer={gamer}/>
 
                             <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer}
-                                                                                 classDescriptions={classDescriptions.filter((description)=> description['game_category'] === gameCategory)[0]}/>}/>
+                                                                                 classDescriptions={classDescriptions.filter((description) => description['game_category'] === gameCategory)[0]}/>}/>
 
                             <LineBreak/>
 
@@ -274,12 +286,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView + '&game_category=' + queryCategory);
     const gamerJson = await rawGamerList.json();
+
+    let props = {
+        gamerData: gamerJson,
+        gameCategory: queryCategory,
+        view: selectedView,
+        baseUrl: baseUrl,
+    }
+    if (gamerJson['message']) {
+        props['error'] = gamerJson['message'];
+    }
     return {
-        props: {
-            gamerData: gamerJson,
-            gameCategory: queryCategory,
-            view: selectedView,
-            baseUrl: baseUrl
-        }
-    };
+        props
+    }
+
 };

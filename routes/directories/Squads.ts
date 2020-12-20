@@ -3,6 +3,7 @@ import {NextApiRequest, NextApiResponse} from 'next';
 import {queryView} from '../../lib/model/analysis';
 
 import SquadService from '../../lib/components/Squads/SquadService';
+import {GAME_CATEGORIES} from "../../lib/constants";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -19,7 +20,7 @@ export async function findSquads(req: NextApiRequest, res: NextApiResponse) {
     const offset = req.query.offset || 0;
     delete queryParams.offset;
 
-    const classDescriptionValues = await queryView(classDescriptions, {}, {});
+    const classDescriptionValues = await queryView(classDescriptions, {game_category: req.query.game_category || GAME_CATEGORIES.WARZONE}, {});
 
     const rawSquadList = await queryView(viewName, queryParams, {limit, offset});
 

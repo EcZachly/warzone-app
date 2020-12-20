@@ -27,19 +27,16 @@ export function restToMassiveQuery(view: string, params: object){
     else{
         userQuery = params;
     }
+
     let gameCategoryQuery = {
         game_category: params['game_category']
     }
-
-    const userString = '%' + params['platform'] + '-' + params['username'] + '%';
-    const squadQuery = {'team_grain LIKE': userString};
+    const squadQuery = {'team_grain LIKE':  `%${params['platform']}-${params['username']}%`};
     const timezoneQuery = {
         timezone: params['timeZone'] || 'America/Los_Angeles',
         cutoff: '10'
     };
     const trendQuery = {lookback: parseFloat(params['lookback'] as string) || 30};
-
-
     const queries = {
         [VIEWS.PLAYER_STAT_SUMMARY]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: {},

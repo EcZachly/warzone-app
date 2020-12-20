@@ -95,7 +95,6 @@ function manageComplexQueryParameters(queryParams) {
 export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const queryParams = req.query;
 
-    console.log(queryParams);
     const offset = queryParams.offset || 0;
     delete queryParams.offset;
 
@@ -124,7 +123,6 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
         queryOptions.order = [sortObj];
     }
 
-    console.log('server query', queryParams);
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
     await playerQuery.executeQuery();
     let gamers = playerQuery.data;

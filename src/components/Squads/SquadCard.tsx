@@ -22,7 +22,7 @@ import {GamerLinkList} from '../gamer';
 export default function SquadCard({squad, classDescriptions}) {
     //Only use classes that correspond with the right team type, otherwise we'd be comparing duos to quads, etc
     let filteredDescriptions = classDescriptions.filter((description) => description.team_type == squad.team_type)[0];
-
+    console.log(squad, filteredDescriptions);
     let stats = {
         'Total Matches': {
             value: UtilityService.numberWithCommas(squad.num_matches),
@@ -61,11 +61,11 @@ export default function SquadCard({squad, classDescriptions}) {
             value: UtilityService.numberWithCommas(squad.total_teams_wiped || 0),
             placement: 'right'
         },
-        'Average Legendary Crates Looted per Game': {
+        'Average Crates Looted per Game': {
             value: squad.caches_opened && UtilityService.round(squad.caches_opened, 2),
             placement: 'right'
         },
-        'Total Legendary Crates Looted': {
+        'Total Crates Looted': {
             value: UtilityService.numberWithCommas(squad.total_caches_opened || 0),
             placement: 'right'
         },
