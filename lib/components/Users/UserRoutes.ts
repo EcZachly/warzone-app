@@ -39,6 +39,9 @@ export function createUser(req: NextApiRequest, res: NextApiResponse) {
                 responseHandler.handleError(req, res, {userMessage: validPasswordStatus || 'Password is invalid, please try something else'}, 400);
             } else {
                 AuthService.encryptPassword(password).then((encryptedPassword) => {
+                    email = UserService.sanitizeEmailForStorage(email);
+                    first_name = first_name.trim();
+
                     UserController.createUser({
                         email, first_name,
                         password: encryptedPassword
@@ -50,7 +53,7 @@ export function createUser(req: NextApiRequest, res: NextApiResponse) {
                     });
                 }).catch((error) => {
                     console.error(error);
-                    console.log(responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE}));
+                    responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE})
                 });
             }
         }
@@ -67,7 +70,8 @@ export function login(req: NextApiRequest, res: NextApiResponse) {
     } else if (TypeService.isString(password, true) === false) {
         responseHandler.handleError(req, res, {message: 'body.password (String) is required'}, 400);
     } else {
-        UserController.queryUsers({email: email}, {}, {sanitize: false}).then((users) => {
+
+        UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)}, {}, {sanitize: false}).then((users) => {
             if (users && TypeService.isObject(users[0], true)) {
                 let user = users[0];
 
@@ -146,7 +150,6 @@ export function verifyUserToken(req, res) {
         responseHandler.handleError(req, res, 'user_id (Integer) is required in the body', STATUS_CODE.BAD_REQUEST);
     }
 }
-
 
 
 

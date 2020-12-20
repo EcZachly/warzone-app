@@ -79,6 +79,12 @@ export function currentSessionTokenHasBeenVerified() {
 
 
 
+export function sanitizeEmailForStorage(email) {
+    return email.toLowerCase().trim();
+}
+
+
+
 export function verifyCurrentUserAndToken() {
     return new Promise((resolve, reject) => {
         if (userIsLoggedIn()) {
@@ -109,6 +115,7 @@ export default {
     createUser,
     sanitizeUser,
     login,
+    sanitizeEmailForStorage,
     getUser,
     userIsLoggedIn,
     currentSessionTokenHasBeenVerified,
