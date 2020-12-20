@@ -54,6 +54,7 @@ const CONFIG = {
                                                                      squads={chartState.viewData}
                                                                      classDescriptions={[]}/>,
         trends: (gamer, chartState) => <GamerTrendChart gamer={gamer}
+                                                        gameCategory={chartState.gameCategory}
                                                                        baseUrl={chartState.baseUrl}
                                                                        height={260}
                                                                        width={chartState.width}
@@ -74,6 +75,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
 
     const [chartState, setChartState] = useState({
+        gameCategory: gameCategory,
         viewData: viewData,
         baseUrl: baseUrl,
         gamer: gamer,

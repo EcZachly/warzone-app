@@ -22,7 +22,7 @@ function datediff(first, second) {
 }
 
 
-export default function TrendChart({gamer, data, baseUrl, keysToChart, height, width, timestampColumn = "start_timestamp"}) {
+export default function TrendChart({gamer, data, baseUrl, category, keysToChart, height, width, timestampColumn = "start_timestamp"}) {
     let colors = ['#8884d8', '#FFEE00', '#DD00FF']
     let [trendValue, setTrendValue] = useState(30);
     let [maxTrendWindow, setMaxTrendWindow] = useState(30);
@@ -31,7 +31,8 @@ export default function TrendChart({gamer, data, baseUrl, keysToChart, height, w
 
 
     const fetchViewData = async (windowSize) => {
-        const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=trends&lookback=' + windowSize
+        let dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=trends&lookback=' + windowSize
+        dataUrl = dataUrl  + '&game_category=' + category
         const response = await fetch(dataUrl);
         return await response.json();
     };
