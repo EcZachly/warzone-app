@@ -7,7 +7,7 @@ const path = require('path');
 let server = express();
 
 import {generateNextConfig} from './config/server/nextConfig';
-import createAPIEventMiddleware from "./routes/siteTrafficMiddlware";
+import createAPIEventMiddleware from './routes/siteTrafficMiddlware';
 
 const dev = (process.env.NODE_ENV !== 'production');
 const CONSTANTS = {
@@ -20,7 +20,7 @@ let PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
 const app = generateNextConfig({
     dev,
     directory: CONSTANTS.PAGES_DIRECTORY,
-    port: PORT
+    port: PORT,
 });
 
 const handle = app.getRequestHandler();
@@ -59,7 +59,7 @@ function run() {
                     }
                     next();
                 });
-                server.use('*', (req, res, next) => createAPIEventMiddleware(req, res, next))
+                server.use('*', (req, res, next) => createAPIEventMiddleware(req, res, next));
                 server.get('*', (req, res) => {
                     return handle(req, res);
                 });

@@ -124,7 +124,6 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
         // const last100GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_100_rolling_average_kdr - gamer.kdr) / gamer.kdr, 1);
         const last30GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_30_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
         const last10GamesPercentageDifference = UtilityService.numberToPercentage((gamer.last_10_rolling_average_kdr - gamer.last_100_rolling_average_kdr) / gamer.last_100_rolling_average_kdr, 1);
-
         return (
             <Page title={'Stats for ' + gamer.username}>
                 <Navbar/>
@@ -145,7 +144,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl}) {
                             <GamerAliasList gamer={gamer}/>
 
                             <LabelValue label={'Classes'} value={<ClassBadgeList subject={gamer}
-                                                                                 classDescriptions={classDescriptions}/>}/>
+                                                                                 classDescriptions={classDescriptions.filter((description)=> description['game_category'] === gameCategory)[0]}/>}/>
 
                             <LineBreak/>
 

@@ -2,6 +2,10 @@ import GamerCard from './GamerCard';
 export {GamerCard};
 
 
+import GamerCardList from './GamerCardList';
+export {GamerCardList};
+
+
 import GamerGradeChart from './GamerGradeChart';
 export {GamerGradeChart};
 
@@ -30,6 +34,10 @@ import GamerPlatformImage from './GamerPlatformImage';
 export {GamerPlatformImage};
 
 
+import GamerSearchInput from './GamerSearchInput';
+export {GamerSearchInput};
+
+
 import GamerService from './GamerService';
 export {GamerService};
 
@@ -48,16 +56,18 @@ export {GamerAdd};
 
 
 export default {
-    GamerCard: GamerCard,
-    GamerGradeChart: GamerGradeChart,
-    GamerPlacementChart: GamerPlacementChart,
-    GamerAliasList: GamerAliasList,
-    GamerHeat: GamerHeat,
-    GamerLink: GamerLink,
-    GamerLinkList: GamerLinkList,
-    GamerPlatformImage: GamerPlatformImage,
-    GamerService: GamerService,
-    GamerTimeChart: GamerTimeChart,
-    TeammateTable: TeammateTable,
-    GamerAdd: GamerAdd
+    GamerCard,
+    GamerCardList,
+    GamerGradeChart,
+    GamerPlacementChart,
+    GamerAliasList,
+    GamerHeat,
+    GamerLink,
+    GamerLinkList,
+    GamerPlatformImage,
+    GamerSearchInput,
+    GamerService,
+    GamerTimeChart,
+    TeammateTable,
+    GamerAdd
 };

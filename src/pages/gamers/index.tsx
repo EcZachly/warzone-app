@@ -11,22 +11,21 @@ import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityServ
 
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
 import {GAME_CATEGORIES} from "../../../lib/constants";
+import GamerCardList from '../../components/gamer/GamerCardList';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default  function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, username, limit, classDescriptions, gameCategory}) {
+export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, username, limit, classDescriptions, gameCategory}) {
     const [gamerValues, setGamers] = useState({[gameCategory]: gamers});
     const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
     const [searchValue, setSearchValue] = useState(username);
     const [sorting, updateSorting] = useState(sort);
     const [filterCategory, setGameCategory] = useState(gameCategory)
 
-    useEffect( () => {
+    useEffect(() => {
         console.log('sorting value changed');
-        // if (!gamerValues[filterCategory] || gamerValues[filterCategory].length === 0) {
-            fetchMoreGamers(0, filterCategory, true);
-        // }
+        fetchMoreGamers(0, filterCategory, true);
 
     }, [sorting]);
 
@@ -118,7 +117,6 @@ export default  function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, userna
                                         hasMore={feedHasMore}
                                         loader={<div className="loader" key={0}>Loading ...</div>}
                                         useWindow={true}>
-
                             {
                                 (gamerValues[filterCategory] || []).map((gamer) => {
                                     return (
@@ -128,6 +126,9 @@ export default  function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, userna
                                     );
                                 })
                             }
+
+                            <GamerCardList gamers={gamerValues[filterCategory] || []}
+                                           classDescriptions={classDescriptions}/>
 
                         </InfiniteScroll>
                     </SidebarCompanion>

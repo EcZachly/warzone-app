@@ -164,7 +164,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     }
 
     const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams)
-    const gamer: Gamer = await getSingleGamerData(username, platform)
+    const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string)
     const classDescriptions: GamerClassDescription = await getGamerClassDescriptions()
 
     if (!gamer) {

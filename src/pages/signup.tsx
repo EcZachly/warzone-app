@@ -123,15 +123,13 @@ let SignUpPage = ({baseUrl}) => {
 
                             <Paragraph type={'help'}>
                                 Signing up for an account will give you insight to your gameplay, friend tracking, and
-                                personalized recommendations to improve your Warzone performance. <Text bold>You will be
-                                                                                                             able to add
-                                                                                                             and manage
-                                                                                                             your
-                                                                                                             Warzone
-                                                                                                             accounts
-                                                                                                             when you
-                                                                                                             log
-                                                                                                             in.</Text>
+                                personalized recommendations to improve your Warzone performance. <Text bold>
+                                You will be able to add and manage your Warzone accounts when you log in.
+                            </Text>
+                            </Paragraph>
+
+                            <Paragraph>
+                                If you already have an account, <a href={'/login'}>log in here</a>
                             </Paragraph>
 
                             <Alert hideIfEmpty={true} type={formMessage.type}>
