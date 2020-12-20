@@ -117,18 +117,10 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                                         hasMore={feedHasMore}
                                         loader={<div className="loader" key={0}>Loading ...</div>}
                                         useWindow={true}>
-                            {
-                                (gamerValues[filterCategory] || []).map((gamer) => {
-                                    return (
-                                        <GamerCard key={gamer.username + '-' + gamer.platform}
-                                                   gamer={gamer}
-                                                   classDescriptions={classDescriptions.filter((d) => d['game_category'] == filterCategory)[0]}/>
-                                    );
-                                })
-                            }
+
 
                             <GamerCardList gamers={gamerValues[filterCategory] || []}
-                                           classDescriptions={classDescriptions}/>
+                                           classDescriptions={classDescriptions.filter((d) => d['game_category'] == filterCategory)[0]}/>
 
                         </InfiniteScroll>
                     </SidebarCompanion>
