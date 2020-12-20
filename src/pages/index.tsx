@@ -33,7 +33,7 @@ const Home = ({baseUrl}) => {
                         <LineBreak clear/>
 
                         <GamerSearchInput
-
+                                        gameCategory={GAME_CATEGORIES.WARZONE}
                                         focus={true}
                                           size={'xl'}
                                           baseUrl={baseUrl}/>
