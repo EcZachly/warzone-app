@@ -7,12 +7,10 @@ export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, hei
     let [chosenChart, setChosenChart] = useState("kills")
     let rollingViews = ['last_10_rolling_average', 'last_30_rolling_average', 'last_100_rolling_average']
 
-
-
     let trends = {
-        'kills': rollingViews.map((view) => view + '_' + 'kills'),
-        'deaths': rollingViews.map((view) => view + '_' + 'deaths'),
-        'kdr': rollingViews.map((view) => view + '_' + 'kdr'),
+        'kills': rollingViews.map((view) => `${view}_kills`),
+        'deaths': rollingViews.map((view) => `${view}_deaths`),
+        'kdr': rollingViews.map((view) => `${view}_kdr`),
     }
     const radioOptions = getRadioOptions(Object.keys(trends));
 

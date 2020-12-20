@@ -13,57 +13,78 @@ type GamerCardChartProps = {
 };
 
 export default function GamerGradeChart({data, height, width}: GamerCardChartProps) {
-    let chartData = generateChartData(data);
-    return (
-        <Box style={{marginTop: 15}}>
+    try {
 
-            <Header style={{margin: '0', padding: 0}}>Placement Percentage</Header>
+        let chartData = generateChartData(data);
+        let dataValid = true;
 
-            <Paragraph style={{marginBottom: '50px', marginTop: 0}} type={'help'}>
-                The percentage of each game type where you place.
-            </Paragraph>
+        chartData.forEach((row)=>{
+            Object.keys(row).filter((key)=> key.includes("percent")).forEach((key)=>{
+                if(isNaN(row[key])){
+                    dataValid = false;
+                }
+            })
+        })
+        if(dataValid){
+            return (
+                <Box style={{marginTop: 15}}>
 
-            <BarChart width={width} height={height} data={chartData}>
+                    <Header style={{margin: '0', padding: 0}}>Placement Percentage</Header>
 
-                <Bar dataKey="type_solo_percentage_pretty"
-                     unit={'%'}
-                     name={'Solo'}
-                     label={{fill: 'white', fontSize: '.75em'}}
-                     fill="#779977"/>
+                    <Paragraph style={{marginBottom: '50px', marginTop: 0}} type={'help'}>
+                        The percentage of each game type where you place.
+                    </Paragraph>
 
-                <Bar dataKey="type_duo_percentage_pretty"
-                     unit={'%'}
-                     name={'Duo'}
-                     label={{fill: 'white', fontSize: '.75em'}}
-                     fill="#775577"/>
+                    <BarChart width={width} height={height} data={chartData}>
 
-                <Bar dataKey="type_trio_percentage_pretty"
-                     unit={'%'}
-                     name={'Trio'}
-                     label={{fill: 'white', fontSize: '.75em'}}
-                     fill="#777799"/>
+                        <Bar dataKey="type_solo_percentage_pretty"
+                             unit={'%'}
+                             name={'Solo'}
+                             label={{fill: 'white', fontSize: '.75em'}}
+                             fill="#779977"/>
 
-                <Bar dataKey="type_quad_percentage_pretty"
-                     unit={'%'}
-                     name={'Quad'}
-                     label={{fill: 'white', fontSize: '.75em'}}
-                     fill="#997777"/>
+                        <Bar dataKey="type_duo_percentage_pretty"
+                             unit={'%'}
+                             name={'Duo'}
+                             label={{fill: 'white', fontSize: '.75em'}}
+                             fill="#775577"/>
 
-                <XAxis dataKey="name"/>
+                        <Bar dataKey="type_trio_percentage_pretty"
+                             unit={'%'}
+                             name={'Trio'}
+                             label={{fill: 'white', fontSize: '.75em'}}
+                             fill="#777799"/>
 
-                <YAxis type={'number'}/>
+                        <Bar dataKey="type_quad_percentage_pretty"
+                             unit={'%'}
+                             name={'Quad'}
+                             label={{fill: 'white', fontSize: '.75em'}}
+                             fill="#997777"/>
 
-                <Legend/>
+                        <XAxis dataKey="name"/>
 
-                <Tooltip contentStyle={{backgroundColor: 'rgba(20, 20, 20, .85)', border: '#444'}}
-                         cursor={false}
-                         itemStyle={{fontWeight: 'bold', lineHeight: '110%', margin: 0}}
-                         position={{y: 200}}/>
+                        <YAxis type={'number'}/>
 
-            </BarChart>
+                        <Legend/>
 
-        </Box>
-    );
+                        <Tooltip contentStyle={{backgroundColor: 'rgba(20, 20, 20, .85)', border: '#444'}}
+                                 cursor={false}
+                                 itemStyle={{fontWeight: 'bold', lineHeight: '110%', margin: 0}}
+                                 position={{y: 200}}/>
+
+                    </BarChart>
+
+                </Box>
+            );
+        }
+        else{
+            return <div>No data to display</div>
+        }
+
+    }
+    catch(e){
+        return <div>Error getting data</div>
+    }
 }
 
 

@@ -75,8 +75,6 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-
-    console.log(classDescriptions);
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
 
     const [chartState, setChartState] = useState({
