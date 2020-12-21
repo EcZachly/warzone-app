@@ -46,6 +46,9 @@ export function login(loginDetails: { email: string, password: string }): Promis
                 StorageService.save('user', user);
                 StorageService.save('auth-token-manually-verified', true, {session: true});
 
+                console.log(StorageService.get('user'));
+                console.log(userIsLoggedIn());
+
                 GamerRelationshipService.queryGamerRelationships({user_id: user.user_id}).finally();
 
                 resolve(user);
@@ -59,7 +62,27 @@ export function login(loginDetails: { email: string, password: string }): Promis
 
 
 export function userIsLoggedIn() {
-    return !!getUser();
+    let userIsLoggedIn = false;
+
+    try {
+        userIsLoggedIn = !!getUser();
+    } catch (e) {
+
+    }
+
+    return userIsLoggedIn;
+}
+
+
+
+export function userHasBeenRedirectedAlready() {
+    return StorageService.get('user-has-been-redirected', {temp: true}) === true;
+}
+
+
+
+export function setUserHasBeenRedirected() {
+    StorageService.save('user-has-been-redirected', true, {temp: true});
 }
 
 
@@ -123,5 +146,7 @@ export default {
     userIsLoggedIn,
     currentSessionTokenHasBeenVerified,
     verifyCurrentUserAndToken,
-    logout
+    logout,
+    userHasBeenRedirectedAlready,
+    setUserHasBeenRedirected
 };

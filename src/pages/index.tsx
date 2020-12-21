@@ -14,7 +14,7 @@ import {GamerSearchInput} from './../components/gamer';
 
 const Home = ({baseUrl}) => {
     return (
-        <Page title={'Warzone'}>
+        <Page title={'Warzone'} redirectIfLoggedIn={true}>
             <Navbar/>
 
             <Main>

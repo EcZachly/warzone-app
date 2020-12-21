@@ -6,6 +6,7 @@ import React from 'react';
 import {Box} from './../SimpleComponents';
 import CSS from 'csstype';
 import {UserService} from '../Users';
+import AppService from '../../services/AppService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -22,8 +23,10 @@ class Page extends React.Component<PageProps, PageState> {
 
 
     componentDidMount() {
-        if (this.props.loginRequired) {
+        if (this.props.loginRequired === true) {
             this._redirectIfUserIsNotLoggedIn();
+        } else if (this.props.redirectIfLoggedIn === true) {
+            this._redirectIfUserIsLoggedIn();
         }
     }
 
@@ -85,6 +88,15 @@ class Page extends React.Component<PageProps, PageState> {
             Router.push('/');
         }
     }
+
+
+
+    _redirectIfUserIsLoggedIn() {
+        if (AppService.isClientSide() && UserService.userIsLoggedIn() && UserService.userHasBeenRedirectedAlready() !== true) {
+            Router.push('/dashboard');
+            UserService.setUserHasBeenRedirected();
+        }
+    }
 }
 
 
@@ -93,7 +105,8 @@ type PageProps = {
     style?: CSS.Properties,
     children?: React.ReactNode,
     title?: string,
-    loginRequired?: boolean
+    loginRequired?: boolean,
+    redirectIfLoggedIn?: boolean,
 }
 
 

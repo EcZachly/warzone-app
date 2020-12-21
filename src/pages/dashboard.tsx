@@ -8,6 +8,7 @@ import {
     Container,
     Header,
     Paragraph,
+    Box,
     Main,
     LineBreak,
     Show, Image
@@ -22,7 +23,7 @@ import {GamerRelationshipService} from './../components/GamerRelationships';
 import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
 import {GamerSearchInput, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
 import {Gamer} from '../components/gamer/GamerTypes';
-import {GAME_CATEGORIES} from "../../lib/constants";
+import {GAME_CATEGORIES} from '../../lib/constants';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -34,7 +35,7 @@ let DashboardPage = ({baseUrl}) => {
     let [loading, setLoading] = useState(true);
     let [newUserSearch, setNewUserSearch] = useState('search');
     let [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
-    let [view, setView] = useState("time");
+    let [view, setView] = useState('time');
     let [error, setError] = useState(null);
 
     let [user, setUser] = useState(null);
@@ -49,7 +50,7 @@ let DashboardPage = ({baseUrl}) => {
     }, [hasMounted]);
 
 
-    useEffect( () => {
+    useEffect(() => {
         if (user) {
             console.log('user is logged in');
             getData(view, gameCategory);
@@ -75,35 +76,41 @@ let DashboardPage = ({baseUrl}) => {
     function getContent() {
         const userHasNoRelationships = (gamerRelationships.length === 0);
         console.log(gamerRelationships);
-        const mainGamer = gamerRelationships.filter((r)=> r.type === 'self')[0]
+        const mainGamer = gamerRelationships.filter((r) => r.type === 'self')[0];
 
-        const friends = gamerRelationships.filter((r)=> r.type === 'friend')
+        const friends = gamerRelationships.filter((r) => r.type === 'friend');
 
-        const userHasAMain = !!mainGamer
-        let categorySwitcher =  <GamerCategorySelect activeCategory={gameCategory} setCategory={(val)=> {
-            setCategory(val)
-            return getData(view, val);
-        }}/>
+        const userHasAMain = !!mainGamer;
+        let categorySwitcher = (
+            <GamerCategorySelect activeCategory={gameCategory} setCategory={(val) => {
+                setCategory(val);
+                return getData(view, val);
+            }}/>
+        );
 
 
 
         if (user) {
+            let selfBlock = mainGamer && (
+                <Box>
+                    <GamerCard gamer={mainGamer.detailData.gamer}/>
+                </Box>
+            );
 
+            let friendsBlock = (
+                <Box>
+                    <h1>Friends</h1>
 
-            let selfBlock = mainGamer && <div>
-                <h1>Self</h1>
-                <GamerCard gamer={mainGamer.detailData.gamer}/>
-            </div>;
+                    {friends.map((friend) => <GamerCard gamer={friend.detailData.gamer}/>)}
+                </Box>
+            );
 
-            let friendsBlock = <div>
-                <h1>Friends</h1>
-                {friends.map((friend)=> <GamerCard gamer={friend.detailData.gamer}/>)}
-            </div>;
-
-            let relationshipsBlock = <div>
-                {selfBlock}
-                {friendsBlock}
-            </div>
+            let relationshipsBlock = (
+                <Box>
+                    {selfBlock}
+                    {friendsBlock}
+                </Box>
+            );
 
             return (
                 <>
@@ -119,7 +126,7 @@ let DashboardPage = ({baseUrl}) => {
                     <SidebarCompanion>
                         {userHasAMain && categorySwitcher}
                         {userHasAMain && relationshipsBlock}
-                        {userHasNoRelationships  && !loading && getNewUserContent()}
+                        {userHasNoRelationships && !loading && getNewUserContent()}
 
 
                     </SidebarCompanion>
@@ -181,7 +188,7 @@ let DashboardPage = ({baseUrl}) => {
                     username: username,
                     platform: platform,
                     type: 'self'
-                }).then(()=> getData(view, gameCategory)).catch(console.log);
+                }).then(() => getData(view, gameCategory)).catch(console.log);
             }
         }
     }
@@ -190,15 +197,15 @@ let DashboardPage = ({baseUrl}) => {
     function getData(view, category) {
         return getGamerRelationships().then((_gamerRelationships) => {
             let detailPromises = _gamerRelationships.map((gamer) => {
-                return getGamerDetails(gamer.username, gamer.platform, view, category)
-            })
+                return getGamerDetails(gamer.username, gamer.platform, view, category);
+            });
             return Promise.all(detailPromises).then((data) => {
                 data.forEach((row, index) => {
-                    _gamerRelationships[index].detailData = row
-                })
+                    _gamerRelationships[index].detailData = row;
+                });
                 setGamerRelationships(JSON.parse(JSON.stringify(_gamerRelationships)));
                 setLoading(false);
-            })
+            });
         });
     }
 
@@ -210,7 +217,7 @@ let DashboardPage = ({baseUrl}) => {
     function getGamerRelationships(): Promise<GamerRelationshipList> {
         return GamerRelationshipService.queryGamerRelationships({
             user_id: user.user_id
-        })
+        });
     }
 };
 
