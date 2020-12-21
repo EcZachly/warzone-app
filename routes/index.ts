@@ -19,15 +19,15 @@ export function include(server) {
     router.post('/api/login', Users.login);
     router.post('/api/v1/verify-user-token', Users.verifyUserToken);
 
-    router.post('/api/gamer', Gamers.createGamer)
-    router.get('/api/gamer', Gamers.findGamers)
+    router.post('/api/gamer', Gamers.createGamer);
+    router.get('/api/gamer', Gamers.findGamers);
     router.get('/api/gamer/:platform/:username', Gamers.getGamerDetails);
 
-    router.get('/api/squad', Squads.findSquads)
+    router.get('/api/squad', Squads.findSquads);
 
-    router.get('/api/match', MatchRoutes.queryMatches)
+    router.get('/api/match', MatchRoutes.queryMatches);
 
-    router.get('/api/gamer-match', GamerMatchRoutes.queryGamerMatches)
+    router.get('/api/gamer-match', GamerMatchRoutes.queryGamerMatches);
 
     router.get('/api/v1/gamer-relationship', GamerRelationshipRoutes.queryGamerRelationships);
     router.post('/api/v1/gamer-relationship', GamerRelationshipRoutes.createGamerRelationship);

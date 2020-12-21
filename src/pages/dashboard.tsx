@@ -28,6 +28,7 @@ import CONSTANTS from './../config/CONSTANTS';
 
 import {UserService} from './../components/Users';
 import {GamerRelationshipService} from './../components/GamerRelationships';
+import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
 import {GamerSearchInput, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
 import {Gamer} from '../components/gamer/GamerTypes';
 
@@ -45,8 +46,12 @@ let DashboardPage = ({baseUrl}) => {
 
     let [user, setUser] = useState(null);
     let [gamerRelationships, setGamerRelationships] = useState([]);
-    let mainGamer = gamerRelationships.length > 0 && gamerRelationships.filter(({type}) => type === 'self')[0] as Gamer;
-    console.log(mainGamer);
+    let [gamers, setGamers] = useState([]);
+
+    let mainRelationship = gamerRelationships.length > 0 && gamerRelationships.filter(({type}) => type === 'self')[0];
+    let mainGamer = mainRelationship && gamers.length > 0 && gamers.filter(({username, platform}) => mainRelationship.username === username && mainRelationship.platform === platform)[0] as Gamer;
+
+    console.log(mainRelationship);
 
     hasMounted === false && setHasMounted(true);
 
@@ -83,7 +88,7 @@ let DashboardPage = ({baseUrl}) => {
 
     function getContent() {
         const userHasNoRelationships = (gamerRelationships.length === 0);
-        const userHasAMain = !!mainGamer;
+        const userHasAMain = !!mainRelationship;
 
         if (user && loading !== true) {
             return (
@@ -93,13 +98,14 @@ let DashboardPage = ({baseUrl}) => {
 
                         <LineBreak/>
 
-                        <GamerLinkList gamer={mainGamer}/>
+                        <GamerLinkList gamer={mainRelationship}/>
 
                     </Sidebar>
 
 
 
                     <SidebarCompanion>
+
 
 
                         {userHasAMain && <GamerCard gamer={mainGamer}/>}
@@ -172,7 +178,7 @@ let DashboardPage = ({baseUrl}) => {
                     type: 'self'
                 }).then((gamerRelationship) => {
                     console.log(gamerRelationship);
-                    getGamerRelationships();
+                    getGamerRelationships().finally();
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -184,15 +190,17 @@ let DashboardPage = ({baseUrl}) => {
 
     function getData() {
         console.log('get data');
-        getGamerRelationships().finally(() => {
-            setLoading(false);
-            setDataHasLoaded(true);
+        getGamerRelationships().then((_gamerRelationships) => {
+            getGamers(_gamerRelationships).finally(() => {
+                setLoading(false);
+                setDataHasLoaded(true);
+            });
         });
     }
 
 
 
-    function getGamerRelationships() {
+    function getGamerRelationships(): Promise<GamerRelationshipList> {
         return new Promise((resolve, reject) => {
 
             GamerRelationshipService.queryGamerRelationships({
@@ -200,6 +208,25 @@ let DashboardPage = ({baseUrl}) => {
             }).then((_gamerRelationships) => {
                 console.log('_gamerRelationships', _gamerRelationships);
                 setGamerRelationships(_gamerRelationships);
+                resolve(_gamerRelationships);
+            }).catch((error) => {
+                console.error(error);
+                reject(error);
+            });
+        });
+    }
+
+
+
+    function getGamers(_gamerRelationships): Promise<void> {
+        return new Promise((resolve, reject) => {
+            GamerService.queryGamers({
+                platform_username: _gamerRelationships.map(({username, platform}) => `${username}-${platform}`),
+                game_category: '(all)'
+            }).then((_gamers) => {
+                console.log('_gamers', _gamers);
+
+                setGamers(_gamers);
                 resolve();
             }).catch((error) => {
                 console.error(error);

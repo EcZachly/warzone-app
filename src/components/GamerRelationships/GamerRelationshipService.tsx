@@ -3,11 +3,14 @@ import HttpService from '../../services/HttpService';
 
 import {GamerRelationship, RawGamerRelationship, GamerRelationshipList} from './GamerRelationshipTypes';
 import UtilityService from '../../services/UtilityService';
+import TypeService from '../../services/TypeService';
+
+const USER_GAMER_RELATIONSHIPS_STORAGE_KEY = 'user-gamer-relationships';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export function createGamerRelationship(gamerRelationship: Partial<RawGamerRelationship>): Promise<GamerRelationship> {
+export function createGamerRelationship(gamerRelationship: Partial<RawGamerRelationship>, options?: { refresh: boolean }): Promise<GamerRelationship> {
     return new Promise((resolve, reject) => {
         HttpService.http({
             method: 'POST',
@@ -17,6 +20,8 @@ export function createGamerRelationship(gamerRelationship: Partial<RawGamerRelat
             }
         }).then((response) => {
             if (response.status === 200) {
+                StorageService.remove(USER_GAMER_RELATIONSHIPS_STORAGE_KEY);
+
                 resolve(response.data);
             } else {
                 reject(response);
@@ -42,19 +47,29 @@ export function getValidTypes() {
 
 
 
-export function queryGamerRelationships(query: Record<any, unknown>, options?: Record<any, unknown>): Promise<GamerRelationshipList> {
+export function queryGamerRelationships(query: Record<any, unknown>, options?: { refresh: boolean }): Promise<GamerRelationshipList> {
     return new Promise((resolve, reject) => {
-        HttpService.http({
-            method: 'GET',
-            url: '/api/v1/gamer-relationship',
-            query
-        }).then((response) => {
-            if ([200, 204].includes(response.status)) {
-                resolve(UtilityService.validateItem(response.data, 'array', []).map(sanitizeGamerRelationship));
-            } else {
-                reject(response);
-            }
-        }).catch(reject);
+        options = UtilityService.validateItem(options, 'object', {});
+
+        let storedRelationships = StorageService.get(USER_GAMER_RELATIONSHIPS_STORAGE_KEY);
+
+        if (options.refresh !== true && TypeService.isArray(storedRelationships, true)) {
+            resolve(storedRelationships);
+        } else {
+            HttpService.http({
+                method: 'GET',
+                url: '/api/v1/gamer-relationship',
+                query
+            }).then((response) => {
+                if ([200, 204].includes(response.status)) {
+                    let gamerRelationships = UtilityService.validateItem(response.data, 'array', []).map(sanitizeGamerRelationship);
+                    StorageService.save(USER_GAMER_RELATIONSHIPS_STORAGE_KEY, gamerRelationships, {session: true});
+                    resolve(gamerRelationships);
+                } else {
+                    reject(response);
+                }
+            }).catch(reject);
+        }
     });
 }
 

@@ -15,9 +15,10 @@ import {
     getGamerDetailViewQuery,
     getSingleGamerData
 } from '../../lib/components/Gamers/GamerService';
-import {Gamer} from "../../src/components/gamer/GamerTypes";
-import {ViewQuery} from "../../lib/model/view_query";
-import { GamerClassDescription } from '../../lib/components/Classes/ClassDescriptionType';
+import {Gamer} from '../../src/components/gamer/GamerTypes';
+import {ViewQuery} from '../../lib/model/view_query';
+import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
+import UtilityService from '../../src/services/UtilityService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -30,16 +31,16 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
     let error = null;
 
     let errorObject = {
-        'missing_data': {userMessage:'body.username and body.platform (String) are required', status: 400},
-        'recaptcha_fail': {userMessage:'failed recaptcha verification', status: 400}
-    }
+        'missing_data': {userMessage: 'body.username and body.platform (String) are required', status: 400},
+        'recaptcha_fail': {userMessage: 'failed recaptcha verification', status: 400}
+    };
 
     if (!username || !platform) {
-        error = errorObject['missing_data']
+        error = errorObject['missing_data'];
     }
 
     if (!recaptchaSuccess) {
-        error = errorObject['recaptcha_fail']
+        error = errorObject['recaptcha_fail'];
     }
 
     if (!error) {
@@ -87,6 +88,8 @@ function manageComplexQueryParameters(queryParams) {
             let operator = key.split('.')[1];
             queryParams[column + ' ' + operator] = queryParams[key];
             delete queryParams[key];
+        } else if (UtilityService.isJson(queryParams[key])) {
+            queryParams[key] = JSON.parse(queryParams[key]);
         }
     });
 }
@@ -108,8 +111,9 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.direction;
 
     manageComplexQueryParameters(queryParams);
-    const classDescriptions: GamerClassDescription= await getGamerClassDescriptions();
+    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
     let queryOptions = {offset, limit, order: undefined};
+
     if (sort) {
         let sortObj = {
             field: sort,
@@ -123,14 +127,18 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
         queryOptions.order = [sortObj];
     }
 
+    console.log('queryParams', queryParams);
+
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
+
     await playerQuery.executeQuery();
     let gamers = playerQuery.data;
+
     handleResponse(req, res, {gamers, classDescriptions});
 }
 
 
-async function updateGamerUponRequest(gamer:Gamer) {
+async function updateGamerUponRequest(gamer: Gamer) {
     let gamerPromise = Bluebird.resolve(gamer);
 
     if (!gamer.needs_update) {
@@ -147,26 +155,26 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     const {username, platform} = req.params;
     let allParams = {...req.params, ...req.query};
 
-    let paramMap = getQueryParamToSQLMap()
+    let paramMap = getQueryParamToSQLMap();
     let errorObject = {
         'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
         'invalid_view': 'invalid view query param needs to be in ' + Object.keys(paramMap).join(','),
         'not_found': username + ' on platform: ' + platform + ' was not found!'
-    }
+    };
     if (!platform || !username) {
-       return handleError(req, res, {message: errorObject['missing_data']});
+        return handleError(req, res, {message: errorObject['missing_data']});
     }
     const sqlView = paramMap[view as string];
-    if(!sqlView){
+    if (!sqlView) {
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
 
-    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams)
-    const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string)
-    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions()
+    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams);
+    const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string);
+    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
 
     if (!gamer) {
-       return handleError(req, res, {message: errorObject['not_found']});
+        return handleError(req, res, {message: errorObject['not_found']});
     }
 
     await viewToQuery.executeQuery();

@@ -147,6 +147,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                 query: {game_category: filterCategory}
             });
         }
+
         setFeedHasMore(false);
         setSearchValue(inputValue);
         setGamers([]);
