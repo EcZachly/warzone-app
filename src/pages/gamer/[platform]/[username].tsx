@@ -30,6 +30,7 @@ import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardLi
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
 import {GAME_CATEGORIES} from "../../../../lib/constants";
+import {getGamerDetailView} from "../../../components/gamer/GamerService";
 
 
 const CONFIG = {
@@ -273,13 +274,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
 
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
-        return new Promise(async (resolve, reject) => {
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const dataUrl = baseUrl + '/api/gamer/' + gamer.platform + '/' + encodeURIComponent(gamer.username as string) + '?view=' + tabId + '&timeZone=' + timeZone + '&game_category=' + gameCategory;
-            const response = await fetch(dataUrl);
-            let finalResponse = await response.json();
-            resolve(finalResponse);
-        });
+        return getGamerDetailView(gamer.username as string, gamer.platform, tabId, gameCategory)
     }
 }
 
@@ -304,5 +299,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props
     }
-
 };

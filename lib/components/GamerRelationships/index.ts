@@ -6,7 +6,7 @@ import GamerRelationshipService from './GamerRelationshipService';
 export {GamerRelationshipService};
 
 
-import GamerRelationshipRoutes from './GamerRelationshipRoutes';
+import GamerRelationshipRoutes from '../../../routes/directories/GamerRelationshipRoutes';
 export {GamerRelationshipRoutes};
 
 

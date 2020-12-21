@@ -9,6 +9,7 @@ import GamerLink from './GamerLink';
 import GamerCardList from './GamerCardList';
 import {GamerList, Gamer} from './GamerTypes';
 import {Input} from '../SmartComponents';
+import {GAME_CATEGORIES} from "../../../lib/constants";
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -21,7 +22,7 @@ type GamerSearchInputProps = {
     onGamerClick?: (gamer) => void
 }
 
-export default function GamerSearchInput({size, baseUrl, focus, mode, gameCategory, onGamerClick}: GamerSearchInputProps) {
+export default function GamerSearchInput({size, baseUrl, focus, mode, gameCategory = GAME_CATEGORIES.ALL, onGamerClick = null}: GamerSearchInputProps) {
     const [gamerResults, setGamerResults] = useState([]);
     const gamerClickMethodExists = TypeService.isFunction(onGamerClick);
     const searchGamers = async (inputValue) => {

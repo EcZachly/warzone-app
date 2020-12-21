@@ -14,18 +14,14 @@ export function getQueryParamToSQLMap(){
 }
 
 export function restToMassiveQuery(view: string, params: object){
-    let userQuery;
+    let userQuery = params;
 
     // if params specifies username exactly, then we query for it
-    if(params['username']) {
+    if(params['username']){
         userQuery = {
             username: params['username'],
             platform: params['platform']
-        };
-    }
-    // otherwise it's probably a LIKE match
-    else{
-        userQuery = params;
+        }
     }
 
     let gameCategoryQuery = {
@@ -48,5 +44,6 @@ export function restToMassiveQuery(view: string, params: object){
         [VIEWS.GAMER_MATCHES_AUGMENTED]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: {...userQuery, ...gameCategoryQuery}
     }
+    console.log(queries[view]);
     return queries[view]
 }

@@ -1,21 +1,21 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 
-import responseHandler from './../../../routes/responseHandler';
+import responseHandler from '../responseHandler';
 
 import {
     RawGamerRelationship,
     RawGamerRelationshipList,
     GamerRelationship,
     GamerRelationshipList
-} from './GamerRelationshipTypes';
-import GamerRelationshipController from './GamerRelationshipController';
-import GamerRelationshipService from './GamerRelationshipService';
+} from '../../lib/components/GamerRelationships/GamerRelationshipTypes';
+import GamerRelationshipController from '../../lib/components/GamerRelationships/GamerRelationshipController';
+import GamerRelationshipService from '../../lib/components/GamerRelationships/GamerRelationshipService';
 
-import TypeService from '../../../src/services/TypeService';
-import UtilityService from '../../../src/services/UtilityService';
+import TypeService from '../../src/services/TypeService';
+import UtilityService from '../../src/services/UtilityService';
 
-import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../../src/config/CONSTANTS';
-import {RawGamer} from '../../../src/components/gamer/GamerTypes';
+import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
+import {RawGamer} from '../../src/components/gamer/GamerTypes';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

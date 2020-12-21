@@ -29,6 +29,7 @@ export const VIEWS = {
 export const GAME_CATEGORIES = {
     WARZONE: 'Warzone',
     ALL: '(all)',
+    JUGGERNAUT_ROYALE: 'Juggernaut Royale',
     MINI_ROYALE: 'Mini Royale',
     RESURGENCE: 'Resurgence',
     WARZONE_RUMBLE: 'Warzone Rumble',

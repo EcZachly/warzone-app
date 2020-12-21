@@ -9,7 +9,7 @@ import {handleError, handleResponse} from '../responseHandler';
 import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
-import {VIEWS} from '../../lib/constants';
+import {GAME_CATEGORIES, VIEWS} from '../../lib/constants';
 import {
     getGamerClassDescriptions,
     getGamerDetailViewQuery,
@@ -107,6 +107,11 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     const sortDirection = queryParams.direction || null;
     delete queryParams.direction;
 
+
+    if(!queryParams['game_category']){
+        queryParams['game_category'] = GAME_CATEGORIES.WARZONE;
+    }
+
     manageComplexQueryParameters(queryParams);
     const classDescriptions: GamerClassDescription= await getGamerClassDescriptions();
     let queryOptions = {offset, limit, order: undefined};
@@ -122,7 +127,6 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 
         queryOptions.order = [sortObj];
     }
-
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
     await playerQuery.executeQuery();
     let gamers = playerQuery.data;

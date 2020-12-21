@@ -1,6 +1,6 @@
 import {DAO} from './../Database';
 
-import {TABLES, VIEWS} from '../../constants';
+import {TABLES} from '../../constants';
 
 import {GamerRelationshipList, RawGamerRelationship} from './GamerRelationshipTypes';
 import {MetadataService} from '../../../src/components/Metadata';

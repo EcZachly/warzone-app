@@ -14,7 +14,8 @@ export type RawGamerRelationship = {
     username: GamerUsername,
     type: 'self' | 'friend',
     is_favorite: boolean,
-    metadata: GamerRelationshipMetadata | String
+    metadata: GamerRelationshipMetadata | String,
+    detailData?: object
 };
 
 
