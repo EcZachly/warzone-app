@@ -4,7 +4,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import {useRouter} from 'next/router';
 
 import {Container, Box, Header, LineBreak, Main, Button} from './../../components/SimpleComponents';
-import {Page, Navbar, Footer} from './../../components/AppComponents';
+import {Page, Navbar, Footer, GamerCategorySelect} from './../../components/AppComponents';
 import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
 
 import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityService';
@@ -36,23 +36,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
     }
 
 
-    const buttonTabs = Object.values(GAME_CATEGORIES).map((value) => {
-        const isActive = (value === filterCategory);
-        return (
-            <Button key={value}
-                    type={isActive ? 'dark' : 'link'}
-                    style={{
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        borderBottomLeftRadius: 0,
-                        borderBottomRightRadius: 0,
-                        marginBottom: 0
-                    }}
-                    onClick={() => isActive ? '' : setGameCategory(value)}>
-                {value}
-            </Button>
-        );
-    });
+    const buttonTabs = <GamerCategorySelect activeCategory={filterCategory} setCategory={setGameCategory} />
 
     return (
         <Page title={'Gamers'}>
@@ -147,6 +131,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                 query: {game_category: filterCategory}
             });
         }
+
         setFeedHasMore(false);
         setSearchValue(inputValue);
         setGamers([]);

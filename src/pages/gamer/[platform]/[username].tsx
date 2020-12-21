@@ -31,6 +31,7 @@ import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
 import {GAME_CATEGORIES} from "../../../../lib/constants";
 import {getGamerDetailView} from "../../../components/gamer/GamerService";
+import {GamerService} from "../../../components/gamer";
 
 
 const CONFIG = {
@@ -274,7 +275,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
 
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
-        return getGamerDetailView(gamer.username as string, gamer.platform, tabId, gameCategory)
+        return GamerService.getGamerDetailView(gamer.username as string, gamer.platform, tabId, gameCategory)
     }
 }
 
@@ -284,17 +285,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
-    const rawGamerList = await fetch(baseUrl + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + selectedView + '&game_category=' + queryCategory);
-    const gamerJson = await rawGamerList.json();
+    const rawGamerList = await GamerService.getGamerDetailView(username as string,
+                                                                platform as string,
+                                                                selectedView as string,
+                                                                queryCategory as string, baseUrl)
 
     let props = {
-        gamerData: gamerJson,
+        gamerData: rawGamerList,
         gameCategory: queryCategory,
         view: selectedView,
         baseUrl: baseUrl,
     }
-    if (gamerJson['message']) {
-        props['error'] = gamerJson['message'];
+    if (rawGamerList['message']) {
+        props['error'] = rawGamerList['message'];
     }
     return {
         props

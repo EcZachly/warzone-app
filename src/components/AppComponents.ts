@@ -30,8 +30,8 @@ export {GamerAliasList, GamerHeat, GamerPlacementChart}
 import GamerCard from './gamer/GamerCard';
 export {GamerCard};
 
-import {GamerCategoryTabs} from './game_category/GamerCategoryTabs';
-export {GamerCategoryTabs};
+import {GamerCategorySelect} from './game_category/GamerCategorySelect';
+export {GamerCategorySelect};
 
 import GamerGradeChart from './gamer/GamerGradeChart';
 export {GamerGradeChart};

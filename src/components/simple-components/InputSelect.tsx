@@ -117,7 +117,7 @@ class InputSelect extends React.Component<InputSelectProps> {
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PROPS
 
-type Option = {
+export type Option = {
     value: string,
     text: string
 }

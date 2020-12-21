@@ -2,7 +2,7 @@ import React, {useState, useEffect, Component} from 'react';
 import {useRouter} from 'next/router';
 import dynamic from 'next/dynamic';
 
-import {Navbar, Page, Footer, GamerCard, GamerCategoryTabs} from './../components/AppComponents';
+import {Navbar, Page, Footer, GamerCard, GamerCategorySelect} from './../components/AppComponents';
 
 import {
     Container,
@@ -10,7 +10,7 @@ import {
     Paragraph,
     Main,
     LineBreak,
-    Show
+    Show, Image
 } from './../components/SimpleComponents';
 
 import {Input, LabelValue, Sidebar, SidebarCompanion} from './../components/SmartComponents';
@@ -19,6 +19,7 @@ import CONSTANTS from './../config/CONSTANTS';
 
 import {UserService} from './../components/Users';
 import {GamerRelationshipService} from './../components/GamerRelationships';
+import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
 import {GamerSearchInput, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
 import {Gamer} from '../components/gamer/GamerTypes';
 import {GAME_CATEGORIES} from "../../lib/constants";
@@ -31,31 +32,30 @@ let DashboardPage = ({baseUrl}) => {
 
     let [hasMounted, setHasMounted] = useState(false);
     let [loading, setLoading] = useState(true);
-    let [dataHasLoaded, setDataHasLoaded] = useState(false);
     let [newUserSearch, setNewUserSearch] = useState('search');
     let [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
+    let [view, setView] = useState("time");
     let [error, setError] = useState(null);
 
     let [user, setUser] = useState(null);
     let [gamerRelationships, setGamerRelationships] = useState([]);
-    let mainGamer = gamerRelationships.length > 0 && gamerRelationships.filter(({type}) => type === 'self')[0] as Gamer;
+
     hasMounted === false && setHasMounted(true);
 
-    console.log(gameCategory);
     useEffect(() => {
         if (UserService.userIsLoggedIn()) {
             setUser(UserService.getUser());
         }
     }, [hasMounted]);
 
-    useEffect(() => {
+
+    useEffect( () => {
         if (user) {
             console.log('user is logged in');
-            getData();
+            getData(view, gameCategory);
         }
     }, [user]);
 
-    console.log(user);
 
     return (
         <Page title={'Dashboard'} loginRequired={true}>
@@ -72,31 +72,54 @@ let DashboardPage = ({baseUrl}) => {
     );
 
 
-
     function getContent() {
         const userHasNoRelationships = (gamerRelationships.length === 0);
-        const userHasAMain = !!mainGamer;
-        if (user && loading !== true) {
+        console.log(gamerRelationships);
+        const mainGamer = gamerRelationships.filter((r)=> r.type === 'self')[0]
+
+        const friends = gamerRelationships.filter((r)=> r.type === 'friend')
+
+        const userHasAMain = !!mainGamer
+        let categorySwitcher =  <GamerCategorySelect activeCategory={gameCategory} setCategory={(val)=> {
+            setCategory(val)
+            return getData(view, val);
+        }}/>
+
+
+
+        if (user) {
+
+
+            let selfBlock = mainGamer && <div>
+                <h1>Self</h1>
+                <GamerCard gamer={mainGamer.detailData.gamer}/>
+            </div>;
+
+            let friendsBlock = <div>
+                <h1>Friends</h1>
+                {friends.map((friend)=> <GamerCard gamer={friend.detailData.gamer}/>)}
+            </div>;
+
+            let relationshipsBlock = <div>
+                {selfBlock}
+                {friendsBlock}
+            </div>
+
             return (
                 <>
                     <Sidebar>
                         <Header>{user.first_name}</Header>
 
                         <LineBreak/>
-
-                        {userHasAMain && <GamerLinkList gamer={mainGamer} />}
-
+                        {userHasAMain && <GamerLinkList gamer={mainGamer}/>}
+                        {loading && <Image style={{width: '50px', height: '50px'}} src={'/assets/images/spinner.gif'}/>}
                     </Sidebar>
 
 
-
                     <SidebarCompanion>
-                        <GamerCategoryTabs activeCategory={gameCategory} setCategory={setCategory}/>
-
-                        {userHasAMain && <GamerCard gamer={gamerRelationships[0].detailData.gamer} />}
-
-                        {userHasNoRelationships && getNewUserContent()}
-
+                        {userHasAMain && categorySwitcher}
+                        {userHasAMain && relationshipsBlock}
+                        {userHasNoRelationships  && !loading && getNewUserContent()}
 
 
                     </SidebarCompanion>
@@ -104,7 +127,6 @@ let DashboardPage = ({baseUrl}) => {
             );
         }
     }
-
 
 
     function getNewUserContent() {
@@ -116,7 +138,8 @@ let DashboardPage = ({baseUrl}) => {
                 </Header>
 
                 <Paragraph>
-                    To get started, you'll need to select your main Warzone account to track. You'll only be able to track 1 account as your main, but you can add friends and favorites later.
+                    To get started, you'll need to select your main Warzone account to track. You'll only be able to
+                    track 1 account as your main, but you can add friends and favorites later.
                 </Paragraph>
 
                 <Show show={newUserSearch === 'search'}>
@@ -148,7 +171,6 @@ let DashboardPage = ({baseUrl}) => {
     }
 
 
-
     function newUserGamerSelect(gamer) {
         if (gamer) {
             const {username, platform} = gamer;
@@ -159,47 +181,36 @@ let DashboardPage = ({baseUrl}) => {
                     username: username,
                     platform: platform,
                     type: 'self'
-                }).then(getGamerRelationships).catch(console.log);
+                }).then(()=> getData(view, gameCategory)).catch(console.log);
             }
         }
     }
 
 
-
-    function getData() {
-        getGamerRelationships().finally(() => {
-            setLoading(false);
-            setDataHasLoaded(true);
+    function getData(view, category) {
+        return getGamerRelationships().then((_gamerRelationships) => {
+            let detailPromises = _gamerRelationships.map((gamer) => {
+                return getGamerDetails(gamer.username, gamer.platform, view, category)
+            })
+            return Promise.all(detailPromises).then((data) => {
+                data.forEach((row, index) => {
+                    _gamerRelationships[index].detailData = row
+                })
+                setGamerRelationships(JSON.parse(JSON.stringify(_gamerRelationships)));
+                setLoading(false);
+            })
         });
     }
 
-    function getGamerDetails(username, platform, view = 'time', category = GAME_CATEGORIES.WARZONE){
-        return GamerService.getGamerDetailView(username, platform, view, category).then((data)=>{
-            return data;
+    function getGamerDetails(username, platform, view = 'time', category = GAME_CATEGORIES.WARZONE) {
+        return GamerService.getGamerDetailView(username, platform, view, category);
+    }
+
+
+    function getGamerRelationships(): Promise<GamerRelationshipList> {
+        return GamerRelationshipService.queryGamerRelationships({
+            user_id: user.user_id
         })
-    }
-
-
-    function getGamerRelationships() {
-        return new Promise((resolve, reject) => {
-            return GamerRelationshipService.queryGamerRelationships({
-                user_id: user.user_id
-            }).then((_gamerRelationships) => {
-                let detailPromises = _gamerRelationships.map((gamer)=>{
-                    return getGamerDetails(gamer.username, gamer.platform, 'time', gameCategory)
-                })
-                return Promise.all(detailPromises).then((data)=>{
-                    data.forEach((row, index)=>{
-                        _gamerRelationships[index].detailData = row
-                    })
-                    setGamerRelationships(_gamerRelationships);
-                    resolve();
-                })
-            }).catch((error) => {
-                console.error(error);
-                reject(error);
-            });
-        });
     }
 };
 

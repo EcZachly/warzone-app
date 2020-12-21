@@ -2,6 +2,7 @@ import StorageService from './../Storage/StorageService';
 import HttpService from '../../services/HttpService';
 
 import {User, RawUser} from './UserTypes';
+import {GamerRelationshipService} from '../GamerRelationships';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -44,6 +45,8 @@ export function login(loginDetails: { email: string, password: string }): Promis
 
                 StorageService.save('user', user);
                 StorageService.save('auth-token-manually-verified', true, {session: true});
+
+                GamerRelationshipService.queryGamerRelationships({user_id: user.user_id}).finally();
 
                 resolve(user);
             } else {

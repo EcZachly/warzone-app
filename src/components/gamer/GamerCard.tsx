@@ -30,6 +30,11 @@ export type GamerCardProps = {
 
 
 export default function GamerCard({gamer, classDescriptions, mode, onGamerClick}: GamerCardProps) {
+    if(!gamer){
+         return <Card/>;
+    }
+
+
     let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
     let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
 
