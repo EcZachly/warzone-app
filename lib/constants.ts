@@ -33,11 +33,11 @@ export const GAME_CATEGORIES = {
     MINI_ROYALE: 'Mini Royale',
     RESURGENCE: 'Resurgence',
     WARZONE_RUMBLE: 'Warzone Rumble',
-    STIMULUS: 'Stimulus/Buy Back',
+    STIMULUS: 'Buy Back',
     TRUCK_WAR: 'Truck War',
     ZOMBIE_ROYALE: 'Zombie Royale',
+    KING_SLAYER: 'King Slayer',
     PLUNDER: 'Plunder',
-
 }
 
 

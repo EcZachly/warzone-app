@@ -25,13 +25,15 @@ create OR REPLACE view warzone.matches_augmented AS SELECT match_id,
                        END
                END                                    AS team_type,
            CASE
-               WHEN mode LIKE '%plnd%' OR mode LIKE '%plun%' THEN 'Plunder'
+               WHEN mode LIKE '%plnd%' OR
+                    mode LIKE '%plun%' OR
+                    mode like '%pln%' OR
+                    mode like '%bldmny%' THEN 'Plunder'
                WHEN mode LIKE '%jugg%' THEN 'Juggernaut Royale'
                WHEN mode LIKE '%rmbl%' THEN 'Warzone Rumble'
                WHEN mode LIKE '%mini%' THEN 'Mini Royale'
                WHEN mode LIKE '%kingslayer%' THEN 'King Slayer'
-               WHEN mode LIKE '%dmz%' THEN 'DMZ'
-               WHEN mode LIKE '%stim%' OR MODE LIKE '%brbb%' THEN 'Stimulus/Buy Back'
+               WHEN mode LIKE '%stim%' OR MODE LIKE '%brbb%' THEN 'Buy Back'
                WHEN mode like '%rebirth%' THEN 'Resurgence'
                WHEN mode LIKE '%truckwar%' THEN 'Truck War'
                WHEN mode LIKE '%zmbroy%' THEN 'Zombie Royale'
