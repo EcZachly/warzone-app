@@ -1,4 +1,4 @@
-CREATE VIEW warzone.gamer_heat_ratings AS
+CREATE OR REPLACE VIEW warzone.gamer_heat_ratings AS
 WITH last_timestamps AS (
     SELECT
         query_username,
@@ -6,10 +6,8 @@ WITH last_timestamps AS (
         COALESCE(game_category , '(all)') as game_category,
         MAX(gm.start_timestamp) AS latest_game_timestamp
     FROM warzone.gamer_rolling_trends gm
-    GROUP BY GROUPING SETS (
-      (query_username, query_platform),
-      (game_category, query_username, query_platform)
-        )
+    GROUP BY game_category, query_username, query_platform
+
 )
 SELECT
        lt.game_category,

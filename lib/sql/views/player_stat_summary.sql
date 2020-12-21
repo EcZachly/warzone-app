@@ -55,7 +55,8 @@ FROM agg a
          LEFT JOIN warzone.gamer_site_hits gsh
                    ON a.username = gsh.username AND a.platform = gsh.platform
          LEFT JOIN warzone.gamer_heat_ratings ghr
-                   ON a.username = ghr.query_username AND a.platform = ghr.query_platform AND
-                      ghr.game_category = a.game_category
+                   ON a.username = ghr.query_username
+                   AND a.platform = ghr.query_platform
+                   AND ghr.game_category = a.game_category
 ORDER BY COALESCE(gsh.num_hits, 0) DESC
     );
