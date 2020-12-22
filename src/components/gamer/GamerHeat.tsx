@@ -30,23 +30,32 @@ import TypeService from '../../services/TypeService';
 
 export type GamerCardProps = {
     gamer: Gamer,
-    classDescriptions?: object
-}
+    classDescriptions?: object,
+    size?: 'sm'
+};
 
 
-export default function GamerHeat({gamer}: GamerCardProps) {
+export default function GamerHeat({gamer, size}: GamerCardProps) {
     let heatFlames = <div/>;
-    
+
     if (gamer.heat_rating > 0) {
-        let delta = (gamer.last_10_rolling_average_kdr / gamer.last_100_rolling_average_kdr - 1) * 100;
+        let delta = gamer.heat_score;
 
         if (delta >= 0.1) {
             let cnt = 0;
             let array = [];
 
+            let standardHeight = 18;
+            let standardWidth = 16;
+
+            let height = (size === 'sm' ? .75 : 1) * standardHeight + 'px';
+            let width = (size === 'sm' ? .75 : 1) * standardWidth + 'px';
+
+
+
             while (cnt < gamer.heat_rating) {
                 array.push(<Image className={'heat-indicator'}
-                                  style={{width: '16px', height: '18px', opacity: (52 + (cnt * 12)) + '%'}}
+                                  style={{width: width, height: height, opacity: (52 + (cnt * 12)) + '%'}}
                                   src={'/assets/images/icons/heat-sm.png'}
                                   alt={'number of flames means this player is on a hot streak'}/>);
                 cnt = cnt + 1;

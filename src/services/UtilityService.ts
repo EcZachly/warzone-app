@@ -165,6 +165,42 @@ export function objectToUrlParameters(params: Record<any, string | number | bool
 
 
 
+export function sortArrayOfObjectsByKey(items: any[], key: string, descending: boolean=false): any[] {
+    items = validateItem(items, 'array', []);
+
+    return items.sort(function(a, b) {
+        const valueA = _getValueForSorting(_.get(a, key));
+        const valueB = _getValueForSorting(_.get(b, key));
+
+        let comparison = 0;
+
+        if (valueA > valueB) {
+            comparison = -1;
+        } else if (valueA < valueB) {
+            comparison = 1;
+        }
+
+        return (descending === true) ? comparison : comparison * -1;
+    });
+}
+
+
+
+function _getValueForSorting(value) {
+    if (TypeService.isNumeric(value)) {
+        return Number(value);
+    } else if (TypeService.isString(value)) {
+        return value.toUpperCase();
+    } else if (TypeService.isDate(value)) {
+        return value.getTime();
+    } else {
+        return value;
+    }
+}
+
+
+
+
 export default {
     validateItem,
     sleep,
@@ -175,6 +211,7 @@ export default {
     generateRandomInteger,
     getBaseUrlWithProtocol,
     copyObject,
+    sortArrayOfObjectsByKey,
     isValidEmail,
     camelToProperCase,
     numberToPercentage,

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, Component} from 'react';
 import {useRouter} from 'next/router';
 import dynamic from 'next/dynamic';
+import _ from 'lodash';
 
 import {Navbar, Page, Footer, GamerCard, GamerCategorySelect} from './../components/AppComponents';
 
@@ -12,6 +13,8 @@ import {
     Main,
     Text,
     ListGroup,
+    Card,
+    CardBody,
     ListGroupItem,
     LineBreak,
     Show, Image
@@ -24,12 +27,13 @@ import CONSTANTS from './../config/CONSTANTS';
 import {UserService} from './../components/Users';
 import {GamerRelationshipService} from './../components/GamerRelationships';
 import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
-import {GamerSearchInput, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
+import {GamerSearchInput, GamerLink, GamerHeat, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
 
 import {StateService} from './../components/State';
 
 import {Gamer} from '../components/gamer/GamerTypes';
 import {GAME_CATEGORIES} from '../../lib/constants';
+import UtilityService from '../services/UtilityService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -123,6 +127,8 @@ let DashboardPage = ({baseUrl}) => {
                                     </ListGroupItem>
                                 </ListGroup>
                         </Show>
+
+                        {getFriendsOnFire()}
                     </Sidebar>
 
 
@@ -205,6 +211,52 @@ let DashboardPage = ({baseUrl}) => {
                             })()
                         }
                     </Box>
+                </Box>
+            );
+        }
+    }
+
+
+
+    function getFriendsOnFire() {
+        const friends = gamerRelationships.data.filter((r) => r.type === 'friend').filter((gamerConfig) => {
+            return _.get(gamerConfig, 'detailData.gamer.heat_rating') > 0;
+        });
+
+        if (gamerRelationships.loading) {
+            return (
+                <Box>
+                    <LineBreak clear/>
+                    <Placeholder title/>
+                    <LineBreak clear/>
+                    <Placeholder text/>
+                </Box>
+            );
+        } else {
+            return (
+                <Box style={{marginTop: '15px'}}>
+                    <h4>Friends on Fire</h4>
+
+                    {
+                        (() => {
+                            if (friends.length) {
+                                return UtilityService.sortArrayOfObjectsByKey(friends, 'detailData.gamer.heat_score', true).map((friend) => {
+                                    return (
+                                        <Card style={{marginBottom: '5px'}}>
+                                            <CardBody>
+                                                <GamerLinkList gamer={friend.detailData.gamer}/>
+                                                <GamerHeat size={'sm'} gamer={friend.detailData.gamer}/>
+                                            </CardBody>
+                                        </Card>
+                                    )
+                                });
+                            } else {
+                                return (
+                                    <Text type={'help'}>No friends on fire</Text>
+                                );
+                            }
+                        })()
+                    }
                 </Box>
             );
         }

@@ -56,6 +56,7 @@ export type RawGamerList = RawGamer[];
 export type Gamer = RawGamer & {
     pretty_gulag_win_rate?: string,
     gulag_kdr?: string,
+    heat_score?: number
 };
 
 
