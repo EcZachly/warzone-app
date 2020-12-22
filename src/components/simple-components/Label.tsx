@@ -8,7 +8,7 @@ const Label = (props: LabelProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <label {...props} className={classNames} style={props.style} onClick={props.onClick} ref={props.innerRef}>
+        <label {...props} title={props.title} className={classNames} style={props.style} onClick={props.onClick} ref={props.innerRef}>
             {props.children}
         </label>
     );
@@ -24,6 +24,7 @@ type LabelProps = {
     style?: CSS.Properties,
     onClick?: (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => void,
     size?: string,
+    title?: string,
     innerRef?: any,
     children?: React.ReactNode
 };

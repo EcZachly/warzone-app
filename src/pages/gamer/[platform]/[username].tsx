@@ -29,9 +29,9 @@ import HtmlService from '../../../services/HtmlService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
-import {GAME_CATEGORIES} from "../../../../lib/constants";
-import {getGamerDetailView} from "../../../components/gamer/GamerService";
-import {GamerService} from "../../../components/gamer";
+import {GAME_CATEGORIES} from '../../../../lib/constants';
+import {getGamerDetailView} from '../../../components/gamer/GamerService';
+import {GamerService} from '../../../components/gamer';
 
 
 const CONFIG = {
@@ -80,7 +80,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
 
     let containerRef = React.useRef<HTMLDivElement>();
     if (error) {
-        return <div>{error}</div>
+        return <div>{error}</div>;
     }
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
@@ -103,7 +103,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     useEffect(() => {
         setComponentDidUpdate(true);
         if (getChartWidth() !== chartState.width) {
-            setChartState(Object.assign({}, chartState, {width: getChartWidth()}))
+            setChartState(Object.assign({}, chartState, {width: getChartWidth()}));
         }
     });
 
@@ -175,15 +175,13 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
                                                     inline={true}
                                                     size={'sm'}
                                                     label={'All Games'}
-                                                    statValue={gamer.kdr}
-                                    />
+                                                    statValue={gamer.kdr}/>
 
                                     <StatLabelValue style={{marginBottom: '0px'}}
                                                     inline={true}
                                                     size={'sm'}
                                                     label={'Last 100 games'}
-                                                    statValue={gamer.last_100_rolling_average_kdr}
-                                    />
+                                                    statValue={gamer.last_100_rolling_average_kdr}/>
 
                                     <StatLabelValue style={{marginBottom: '0px'}}
                                                     inline={true}
@@ -191,8 +189,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
                                                     label={'Last 30 games'}
                                                     statValue={gamer.last_30_rolling_average_kdr}
                                                     compareStatValue={gamer.last_100_rolling_average_kdr}
-                                                    compareStatLabel={'compared to the last 100 games'}
-                                    />
+                                                    compareStatLabel={'compared to the last 100 games'}/>
 
                                     <StatLabelValue style={{marginBottom: '0px'}}
                                                     inline={true}
@@ -200,8 +197,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
                                                     label={'Last 10 games'}
                                                     statValue={gamer.last_10_rolling_average_kdr}
                                                     compareStatValue={gamer.last_100_rolling_average_kdr}
-                                                    compareStatLabel={'compared to the last 100 games'}
-                                    />
+                                                    compareStatLabel={'compared to the last 100 games'}/>
                                 </>
                             }/>
 
@@ -216,7 +212,9 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
 
                             <LabelValue label={'Total Games'} value={gamesPlayed}/>
 
-                            <LabelValue label={'Gulag Win Rate'} value={gamer.gulag_win_rate}/>
+                            <LabelValue label={'Gulag Win Rate'} value={gamer.pretty_gulag_win_rate}/>
+
+                            <LabelValue label={'Gulag KDR'} value={gamer.gulag_kdr}/>
 
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>
@@ -236,7 +234,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
 
     async function setTabAndFetchData(tabId) {
-        const newState = {...chartState}
+        const newState = {...chartState};
         newState.activeTab = tabId;
 
         if (tabId === chartState.activeTab) {
@@ -275,7 +273,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
 
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
-        return GamerService.getGamerDetailView(gamer.username as string, gamer.platform, tabId, gameCategory)
+        return GamerService.getGamerDetailView(gamer.username as string, gamer.platform, tabId, gameCategory);
     }
 }
 
@@ -286,20 +284,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await GamerService.getGamerDetailView(username as string,
-                                                                platform as string,
-                                                                selectedView as string,
-                                                                queryCategory as string, baseUrl)
+        platform as string,
+        selectedView as string,
+        queryCategory as string, baseUrl);
 
     let props = {
         gamerData: rawGamerList,
         gameCategory: queryCategory,
         view: selectedView,
-        baseUrl: baseUrl,
-    }
+        baseUrl: baseUrl
+    };
     if (rawGamerList['message']) {
         props['error'] = rawGamerList['message'];
     }
     return {
         props
-    }
+    };
 };

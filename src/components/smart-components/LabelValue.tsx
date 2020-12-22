@@ -14,9 +14,10 @@ const CONSTANTS = {
 type LabelValueProps = {
     className?: string,
     style?: React.CSSProperties,
-    children?: React.ReactNode | React.ReactNodeArray,
-    label: string,
-    value: any,
+    label: string | React.ReactNode,
+    value: any | React.ReactNode,
+    labelTitle?: string,
+    valueTitle?: string,
     inline?: boolean,
     valueLoading?: boolean,
     size?: (typeof CONSTANTS.VALID_SIZES)[number]
@@ -76,14 +77,14 @@ function getValueContents(props) {
     } else if (valueLink) {
         return (
             <Paragraph className={valueClassName} style={props.valueStyle}>
-                <Link href={valueLink}>
+                <Link title={props.valueTitle} href={valueLink}>
                     {value}
                 </Link>
             </Paragraph>
         );
     } else if (valueClick) {
         return (
-            <Paragraph className={valueClassName} style={props.valueStyle} onClick={valueClick}>
+            <Paragraph title={props.valueTitle} className={valueClassName} style={props.valueStyle} onClick={valueClick}>
                 {value}
             </Paragraph>
         );
@@ -112,7 +113,7 @@ function getLabelValue(props) {
     
     if (labelLink) {
         return (
-            <Label className={labelClassName}>
+            <Label title={props.labelTitle} className={labelClassName}>
                 <Link href={labelLink}>
                     {label}
                 </Link>
@@ -120,13 +121,13 @@ function getLabelValue(props) {
         );
     } else if (labelClick) {
         return (
-            <Label className={labelClassName} onClick={labelClick}>
+            <Label title={props.labelTitle} className={labelClassName} onClick={labelClick}>
                 {label}
             </Label>
         );
     } else {
         return (
-            <Label className={labelClassName}>{label}</Label>
+            <Label title={props.labelTitle} className={labelClassName}>{label}</Label>
         );
     }
 }

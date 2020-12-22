@@ -3,7 +3,8 @@ import React from 'react';
 import {
     Card,
     CardBody,
-    Button,
+    Text,
+    Small,
     Show,
     CardHeader,
     Box, Paragraph
@@ -15,6 +16,7 @@ import {GamerLinkList, GamerAliasList, GamerHeat} from './../gamer/index';
 import {ClassBadgeList} from '../classes/index';
 import {Gamer} from './GamerTypes';
 import TypeService from '../../services/TypeService';
+import UtilityService from '../../services/UtilityService';
 import {UserService} from '../Users';
 
 
@@ -48,13 +50,16 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
         const noLink = !!onGamerClick;
 
         let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
-        let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
+        let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills));
+        let gamesPlayedIsMoreThan1000 = gamesPlayed >= 1000;
+
+        let gamesPlayedText = (gamesPlayedIsMoreThan1000) ? '1,000+' : UtilityService.numberWithCommas(UtilityService.round(gamesPlayed, 0));
+
         const cardClickable = !!noLink;
 
         if (isCondensed) {
             return getCondensedCard();
         } else {
-
             return (
                 <Card className={'gamer-card ' + modeClass}>
 
@@ -83,17 +88,29 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                         <Box className={'details'}>
 
-                            <LabelValue label={'KDR'} value={gamer.kdr}/>
+                            <LabelValue label={(<Text title={'including kills and deaths in gulag'}>KDR <Small>(last 100)</Small></Text>)}
+                                        value={UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}/>
 
-                            <LabelValue label={'Max Kills'} value={gamer.max_kills}/>
+                            <LabelValue label={'Max Kills'}
+                                        labelTitle={'Including kills in gulag'}
+                                        value={gamer.max_kills}/>
 
-                            <LabelValue label={'Overall Win Rate'} value={overallWinRate}/>
+                            <LabelValue label={'Overall Win Rate'}
+                                        value={overallWinRate}/>
 
-                            <LabelValue label={'Total Games'} value={gamesPlayed}/>
+                            <LabelValue label={(<Text>Gulag Win Rate <Small>(KDR)</Small></Text>)}
+                                        value={(
+                                            <Text>{gamer.pretty_gulag_win_rate} <Small>({gamer.gulag_kdr})</Small></Text>
+                                        )}/>
 
-                            <LabelValue label={'Gulag Win Rate'}
-                                        value={gamer.gulag_win_rate}/>
+                            <LabelValue size={'sm'}
+                                        labelTitle={'Including kills in gulag'}
+                                        label={'Average Kills per Game'}
+                                        value={`${UtilityService.round(gamer.avg_kills, 1)}`}/>
 
+                            <LabelValue size={'sm'}
+                                        label={'Total Games'}
+                                        value={gamesPlayedText}/>
                         </Box>
 
                     </CardBody>

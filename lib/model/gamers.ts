@@ -32,7 +32,8 @@ export function queryGamers(query, options = {}) {
 
 export function sanitizeGamer(gamer) {
     gamer = UtilityService.validateItem(gamer, 'object', {});
-    gamer.gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
+    gamer.pretty_gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
+    gamer.gulag_kdr = UtilityService.round((1 / (1 - UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0))), 2);
     gamer.kdr = (UtilityService.validateItem(gamer.kdr, 'number', 0).toFixed(4)).toString();
     gamer.aliases = UtilityService.validateItem(gamer.aliases, 'array', []);
 

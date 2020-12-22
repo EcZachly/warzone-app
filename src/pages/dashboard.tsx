@@ -63,7 +63,6 @@ let DashboardPage = ({baseUrl}) => {
 
     useEffect(() => {
         if (user.data) {
-            console.log('user is logged in');
             getData(view, gameCategory);
         }
     }, [user]);

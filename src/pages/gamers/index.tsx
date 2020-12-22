@@ -10,18 +10,27 @@ import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents
 import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {GamerCard, GamerAdd} from './../../components/gamer/index';
-import {GAME_CATEGORIES} from "../../../lib/constants";
+import {GAME_CATEGORIES} from '../../../lib/constants';
 import GamerCardList from '../../components/gamer/GamerCardList';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, username, limit, classDescriptions, gameCategory}) {
+export default function Gamers({
+                                   gamers,
+                                   baseUrl,
+                                   recaptchaSiteKey,
+                                   sort,
+                                   username,
+                                   limit,
+                                   classDescriptions,
+                                   gameCategory
+                               }) {
     const [gamerValues, setGamers] = useState({[gameCategory]: gamers});
     const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
     const [searchValue, setSearchValue] = useState(username);
     const [sorting, updateSorting] = useState(sort);
-    const [filterCategory, setGameCategory] = useState(gameCategory)
+    const [filterCategory, setGameCategory] = useState(gameCategory);
 
     useEffect(() => {
         console.log('sorting value changed');
@@ -36,7 +45,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
     }
 
 
-    const buttonTabs = <GamerCategorySelect activeCategory={filterCategory} setCategory={setGameCategory} />
+    const buttonTabs = <GamerCategorySelect activeCategory={filterCategory} setCategory={setGameCategory}/>;
 
     return (
         <Page title={'Gamers'}>
@@ -71,8 +80,14 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                                    type={'select'}
                                    label={'Sort'}
                                    options={[
-                                       {value: {sort: 'kdr', direction: 'desc'}, text: 'KDR (High to Low)'},
-                                       {value: {sort: 'kdr', direction: 'asc'}, text: 'KDR (Low to High)'},
+                                       {
+                                           value: {sort: 'last_100_rolling_average_kdr', direction: 'desc'},
+                                           text: 'KDR (High to Low)'
+                                       },
+                                       {
+                                           value: {sort: 'last_100_rolling_average_kdr', direction: 'asc'},
+                                           text: 'KDR (Low to High)'
+                                       },
                                        {
                                            value: {sort: 'gulag_win_rate', direction: 'desc'},
                                            text: 'Gulag Win Rate (High to Low)'
@@ -88,7 +103,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                                        {
                                            value: {sort: 'win_percentage', direction: 'asc'},
                                            text: 'Win Rate (Low to High)'
-                                       },
+                                       }
                                    ]}/>
                             <div>
                                 {buttonTabs}
@@ -178,7 +193,7 @@ export default function Gamers({gamers, baseUrl, recaptchaSiteKey, sort, usernam
                 }
             });
             let copyGamers = JSON.parse(JSON.stringify(gamerValues));
-            copyGamers[filterCategory] = filteredGamers
+            copyGamers[filterCategory] = filteredGamers;
             setGamers(copyGamers);
             setGameCategory(category);
         }
@@ -193,7 +208,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let username = query.username || '';
 
     let gameCategory = query['game_category'] || 'Warzone';
-    const sort = query.sort || 'kdr';
+    const sort = query.sort || 'last_100_rolling_average_kdr';
 
     const sortDirection = query.direction || 'desc';
 
