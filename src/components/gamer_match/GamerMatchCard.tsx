@@ -75,7 +75,7 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
                 <Box style={{display: 'flex', flexFlow: 'wrap'}}>
                     <Box className={'details main-details'}>
                         <LabelValue label={'Game Type'}
-                                    value={UtilityService.camelToProperCase(gamerMatch.team_type)}/>
+                                    value={UtilityService.camelToProperCase(gamerMatch.team_type) + 's'}/>
 
                         <LabelValue label={'Placement'}
                                     value={

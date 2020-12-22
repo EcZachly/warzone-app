@@ -22,7 +22,7 @@ const CONSTANTS = {
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-export function Alert(props: AlertProps) {
+export default function Alert(props: AlertProps) {
     const classNames = getClassNames(props);
     
     return (
@@ -80,5 +80,3 @@ function getType(props) {
     
     return 'alert-' + ((validTypes[propType]) ? validTypes[propType] : validTypes[defaultType]);
 }
-
-export default Alert;

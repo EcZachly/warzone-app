@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "esnext",
     "isolatedModules": true,
-    "strict": false
+    "strict": false,
   },
   "include": [
     "next-env.d.ts",

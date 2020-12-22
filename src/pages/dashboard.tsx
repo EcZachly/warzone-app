@@ -10,11 +10,14 @@ import {
     Paragraph,
     Box,
     Main,
+    Text,
+    ListGroup,
+    ListGroupItem,
     LineBreak,
     Show, Image
 } from './../components/SimpleComponents';
 
-import {Input, LabelValue, Sidebar, SidebarCompanion} from './../components/SmartComponents';
+import {Input, LabelValue, Placeholder, Sidebar, SidebarCompanion} from './../components/SmartComponents';
 
 import CONSTANTS from './../config/CONSTANTS';
 
@@ -22,6 +25,9 @@ import {UserService} from './../components/Users';
 import {GamerRelationshipService} from './../components/GamerRelationships';
 import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
 import {GamerSearchInput, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
+
+import {StateService} from './../components/State';
+
 import {Gamer} from '../components/gamer/GamerTypes';
 import {GAME_CATEGORIES} from '../../lib/constants';
 
@@ -32,26 +38,31 @@ let DashboardPage = ({baseUrl}) => {
     let router = useRouter();
 
     let [hasMounted, setHasMounted] = useState(false);
-    let [loading, setLoading] = useState(true);
+    // let [loading, setLoading] = useState(true);
     let [newUserSearch, setNewUserSearch] = useState('search');
     let [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
     let [view, setView] = useState('time');
     let [error, setError] = useState(null);
 
-    let [user, setUser] = useState(null);
-    let [gamerRelationships, setGamerRelationships] = useState([]);
+    let [user, setUser] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
+    let [gamerRelationships, setGamerRelationships] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
+    // let [gamerRelationships, setGamerRelationships] = useState([]);
 
     hasMounted === false && setHasMounted(true);
 
     useEffect(() => {
         if (UserService.userIsLoggedIn()) {
-            setUser(UserService.getUser());
+            setUser({
+                loading: false,
+                data: UserService.getUser(),
+                error: null
+            });
         }
     }, [hasMounted]);
 
 
     useEffect(() => {
-        if (user) {
+        if (user.data) {
             console.log('user is logged in');
             getData(view, gameCategory);
         }
@@ -74,61 +85,52 @@ let DashboardPage = ({baseUrl}) => {
 
 
     function getContent() {
-        const userHasNoRelationships = (gamerRelationships.length === 0);
-        console.log(gamerRelationships);
-        const mainGamer = gamerRelationships.filter((r) => r.type === 'self')[0];
-
-        const friends = gamerRelationships.filter((r) => r.type === 'friend');
-
-        const userHasAMain = !!mainGamer;
-        let categorySwitcher = (
-            <GamerCategorySelect activeCategory={gameCategory} setCategory={(val) => {
-                setCategory(val);
-                return getData(view, val);
-            }}/>
-        );
 
 
 
-        if (user) {
-            let selfBlock = mainGamer && (
-                <Box>
-                    <GamerCard gamer={mainGamer.detailData.gamer}/>
-                </Box>
-            );
-
-            let friendsBlock = (
-                <Box>
-                    <h1>Friends</h1>
-
-                    {friends.map((friend) => <GamerCard gamer={friend.detailData.gamer}/>)}
-                </Box>
-            );
-
-            let relationshipsBlock = (
-                <Box>
-                    {selfBlock}
-                    {friendsBlock}
-                </Box>
-            );
+        if (!user.loading) {
+            const mainGamer = getMainGamer();
+            let platform = mainGamer && mainGamer.platform;
+            let username = mainGamer && mainGamer.username;
+            let gamerEndpoint = '/gamer/' + encodeURIComponent(platform) + '/' + encodeURIComponent(username);
 
             return (
                 <>
                     <Sidebar>
-                        <Header>{user.first_name}</Header>
+                        <Header>{user.data.first_name}</Header>
 
                         <LineBreak/>
-                        {userHasAMain && <GamerLinkList gamer={mainGamer}/>}
-                        {loading && <Image style={{width: '50px', height: '50px'}} src={'/assets/images/spinner.gif'}/>}
+
+                        <Show show={gamerRelationships.loading}>
+                            <Placeholder text/>
+                            <LineBreak clear/>
+                            <Placeholder text/>
+                        </Show>
+
+                        <Show show={!gamerRelationships.loading && !!mainGamer}>
+                                <GamerLinkList loading={gamerRelationships.loading} gamer={mainGamer}/>
+
+                                <ListGroup>
+                                    <ListGroupItem onClick={() => {
+                                        router.push(gamerEndpoint + '?view=recent_matches');
+                                    }}>
+                                        View Recent Matches
+                                    </ListGroupItem>
+
+                                    <ListGroupItem onClick={() => {
+                                        router.push(gamerEndpoint + '?view=trends');
+                                    }}>
+                                        View Trends
+                                    </ListGroupItem>
+                                </ListGroup>
+                        </Show>
                     </Sidebar>
 
 
                     <SidebarCompanion>
-                        {userHasAMain && categorySwitcher}
-                        {userHasAMain && relationshipsBlock}
-                        {userHasNoRelationships && !loading && getNewUserContent()}
-
-
+                        {getCategorySwitcher()}
+                        {getGamerList()}
+                        {getNewUserContent()}
                     </SidebarCompanion>
                 </>
             );
@@ -136,10 +138,84 @@ let DashboardPage = ({baseUrl}) => {
     }
 
 
-    function getNewUserContent() {
+    function getMainGamer() {
+        return gamerRelationships.loading !== true && gamerRelationships.data.filter(({type}) => type === 'self')[0];
+    }
 
-        return (
-            <>
+
+
+    function getCategorySwitcher() {
+        if (gamerRelationships.loading) {
+            return (
+                <Placeholder style={{height: '2em', width: '100%', marginTop: '20px'}}
+                             block/>
+            );
+        } else {
+            if (!!getMainGamer()) {
+                return (
+                    <GamerCategorySelect activeCategory={gameCategory}
+                                         setCategory={(val) => {
+                                             setCategory(val);
+                                             return getData(view, val);
+                                         }}/>
+                );
+            }
+        }
+    }
+
+
+
+    function getGamerList() {
+        const mainGamer = gamerRelationships.data.filter((r) => r.type === 'self')[0];
+        const friends = gamerRelationships.data.filter((r) => r.type === 'friend');
+
+        if (gamerRelationships.loading) {
+            return (
+                <Box>
+                    <GamerCard loading={gamerRelationships.loading}/>
+                </Box>
+            );
+        } else {
+            return (
+                <Box>
+                    <Box>
+                        {
+                            (() => {
+                                if (mainGamer) {
+                                    return (
+                                        <GamerCard loading={gamerRelationships.loading}
+                                                   gamer={mainGamer && mainGamer.detailData.gamer}/>
+                                    );
+                                }
+                            })()
+                        }
+                    </Box>
+
+                    <Box>
+                        <h2>Friends</h2>
+
+                        {
+                            (() => {
+                                if (friends.length) {
+                                    return friends.map((friend) => <GamerCard gamer={friend.detailData.gamer}/>);
+                                } else {
+                                    return (
+                                        <Text type={'help'}>No friends added</Text>
+                                    );
+                                }
+                            })()
+                        }
+                    </Box>
+                </Box>
+            );
+        }
+    }
+
+
+    function getNewUserContent() {
+        if (!gamerRelationships.loading && gamerRelationships.data.length === 0) {
+            return (
+                <>
                 <Header size={'lg'}>
                     Welcome to BR Shooter
                 </Header>
@@ -174,14 +250,17 @@ let DashboardPage = ({baseUrl}) => {
                     <GamerAdd recaptchaSiteKey={process.env.NEXT_PUBLIC_WARZONE_RECAPTCHA_SITE_KEY}/>
                 </Show>
             </>
-        );
+            );
+        }
     }
 
 
     function newUserGamerSelect(gamer) {
         if (gamer) {
             const {username, platform} = gamer;
+
             let userIsOkay = confirm(`select OK to make ${username} (${GamerService.getPlatformObjByID(platform).name}) your main`);
+
             if (userIsOkay) {
                 return GamerRelationshipService.createGamerRelationship({
                     user_id: user.user_id,
@@ -199,12 +278,16 @@ let DashboardPage = ({baseUrl}) => {
             let detailPromises = _gamerRelationships.map((gamer) => {
                 return getGamerDetails(gamer.username, gamer.platform, view, category);
             });
+
             return Promise.all(detailPromises).then((data) => {
                 data.forEach((row, index) => {
                     _gamerRelationships[index].detailData = row;
                 });
-                setGamerRelationships(JSON.parse(JSON.stringify(_gamerRelationships)));
-                setLoading(false);
+
+                setGamerRelationships({
+                    data: JSON.parse(JSON.stringify(_gamerRelationships)),
+                    loading: false
+                });
             });
         });
     }
@@ -216,7 +299,7 @@ let DashboardPage = ({baseUrl}) => {
 
     function getGamerRelationships(): Promise<GamerRelationshipList> {
         return GamerRelationshipService.queryGamerRelationships({
-            user_id: user.user_id
+            user_id: user.data.user_id
         });
     }
 };

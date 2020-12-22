@@ -18,6 +18,7 @@ type LabelValueProps = {
     label: string,
     value: any,
     inline?: boolean,
+    valueLoading?: boolean,
     size?: (typeof CONSTANTS.VALID_SIZES)[number]
 }
 

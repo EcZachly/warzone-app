@@ -11,15 +11,19 @@ import {GamerList, Gamer} from './GamerTypes';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer, block?: boolean, noLink?: boolean }) {
-    let {gamers, gamer, block, noLink} = props;
+export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer, loading?: boolean, block?: boolean, noLink?: boolean }) {
+    let {gamers, gamer, block, loading, noLink} = props;
 
     if (TypeService.isArray(gamers) === false && TypeService.isObject(gamer)) {
         gamers = [gamer];
     }
 
     if (TypeService.isArray(gamers) === false) {
-        throw new Error('props.gamers (GamerList) OR props.gamer (Gamer) is required');
+        if (loading === true) {
+            gamers = [{username: 'test', platform: 'xbl'}];
+        } else {
+            throw new Error('props.gamers (GamerList) OR props.gamer (Gamer) is required');
+        }
     }
 
     if (block === true) {
@@ -29,7 +33,7 @@ export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer
                     gamers.map((gamer) => {
                         let key = [gamer.platform, gamer.username].join('-');
 
-                        return (<GamerLinkList key={key} gamer={gamer} noLink={noLink} block={false}/>);
+                        return (<GamerLinkList key={key} gamer={gamer} noLink={noLink} loading={loading} block={false}/>);
                     })
                 }
             </>
@@ -41,6 +45,7 @@ export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer
                     gamers.map((gamer) => {
                         return (
                             <GamerLink key={gamer.username}
+                                       loading={loading}
                                        gamer={gamer}
                                        noLink={noLink}/>
                         );
