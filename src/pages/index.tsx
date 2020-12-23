@@ -1,11 +1,11 @@
 import React, {useState, Component} from 'react';
 
 import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
-import {Container, Header, Box, Text, Small, Main, LineBreak, Button} from './../components/SimpleComponents';
+import {Container, Header, Box, Text, Alert, Small, Main, LineBreak, Button} from './../components/SimpleComponents';
 import {Input} from './../components/SmartComponents';
-import {GetServerSideProps} from "next";
-import {getBaseUrlWithProtocol} from "../services/UtilityService";
-import {GAME_CATEGORIES} from "../../lib/constants";
+import {GetServerSideProps} from 'next';
+import {getBaseUrlWithProtocol} from '../services/UtilityService';
+import {GAME_CATEGORIES} from '../../lib/constants';
 
 import {GamerSearchInput} from './../components/gamer';
 
@@ -18,6 +18,13 @@ const Home = ({baseUrl}) => {
             <Navbar/>
 
             <Main>
+                {/*<Alert type={'secondary'} style={{margin: 0, borderRadius: 0}}>*/}
+                {/*    <Container>*/}
+                {/*        You can now create a user with brshooter.com to track your gamer and friends, <a*/}
+                {/*        href={'/signup'}>sign up here</a>*/}
+                {/*    </Container>*/}
+                {/*</Alert>*/}
+
                 <Box id={'section-display'}>
                     <Container>
                         <Header size={'xl'}>
@@ -33,10 +40,10 @@ const Home = ({baseUrl}) => {
                         <LineBreak clear/>
 
                         <GamerSearchInput
-                                        gameCategory={GAME_CATEGORIES.WARZONE}
-                                        focus={true}
-                                          size={'xl'}
-                                          baseUrl={baseUrl}/>
+                            gameCategory={GAME_CATEGORIES.WARZONE}
+                            focus={true}
+                            size={'xl'}
+                            baseUrl={baseUrl}/>
                     </Container>
 
                 </Box>

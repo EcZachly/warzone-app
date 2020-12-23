@@ -1,4 +1,4 @@
-import {MatchID, RawMatch} from './../match/MatchTypes';
+import {MatchID, RawMatch} from './../Matches/MatchTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -8,7 +8,7 @@ export type GamerMatchID = string;
 
 
 
-export type RawGamerMatch = {
+export type RawGamerMatch = RawMatch & {
     query_username: string,
     query_platform: string,
     match_id: MatchID,
@@ -34,6 +34,7 @@ export type RawGamerMatch = {
     executions: number,
     objective: Record<any, unknown>,
     xp: Record<any, unknown>,
+    platform_username: string
 };
 
 
@@ -44,6 +45,3 @@ export type GamerMatch = RawGamerMatch & RawMatch & {};
 
 
 export type GamerMatchList = GamerMatch[];
-
-
-

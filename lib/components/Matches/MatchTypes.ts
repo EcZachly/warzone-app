@@ -1,1 +1,1 @@
-export * from './../../../src/components/match/MatchTypes';
+export * from './../../../src/components/Matches/MatchTypes';

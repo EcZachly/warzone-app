@@ -42,7 +42,7 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
     console.log('gamerMatch', gamerMatch);
 
     const kdr = UtilityService.round((gamerMatch.kills / (gamerMatch.deaths || 1)), 2);
-    const damageRatio = UtilityService.numberToPercentage((gamerMatch.damage_done / gamerMatch.damage_taken) || 0, 0);
+    const damageRatio = UtilityService.round((gamerMatch.damage_done / gamerMatch.damage_taken) || 0, 2);
 
     const startTimestamp = moment(gamerMatch.start_timestamp);
     let startTimestampPretty = startTimestamp.format('LLL');

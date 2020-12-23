@@ -2,6 +2,7 @@
 
 
 
+import {GamerMatchList} from '../gamer_match/GamerMatchTypes';
 export type MatchID = string;
 
 
@@ -27,7 +28,9 @@ export type RawMatch = {
 export type RawMatchList = RawMatch[];
 
 
-export type Match = RawMatch & {};
+export type Match = RawMatch & {
+    gamers: GamerMatchList
+};
 
 
 export type MatchList = Match[];

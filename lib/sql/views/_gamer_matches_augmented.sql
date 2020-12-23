@@ -1,4 +1,4 @@
-create view warzone._gamer_matches_augmented AS
+create or replace view warzone._gamer_matches_augmented AS
 SELECT gm.query_username as username,
 
        gm.query_platform as platform,
@@ -37,6 +37,7 @@ SELECT gm.query_username as username,
        m.start_timestamp,
        m.end_timestamp,
        m.team_type,
-       m.game_category
+       m.game_category,
+       concat(gm.query_platform, '-', gm.query_username) as platform_username
 FROM warzone.gamer_matches gm
          JOIN warzone.matches_augmented m ON gm.match_id = m.match_id;

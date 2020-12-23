@@ -11,6 +11,7 @@ import {
     Paragraph,
     Box,
     Main,
+    Button,
     Text,
     ListGroup,
     Card,
@@ -20,7 +21,7 @@ import {
     Show, Image
 } from './../components/SimpleComponents';
 
-import {Input, LabelValue, Placeholder, Sidebar, SidebarCompanion} from './../components/SmartComponents';
+import {Input, LabelValue, Placeholder, Sidebar, SidebarCompanion, TabNav} from './../components/SmartComponents';
 
 import CONSTANTS from './../config/CONSTANTS';
 
@@ -29,16 +30,34 @@ import {GamerRelationshipService} from './../components/GamerRelationships';
 import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
 import {GamerSearchInput, GamerLink, GamerHeat, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
 
+import {MatchCardList} from './../components/Matches';
+import {MatchList} from '../components/Matches/MatchTypes';
+
 import {StateService} from './../components/State';
 
 import {Gamer} from '../components/gamer/GamerTypes';
 import {GAME_CATEGORIES} from '../../lib/constants';
 import UtilityService from '../services/UtilityService';
+import GamerMatchService from '../components/gamer_match/GamerMatchService';
+import GamerMatchCard from '../components/gamer_match/GamerMatchCard';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 let DashboardPage = ({baseUrl}) => {
+    const CONFIG = {
+        TAB_VIEW_LIST: [{
+            text: 'Recent Matches',
+            id: 'recent_matches',
+            content: getRecentMatchesContent
+        }, {
+            text: 'Friends',
+            id: 'friends',
+            content: getGamerList
+        }]
+    };
+
+
     let router = useRouter();
 
     let [hasMounted, setHasMounted] = useState(false);
@@ -46,10 +65,12 @@ let DashboardPage = ({baseUrl}) => {
     let [newUserSearch, setNewUserSearch] = useState('search');
     let [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
     let [view, setView] = useState('time');
+    let [contentView, setContentView] = useState('recent_matches');
     let [error, setError] = useState(null);
 
     let [user, setUser] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
     let [gamerRelationships, setGamerRelationships] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
+    let [recentMatches, setRecentMatches] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([] as MatchList)));
     // let [gamerRelationships, setGamerRelationships] = useState([]);
 
     hasMounted === false && setHasMounted(true);
@@ -133,8 +154,11 @@ let DashboardPage = ({baseUrl}) => {
 
 
                     <SidebarCompanion>
-                        {getCategorySwitcher()}
-                        {getGamerList()}
+                        <TabNav options={CONFIG.TAB_VIEW_LIST}
+                                value={contentView}
+                                onChange={({id}) => setContentView(id)}/>
+
+                        {getTabContent()}
                         {getNewUserContent()}
                     </SidebarCompanion>
                 </>
@@ -170,6 +194,42 @@ let DashboardPage = ({baseUrl}) => {
 
 
 
+    function getTabContent() {
+        return getActiveTab().content();
+    }
+
+
+
+    function getRecentMatchesContent() {
+        if (recentMatches.loading) {
+            return (
+                <Card>
+                    <CardBody>
+                        <Placeholder title/>
+                        <LineBreak clear/>
+                        <Placeholder paragraph/>
+                    </CardBody>
+                </Card>
+            );
+        } else if (recentMatches.data.length) {
+            return (
+                <MatchCardList matches={recentMatches.data}/>
+            )
+        } else {
+            return (
+                <Text>No Recent Matches</Text>
+            )
+        }
+    }
+
+
+
+    function getActiveTab() {
+        return CONFIG.TAB_VIEW_LIST.filter(({id}) => contentView === id)[0];
+    }
+
+
+
     function getGamerList() {
         const mainGamer = gamerRelationships.data.filter((r) => r.type === 'self')[0];
         const friends = gamerRelationships.data.filter((r) => r.type === 'friend');
@@ -177,12 +237,15 @@ let DashboardPage = ({baseUrl}) => {
         if (gamerRelationships.loading) {
             return (
                 <Box>
+                    {getCategorySwitcher()}
                     <GamerCard loading={gamerRelationships.loading}/>
                 </Box>
             );
         } else {
             return (
                 <Box>
+                    {getCategorySwitcher()}
+
                     <Box>
                         {
                             (() => {
@@ -248,7 +311,7 @@ let DashboardPage = ({baseUrl}) => {
                                                 <GamerHeat size={'sm'} gamer={friend.detailData.gamer}/>
                                             </CardBody>
                                         </Card>
-                                    )
+                                    );
                                 });
                             } else {
                                 return (
@@ -326,6 +389,8 @@ let DashboardPage = ({baseUrl}) => {
 
     function getData(view, category) {
         return getGamerRelationships().then((_gamerRelationships) => {
+            getRecentMatches(_gamerRelationships);
+
             let detailPromises = _gamerRelationships.map((gamer) => {
                 return getGamerDetails(gamer.username, gamer.platform, view, category);
             });
@@ -342,6 +407,34 @@ let DashboardPage = ({baseUrl}) => {
             });
         });
     }
+
+
+
+    function getRecentMatches(_gamerRelationships) {
+        const gamerRelationshipsIDList = _gamerRelationships.map(({
+                                                                      username,
+                                                                      platform
+                                                                  }) => [platform, username].join('-'));
+        let query = {
+            platform_username: gamerRelationshipsIDList
+        };
+
+        let queryOptions = {
+            baseUrl,
+            limit: 20,
+            order: [{field: 'end_timestamp', direction: 'desc'}]
+        };
+
+        GamerMatchService.queryGamerMatches(query, queryOptions).then((gamerMatches) => {
+            setRecentMatches({
+                data: GamerMatchService.combineGamerMatches(gamerMatches),
+                loading: false
+            });
+        });
+        console.log(gamerRelationshipsIDList);
+    }
+
+
 
     function getGamerDetails(username, platform, view = 'time', category = GAME_CATEGORIES.WARZONE) {
         return GamerService.getGamerDetailView(username, platform, view, category);

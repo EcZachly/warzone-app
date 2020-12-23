@@ -5,6 +5,7 @@ import responseHandler from './../../../routes/responseHandler';
 import {GamerMatchList, RawGamerMatchList} from './GamerMatchTypes';
 import GamerMatchController from './GamerMatchController';
 import TypeService from '../../../src/services/TypeService';
+import {RouteService} from '../Routes';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -12,28 +13,29 @@ import TypeService from '../../../src/services/TypeService';
 
 
 export async function queryGamerMatches(req: NextApiRequest, res: NextApiResponse) {
-    const queryParams = req.query;
+    const query = RouteService.sanitizeQueryParameters(req.query);
+
     let options = {
-        limit: undefined,
-        offset: undefined,
-        order: undefined
+        limit: undefined as number,
+        offset: undefined as number,
+        order: undefined as []
     };
 
-    options.limit = req.query.limit || 10;
-    delete queryParams.limit;
+    options.limit = query.limit || 10;
+    delete query.limit;
 
-    options.offset = req.query.offset || 0;
-    delete queryParams.offset;
+    options.offset = query.offset || 0;
+    delete query.offset;
 
     // @ts-ignore
-    options.order = JSON.parse(req.query.order);
-    delete queryParams.order;
+    options.order = query.order;
+    delete query.order;
 
     if (TypeService.isArray(options.order) === false) {
         delete options.order;
     }
 
-    GamerMatchController.queryGamerMatches(queryParams, options).then((gamerMatches) => {
+    GamerMatchController.queryGamerMatches(query, options).then((gamerMatches) => {
         if (gamerMatches.length > 0) {
             responseHandler.handleResponse(req, res, gamerMatches);
         } else {

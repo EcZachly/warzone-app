@@ -358,9 +358,9 @@ a:focus, a:active {
 
 
 .alert.alert-primary {
-  $borderColor: adjust-color($theme-blue, $saturation: -20%, $lightness: 27%);
-  $backgroundColor: adjust-color($theme-blue, $saturation: -20%, $lightness: 31%);
-  $textColor: adjust-color($theme-blue, $saturation: -35%, $lightness: -25%);
+  $borderColor: adjust-color($theme-blue, $saturation: -15%, $lightness: 20%);
+  $backgroundColor: adjust-color($theme-blue, $saturation: -10%, $lightness: 20%);
+  $textColor: adjust-color($theme-blue, $saturation: -45%, $lightness: -35%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
   & {
@@ -767,6 +767,30 @@ a:focus, a:active {
 
 .box-shadow-5.clickable:active {
   box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.08), 0px 3px 10px 3px rgba(0, 0, 0, 0.06), 0px 4px 12px 3px rgba(0, 0, 0, 0.04);
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//TAB-NAV
+
+.tab-nav {
+  border-bottom: 1px solid #666;
+  margin-bottom: 10px;
+}
+
+
+.tab-nav .tab, .tab-nav .button.tab {
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+
+.tab-nav .tab.inactive-tab:hover {
+  background: lighten($theme-background-color, 5);
 }
 
 
@@ -1997,23 +2021,27 @@ a:focus, a:active {
 
 @media (min-width: 576px) {
   .container, .container.container-sm, .container.container-lg {
-    max-width: 540px;
+    max-width: 98%;
   }
 }
 
 @media (min-width: 768px) {
   .container, .container.container-sm, .container.container-lg {
-    max-width: 720px;
+    max-width: 98%;
   }
 }
 
 @media (min-width: 992px) {
-  .container, .container.container-lg {
-    max-width: 960px;
+  .container {
+    max-width: 980px;
   }
 
   .container.container-sm {
-    max-width: 720px;
+    max-width: 760px;
+  }
+
+  .container-lg {
+    max-width: 98%;
   }
 }
 
@@ -2023,7 +2051,7 @@ a:focus, a:active {
   }
 
   .container.container-sm {
-    max-width: 720px;
+    max-width: 760px;
   }
 
   .container.container-lg {
@@ -2940,6 +2968,7 @@ image {
   padding: .75rem;
   vertical-align: top;
   border-top: 1px solid $theme-line-break;
+  background: lighten($theme-background-color, 3);
 }
 
 .table-data {
@@ -2961,8 +2990,8 @@ image {
   text-align: left;
 }
 
-.table-striped .table-body .tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
+.table-striped .table-body .tr:nth-of-type(even) {
+  background-color: lighten($theme-background-color, 2);
 }
 
 .table-hover .table-body .tr:hover {

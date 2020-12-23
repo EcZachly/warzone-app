@@ -90,6 +90,9 @@ export {SmartCard};
 import Tooltip from './smart-components/Tooltip';
 export {Tooltip};
 
+import TabNav from './smart-components/TabNav';
+export {TabNav};
+
 //U
 
 
@@ -108,15 +111,16 @@ export {Tooltip};
 //Z
 
 export default {
-    Breadcrumbs: Breadcrumbs,
-    Input: Input,
-    LabelValue: LabelValue,
-    MediaItem: MediaItem,
-    Modal: Modal,
-    Placeholder: Placeholder,
-    ProgressBar: ProgressBar,
-    Sidebar: Sidebar,
-    SidebarCompanion: SidebarCompanion,
-    SmartCard: SmartCard,
-    Tooltip: Tooltip,
+    Breadcrumbs,
+    Input,
+    LabelValue,
+    MediaItem,
+    Modal,
+    Placeholder,
+    ProgressBar,
+    Sidebar,
+    SidebarCompanion,
+    SmartCard,
+    Tooltip,
+    TabNav
 };

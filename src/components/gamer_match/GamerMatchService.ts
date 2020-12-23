@@ -2,6 +2,7 @@ import UtilityService from '../../../src/services/UtilityService';
 import HttpService from '../../../src/services/HttpService';
 
 import {GamerMatchList, GamerMatch} from './GamerMatchTypes';
+import {MatchList} from '../Matches/MatchTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -12,12 +13,16 @@ export function sanitizeGamerMatch(match: Partial<GamerMatch>): Partial<GamerMat
 
 
 
-export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options: { baseUrl: string, limit?: number, offset?: number, order: any[] }): Promise<GamerMatchList> {
+type queryGamerMatchesOptions = {
+    order: any[],
+    baseUrl?: string,
+    limit?: number,
+    offset?: number,
+};
+
+
+export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options: queryGamerMatchesOptions): Promise<GamerMatchList> {
     return new Promise(async (resolve, reject) => {
-        options = UtilityService.validateItem(options, 'object', {});
-        options.baseUrl = UtilityService.validateItem(options.baseUrl, 'string', '');
-
-
         let query = UtilityService.validateItem(queryInput, 'object', {});
 
         let qualifiers = ['limit', 'offset', 'order'];
@@ -30,13 +35,13 @@ export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options
 
         HttpService.http({
             method: 'GET',
-            url: options.baseUrl + '/api/gamer-match',
+            url: (options.baseUrl || '') + '/api/gamer-match',
             query: query
         }).then((response) => {
             console.log(response);
 
             if (response.status === 200 || response.status === 204) {
-                resolve(response.data.map(sanitizeGamerMatch));
+                resolve(UtilityService.validateItem(response.data, 'array', []).map(sanitizeGamerMatch));
             } else {
                 reject(response);
             }
@@ -46,7 +51,23 @@ export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options
 
 
 
+export function combineGamerMatches(gamerMatches: GamerMatchList): MatchList {
+    return Object.values(gamerMatches.reduce((matches, gamerMatch) => {
+        const {match_id} = gamerMatch;
+
+        matches[match_id] = UtilityService.validateItem(matches[match_id], 'object', gamerMatch);
+
+        matches[match_id].gamers = UtilityService.validateItem(matches[match_id].gamers, 'array', []);
+        matches[match_id].gamers.push(UtilityService.copyObject(gamerMatch));
+
+        return matches;
+    }, {}));
+}
+
+
+
 export default {
     sanitizeGamerMatch,
-    queryGamerMatches
+    queryGamerMatches,
+    combineGamerMatches
 };

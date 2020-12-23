@@ -239,35 +239,54 @@ main.main {
 
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
-//GAMER MATCH CARD
+//GAMER MATCH CARD / MATCH CARD
 
-.gamer-match-card {
+.gamer-match-card, .match-card {
 
 }
 
-.gamer-match-card .details {
+.gamer-match-card .card-body, .match-card .card-body {
+  display: flex;
+  flex-flow: column;
+}
+
+.gamer-match-card .details, .match-card .details {
   display: flex;
   flex-flow: row wrap;
 }
 
-.gamer-match-card .main-details {
+.gamer-match-card .main-details, .match-card .main-details {
   width: 100%;
 }
 
-.gamer-match-card .main-details .label-value-container {
+.gamer-match-card .main-details .label-value-container, .match-card .main-details .label-value-container {
   width: 45%;
 }
 
-.gamer-match-card .support-details {
+.gamer-match-card .support-details, .match-card .support-details {
   width: 100%;
+}
+
+.match-card .support-details {
+  margin-top: 10px;
 }
 
 .gamer-match-card .support-details .label-value-container {
   margin-right: 20px;
 }
 
+@media (max-width: 576px) {
+  .match-card .support-details small {
+    display: block;
+  }
+}
 
 @media (min-width: 576px) {
+
+  .gamer-match-card .card-body {
+    flex-flow: row wrap;
+  }
+
   .gamer-match-card .main-details {
     width: 35%;
   }
@@ -290,7 +309,21 @@ main.main {
 }
 
 @media (min-width: 992px) {
+  .match-card .card-body {
+    flex-flow: row wrap;
+  }
 
+  .match-card .main-details {
+    width: 30%;
+  }
+
+  .match-card .main-details .label-value-container {
+    width: 100%;
+  }
+
+  .match-card .support-details {
+    width: 68%;
+  }
 }
 
 @media (min-width: 1200px) {

@@ -9,7 +9,7 @@ import {
     Button,
     Small
 } from './../../../components/SimpleComponents';
-import {SidebarCompanion, LabelValue, StatLabelValue, Sidebar} from '../../../components/SmartComponents';
+import {SidebarCompanion, LabelValue, StatLabelValue, Sidebar, TabNav} from '../../../components/SmartComponents';
 import {
     Page,
     GamerGradeChart,
@@ -85,6 +85,12 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
+    const tabOptions = tabNames.map((id) => {
+        return {
+            text: UtilityService.camelToProperCase(id),
+            id: id
+        };
+    });
 
     const [chartState, setChartState] = useState({
         gameCategory: gameCategory,
@@ -108,6 +114,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     });
 
     const TabData = CONFIG.VIEW_NAME_CONFIG[chartState.activeTab](gamer, chartState);
+
     const buttonTabs = tabNames.map((tabName) => {
         const isActive = (chartState.activeTab === tabName);
         return (
@@ -218,9 +225,10 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
 
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>
-                            <Box style={{borderBottom: '1px solid #666', marginBottom: '10px'}}>
-                                {buttonTabs}
-                            </Box>
+                            <TabNav options={tabOptions}
+                                    value={chartState.activeTab}
+                                    onChange={({id}) => setTabAndFetchData(id)}/>
+
                             <Box>
                                 {TabData}
                             </Box>
