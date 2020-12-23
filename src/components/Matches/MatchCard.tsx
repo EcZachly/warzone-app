@@ -145,7 +145,7 @@ export default function MatchCard({match}: MatchCardProps) {
                     );
                 }
             }, {
-                key: 'Damage (Dealt / Taken)',
+                key: 'Damage Ratio (Dealt / Taken)',
                 render: (gamerMatch) => {
                     return (
                         <>
