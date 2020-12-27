@@ -4,16 +4,17 @@ import {TABLES} from '../../constants';
 
 import {User, RawUser, UserList, RawUserList} from './UserTypes';
 import {UserService} from './index';
-import {MetadataService} from '../../../src/components/Metadata';
+import randomstring from 'randomstring';
+import {Metadata} from "../../../src/components/Metadata/MetadataTypes";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 export function createUser(user: Partial<RawUser>): Promise<RawUser> {
     return new Promise((resolve, reject) => {
-        user.metadata = JSON.stringify(MetadataService.createNewMetadata());
-
-        DAO.insert(TABLES.USERS, user).then((newUser: RawUser) => {
+        user.metadata = JSON.stringify(createNewMetadata());
+        console.log(user);
+        return DAO.insert(TABLES.USERS, user).then((newUser: RawUser) => {
             if (newUser) {
                 resolve(newUser);
             } else {
@@ -22,6 +23,17 @@ export function createUser(user: Partial<RawUser>): Promise<RawUser> {
         }).catch(reject);
     });
 }
+
+
+function createNewMetadata(obj: Record<any, unknown> = {}): Metadata {
+    let defaultMetadata = {
+        create_timestamp: new Date(),
+        confirm_string: randomstring.generate(10)
+    };
+
+    return {...defaultMetadata, ...obj};
+}
+
 
 
 
