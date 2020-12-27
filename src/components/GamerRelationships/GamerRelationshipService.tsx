@@ -1,7 +1,7 @@
 import StorageService from './../Storage/StorageService';
 import HttpService from '../../services/HttpService';
 
-import {GamerRelationship, RawGamerRelationship, GamerRelationshipList} from './GamerRelationshipTypes';
+import {GamerRelationship, GamerRelationshipList, RawGamerRelationship} from './GamerRelationshipTypes';
 import UtilityService from '../../services/UtilityService';
 import TypeService from '../../services/TypeService';
 

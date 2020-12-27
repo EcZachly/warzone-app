@@ -1,7 +1,17 @@
 import React from 'react';
 import _ from 'lodash';
 
-import {Paragraph, Text, LineBreak, Show, ListItem, Card, CardBody, CardHeader, UnorderedList} from '../SimpleComponents';
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    LineBreak,
+    ListItem,
+    Paragraph,
+    Show,
+    Text,
+    UnorderedList
+} from '../SimpleComponents';
 
 import HtmlService from './../../services/HtmlService';
 

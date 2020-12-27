@@ -1,8 +1,5 @@
 import React from 'react';
 
-import Image from './Image';
-import Box from './Box';
-
 const CONSTANTS = {
     VALID_POSITIONS: ['top', 'bottom', 'both'],
     DEFAULT_POSITION: 'top'

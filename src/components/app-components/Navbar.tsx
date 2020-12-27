@@ -1,10 +1,8 @@
-import Head from 'next/head';
-import Router from 'next/router';
-import {withRouter} from 'next/router';
+import Router, {withRouter} from 'next/router';
 
 import React from 'react';
 
-import {Box, Button, Show, Text} from './../SimpleComponents';
+import {Box, Button, Text} from './../SimpleComponents';
 import {UserService} from '../Users';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

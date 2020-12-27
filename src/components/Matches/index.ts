@@ -1,14 +1,13 @@
 import MatchCard from './MatchCard';
+import MatchCardList from './MatchCardList';
+import MatchService from './MatchService';
+
 export {MatchCard};
 
 
-
-import MatchCardList from './MatchCardList';
 export {MatchCardList};
 
 
-
-import MatchService from './MatchService';
 export {MatchService};
 
 

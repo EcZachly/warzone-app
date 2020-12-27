@@ -1,45 +1,39 @@
-import React, {useState, useEffect, Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useRouter} from 'next/router';
 import dynamic from 'next/dynamic';
 import _ from 'lodash';
 
-import {Navbar, Page, Footer, GamerCard, GamerCategorySelect} from './../components/AppComponents';
+import {Footer, GamerCard, GamerCategorySelect, Navbar, Page} from './../components/AppComponents';
 
 import {
-    Container,
-    Header,
-    Paragraph,
     Box,
-    Main,
-    Button,
-    Text,
-    ListGroup,
     Card,
     CardBody,
-    ListGroupItem,
+    Container,
+    Header,
     LineBreak,
-    Show, Image
+    ListGroup,
+    ListGroupItem,
+    Main,
+    Paragraph,
+    Show,
+    Text
 } from './../components/SimpleComponents';
 
-import {Input, LabelValue, Placeholder, Sidebar, SidebarCompanion, TabNav} from './../components/SmartComponents';
-
-import CONSTANTS from './../config/CONSTANTS';
+import {Placeholder, Sidebar, SidebarCompanion, TabNav} from './../components/SmartComponents';
 
 import {UserService} from './../components/Users';
 import {GamerRelationshipService} from './../components/GamerRelationships';
 import {GamerRelationshipList} from '../components/GamerRelationships/GamerRelationshipTypes';
-import {GamerSearchInput, GamerLink, GamerHeat, GamerAdd, GamerService, GamerLinkList} from '../components/gamer';
+import {GamerAdd, GamerHeat, GamerLinkList, GamerSearchInput, GamerService} from '../components/gamer';
 
 import {MatchCardList} from './../components/Matches';
 import {MatchList} from '../components/Matches/MatchTypes';
 
 import {StateService} from './../components/State';
-
-import {Gamer} from '../components/gamer/GamerTypes';
 import {GAME_CATEGORIES} from '../../lib/constants';
 import UtilityService from '../services/UtilityService';
 import GamerMatchService from '../components/gamer_match/GamerMatchService';
-import GamerMatchCard from '../components/gamer_match/GamerMatchCard';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

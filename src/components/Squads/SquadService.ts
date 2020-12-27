@@ -1,7 +1,7 @@
 import UtilityService from '../../../src/services/UtilityService';
 import HttpService from '../../../src/services/HttpService';
 
-import {RawSquad, SquadList, Squad} from './SquadTypes';
+import {Squad, SquadList} from './SquadTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 
-import {Box, Container} from './../SimpleComponents';
+import {Box} from './../SimpleComponents';
 
 import TypeService from '../../services/TypeService';
 
-import GamerLink from './GamerLink';
-
 import GamerCardList from './GamerCardList';
-import {GamerList, Gamer} from './GamerTypes';
 import {Input} from '../SmartComponents';
 import {GAME_CATEGORIES} from "../../../lib/constants";
 

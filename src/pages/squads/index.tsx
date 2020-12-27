@@ -3,7 +3,7 @@ import {GetServerSideProps} from 'next';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import {Container, Main} from './../../components/SimpleComponents';
-import {Page, Navbar, Footer} from './../../components/AppComponents';
+import {Footer, Navbar, Page} from './../../components/AppComponents';
 
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 

@@ -1,10 +1,9 @@
-import Head from 'next/head';
-import Router from 'next/router';
 import {withRouter} from 'next/router';
 
 import React from 'react';
 
-import {Box, Button, Small, Paragraph, LineBreak, Header, Container} from './../SimpleComponents';
+import {Box, Button, Container, Header, LineBreak, Paragraph, Small} from './../SimpleComponents';
+
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 class Footer extends React.Component {

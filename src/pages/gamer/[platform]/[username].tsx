@@ -1,27 +1,20 @@
 import {GetServerSideProps} from 'next';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Box, Button, Container, Header, LineBreak, Main, Small} from './../../../components/SimpleComponents';
+import {LabelValue, Sidebar, SidebarCompanion, StatLabelValue, TabNav} from '../../../components/SmartComponents';
 import {
-    Container,
-    Main,
-    Box,
-    Header,
-    LineBreak,
-    Button,
-    Small
-} from './../../../components/SimpleComponents';
-import {SidebarCompanion, LabelValue, StatLabelValue, Sidebar, TabNav} from '../../../components/SmartComponents';
-import {
-    Page,
-    GamerGradeChart,
     ClassBadgeList,
-    GamerAliasList,
-    GamerHeat,
-    GamerPlacementChart,
-    GamerTimeChart,
-    GamerPlatformImage,
-    Navbar,
     Footer,
-    GamerTrendChart, GamerInfluenceList
+    GamerAliasList,
+    GamerGradeChart,
+    GamerHeat,
+    GamerInfluenceList,
+    GamerPlacementChart,
+    GamerPlatformImage,
+    GamerTimeChart,
+    GamerTrendChart,
+    Navbar,
+    Page
 } from './../../../components/AppComponents';
 
 import UtilityService, {getBaseUrlWithProtocol} from '../../../services/UtilityService';
@@ -30,7 +23,6 @@ import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardLi
 import {SquadCardList} from './../../../components/Squads';
 import TypeService from '../../../services/TypeService';
 import {GAME_CATEGORIES} from '../../../../lib/constants';
-import {getGamerDetailView} from '../../../components/gamer/GamerService';
 import {GamerService} from '../../../components/gamer';
 
 

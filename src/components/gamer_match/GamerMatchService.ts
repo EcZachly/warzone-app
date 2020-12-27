@@ -1,7 +1,7 @@
 import UtilityService from '../../../src/services/UtilityService';
 import HttpService from '../../../src/services/HttpService';
 
-import {GamerMatchList, GamerMatch} from './GamerMatchTypes';
+import {GamerMatch, GamerMatchList} from './GamerMatchTypes';
 import {MatchList} from '../Matches/MatchTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

@@ -1,23 +1,18 @@
 import {GetServerSideProps} from 'next';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import _ from 'lodash';
 
-import {Container, Main, Box, LineBreak, Show, Button, Small, Image} from './../../components/SimpleComponents';
-import {SidebarCompanion, LabelValue, Sidebar} from '../../components/SmartComponents';
-import {
-    Page,
-    Navbar,
-    Footer,
-} from './../../components/AppComponents';
+import {Box, Button, Container, LineBreak, Main, Show} from './../../components/SimpleComponents';
+import {LabelValue, Sidebar, SidebarCompanion} from '../../components/SmartComponents';
+import {Footer, Navbar, Page,} from './../../components/AppComponents';
 
-import {SquadCard, SquadService} from './../../components/Squads/index';
+import {SquadService} from './../../components/Squads/index';
 
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 import {ClassBadgeList} from '../../components/classes';
-import TrendChart from '../../components/charting/TrendChart';
 
 
-import {GamerLinkList, GamerPlacementChart} from './../../components/gamer/index';
+import {GamerLinkList} from './../../components/gamer/index';
 import HtmlService from '../../services/HtmlService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

@@ -6,9 +6,27 @@
 
 //C
 import ClassBadgeList from './classes/ClassBadgeList';
+import ClassBadge from './classes/ClassBadge';
+//F
+import Footer from './app-components/Footer';
+import {GamerAliasList, GamerHeat, GamerPlacementChart} from './../components/gamer/index';
+import GamerCard from './gamer/GamerCard';
+import {GamerCategorySelect} from './game_category/GamerCategorySelect';
+import GamerGradeChart from './gamer/GamerGradeChart';
+import GamerLink from './gamer/GamerLink';
+import GamerPlatformImage from './gamer/GamerPlatformImage';
+import GamerTrendChart from './gamer/GamerTrendChart';
+import GamerTimeChart from './gamer/GamerTimeChart';
+import GamerInfluenceList from './gamer/GamerInfluenceList';
+//N
+import Navbar from './app-components/Navbar';
+//P
+import Page from './app-components/Page';
+//T
+import TeammateTable from './gamer/TeammateTable';
+
 export {ClassBadgeList}
 
-import ClassBadge from './classes/ClassBadge';
 export {ClassBadge}
 
 
@@ -16,39 +34,25 @@ export {ClassBadge}
 
 
 //E
-
-
-//F
-import Footer from './app-components/Footer';
 export {Footer};
 
 //G
-
-import {GamerAliasList, GamerHeat, GamerPlacementChart} from './../components/gamer/index';
 export {GamerAliasList, GamerHeat, GamerPlacementChart}
 
-import GamerCard from './gamer/GamerCard';
 export {GamerCard};
 
-import {GamerCategorySelect} from './game_category/GamerCategorySelect';
 export {GamerCategorySelect};
 
-import GamerGradeChart from './gamer/GamerGradeChart';
 export {GamerGradeChart};
 
-import GamerLink from './gamer/GamerLink';
 export {GamerLink};
 
-import GamerPlatformImage from './gamer/GamerPlatformImage';
 export {GamerPlatformImage};
 
-import GamerTrendChart from './gamer/GamerTrendChart';
 export {GamerTrendChart}
 
-import GamerTimeChart from './gamer/GamerTimeChart';
 export {GamerTimeChart};
 
-import GamerInfluenceList from './gamer/GamerInfluenceList';
 export {GamerInfluenceList};
 
 //H
@@ -67,17 +71,9 @@ export {GamerInfluenceList};
 
 
 //M
-
-
-//N
-import Navbar from './app-components/Navbar';
 export {Navbar};
 
 //O
-
-
-//P
-import Page from './app-components/Page';
 export {Page};
 
 
@@ -88,10 +84,6 @@ export {Page};
 
 
 //S
-
-
-//T
-import TeammateTable from './gamer/TeammateTable';
 export {TeammateTable};
 
 //U

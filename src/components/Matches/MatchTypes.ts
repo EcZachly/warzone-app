@@ -1,8 +1,8 @@
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-
 import {GamerMatchList} from '../gamer_match/GamerMatchTypes';
+
 export type MatchID = string;
 
 

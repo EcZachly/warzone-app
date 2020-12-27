@@ -1,30 +1,26 @@
-import React, {useState, useEffect, Component} from 'react';
+import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 
-import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
+import {Footer, Navbar, Page} from './../components/AppComponents';
 import {
+    Alert,
+    Box,
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
     Container,
     Header,
-    CardBody,
-    Card,
-    Alert,
-    CardFooter,
-    Button,
-    Paragraph,
-    Form,
-    CardHeader,
-    Box,
-    Text,
-    Small,
     Main,
-    LineBreak, UnorderedList, ListItem
+    Paragraph
 } from './../components/SimpleComponents';
 import {Input} from './../components/SmartComponents';
 
 import CONSTANTS from './../config/CONSTANTS';
 
 import {UserService} from './../components/Users';
-import UtilityService, {getBaseUrlWithProtocol} from '../services/UtilityService';
+import UtilityService from '../services/UtilityService';
 import TypeService from '../services/TypeService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

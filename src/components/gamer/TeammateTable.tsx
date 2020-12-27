@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 
-import {Table, TableBody, TableHead, TableRow, TableData, TableHeader} from '../SimpleComponents';
+import {Table, TableBody, TableData, TableHead, TableHeader, TableRow} from '../SimpleComponents';
 import {GamerLink} from '../AppComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

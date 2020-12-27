@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import {BarChart, Bar, XAxis, YAxis, Tooltip, Legend} from 'recharts';
-import React, {useState} from 'react';
+import {Bar, BarChart, Legend, Tooltip, XAxis, YAxis} from 'recharts';
+import React from 'react';
 
-import {InputRadio, Show, Header, Paragraph, Box} from '../SimpleComponents';
+import {Box, Header, Paragraph} from '../SimpleComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 

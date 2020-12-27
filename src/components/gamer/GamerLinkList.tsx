@@ -6,7 +6,7 @@ import TypeService from '../../services/TypeService';
 
 import GamerLink from './GamerLink';
 
-import {GamerList, Gamer} from './GamerTypes';
+import {Gamer, GamerList} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 

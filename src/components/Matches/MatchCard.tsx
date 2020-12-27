@@ -2,23 +2,19 @@ import React from 'react';
 import moment from 'moment';
 
 import {
+    Box,
     Card,
     CardBody,
-    Small,
-    Header,
     CardHeader,
+    Header,
     Show,
-    Box,
-    TableRow,
-    TableHead,
-    Image,
-    LineBreak,
-    Text,
+    Small,
     Table,
     TableBody,
     TableData,
+    TableHead,
     TableHeader,
-    Badge
+    TableRow
 } from '../SimpleComponents';
 
 import {LabelValue} from './../SmartComponents';
@@ -28,7 +24,6 @@ import {GamerLinkList} from './../gamer/index';
 import {Match} from './MatchTypes';
 
 import UtilityService from '../../services/UtilityService';
-
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

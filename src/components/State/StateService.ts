@@ -1,7 +1,3 @@
-import TypeService from '../../services/TypeService';
-
-
-
 export function defaultStateData(defaultData: any = null, isLoading: boolean = true): { data: any, loading: boolean, error: null } {
     return {
         data: defaultData,

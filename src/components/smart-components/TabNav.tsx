@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Button, Box} from './../SimpleComponents';
+import {Box, Button} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

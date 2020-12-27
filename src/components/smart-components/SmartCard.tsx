@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Card, CardFooter, CardHeader, Link, CardIcon, CardImage, CardBody} from './../SimpleComponents';
+import {Card, CardBody, CardFooter, CardHeader, CardImage, Link} from './../SimpleComponents';
 import TypeService from './../../services/TypeService';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

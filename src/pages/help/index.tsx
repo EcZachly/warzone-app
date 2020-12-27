@@ -1,5 +1,3 @@
-import Head from 'next/head';
-
 import {Footer, Navbar, Page} from './../../components/AppComponents';
 import {Container, Header, Main} from './../../components/SimpleComponents';
 import React from 'react';

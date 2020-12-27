@@ -1,8 +1,7 @@
-import React, {useState, Component} from 'react';
+import React from 'react';
 
-import {Navbar, Page, Footer, GamerCard} from './../components/AppComponents';
-import {Container, Header, Box, Text, Alert, Small, Main, LineBreak, Button} from './../components/SimpleComponents';
-import {Input} from './../components/SmartComponents';
+import {Footer, Navbar, Page} from './../components/AppComponents';
+import {Box, Container, Header, LineBreak, Main, Small} from './../components/SimpleComponents';
 import {GetServerSideProps} from 'next';
 import {getBaseUrlWithProtocol} from '../services/UtilityService';
 import {GAME_CATEGORIES} from '../../lib/constants';

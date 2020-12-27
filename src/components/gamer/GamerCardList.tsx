@@ -2,11 +2,9 @@ import React from 'react';
 
 import {Box} from './../SimpleComponents';
 
-import TypeService from '../../services/TypeService';
-
 import GamerCard from './GamerCard';
 
-import {GamerList, Gamer} from './GamerTypes';
+import {GamerList} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 

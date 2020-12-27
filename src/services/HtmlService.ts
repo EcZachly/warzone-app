@@ -1,5 +1,3 @@
-import TypeService from './TypeService';
-
 //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
 //PUBLIC METHODS
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Footer, Navbar, Page} from './../../../components/AppComponents';
-import {Container, Header, Small, Main, Image} from './../../../components/SimpleComponents';
+import {Container, Header, Image, Main, Small} from './../../../components/SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

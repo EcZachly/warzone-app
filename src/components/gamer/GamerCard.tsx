@@ -1,24 +1,14 @@
 import React from 'react';
 
-import {
-    Card,
-    CardBody,
-    Text,
-    Small,
-    Show,
-    CardHeader,
-    Box, Paragraph
-} from '../SimpleComponents';
+import {Box, Card, CardBody, CardHeader, Small, Text} from '../SimpleComponents';
 
 import {LabelValue, Placeholder} from './../SmartComponents';
 
-import {GamerLinkList, GamerAliasList, GamerHeat} from './../gamer/index';
+import {GamerAliasList, GamerHeat, GamerLinkList} from './../gamer/index';
 import {ClassBadgeList} from '../classes/index';
 import {Gamer} from './GamerTypes';
 import TypeService from '../../services/TypeService';
 import UtilityService from '../../services/UtilityService';
-import {UserService} from '../Users';
-
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

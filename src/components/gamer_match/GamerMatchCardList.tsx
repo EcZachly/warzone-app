@@ -8,7 +8,6 @@ import {Gamer} from './../gamer/GamerTypes';
 import {GamerMatchList} from './GamerMatchTypes';
 
 
-
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 export type GamerMatchCardListProps = {

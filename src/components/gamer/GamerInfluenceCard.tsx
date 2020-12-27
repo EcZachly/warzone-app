@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import _ from 'lodash';
 
-import {Card, CardBody, Box, Text, Small} from '../SimpleComponents';
+import {Box, Card, CardBody, Small, Text} from '../SimpleComponents';
 import {Gamer} from './GamerTypes';
-import {GamerLink, GamerLinkList} from './index';
+import {GamerLink} from './index';
 import {StatLabelValue} from '../SmartComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

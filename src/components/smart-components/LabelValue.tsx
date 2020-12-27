@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Paragraph, Label, Link, Show, Text, Box} from './../SimpleComponents';
+import {Box, Label, Link, Paragraph} from './../SimpleComponents';
 
 import Placeholder from './Placeholder';
 

@@ -1,7 +1,7 @@
 import UtilityService from '../../../src/services/UtilityService';
 import HttpService from '../../../src/services/HttpService';
 
-import {MatchList, Match} from './MatchTypes';
+import {Match, MatchList} from './MatchTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import Router from 'next/router';
-import {withRouter} from 'next/router';
+import Router, {withRouter} from 'next/router';
 
 import React from 'react';
 import {Box} from './../SimpleComponents';

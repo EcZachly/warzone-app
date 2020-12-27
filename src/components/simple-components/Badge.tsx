@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Paragraph from './Paragraph';
-
 const CONSTANTS = {
     VALID_TYPES: {
         'primary': 'primary',

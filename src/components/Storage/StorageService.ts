@@ -1,6 +1,5 @@
 import UtilityService from './../../services/UtilityService';
 import TypeService from './../../services/TypeService';
-import AppService from '../../services/AppService';
 
 try {
     localStorage;

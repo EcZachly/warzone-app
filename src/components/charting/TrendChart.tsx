@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import {LineChart, Line, Legend, XAxis, YAxis, Tooltip, CartesianGrid} from 'recharts';
+import {Legend, Line, LineChart, Tooltip, XAxis, YAxis} from 'recharts';
 import React, {useState} from 'react';
 
-import {InputRadio, Box, Button} from '../SimpleComponents';
+import {Box, Button} from '../SimpleComponents';
 import {COLORS} from '../../config/CONSTANTS';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

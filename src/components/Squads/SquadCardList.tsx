@@ -1,11 +1,5 @@
-import {GetServerSideProps} from 'next';
 import React, {useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-
-import {Container, Main} from './../../components/SimpleComponents';
-import {Page, Navbar, Footer} from './../../components/AppComponents';
-
-import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {SquadCard} from '../../components/Squads';
 

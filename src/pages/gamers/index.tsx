@@ -1,16 +1,15 @@
 import {GetServerSideProps} from 'next';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import {useRouter} from 'next/router';
 
-import {Container, Box, Header, LineBreak, Main, Button} from './../../components/SimpleComponents';
-import {Page, Navbar, Footer, GamerCategorySelect} from './../../components/AppComponents';
-import {SidebarCompanion, Input, Sidebar} from '../../components/SmartComponents';
+import {Box, Container, Header, LineBreak, Main} from './../../components/SimpleComponents';
+import {Footer, GamerCategorySelect, Navbar, Page} from './../../components/AppComponents';
+import {Input, Sidebar, SidebarCompanion} from '../../components/SmartComponents';
 
 import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
-import {GamerCard, GamerAdd} from './../../components/gamer/index';
-import {GAME_CATEGORIES} from '../../../lib/constants';
+import {GamerAdd} from './../../components/gamer/index';
 import GamerCardList from '../../components/gamer/GamerCardList';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

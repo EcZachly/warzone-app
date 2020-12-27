@@ -1,14 +1,13 @@
 import SquadCard from './SquadCard';
+import SquadCardList from './SquadCardList';
+import SquadService from './SquadService';
+
 export {SquadCard};
 
 
-
-import SquadCardList from './SquadCardList';
 export {SquadCardList};
 
 
-
-import SquadService from './SquadService';
 export {SquadService};
 
 

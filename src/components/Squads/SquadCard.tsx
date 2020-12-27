@@ -1,16 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 
-import {
-    Button,
-    Box,
-    Card,
-    Show,
-    CardBody,
-    CardHeader,
-    Small
-} from '../SimpleComponents';
+import {Box, Card, CardBody, CardHeader, Small} from '../SimpleComponents';
 import {LabelValue} from './../SmartComponents';
-import {GamerLink} from '../AppComponents';
 import UtilityService from '../../services/UtilityService';
 
 import {ClassBadgeList} from '../classes';
