@@ -22,6 +22,7 @@ import CONSTANTS from './../config/CONSTANTS';
 import {UserService} from './../components/Users';
 import UtilityService from '../services/UtilityService';
 import TypeService from '../services/TypeService';
+import PageLink from "../components/simple-components/Link";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -140,6 +141,8 @@ let LoginPage = ({baseUrl}) => {
                                     Log In
                                 </Button>
                             </Box>
+
+                            <a href={"/forgot"}>Forgot your password?</a>
                         </CardFooter>
                     </Card>
 

@@ -20,7 +20,7 @@ const EMAIL_MAP = {
                     </head>
                     <body>   
                       <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
-                           Click on this link to <a href="${"https://www.brshooter.com/api/user/confirm?confirm_string=" + data.confirm_string}">confirm your account</a>
+                           Click on this link to <a href="${"https://www.brshooter.com/api/user/confirm?confirm_string=" + data.metadata.confirm_string}">confirm your account</a>
                         <p style="font-size:12px; line-height:20px;">
                           <a class="Unsubscribe--unsubscribeLink" href="{{{unsubscribe}}}" target="_blank" style="font-family:sans-serif;text-decoration:none;">
                             Unsubscribe
@@ -37,10 +37,11 @@ const EMAIL_MAP = {
         } as Email
     },
     'forgot_password': (data) => {
+        let forgotUrl = "https://www.brshooter.com/user/forgot?forgot_string=" + data.forgot_string
         return {
             subject: 'Forgot password for Warzone Stats Tracker',
             text: 'click the link to reset your Warzone Stats Tracker password',
-            html: `<p>click the link to reset your Warzone Stats Tracker password: ${data.link}</p>`
+            html: `<p>click the link to reset your Warzone Stats Tracker password: ${forgotUrl}</p>`
         } as Email
     }
 };

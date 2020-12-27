@@ -7,13 +7,19 @@ import UserService from '../../lib/components/Users/UserService';
 import TypeService from '../../src/services/TypeService';
 import EmailService from "../../lib/components/Email/EmailService";
 import UtilityService from '../../src/services/UtilityService';
-
+import randomstring from 'randomstring';
 import {AuthService} from '../../lib/components/Auth';
 import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
-
+export async function queryUsers(req: NextApiRequest, res: NextApiResponse){
+    let query = {...req.query as object}
+    console.log(query);
+    let users = await UserController.queryUsers(query);
+    console.log(users);
+    return responseHandler.handleResponse(req, res, users);
+}
 
 export async function createUser(req: NextApiRequest, res: NextApiResponse) {
 
@@ -48,7 +54,6 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
         return responseHandler.handleError(req, res, errorMap['invalid_password'], 400);
     }
 
-
     try {
         let encryptedPassword = await AuthService.encryptPassword(password);
         email = UserService.sanitizeEmailForStorage(email);
@@ -60,12 +65,25 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
         let emailSent = await EmailService.sendEmail('confirm_account', user);
         return responseHandler.handleResponse(req, res, {user: UserService.sanitizeUser(createdUser), emailSent: emailSent});
     } catch (e) {
-        console.log(e);
         return responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE});
     }
 
 }
 
+export async function sendForgotPassword(req: NextApiRequest, res: NextApiResponse){
+    let {email} = req.body;
+    let users = await UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)});
+    if(users.length){
+        let user = users[0];
+        user.forgot_string = randomstring.generate(7);
+        await UserController.updateUser({email: user.email}, user)
+        await EmailService.sendEmail('forgot_password', user)
+        return responseHandler.handleResponse(req, res,  {emailSent:true})
+    }
+    else{
+        return responseHandler.handleError(req, res, {message: "invalid email"});
+    }
+}
 
 export async function login(req: NextApiRequest, res: NextApiResponse) {
     let errorMap = {
@@ -152,6 +170,7 @@ export function verifyUserToken(req, res) {
 
 export default {
     createUser,
+    sendForgotPassword,
     login,
     verifyUserToken
 };

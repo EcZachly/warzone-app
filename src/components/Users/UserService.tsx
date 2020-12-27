@@ -26,11 +26,20 @@ export function createUser(user: Partial<RawUser>): Promise<User> {
 }
 
 
+export function sendForgotPassword(email) {
+    return HttpService.http({
+        method: 'POST',
+        url: '/api/forgot-password',
+        body: {
+            email: email
+        }
+    })
+}
+
 export function sanitizeUser(user) {
     delete user.password;
     return user;
 }
-
 
 
 export function login(loginDetails: { email: string, password: string }): Promise<User> {
@@ -60,7 +69,6 @@ export function login(loginDetails: { email: string, password: string }): Promis
 }
 
 
-
 export function userIsLoggedIn() {
     let userIsLoggedIn = false;
 
@@ -74,11 +82,9 @@ export function userIsLoggedIn() {
 }
 
 
-
 export function userHasBeenRedirectedAlready() {
     return StorageService.get('user-has-been-redirected', {temp: true}) === true;
 }
-
 
 
 export function setUserHasBeenRedirected() {
@@ -86,11 +92,9 @@ export function setUserHasBeenRedirected() {
 }
 
 
-
 export function getUser() {
     return StorageService.get('user');
 }
-
 
 
 export function logout() {
@@ -98,17 +102,14 @@ export function logout() {
 }
 
 
-
 export function currentSessionTokenHasBeenVerified() {
     return StorageService.get('auth-token-manually-verified', {session: true});
 }
 
 
-
 export function sanitizeEmailForStorage(email) {
     return email.toLowerCase().trim();
 }
-
 
 
 export function verifyCurrentUserAndToken() {
@@ -136,9 +137,9 @@ export function verifyCurrentUserAndToken() {
 }
 
 
-
 export default {
     createUser,
+    sendForgotPassword,
     sanitizeUser,
     login,
     sanitizeEmailForStorage,

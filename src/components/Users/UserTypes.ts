@@ -11,7 +11,9 @@ export type RawUser = {
     first_name: string,
     email: string,
     password: string,
-    metadata: UserMetadata | String
+    metadata: UserMetadata | String,
+    confirm_string?: string,
+    forgot_string?: string
 };
 
 

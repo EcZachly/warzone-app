@@ -17,7 +17,9 @@ export function include(server) {
     let router = express.Router();
 
     router.post('/api/login', Users.login);
+    router.post('/api/forgot-password', Users.sendForgotPassword)
     router.post('/api/v1/verify-user-token', Users.verifyUserToken);
+
 
     router.post('/api/gamer', Gamers.createGamer);
     router.get('/api/gamer', Gamers.findGamers);
@@ -31,8 +33,9 @@ export function include(server) {
 
     router.get('/api/v1/gamer-relationship', GamerRelationshipRoutes.queryGamerRelationships);
     router.post('/api/v1/gamer-relationship', GamerRelationshipRoutes.createGamerRelationship);
-
+    router.get('/api/users', Users.queryUsers);
     router.post('/api/users', Users.createUser);
+
 
     configure(server);
     server.use('/', router);
