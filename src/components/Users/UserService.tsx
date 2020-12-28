@@ -25,6 +25,15 @@ export function createUser(user: Partial<RawUser>): Promise<User> {
     });
 }
 
+export function finishForgotPassword(user) {
+    return HttpService.http({
+        method: 'PUT',
+        url: '/api/forgot-password',
+        body: {
+            user: user
+        }
+    })
+}
 
 export function sendForgotPassword(email) {
     return HttpService.http({
@@ -139,6 +148,7 @@ export function verifyCurrentUserAndToken() {
 
 export default {
     createUser,
+    finishForgotPassword,
     sendForgotPassword,
     sanitizeUser,
     login,

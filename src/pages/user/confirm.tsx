@@ -1,6 +1,5 @@
 import {GetServerSideProps} from "next";
 import {getBaseUrlWithProtocol} from "../../services/UtilityService";
-import {GAME_CATEGORIES} from "../../../lib/constants";
 import {Navbar, Page} from "../../components/AppComponents";
 import React from "react";
 

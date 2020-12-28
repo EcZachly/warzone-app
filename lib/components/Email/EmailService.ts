@@ -2,8 +2,6 @@ import sgMail from '@sendgrid/mail';
 sgMail.setApiKey(process.env.WARZONE_SENDGRID_API_KEY);
 import {SENDER_EMAIL} from '../../constants';
 
-
-
 type EmailAddress = string;
 
 type EmailID = string;
@@ -41,7 +39,7 @@ const EMAIL_MAP: EmailMap = {
                     </head>
                     <body>   
                       <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
-                           Click on this link to <a href="${'https://www.brshooter.com/api/user/confirm?confirm_string=' + data.metadata.confirm_string}">confirm your account</a>
+                           Click on this link to <a href="${'https://www.brshooter.com/api/confirm-user?confirm_string=' + data.confirm_string}">confirm your account</a>
                         <p style="font-size:12px; line-height:20px;">
                           <a class="Unsubscribe--unsubscribeLink" href="{{{unsubscribe}}}" target="_blank" style="font-family:sans-serif;text-decoration:none;">
                             Unsubscribe

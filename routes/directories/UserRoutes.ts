@@ -15,10 +15,22 @@ import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 export async function queryUsers(req: NextApiRequest, res: NextApiResponse){
     let query = {...req.query as object}
-    console.log(query);
     let users = await UserController.queryUsers(query);
-    console.log(users);
     return responseHandler.handleResponse(req, res, users);
+}
+
+
+export async function finishForgotPassword(req: NextApiRequest, res: NextApiResponse){
+    let {forgot_string, password, email} = req.body.user;
+    let encryptedPassword = await AuthService.encryptPassword(password);
+    let updatedUser = await UserController.updateUser({forgot_string, email}, {password: encryptedPassword, forgot_string: undefined});
+    return responseHandler.handleResponse(req, res, updatedUser);
+}
+
+export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResponse){
+    let {confirm_string} = req.query
+    let updatedUser = await UserController.updateUser({confirm_string}, {confirm_string: undefined});
+    return res.redirect('/user/confirm');
 }
 
 export async function createUser(req: NextApiRequest, res: NextApiResponse) {
@@ -170,6 +182,8 @@ export function verifyUserToken(req, res) {
 
 export default {
     createUser,
+    finishForgotPassword,
+    finishConfirmAccount,
     sendForgotPassword,
     login,
     verifyUserToken

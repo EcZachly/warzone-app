@@ -17,7 +17,10 @@ export function include(server) {
     let router = express.Router();
 
     router.post('/api/login', Users.login);
-    router.post('/api/forgot-password', Users.sendForgotPassword)
+    router.post('/api/forgot-password', Users.sendForgotPassword);
+    router.put('/api/forgot-password', Users.finishForgotPassword);
+    router.get('/api/confirm-user', Users.finishConfirmAccount);
+
     router.post('/api/v1/verify-user-token', Users.verifyUserToken);
 
 
