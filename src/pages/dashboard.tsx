@@ -86,9 +86,13 @@ let DashboardPage = ({baseUrl}) => {
         }
     }, [user]);
 
+    let title = 'Dashboard';
+    if(user.data){
+        title = `${user.data.first_name}'s Dashboard`
+    }
 
     return (
-        <Page title={`${user.data.first_name}'s Dashboard`} loginRequired={true}>
+        <Page title={title} loginRequired={true}>
             <Navbar/>
 
             <Main>
