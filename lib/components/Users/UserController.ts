@@ -49,7 +49,7 @@ function createNewMetadata(obj: Record<any, unknown> = {}): Metadata {
 
 
 
-export function queryUsers(query: Record<any, object>, queryOptions?: Record<any, object>, options: { sanitize: boolean } = {sanitize: true}): Promise<UserList | RawUserList> {
+export function queryUsers(query: Record<any, unknown>, queryOptions?: Record<any, object>, options: { sanitize: boolean } = {sanitize: true}): Promise<UserList | RawUserList> {
     return new Promise((resolve, reject) => {
         return DAO.find(TABLES.USERS, query, queryOptions).then((users) => {
             resolve((options.sanitize !== false) ? users.map(UserService.sanitizeUser) : users);
