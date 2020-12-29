@@ -156,11 +156,12 @@ let DashboardPage = ({baseUrl}) => {
 
 
                     <SidebarCompanion>
-                        <TabNav options={CONFIG.TAB_VIEW_LIST}
-                                value={contentView}
-                                onChange={({id}) => setContentView(id)}/>
-
-                        {getTabContent()}
+                        <Show show={!gamerRelationships.loading && !!mainGamer}>
+                           <TabNav options={CONFIG.TAB_VIEW_LIST}
+                                     value={contentView}
+                                     onChange={({id}) => setContentView(id)}/>
+                            {getTabContent()}
+                        </Show>
                         {getNewUserContent()}
                     </SidebarCompanion>
                 </>
@@ -377,9 +378,10 @@ let DashboardPage = ({baseUrl}) => {
 
             let userIsOkay = confirm(`select OK to make ${username} (${GamerService.getPlatformObjByID(platform).name}) your main`);
 
+            console.log('user:', user);
             if (userIsOkay) {
                 return GamerRelationshipService.createGamerRelationship({
-                    user_id: user.user_id,
+                    user_id: user.data.user_id,
                     username: username,
                     platform: platform,
                     type: 'self'
