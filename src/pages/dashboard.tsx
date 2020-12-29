@@ -34,6 +34,7 @@ import {StateService} from './../components/State';
 import {GAME_CATEGORIES} from '../../lib/constants';
 import UtilityService from '../services/UtilityService';
 import GamerMatchService from '../components/gamer_match/GamerMatchService';
+import CreateGamerRelationship from "../components/GamerRelationships/CreateGamerRelationship";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -48,6 +49,10 @@ let DashboardPage = ({baseUrl}) => {
             text: 'Friends',
             id: 'friends',
             content: getGamerList
+        }, {
+            text: 'Add Friends',
+            id: 'add-friends',
+            content: ()=> <CreateGamerRelationship user={user}/>
         }]
     };
 
@@ -104,7 +109,6 @@ let DashboardPage = ({baseUrl}) => {
             <Footer/>
         </Page>
     );
-
 
     function getContent() {
 
