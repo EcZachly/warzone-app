@@ -1,18 +1,60 @@
-import {Navbar, Page} from "../../components/AppComponents";
-import React from "react";
-import {BASE_TITLE} from "../../../lib/constants";
-import {useRouter} from "next/router";
+import React from 'react';
+import {useRouter} from 'next/router';
+
+import {
+    Container,
+    Header,
+    Card,
+    CardHeader,
+    Alert,
+    CardBody,
+    CardFooter,
+    Paragraph
+} from './../../components/SimpleComponents';
+import {Navbar, Page} from '../../components/AppComponents';
+
+import {BASE_TITLE} from '../../../lib/constants';
+
+//===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
+
 
 export default function confirmUserAccount() {
     const router = useRouter();
     let {status} = router.query;
-    let message = "Thank you for confirming your account!";
-    if(status === "failure"){
-        message = "there was an error confirming your account!"
+
+    let isSuccessful = (status === 'success');
+
+    let message = 'An unknown error occurred while trying to confirm your account. Please try the link again.';
+
+    if (isSuccessful) {
+        message = 'Thank you for confirming your account!';
     }
-    return <Page title={`${BASE_TITLE}: Confirm User Account`}>
-        <Navbar/>
-        {message}
-        <a href={"/login"}>click here to login</a>
-    </Page>
+
+    return (
+        <Page title={BASE_TITLE + 'Account Confirmation'}>
+            <Navbar/>
+
+            <Container size={'sm'} style={{paddingTop: '25px'}}>
+                <Card>
+                    <CardHeader>
+                        <Header>
+                            Email Confirmation
+                        </Header>
+                    </CardHeader>
+
+                    <CardBody>
+                        <Alert type={isSuccessful ? 'success' : 'error'}>
+                            {message}
+                        </Alert>
+                    </CardBody>
+
+                    <CardFooter>
+                        <a href={'/login'}>
+                            Go to Login
+                        </a>
+                    </CardFooter>
+                </Card>
+            </Container>
+        </Page>
+    );
 }

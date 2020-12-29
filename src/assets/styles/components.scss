@@ -394,8 +394,8 @@ a:focus, a:active {
 
 
 .alert.alert-success {
-  $borderColor: adjust-color($theme-green, $saturation: -35%, $lightness: 35%);
-  $backgroundColor: adjust-color($theme-green, $saturation: -35%, $lightness: 42%);
+  $borderColor: adjust-color($theme-green, $saturation: -20%, $lightness: 20%);
+  $backgroundColor: adjust-color($theme-green, $saturation: -25%, $lightness: 32%);
   $textColor: adjust-color($theme-green, $saturation: -35%, $lightness: -20%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
@@ -412,8 +412,8 @@ a:focus, a:active {
 
 
 .alert.alert-danger {
-  $borderColor: adjust-color($theme-red, $saturation: -5%);
-  $backgroundColor: adjust-color($theme-red, $saturation: -20%, $lightness: 22%);
+  $borderColor: adjust-color($theme-red, $saturation: -20%, $lightness: 10%);
+  $backgroundColor: adjust-color($theme-red, $saturation: -30%, $lightness: 25%);
   $textColor: adjust-color($theme-red, $saturation: -10%, $lightness: -20%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
@@ -430,9 +430,9 @@ a:focus, a:active {
 
 
 .alert.alert-warning {
-  $borderColor: adjust-color($theme-yellow, $saturation: -18%, $lightness: 26%);
-  $backgroundColor: adjust-color($theme-yellow, $saturation: -18%, $lightness: 31%);
-  $textColor: adjust-color($theme-yellow, $saturation: -15%, $lightness: -28%);
+  $borderColor: adjust-color($theme-yellow, $saturation: -15%, $lightness: -20%);
+  $backgroundColor: adjust-color($theme-yellow, $saturation: -15%, $lightness: 25%);
+  $textColor: adjust-color($theme-yellow, $saturation: -15%, $lightness: -35%);
   $linkColor: adjust-color($textColor, $lightness: -10%, $saturation: 5%);
 
   & {
@@ -448,9 +448,9 @@ a:focus, a:active {
 
 
 .alert.alert-orange {
-  $borderColor: adjust-color($theme-orange, $saturation: -18%, $lightness: 26%);
-  $backgroundColor: adjust-color($theme-orange, $saturation: -18%, $lightness: 30%);
-  $textColor: adjust-color($theme-orange, $saturation: -30%, $lightness: -30%);
+  $borderColor: adjust-color($theme-orange, $saturation: -15%, $lightness: -25%);
+  $backgroundColor: adjust-color($theme-orange, $saturation: -15%, $lightness: 25%);
+  $textColor: adjust-color($theme-orange, $saturation: -25%, $lightness: -30%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
   & {
@@ -466,8 +466,8 @@ a:focus, a:active {
 
 
 .alert.alert-purple {
-  $borderColor: adjust-color($theme-purple, $saturation: -22%, $lightness: 32%);
-  $backgroundColor: adjust-color($theme-purple, $saturation: -22%, $lightness: 38%);
+  $borderColor: adjust-color($theme-purple, $saturation: -15%, $lightness: -30%);
+  $backgroundColor: adjust-color($theme-purple, $saturation: -15%, $lightness: 30%);
   $textColor: adjust-color($theme-purple, $saturation: -30%, $lightness: -28%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
@@ -484,8 +484,8 @@ a:focus, a:active {
 
 
 .alert.alert-pink {
-  $borderColor: adjust-color($theme-pink, $saturation: -20%, $lightness: 28%);
-  $backgroundColor: adjust-color($theme-pink, $saturation: -20%, $lightness: 31%);
+  $borderColor: adjust-color($theme-pink, $saturation: -20%, $lightness: -15%);
+  $backgroundColor: adjust-color($theme-pink, $saturation: 0%, $lightness: 25%);
   $textColor: adjust-color($theme-pink, $saturation: -30%, $lightness: -25%);
   $linkColor: adjust-color($textColor, $lightness: 0%, $saturation: 5%);
 
@@ -502,9 +502,9 @@ a:focus, a:active {
 
 
 .alert.alert-light {
-  $borderColor: adjust-color($theme-light-gray, $saturation: 0%, $lightness: 35%);
+  $borderColor: adjust-color($theme-light-gray, $saturation: 0%, $lightness: -15%);
   $backgroundColor: adjust-color($theme-light-gray, $saturation: 0%, $lightness: 40%);
-  $textColor: adjust-color($theme-light-gray, $saturation: -25%, $lightness: 0%);
+  $textColor: adjust-color($theme-light-gray, $saturation: -20%, $lightness: -15%);
   $linkColor: adjust-color($textColor, $lightness: -10%, $saturation: 5%);
 
   & {
