@@ -29,7 +29,9 @@ export async function finishForgotPassword(req: NextApiRequest, res: NextApiResp
 
 export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResponse){
     let {confirm_string} = req.query
-    let updatedUser = await UserController.updateUser({confirm_string}, {confirm_string: undefined});
+    console.log({confirm_string});
+
+    let updatedUser = await UserController.updateUser({confirm_string}, {confirm_string: null});
     return res.redirect('/user/confirm');
 }
 
