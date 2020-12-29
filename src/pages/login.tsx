@@ -23,6 +23,7 @@ import {UserService} from './../components/Users';
 import UtilityService from '../services/UtilityService';
 import TypeService from '../services/TypeService';
 import PageLink from "../components/simple-components/Link";
+import {BASE_TITLE} from "../../lib/constants";
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -90,7 +91,7 @@ let LoginPage = ({baseUrl}) => {
     let router = useRouter();
 
     return (
-        <Page title={'Login Up'}>
+        <Page title={`${BASE_TITLE}: Login`}>
             <Navbar/>
 
             <Main>

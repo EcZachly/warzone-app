@@ -7,6 +7,7 @@ import {Alert, Box, Button, CardHeader, Container} from "../../components/Simple
 import HttpService from "../../services/HttpService";
 import UserService from "../../components/Users/UserService";
 import { useRouter } from 'next/router'
+import {BASE_TITLE} from "../../../lib/constants";
 
 export default function confirmUserAccount({user, error}) {
     const router = useRouter();
@@ -71,7 +72,7 @@ export default function confirmUserAccount({user, error}) {
     if(error){
         content = <h1>Invalid page!</h1>
     }
-    return <Page title={'Warzone'} redirectIfLoggedIn={true}>
+    return <Page title={`${BASE_TITLE}: Confirm Forgot Password`} redirectIfLoggedIn={true}>
         <Navbar/>
 
 

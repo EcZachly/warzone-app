@@ -30,7 +30,7 @@ import TypeService from '../services/TypeService';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-let SignUpPage = ({baseUrl}) => {
+let SignUpPage = () => {
     const MAX_LENGTH = 130;
     const MIN_PASSWORD_LENGTH = 8;
 

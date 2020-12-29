@@ -2,9 +2,10 @@ import {GetServerSideProps} from "next";
 import {getBaseUrlWithProtocol} from "../../services/UtilityService";
 import {Navbar, Page} from "../../components/AppComponents";
 import React from "react";
+import {BASE_TITLE} from "../../../lib/constants";
 
 export default function confirmUserAccount({user}) {
-    return <Page title={'Warzone'}>
+    return <Page title={`${BASE_TITLE}: Confirm User Account`}>
         <Navbar/>
         Thank you {user.first_name}, for confirming your account!
 

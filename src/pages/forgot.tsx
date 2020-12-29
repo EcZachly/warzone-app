@@ -5,7 +5,7 @@ import {Navbar, Page} from "../components/AppComponents";
 import {GoogleReCaptcha, GoogleReCaptchaProvider} from "react-google-recaptcha-v3";
 import {GetStaticProps} from "next";
 import UserService from "../components/Users/UserService";
-
+import {BASE_TITLE} from "../../lib/constants";
 
 export default function ForgotPassword({recaptchaSiteKey}) {
     const recaptcha = React.createRef<GoogleReCaptchaProvider>();
@@ -55,7 +55,7 @@ export default function ForgotPassword({recaptchaSiteKey}) {
     }
 
 
-    return <Page title={'Warzone'} redirectIfLoggedIn={true}>
+    return <Page title={`${BASE_TITLE}: Forgot Password`} redirectIfLoggedIn={true}>
         <Navbar/>
 
 

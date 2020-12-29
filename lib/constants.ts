@@ -40,6 +40,7 @@ export const GAME_CATEGORIES = {
     PLUNDER: 'Plunder',
 }
 
+export const BASE_TITLE = 'Warzone Stats Tracker';
 export const SENDER_EMAIL = 'warzone@brshooter.com'
 export const GAMER_TABLE = 'gamers';
 export const ETL_JOBS = 'etl_jobs';

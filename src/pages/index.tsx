@@ -4,7 +4,7 @@ import {Footer, Navbar, Page} from './../components/AppComponents';
 import {Box, Container, Header, LineBreak, Main, Small} from './../components/SimpleComponents';
 import {GetServerSideProps} from 'next';
 import {getBaseUrlWithProtocol} from '../services/UtilityService';
-import {GAME_CATEGORIES} from '../../lib/constants';
+import {GAME_CATEGORIES, BASE_TITLE} from '../../lib/constants';
 
 import {GamerSearchInput} from './../components/gamer';
 
@@ -13,9 +13,8 @@ import {GamerSearchInput} from './../components/gamer';
 
 const Home = ({baseUrl}) => {
     return (
-        <Page title={'Warzone'} redirectIfLoggedIn={true}>
+        <Page title={`${BASE_TITLE}: Home Page`} redirectIfLoggedIn={true}>
             <Navbar/>
-
             <Main>
                 {/*<Alert type={'secondary'} style={{margin: 0, borderRadius: 0}}>*/}
                 {/*    <Container>*/}

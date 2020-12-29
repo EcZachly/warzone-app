@@ -88,7 +88,7 @@ let DashboardPage = ({baseUrl}) => {
 
 
     return (
-        <Page title={'Dashboard'} loginRequired={true}>
+        <Page title={`${user.data.first_name}'s Dashboard`} loginRequired={true}>
             <Navbar/>
 
             <Main>
