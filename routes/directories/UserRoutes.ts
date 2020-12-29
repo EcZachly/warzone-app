@@ -10,6 +10,7 @@ import UtilityService from '../../src/services/UtilityService';
 import randomstring from 'randomstring';
 import {AuthService} from '../../lib/components/Auth';
 import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
+import {update} from "../../lib/components/Database/DAO";
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -29,10 +30,9 @@ export async function finishForgotPassword(req: NextApiRequest, res: NextApiResp
 
 export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResponse){
     let {confirm_string} = req.query
-    console.log({confirm_string});
-
     let updatedUser = await UserController.updateUser({confirm_string}, {confirm_string: null});
-    return res.redirect('/user/confirm');
+    let status =  !!updatedUser ? "success": "failure";
+    return res.redirect('/user/confirm?status=' + status);
 }
 
 export async function createUser(req: NextApiRequest, res: NextApiResponse) {

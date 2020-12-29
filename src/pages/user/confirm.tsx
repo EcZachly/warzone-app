@@ -1,29 +1,18 @@
-import {GetServerSideProps} from "next";
-import {getBaseUrlWithProtocol} from "../../services/UtilityService";
 import {Navbar, Page} from "../../components/AppComponents";
 import React from "react";
 import {BASE_TITLE} from "../../../lib/constants";
+import {useRouter} from "next/router";
 
-export default function confirmUserAccount({user}) {
+export default function confirmUserAccount() {
+    const router = useRouter();
+    let {status} = router.query;
+    let message = "Thank you for confirming your account!";
+    if(status === "failure"){
+        message = "there was an error confirming your account!"
+    }
     return <Page title={`${BASE_TITLE}: Confirm User Account`}>
         <Navbar/>
-        Thank you {user.first_name}, for confirming your account!
-
+        {message}
+        <a href={"/login"}>click here to login</a>
     </Page>
 }
-
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const {confirm_string} = context.query;
-    const baseUrl = getBaseUrlWithProtocol(context.req);
-    const userConfirmed = await fetch(`${baseUrl}/api/user?confirm_string=${confirm_string}`);
-    const userJson = await userConfirmed.json();
-
-    if (userJson) {
-        return {
-            props: {
-                user: userJson
-            }
-        };
-    }
-};
