@@ -24,6 +24,18 @@ a:active {
   color: darken($theme-link, 5%);
 }
 
+.has-click {
+  cursor: pointer;
+}
+
+.has-click.click-hover:hover {
+  opacity: .85;
+}
+
+.has-click.click-hover:active {
+  opacity: .7;
+}
+
 #section-display {
   padding-top: 25px;
   padding-bottom: 60px;
@@ -76,7 +88,6 @@ a:active {
 @media (min-width: 1200px) {
 
 }
-
 
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//

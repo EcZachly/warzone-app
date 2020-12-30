@@ -36,6 +36,8 @@ export function include(server) {
 
     router.get('/api/v1/gamer-relationship', GamerRelationshipRoutes.queryGamerRelationships);
     router.post('/api/v1/gamer-relationship', GamerRelationshipRoutes.createGamerRelationship);
+    router.delete('/api/v1/gamer-relationship', GamerRelationshipRoutes.removeGamerRelationship);
+
     router.get('/api/users', Users.queryUsers);
     router.post('/api/users', Users.createUser);
 

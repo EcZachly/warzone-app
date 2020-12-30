@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Card, CardBody, CardHeader, Small, Text} from '../SimpleComponents';
+import {Box, Card, CardBody, Image, CardHeader, Small, Text} from '../SimpleComponents';
 
 import {LabelValue, Placeholder} from './../SmartComponents';
 
@@ -9,6 +9,11 @@ import {ClassBadgeList} from '../classes/index';
 import {Gamer} from './GamerTypes';
 import TypeService from '../../services/TypeService';
 import UtilityService from '../../services/UtilityService';
+import {UserService} from '../Users';
+import {userIsLoggedIn} from '../Users/UserService';
+import {UserID} from '../Users/UserTypes';
+import {GamerRelationshipList} from '../GamerRelationships/GamerRelationshipTypes';
+import {GamerRelationshipService} from '../GamerRelationships';
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
@@ -25,7 +30,9 @@ export type GamerCardProps = {
 export default function GamerCard({gamer, classDescriptions, mode, loading, onGamerClick}: GamerCardProps) {
     const isLoading = (loading === true);
 
-
+    const [currentState, updateState] = React.useState(false);
+    // @ts-ignore
+    const forceUpdate = React.useCallback(() => updateState(!currentState), []);
 
     if (isLoading === true) {
         return getLoadingCard();
@@ -45,8 +52,6 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
         let gamesPlayedText = (gamesPlayedIsMoreThan1000) ? '1,000+' : UtilityService.numberWithCommas(UtilityService.round(gamesPlayed, 0));
 
-        const cardClickable = !!noLink;
-
         if (isCondensed) {
             return getCondensedCard();
         } else {
@@ -60,9 +65,7 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
                                 <GamerLinkList gamer={gamer} noLink={noLink}/>
                             </Box>
 
-                            <Box style={{width: '10%'}}>
-                                {/*{getCardOptions()}*/}
-                            </Box>
+                            {getCardOptions()}
                         </Box>
 
                         <GamerAliasList gamer={gamer}/>
@@ -78,7 +81,8 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                         <Box className={'details'}>
 
-                            <LabelValue label={(<Text title={'including kills and deaths in gulag'}>KDR <Small>(last 100)</Small></Text>)}
+                            <LabelValue label={(<Text title={'including kills and deaths in gulag'}>KDR <Small>(last
+                                                                                                               100)</Small></Text>)}
                                         value={UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}/>
 
                             <LabelValue label={'Max Kills'}
@@ -90,7 +94,8 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                             <LabelValue label={(<Text>Gulag Win Rate <Small>(KDR)</Small></Text>)}
                                         value={(
-                                            <Text>{gamer.pretty_gulag_win_rate} <Small>({gamer.gulag_kdr})</Small></Text>
+                                            <Text>{gamer.pretty_gulag_win_rate}
+                                                <Small>({gamer.gulag_kdr})</Small></Text>
                                         )}/>
 
                             <LabelValue size={'sm'}
@@ -123,7 +128,9 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
                     <CardBody style={{paddingTop: '5px', paddingBottom: '5px'}}>
                         <Box className={'details'} style={{paddingTop: '5px'}}>
 
-                            <LabelValue size={'sm'} label={(<Text title={'including kills and deaths in gulag'}>KDR <Small>(last 100)</Small></Text>)}
+                            <LabelValue size={'sm'} label={(
+                                <Text title={'including kills and deaths in gulag'}>KDR <Small>(last
+                                                                                               100)</Small></Text>)}
                                         value={UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}/>
 
                             <LabelValue size={'sm'} label={'Max Kills'} value={gamer.max_kills}/>
@@ -135,7 +142,8 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                             <LabelValue size={'sm'} label={(<Text>Gulag Win Rate <Small>(KDR)</Small></Text>)}
                                         value={(
-                                            <Text>{gamer.pretty_gulag_win_rate} <Small>({gamer.gulag_kdr})</Small></Text>
+                                            <Text>{gamer.pretty_gulag_win_rate}
+                                                <Small>({gamer.gulag_kdr})</Small></Text>
                                         )}/>
 
                         </Box>
@@ -158,5 +166,52 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
                 </CardBody>
             </Card>
         );
+    }
+
+
+
+    function getCardOptions() {
+        if (UserService.userIsLoggedIn()) {
+            const gamerIsFriend = UserService.gamerIsFriend(gamer.platform, gamer.username);
+            const gamerIsSelf = UserService.gamerIsSelf(gamer.platform, gamer.username);
+            const imageSource = '/assets/images/icons/star-sm-' + (gamerIsFriend ? 'fill' : 'empty') + '.png';
+            const title = gamerIsFriend ? 'remove from friends' : 'add to friends';
+            const alt = gamerIsFriend ? 'A yellow star, to remove the gamer from your friends list' : 'An empty star, to add the gamer to your friends list';
+            const height = 20;
+            const style = {
+                width: (64 / 60.86 * height) + 'px',
+                height: height + 'px'
+            };
+
+            if (!gamerIsSelf) {
+                return (
+                    <Box style={{width: '10%', display: 'flex', justifyContent: 'flex-end'}}>
+                        <Image alt={alt}
+                               title={title}
+                               src={imageSource}
+                               style={style}
+                               clickHover={true}
+                               onClick={() => {
+                                   let gamerRelationship = {
+                                       user_id: UserService.getUser().user_id,
+                                       platform: gamer.platform,
+                                       username: gamer.username
+                                   };
+
+                                   if (gamerIsFriend) {
+                                       GamerRelationshipService.removeGamerRelationship(gamerRelationship).finally(forceUpdate);
+                                   } else {
+                                       GamerRelationshipService.createGamerRelationship({
+                                           ...gamerRelationship,
+                                           type: 'friend'
+                                       }).finally(forceUpdate);
+
+
+                                   }
+                               }}/>
+                    </Box>
+                );
+            }
+        }
     }
 }

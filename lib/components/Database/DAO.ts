@@ -45,6 +45,13 @@ export async function update(table: string, query: Record<any, unknown>, data: R
 
 
 
+export async function destroy(table: string, query: Record<any, unknown>) {
+    const db = await database;
+    return await db[DATABASE_SCHEMA][table].destroy(query);
+}
+
+
+
 export async function validateTable(table) {
     return new Promise(async (resolve, reject) => {
         const db = await database;
@@ -62,5 +69,6 @@ export async function validateTable(table) {
 export default {
     find,
     insert,
-    update
+    update,
+    destroy
 };

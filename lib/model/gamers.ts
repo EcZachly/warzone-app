@@ -34,7 +34,7 @@ export function sanitizeGamer(gamer) {
     gamer = UtilityService.validateItem(gamer, 'object', {});
 
     gamer.pretty_gulag_win_rate = (UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0).toFixed(4) * 100).toFixed(2) + '%';
-    gamer.gulag_kdr = UtilityService.round((1 / (1 - UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0))), 2);
+    gamer.gulag_kdr = UtilityService.round((1 / (1 - UtilityService.validateItem(gamer.gulag_win_rate, 'number', 0))) - 1, 2);
     gamer.kdr = (UtilityService.validateItem(gamer.kdr, 'number', 0).toFixed(4)).toString();
     gamer.aliases = UtilityService.validateItem(gamer.aliases, 'array', []);
     gamer.heat_score = (gamer.last_10_rolling_average_kdr / gamer.last_100_rolling_average_kdr - 1) * 100;

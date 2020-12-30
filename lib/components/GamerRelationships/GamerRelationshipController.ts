@@ -12,6 +12,10 @@ export async function queryGamerRelationships(query, options): Promise<GamerRela
     return DAO.find(TABLES.GAMER_RELATIONSHIPS, query, options);
 }
 
+export async function removeGamerRelationship(query): Promise<void> {
+    return DAO.destroy(TABLES.GAMER_RELATIONSHIPS, query);
+}
+
 
 
 export async function createGamerRelationship(gamerRelationship: Partial<RawGamerRelationship>): Promise<RawGamerRelationship> {
@@ -25,5 +29,6 @@ export async function createGamerRelationship(gamerRelationship: Partial<RawGame
 
 export default {
     queryGamerRelationships,
-    createGamerRelationship
+    createGamerRelationship,
+    removeGamerRelationship
 };

@@ -32,7 +32,6 @@ export default function Gamers({
     const [filterCategory, setGameCategory] = useState(gameCategory);
 
     useEffect(() => {
-        console.log('sorting value changed');
         fetchMoreGamers(0, filterCategory, true);
 
     }, [sorting]);

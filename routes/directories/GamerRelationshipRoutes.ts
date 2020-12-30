@@ -37,14 +37,13 @@ export async function queryGamerRelationships(req: NextApiRequest, res: NextApiR
     }
 
     try {
-        let gamerRelationships = await GamerRelationshipController.queryGamerRelationships(queryParams, options)
+        let gamerRelationships = await GamerRelationshipController.queryGamerRelationships(queryParams, options);
         if (gamerRelationships.length > 0) {
             responseHandler.handleResponse(req, res, gamerRelationships);
         } else {
             responseHandler.handleError(req, res, '', 204);
         }
-    }
-    catch(e){
+    } catch (e) {
         responseHandler.handleError(req, res, e, 500);
     }
 
@@ -55,20 +54,20 @@ export async function createGamerRelationship(req: NextApiRequest, res: NextApiR
     const gamerRelationship = req.body.gamerRelationship;
     let errorMap = {
         'missing_data': {
-            message: `body.gamerRelationship.user_id (Integer) is required,
-                      body.gamerRelationship.username (String) is required, 
-                      body.gamerRelationship.platform (String) is required, 
-                      body.gamerRelationship.type (String) is required and must be one of the following: ${JSON.stringify(GamerRelationshipService.getValidTypes())}
+            message: `body.gamerRelationship.user_id (integer) is required,
+                      body.gamerRelationship.username (string) is required, 
+                      body.gamerRelationship.platform (string) is required, 
+                      body.gamerRelationship.type (string) is required and must be one of the following: ${JSON.stringify(GamerRelationshipService.getValidTypes())}
                      `
         },
         'invalid_relationship_type': {message: `body.gamerRelationship.type (String) is required and must be one of the following: ${JSON.stringify(GamerRelationshipService.getValidTypes())}`}
-    }
+    };
 
     const hasMissingData = !TypeService.isInteger(gamerRelationship.user_id) ||
         !TypeService.isString(gamerRelationship.username, true) ||
-        !TypeService.isString(gamerRelationship.platform, true)
+        !TypeService.isString(gamerRelationship.platform, true);
 
-    const hasInvalidData = !GamerRelationshipService.isValidType(gamerRelationship.type)
+    const hasInvalidData = !GamerRelationshipService.isValidType(gamerRelationship.type);
 
     if (hasMissingData) {
         return responseHandler.handleError(req, res, errorMap['missing_data'], 400);
@@ -86,6 +85,29 @@ export async function createGamerRelationship(req: NextApiRequest, res: NextApiR
         }
     } catch (e) {
         return responseHandler.handleError(req, res, e, 500);
+    }
+}
+
+
+
+export async function removeGamerRelationship(req: NextApiRequest, res: NextApiResponse) {
+    const gamerRelationship = req.body.gamerRelationship;
+
+    let missingData = [
+        !TypeService.isInteger(gamerRelationship.user_id) && 'body.gamerRelationship.user_id (integer) is required',
+        !TypeService.isString(gamerRelationship.username, true) && 'body.gamerRelationship.username (string) is required and cannot be empty',
+        !TypeService.isString(gamerRelationship.platform, true) && 'body.gamerRelationship.platform (string) is required and cannot be empty'
+    ].filter((item) => !!item);
+
+    if (missingData.length > 0) {
+        return responseHandler.handleError(req, res, {message: missingData.join('. ')}, 400);
+    }
+
+    try {
+        await GamerRelationshipController.removeGamerRelationship(gamerRelationship);
+        responseHandler.handleResponse(req, res, {message: 'gamerRelationship successfully removed'});
+    } catch (error) {
+        return responseHandler.handleError(req, res, error, 500);
     }
 }
 

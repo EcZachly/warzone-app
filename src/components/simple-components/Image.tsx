@@ -3,19 +3,35 @@ import PropTypes from 'prop-types';
 import TypeService from '../../services/TypeService';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-const Image = (props) => {
-    const classNames = getClassNames(props);
+type ImageProps = {
+    src: string,
 
-    if (TypeService.isString(props.alt) === false) {
-        console.warn('props.alt is required (this is a description of the image)');
-    }
+    alt?: string,
+    className?: string,
+    style?: React.CSSProperties,
+    id?: string,
+    title?: string,
+    innerRef?: any,
+    onClick?: () => void,
+    clickHover?: boolean
+};
+
+
+const Image = (props: ImageProps) => {
+    const classNames = getClassNames(props);
 
     return (
         <img {...props}
              id={props.id}
-             title={props.title} src={props.src}
+             title={props.title}
+             src={props.src}
              alt={props.alt || ''}
              ref={props.innerRef}
+             onClick={() => {
+                 if (props.onClick) {
+                     props.onClick();
+                 }
+             }}
              className={classNames}
              style={props.style}/>
     );
@@ -25,36 +41,21 @@ export default Image;
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
-//PROPS
-
-Image.propTypes = {
-    className: PropTypes.string,
-    style: PropTypes.object,
-
-    //the ID of the HTML element
-    id: PropTypes.string,
-
-    //the Title of the HTML element
-    title: PropTypes.string,
-
-    //the source of the image
-    src: PropTypes.string.isRequired,
-
-    //The description of the image
-    alt: PropTypes.string.isRequired
-};
-
-
-//===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 //PRIVATE METHODS
 
 function getClassNames(props) {
-    const classNames = [
-        ''
-    ];
+    const classNames = [];
 
     if (props.className) {
         classNames.push(props.className);
+    }
+
+    if (props.onClick) {
+        classNames.push('has-click');
+    }
+
+    if (props.onClick && props.clickHover) {
+        classNames.push('click-hover');
     }
 
     return classNames.join(' ');
