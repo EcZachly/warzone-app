@@ -1,6 +1,13 @@
 /* These styles are specific to only this application and will apply to the application as a whole */
 @import 'config';
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
   //background: #333;
   //color: #fafafa;

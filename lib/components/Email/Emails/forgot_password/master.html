@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reset your password for BRStats</title>
+    
+    <style>
+        html {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-size: 16px;
+            font-family: 'Roboto', 'Arial', sans-serif;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        .container {
+            max-width: 600px;
+            min-height: 90vh;
+            width: 95%;
+            margin: 0 auto;
+            padding: 0px 10px 25px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>
+                BRStats
+            </h1>
+            
+            <p>
+                <a href="{{forgotUrl}}">
+                    click here to reset your BRStats password
+                </a>
+            </p>
+            
+            <p>
+                If the above link doesn't work, try this: {{forgotUrl}}
+            </p>
+        </div>
+    </div>
+</body>
+</html>

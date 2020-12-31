@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Confirm your email for BRStats</title>
+    
+    <style>
+        html {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-size: 16px;
+            font-family: 'Roboto', 'Arial', sans-serif;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        .container {
+            max-width: 600px;
+            min-height: 90vh;
+            width: 95%;
+            margin: 0 auto;
+            padding: 0px 10px 25px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>
+                BRStats
+            </h1>
+            
+            <p>
+                Thank you for joining brstats.com!
+            </p>
+            
+            <p>
+                <a href="{{confirm_user_url}}">Click here to confirm your account</a>
+            </p>
+            
+            <p>
+                If the above link doesn't work, try this: {{confirm_user_url}}
+            </p>
+        </div>
+    </div>
+</body>
+</html>

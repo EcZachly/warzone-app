@@ -1,16 +1,25 @@
-<html>
-<head>
-    <title>Reset your password for BRStats</title>
+<!DOCTYPE html>
+<html lang="en" style="box-sizing: border-box;">
+<head style="box-sizing: inherit;">
+    <title style="box-sizing: inherit;">Reset your password for BRStats</title>
 </head>
-<body>
-    <div>
-        
-        <p>click the link to reset your BRStats password:
-            <a href="{{forgotUrl}}">
-                {{forgotUrl}}
-            </a>
-        </p>
-    
+<body style="box-sizing: inherit;font-size: 16px;font-family: 'Roboto', 'Arial', sans-serif;">
+    <div id="app" style="box-sizing: inherit;">
+        <div class="container" style="box-sizing: inherit;max-width: 600px;min-height: 90vh;width: 95%;margin: 0 auto;padding: 0px 10px 25px;">
+            <h1 style="box-sizing: inherit;">
+                BRStats
+            </h1>
+            
+            <p style="box-sizing: inherit;">
+                <a href="{{forgotUrl}}" style="box-sizing: inherit;">
+                    click here to reset your BRStats password
+                </a>
+            </p>
+            
+            <p style="box-sizing: inherit;">
+                If the above link doesn't work, try this: {{forgotUrl}}
+            </p>
+        </div>
     </div>
 </body>
 </html>

@@ -54,8 +54,12 @@ body, p, ul, ol, li {
   font-size: 1rem;
 }
 
-*, ::after, ::before {
+html {
   box-sizing: border-box;
+}
+
+*, ::after, ::before {
+  box-sizing: inherit;
 }
 
 .code, pre, pre code {
@@ -2208,7 +2212,6 @@ a:focus, a:active {
 }
 
 
-
 .label-value-container.inline {
   display: flex;
   flex-flow: row wrap;
@@ -3339,7 +3342,6 @@ hr.line-break.no-margins {
   background: #ddd;
   color: #333;
 }
-
 
 
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
