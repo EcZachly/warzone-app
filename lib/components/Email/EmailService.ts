@@ -1,6 +1,7 @@
 import sgMail from '@sendgrid/mail';
 sgMail.setApiKey(process.env.WARZONE_SENDGRID_API_KEY);
 import {SENDER_EMAIL} from '../../constants';
+import FileService from '../Files/FileService';
 
 type EmailAddress = string;
 
@@ -13,11 +14,12 @@ type EmailTemplateData = {
     [x: string]: any
 }
 
-type EmailGenerator = (EmailTemplateData: EmailTemplateData) => GeneratedEmailConfig;
+type EmailGenerator = (EmailTemplateData: EmailTemplateData) => Promise<GeneratedEmailConfig>;
 
 type GeneratedEmailConfig = {
     subject: string,
     text: string,
+    path: string,
     html: string
 };
 
@@ -27,44 +29,78 @@ type SendGridMessage = GeneratedEmailConfig & {
     [x: string]: any
 }
 
-const EMAIL_MAP: EmailMap = {
-    'confirm_account': (data): GeneratedEmailConfig => {
-        return {
-            subject: 'Confirm your email for Warzone Stats Tracker',
-            text: 'click the link in the html to confirm your Warzone Account',
-            html: (`
-                    <html>
-                    <head>
-                      <title>Confirm your email for Warzone Stats Tracker</title>
-                    </head>
-                    <body>   
-                      <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
-                           Click on this link to <a href="${'https://www.brshooter.com/api/confirm-user?confirm_string=' + data.confirm_string}">confirm your account</a>
-                        <p style="font-size:12px; line-height:20px;">
-                          <a class="Unsubscribe--unsubscribeLink" href="{{{unsubscribe}}}" target="_blank" style="font-family:sans-serif;text-decoration:none;">
-                            Unsubscribe
-                          </a>
-                          -
-                          <a href="{{{unsubscribe_preferences}}}" target="_blank" class="Unsubscribe--unsubscribePreferences" style="font-family:sans-serif;text-decoration:none;">
-                            Unsubscribe Preferences
-                          </a>
-                        </p>
-                      </div>
-                    </body>
-                  </html>
-            `)
-        };
-    },
-    'forgot_password': (data): GeneratedEmailConfig => {
-        let forgotUrl = 'https://www.brshooter.com/user/forgot?forgot_string=' + data.forgot_string;
+const baseUrl = 'https://www.brshooter.com';
 
-        return {
-            subject: 'Forgot password for Warzone Stats Tracker',
-            text: 'click the link to reset your Warzone Stats Tracker password',
-            html: `<p>click the link to reset your Warzone Stats Tracker password: ${forgotUrl}</p>`
-        };
+
+
+export function sendEmail(email_id: string, templateData: EmailTemplateData): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+        if (!isValidEmailID(email_id)) {
+            reject(new Error('email_id (String) is required and must be a valid ID'));
+        } else {
+            let sendGridMessage = await _generateSendGridMessage(email_id, templateData);
+
+            sgMail.send(sendGridMessage).then(() => {
+                resolve(true);
+            }).catch((error) => {
+                console.error(error);
+                resolve(false);
+            });
+        }
+    });
+}
+
+
+
+const EMAIL_MAP: EmailMap = {
+    'confirm_account': async (data) => {
+        return new Promise(async (resolve, reject) => {
+            data.confirm_user_url = 'https://www.brshooter.com/api/confirm-user?confirm_string=' + data.confirm_string;
+
+            let config = {
+                subject: 'Confirm your email for Warzone Stats Tracker',
+                text: 'click the link in the html to confirm your Warzone Account',
+                path: __dirname + '/Emails/confirm_account/index.html',
+                html: ''
+            };
+
+            let actualHtml = await FileService.readFile(config.path);
+            config.html = substituteTemplateData(actualHtml, data);
+
+            resolve(config);
+        });
+    },
+    'forgot_password': async (data) => {
+        return new Promise(async (resolve, reject) => {
+            data.forgotUrl = baseUrl + '/user/forgot?forgot_string=' + data.forgot_string;
+
+            let config = {
+                subject: 'Forgot password for Warzone Stats Tracker',
+                text: 'click the link to reset your Warzone Stats Tracker password',
+                path: __dirname + '/Emails/forgot_password/index.html',
+                html: ''
+            };
+
+            let actualHtml = await FileService.readFile(config.path);
+            config.html = substituteTemplateData(actualHtml, data);
+
+            resolve(config);
+        });
     }
 };
+
+
+
+function substituteTemplateData(text: string, data: Record<any, string>): string {
+    let substitutionKeys = Object.keys(data);
+
+    substitutionKeys.forEach((key) => {
+        let substitutionString = '{{' + key + '}}';
+        text = text.replace(new RegExp(substitutionString, 'g'), data[key]);
+    });
+
+    return text;
+}
 
 
 
@@ -80,36 +116,23 @@ function isValidEmailID(email_id: EmailID): Boolean {
 
 
 
-function generateSendGridMessage(email_id: EmailID, templateData: EmailTemplateData): SendGridMessage {
-    let emailTemplateObject = getEmailTemplateByID(email_id);
-    let templatedEmailConfig = emailTemplateObject(templateData);
+export async function _generateSendGridMessage(email_id: EmailID, templateData: EmailTemplateData): Promise<SendGridMessage> {
+    return new Promise(async (resolve, reject) => {
+        let emailTemplateObject = getEmailTemplateByID(email_id);
+        let templatedEmailConfig = await emailTemplateObject(templateData);
 
-    return {
-        to: templateData.email,
-        from: SENDER_EMAIL,
-        ...templatedEmailConfig
-    };
-}
-
-
-
-export function sendEmail(email_id: string, templateData: EmailTemplateData) {
-    return new Promise((resolve, reject) => {
-        if (!isValidEmailID(email_id)) {
-            reject(new Error('email_id (String) is required and must be a valid ID'));
-        } else {
-            sgMail.send(generateSendGridMessage(email_id, templateData)).then(() => {
-                console.log('Email sent');
-                resolve(true);
-            }).catch((error) => {
-                console.error(error);
-                resolve(false);
-            });
-        }
+        resolve({
+            to: templateData.email,
+            from: SENDER_EMAIL,
+            ...templatedEmailConfig
+        });
     });
 }
 
+
+
 export default {
-    sendEmail
+    sendEmail,
+    _generateSendGridMessage
 };
 
