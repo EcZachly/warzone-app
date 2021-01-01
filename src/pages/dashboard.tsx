@@ -34,7 +34,7 @@ import {StateService} from './../components/State';
 import {GAME_CATEGORIES} from '../../lib/constants';
 import UtilityService from '../services/UtilityService';
 import GamerMatchService from '../components/gamer_match/GamerMatchService';
-import CreateGamerRelationship from "../components/GamerRelationships/CreateGamerRelationship";
+import CreateGamerRelationship from '../components/GamerRelationships/CreateGamerRelationship';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -52,7 +52,7 @@ let DashboardPage = ({baseUrl}) => {
         }, {
             text: 'Add Friends',
             id: 'add-friends',
-            content: ()=> <CreateGamerRelationship user={user}/>
+            content: () => <CreateGamerRelationship user={user}/>
         }]
     };
 
@@ -92,8 +92,8 @@ let DashboardPage = ({baseUrl}) => {
     }, [user]);
 
     let title = 'Dashboard';
-    if(user.data){
-        title = `${user.data.first_name}'s Dashboard`
+    if (user.data) {
+        title = `${user.data.first_name}'s Dashboard`;
     }
 
     return (
@@ -158,8 +158,8 @@ let DashboardPage = ({baseUrl}) => {
                     <SidebarCompanion>
                         <Show show={!gamerRelationships.loading && !!mainGamer}>
                            <TabNav options={CONFIG.TAB_VIEW_LIST}
-                                     value={contentView}
-                                     onChange={({id}) => setContentView(id)}/>
+                                   value={contentView}
+                                   onChange={({id}) => setContentView(id)}/>
                             {getTabContent()}
                         </Show>
                         {getNewUserContent()}
@@ -217,11 +217,11 @@ let DashboardPage = ({baseUrl}) => {
         } else if (recentMatches.data.length) {
             return (
                 <MatchCardList matches={recentMatches.data}/>
-            )
+            );
         } else {
             return (
                 <Text>No Recent Matches</Text>
-            )
+            );
         }
     }
 
@@ -285,7 +285,7 @@ let DashboardPage = ({baseUrl}) => {
 
 
     function getFriendsOnFire() {
-        const friends = gamerRelationships.data.filter((r) => r.type === 'friend').filter((gamerConfig) => {
+        const friends = gamerRelationships.data.filter((gamerConfig) => {
             return _.get(gamerConfig, 'detailData.gamer.heat_rating') > 0;
         });
 
@@ -364,7 +364,8 @@ let DashboardPage = ({baseUrl}) => {
                     </a>
                     </Paragraph>
 
-                    <GamerAdd recaptchaSiteKey={process.env.NEXT_PUBLIC_WARZONE_RECAPTCHA_SITE_KEY}/>
+                    <GamerAdd recaptchaSiteKey={process.env.NEXT_PUBLIC_WARZONE_RECAPTCHA_SITE_KEY}
+                              onAdd={(gamer) => newUserGamerSelect(gamer, true)}/>
                 </Show>
             </>
             );
@@ -372,13 +373,15 @@ let DashboardPage = ({baseUrl}) => {
     }
 
 
-    function newUserGamerSelect(gamer) {
+    function newUserGamerSelect(gamer, skipConfirmation?) {
         if (gamer) {
             const {username, platform} = gamer;
+            let userIsOkay = true;
 
-            let userIsOkay = confirm(`select OK to make ${username} (${GamerService.getPlatformObjByID(platform).name}) your main`);
+            if (skipConfirmation !== true) {
+                userIsOkay = confirm(`select OK to make ${username} (${GamerService.getPlatformObjByID(platform).name}) your main`);
+            }
 
-            console.log('user:', user);
             if (userIsOkay) {
                 return GamerRelationshipService.createGamerRelationship({
                     user_id: user.data.user_id,

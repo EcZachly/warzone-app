@@ -6,6 +6,7 @@ import HttpService from '../../services/HttpService';
 import Router from 'next/router';
 
 import {GoogleReCaptcha, GoogleReCaptchaProvider} from 'react-google-recaptcha-v3';
+import {Gamer} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -17,10 +18,12 @@ const CONFIG = {
 
 type GamerAddProps = {
     recaptchaSiteKey: string,
-    baseUrl?: string
+    baseUrl?: string,
+    onAdd?: (gamer: Gamer) => void,
+    doNotSubmit?: boolean
 }
 
-export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
+export default function GamerAdd({recaptchaSiteKey, onAdd, doNotSubmit, baseUrl}: GamerAddProps) {
 
     const recaptcha = React.createRef<GoogleReCaptchaProvider>();
     const [username, setUsername] = useState('');
@@ -57,18 +60,37 @@ export default function GamerAdd({recaptchaSiteKey, baseUrl}: GamerAddProps) {
             setLoading(true);
             setMessage({message: '', type: ''});
 
-            const response = await HttpService.http({
-                url: (baseUrl || '') + '/api/gamer',
-                method: 'POST',
-                body: {
-                    username: newUserConfig.username,
-                    platform: newUserConfig.platform,
-                    token: token
-                }
-            });
+            let response;
+
+            if (doNotSubmit === true) {
+                response = {
+                    status: 200,
+                    data: {
+                        gamer: {
+                            platform: 'test',
+                            username: 'test',
+                            isTest: true
+                        }
+                    }
+                };
+            } else {
+                response = await HttpService.http({
+                    url: (baseUrl || '') + '/api/gamer',
+                    method: 'POST',
+                    body: {
+                        username: newUserConfig.username,
+                        platform: newUserConfig.platform,
+                        token: token
+                    }
+                });
+            }
 
             if (response.status === 200) {
-                Router.push(response.data.url || ['gamer', newUserConfig.platform, encodeURIComponent(newUserConfig.username)].join('/'));
+                if (onAdd) {
+                    onAdd(response.data.gamer);
+                } else {
+                    Router.push(response.data.url || ['gamer', newUserConfig.platform, encodeURIComponent(newUserConfig.username)].join('/'));
+                }
             } else {
                 let message: unknown = 'An unknown error occurred while trying to create the user';
 
