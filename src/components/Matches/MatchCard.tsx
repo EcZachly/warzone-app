@@ -6,6 +6,7 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Text,
     Header,
     Show,
     Small,
@@ -19,7 +20,7 @@ import {
 
 import {LabelValue} from './../SmartComponents';
 
-import {GamerLinkList} from './../gamer/index';
+import {GamerLinkList, GamerService} from './../gamer/index';
 
 import {Match} from './MatchTypes';
 
@@ -99,7 +100,11 @@ export default function MatchCard({match}: MatchCardProps) {
                         {
                             gamers.map((gamerMatch) => {
                                 return (
-                                    <TableHeader>{gamerMatch.username}</TableHeader>
+                                    <TableHeader>
+                                        <Text title={gamerMatch.username}>
+                                            {GamerService.minifyUsername(gamerMatch.username)}
+                                        </Text>
+                                    </TableHeader>
                                 );
                             })
                         }
@@ -144,11 +149,12 @@ export default function MatchCard({match}: MatchCardProps) {
                 render: (gamerMatch) => {
                     return (
                         <>
-                            {UtilityService.round((gamerMatch.damage_done / (gamerMatch.damage_taken || 100)) || 0, 2)} <Small>
+                            {UtilityService.round((gamerMatch.damage_done / (gamerMatch.damage_taken || 100)) || 0, 2)}
+                            <Small>
                                 ({UtilityService.numberWithCommas(gamerMatch.damage_done)} / {UtilityService.numberWithCommas(gamerMatch.damage_taken)})
                             </Small>
                         </>
-                    )
+                    );
                 }
             }
         ].map((tableConfig) => {

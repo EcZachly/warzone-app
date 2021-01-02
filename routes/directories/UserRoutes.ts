@@ -91,8 +91,9 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
     } catch (e) {
         return responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE});
     }
-
 }
+
+
 
 export async function sendForgotPassword(req: NextApiRequest, res: NextApiResponse) {
     let {email} = req.body;
@@ -120,6 +121,8 @@ export async function sendForgotPassword(req: NextApiRequest, res: NextApiRespon
         return responseHandler.handleResponse(req, res, {message: error});
     }
 }
+
+
 
 export async function login(req: NextApiRequest, res: NextApiResponse) {
     let errorMap = {

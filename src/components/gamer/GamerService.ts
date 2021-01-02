@@ -60,9 +60,23 @@ export function queryGamers(query): Promise<GamerList> {
 
 
 
+export  function minifyUsername(username) {
+    const MAX_USERNAME_LENGTH = 12;
+    let newUsername = username.split('#')[0];
+
+    if (newUsername.length > MAX_USERNAME_LENGTH) {
+        newUsername = newUsername.substr(0, MAX_USERNAME_LENGTH) + '\u2026';
+    }
+
+    return newUsername;
+}
+
+
+
 export default {
     getGamerPlatforms,
     getPlatformObjByID,
+    minifyUsername,
     queryGamers,
     getGamerDetailView
 };

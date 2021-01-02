@@ -418,10 +418,10 @@ let DashboardPage = ({baseUrl}) => {
 
 
     function getRecentMatches(_gamerRelationships) {
-        const gamerRelationshipsIDList = _gamerRelationships.map(({
-                                                                      username,
-                                                                      platform
-                                                                  }) => [platform, username].join('-'));
+        const gamerRelationshipsIDList = _gamerRelationships.map(({username, platform}) => {
+            return [platform, username].join('-');
+        });
+        
         let query = {
             platform_username: gamerRelationshipsIDList
         };
