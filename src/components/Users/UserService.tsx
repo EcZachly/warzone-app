@@ -37,12 +37,20 @@ export function finishForgotPassword(user) {
 }
 
 export function sendForgotPassword(email) {
-    return HttpService.http({
-        method: 'POST',
-        url: '/api/forgot-password',
-        body: {
-            email: email
-        }
+    return new Promise((resolve, reject) => {
+        HttpService.http({
+            method: 'POST',
+            url: '/api/forgot-password',
+            body: {
+                email: email
+            }
+        }).then((response) => {
+            if (response.status === 200) {
+                resolve(response);
+            } else {
+                reject(response);
+            }
+        }).catch(reject);
     });
 }
 
