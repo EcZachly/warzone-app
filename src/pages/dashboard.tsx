@@ -10,6 +10,7 @@ import {
     Card,
     CardBody,
     Container,
+    Alert,
     Header,
     LineBreak,
     ListGroup,
@@ -52,7 +53,19 @@ let DashboardPage = ({baseUrl}) => {
         }, {
             text: 'Add Friends',
             id: 'add-friends',
-            content: () => <CreateGamerRelationship user={user}/>
+            content: () => (
+                <CreateGamerRelationship user={user.data}
+                                         onGamerAdd={(gamerRelationship) => {
+                                             setAlert({
+                                                 message: 'Friend successfully added',
+                                                 type: 'success',
+                                                 time: 3000
+                                             });
+
+                                             getData(view, gameCategory);
+                                         }
+                                         }/>
+            )
         }]
     };
 
@@ -66,6 +79,7 @@ let DashboardPage = ({baseUrl}) => {
     let [view, setView] = useState('time');
     let [contentView, setContentView] = useState('recent_matches');
     let [error, setError] = useState(null);
+    let [alert, setAlert] = useState({type: null, time: null, message: null});
 
     let [user, setUser] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
     let [gamerRelationships, setGamerRelationships] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
@@ -86,6 +100,15 @@ let DashboardPage = ({baseUrl}) => {
 
 
     useEffect(() => {
+        if (alert && alert.message) {
+            setTimeout(() => {
+                setAlert({message: null, type: null, time: 3000});
+            }, (alert && alert.time) || 3000);
+        }
+    }, [alert]);
+
+
+    useEffect(() => {
         if (user.data) {
             getData(view, gameCategory);
         }
@@ -101,6 +124,10 @@ let DashboardPage = ({baseUrl}) => {
             <Navbar/>
 
             <Main>
+                <Container size={'lg'}>
+                    <Alert type={alert.type} hideIfEmpty={true}>{alert.message}</Alert>
+                </Container>
+
                 <Container size={'lg'} mode={'sidebar'}>
                     {getContent()}
                 </Container>
@@ -421,7 +448,7 @@ let DashboardPage = ({baseUrl}) => {
         const gamerRelationshipsIDList = _gamerRelationships.map(({username, platform}) => {
             return [platform, username].join('-');
         });
-        
+
         let query = {
             platform_username: gamerRelationshipsIDList
         };
