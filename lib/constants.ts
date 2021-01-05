@@ -45,6 +45,7 @@ export const SENDER_EMAIL = 'warzone@brshooter.com'
 export const GAMER_TABLE = 'gamers';
 export const ETL_JOBS = 'etl_jobs';
 export const MATCH_TABLE = 'matches';
+export const RESOURCE_TABLE = 'resources';
 export const GAMER_MATCH_TABLE = 'gamer_matches';
 export const MIN_MAX_TIMESTAMPS_VIEW = 'min_max_timestamps';
 export const SITE_EVENTS = 'site_events';
