@@ -2,7 +2,13 @@ import Bluebird from 'bluebird';
 
 import WarzoneMapper from '../etl/mapper';
 import {insertIntoDatabase, queryDatabase} from '../etl/utils';
-import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from '../constants';
+import {
+    GAMER_MATCH_TABLE,
+    MATCH_TABLE,
+    MIN_MAX_TIMESTAMPS_VIEW,
+    MATCH_DETAILS_SLEEP_TIME,
+    GAMER_TABLE
+} from '../constants';
 import ApiWrapper from '../api_wrapper';
 
 import UtilityService from './../../src/services/UtilityService';
@@ -76,6 +82,17 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
     return UtilityService.validateItem(matches, 'array', []).flatMap((matchArr) => matchArr);
 }
 
+export async function getFullMatchDetailsFromAPI(match_id){
+    let callApi =  await ApiWrapper.getInstance();
+   let data = await callApi.MWFullMatchInfowz(match_id);
+   return data.allPlayers
+}
+
+
+export async function queryMatches(query, options = {}) {
+    query = UtilityService.validateItem(query, 'object', {});
+    return queryDatabase(MATCH_TABLE, query, options);
+}
 
 
 export async function initializeMatches(gamer) {

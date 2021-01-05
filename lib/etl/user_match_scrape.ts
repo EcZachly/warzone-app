@@ -131,5 +131,7 @@ export async function runBackfills() {
 }
 
 export async function runRefresh(){
-    await refreshData({});
+    await refreshData({username: 'EcZachly'});
 }
+
+runRefresh()
