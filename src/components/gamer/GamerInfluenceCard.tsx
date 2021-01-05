@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import {Box, Card, CardBody, Small, Text} from '../SimpleComponents';
 import {Gamer} from './GamerTypes';
-import {GamerLink} from './index';
+import {GamerLink, GamerService} from './index';
 import {StatLabelValue} from '../SmartComponents';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
@@ -74,7 +74,7 @@ export default function GamerInfluenceCard({gamer, relationships}) {
         let isGamer = (type === 'gamer');
 
         return relationships.map((relationship) => {
-            let statName = relationship['relationship_stat'].split('_').map(_.capitalize).join(' ');
+            let statName = GamerService.sanitizeStatKey(relationship['relationship_stat']);
 
             return (
                 <StatLabelValue style={{marginBottom: '0px'}}

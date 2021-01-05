@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import _ from 'lodash';
 
 import {Box, Header, InputRadio, Small} from '../SimpleComponents';
+import {GamerService} from './index';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -18,7 +19,7 @@ export default function GamerTimeChart({viewData, options, selectedValue, height
         const analysisTypeInputOptions = options.map((option) => {
             return {
                 value: option,
-                text: option.split('_').map(_.capitalize).join(' '),
+                text: GamerService.sanitizeStatKey(option),
                 className: ''
             };
         });
@@ -26,7 +27,7 @@ export default function GamerTimeChart({viewData, options, selectedValue, height
         const seriesTypeInputOptions = Object.keys(chartData[0]).filter((i, index) => index > 5).map((option) => {
             return {
                 value: option,
-                text: option.split('_').map(_.capitalize).join(' '),
+                text: GamerService.sanitizeStatKey(option),
                 className: ''
             };
         });

@@ -41,7 +41,7 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
             return <Card/>;
         }
 
-        const isCondensed = mode === 'condensed';
+        const isCondensed = (mode === 'condensed');
         const modeClass = isCondensed ? 'condensed' : 'standard';
 
         const noLink = !!onGamerClick;
@@ -94,8 +94,9 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                             <LabelValue label={(<Text>Gulag Win Rate <Small>(KDR)</Small></Text>)}
                                         value={(
-                                            <Text>{gamer.pretty_gulag_win_rate}
-                                                <Small>({gamer.gulag_kdr})</Small></Text>
+                                            <Text>
+                                                {gamer.pretty_gulag_win_rate} <Small>({gamer.gulag_kdr})</Small>
+                                            </Text>
                                         )}/>
 
                             <LabelValue size={'sm'}
