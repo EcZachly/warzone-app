@@ -131,6 +131,7 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 
         queryOptions.order = [sortObj];
     }
+
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
 
     await playerQuery.executeQuery();

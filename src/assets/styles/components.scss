@@ -2006,6 +2006,16 @@ a:focus, a:active {
 //===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
 //CONTAINER
 
+.loading {
+  width: 50px;
+  height: 50px;
+  animation: rotation 1.25s infinite linear;
+  opacity: .3;
+}
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//CONTAINER
+
 .container {
   width: 100%;
   padding-right: 15px;
@@ -4416,5 +4426,16 @@ hr.line-break.no-margins {
   }
   .col-lg-offset-0 {
     margin-left: 0;
+  }
+}
+
+
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
   }
 }

@@ -129,9 +129,12 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
                     <CardBody style={{paddingTop: '5px', paddingBottom: '5px'}}>
                         <Box className={'details'} style={{paddingTop: '5px'}}>
 
-                            <LabelValue size={'sm'} label={(
-                                <Text title={'including kills and deaths in gulag'}>KDR <Small>(last
-                                                                                               100)</Small></Text>)}
+                            <LabelValue size={'sm'}
+                                        label={(
+                                            <Text title={'including kills and deaths in gulag'}>
+                                                KDR <Small>(last 100)</Small>
+                                            </Text>
+                                        )}
                                         value={UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}/>
 
                             <LabelValue size={'sm'} label={'Max Kills'} value={gamer.max_kills}/>
@@ -143,8 +146,9 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                             <LabelValue size={'sm'} label={(<Text>Gulag Win Rate <Small>(KDR)</Small></Text>)}
                                         value={(
-                                            <Text>{gamer.pretty_gulag_win_rate}
-                                                <Small>({gamer.gulag_kdr})</Small></Text>
+                                            <Text>
+                                                {gamer.pretty_gulag_win_rate} <Small>({gamer.gulag_kdr})</Small>
+                                            </Text>
                                         )}/>
 
                         </Box>
