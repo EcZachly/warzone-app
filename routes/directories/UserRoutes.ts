@@ -127,7 +127,8 @@ export async function sendForgotPassword(req: NextApiRequest, res: NextApiRespon
 export async function login(req: NextApiRequest, res: NextApiResponse) {
     let errorMap = {
         'missing_data': {message: 'body.email (String) and body.password (String) are required'},
-        'invalid_combination': {message: 'Invalid email/password combination'}
+        'invalid_combination': {message: 'Invalid email/password combination'},
+        'account_confirmation_required': {message: 'account confirmation required', userMessage: 'Your email is unverified, we\'ve sent you a new confirmation email. Please check your email and click the link to confirm your account before you login.'}
     };
     let {email, password} = req.body;
 
@@ -139,14 +140,25 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
     try {
         let users = await UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)}, {}, {sanitize: false});
         let userIsOkay = users && TypeService.isObject(users[0], true);
+
         if (!userIsOkay) {
             return responseHandler.handleError(req, res, errorMap['invalid_combination'], 400);
         }
+
         let user = users[0];
+
         let passwordsMatch = await AuthService.comparePassword(password, user.password);
+
         if (!passwordsMatch) {
             return responseHandler.handleError(req, res, errorMap['invalid_combination'], 400);
         }
+
+        if (user.confirm_string) {
+            await EmailService.sendEmail('confirm_account', user);
+            return responseHandler.handleError(req, res, errorMap['account_confirmation_required'], 400);
+        }
+
+
         AuthService.setJWTTokenCookie({
             user_id: user.user_id
         }, res);
@@ -156,6 +168,7 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
         responseHandler.handleError(req, res, {message: DEFAULT_ERROR_MESSAGE}, 500);
     }
 }
+
 
 
 export function verifyUserToken(req, res) {
