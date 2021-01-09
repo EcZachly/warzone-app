@@ -1,4 +1,5 @@
 import Bluebird from 'bluebird';
+
 import {getTimestampList} from './utils';
 import {queryGamers, updateGamer} from '../model/gamers';
 import {
@@ -20,18 +21,19 @@ const THREAD_CONCURRENCY_LIMIT = 1;
  * @returns {Promise<{gamer, matchHistory, queriedTimestamps, isBackfill}>}
  */
 async function getMatchHistory(gamer, api) {
-    console.log('querying history for gamer:' + gamer.username + ' on platform:' + gamer.platform);
+    console.log(`${generateGamerID(gamer)}: Querying match history`);
+
     if (gamer.needs_backfill) {
-        console.log('BACKFILLING ENTIRE DATASET!!!');
+        console.log(`${generateGamerID(gamer)}: Backfilling all data`);
     }
+
     try {
         const history = await api.MWfullcombatwz(gamer.username, gamer.platform);
-        console.log('found history for gamer:' + gamer.username + ' on platform:' + gamer.platform);
-        console.log('game history of size:' + history.length);
         return history;
     } catch (e) {
         console.log('err', e);
-        return {errorMessage: e}
+
+        return {errorMessage: e};
     }
 }
 
@@ -47,6 +49,7 @@ async function getMatchHistory(gamer, api) {
 function getQueryTimeframes(matchHistory, queriedTimestamps, gamer) {
     const hasLatestTimestamp = queriedTimestamps.last_timestamp;
     let matchesCopied = matchHistory;
+
     if (hasLatestTimestamp && !gamer.needs_backfill) {
         matchesCopied = matchHistory.filter((match) => {
             return match.timestamp > parseFloat(queriedTimestamps.last_timestamp);
@@ -54,20 +57,25 @@ function getQueryTimeframes(matchHistory, queriedTimestamps, gamer) {
     }
 
     let timestampList = [];
+
     if (matchesCopied.length > 0) {
         timestampList = getTimestampList(matchesCopied);
     }
+
     return timestampList;
 }
 
 
-async function getMatchDetails(queryTimeframes, gamer, API){
+async function getMatchDetails(queryTimeframes, gamer, API) {
     const matches = await getMatchDetailsFromAPI(queryTimeframes, gamer, API);
+
     await writeMatchesToDatabase(matches);
     await writeGamerMatchesToDatabase(matches, gamer);
+
     if (gamer.needs_backfill) {
         await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_backfill: false});
     }
+
     return matches;
 }
 
@@ -85,29 +93,36 @@ async function getMatchDetails(queryTimeframes, gamer, API){
  * @returns {Promise<{gamer, matchHistory, queriedTimestamps, isBackfill}>}
  */
 async function executePipeline(gamer) {
+    let gamerID = generateGamerID(gamer);
+
+    console.log('\r\n' + gamerID + ': Starting update');
+
     const API = await ApiWrapper.getInstance();
     const history = await getMatchHistory(gamer, API);
-    if(history.errorMessage){
-        console.log(history)
-    }
-    else{
+
+    if (history.errorMessage) {
+        console.log(gamerID + ': ERROR: ' + JSON.stringify(history));
+    } else {
+        console.log(`${generateGamerID(gamer)}: Found ${history.length} matches in history`);
+
         const queriedTimestamps = await getMinMaxMatchTimestamps(gamer);
         const queryTimeframes = getQueryTimeframes(history, queriedTimestamps, gamer);
 
         if (queryTimeframes.length > 0) {
             const matches = await getMatchDetails(queryTimeframes, gamer, API);
-            console.log('Found ' + matches.length + ' matches for player: ' + gamer.username + ' on platform: ' + gamer.platform);
+            console.log(`${generateGamerID(gamer)}: Found ${matches.length} new matches`);
         } else {
-            console.log('No new games found for gamer: ' + gamer.username  + ' on platform: ' + gamer.platform + ', doing nothing');
+            console.log(`${generateGamerID(gamer)}: No new matches found for gamer`);
         }
 
         if (gamer.needs_update) {
             await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_update: false});
         }
+
+        console.log(gamerID + ': Update complete\r\n');
+
         return gamer;
     }
-
-
 }
 
 /**
@@ -119,17 +134,28 @@ async function executePipeline(gamer) {
 async function refreshData(query = {}) {
     const gamers = await queryGamers(query);
     await Bluebird.map(gamers, (gamer) => executePipeline(gamer), {concurrency: THREAD_CONCURRENCY_LIMIT});
-    console.log('Finished entire refresh');
 }
 
-export async function runUpdates(){
+export async function runUpdates() {
+    console.log('\r\n\r\nstarting cron job: runUpdates');
     await refreshData({needs_update: true});
+    console.log('runUpdates complete\r\n\r\n');
 }
 
 export async function runBackfills() {
+    console.log('\r\n\r\nstarting cron job: runBackfills');
     await refreshData({needs_backfill: true});
+    console.log('runBackfills complete\r\n\r\n');
 }
 
-export async function runRefresh(){
+export async function runRefresh() {
+    console.log('\r\n\r\nstarting cron job: runRefresh');
     await refreshData({});
+    console.log('runRefresh complete\r\n\r\n');
+}
+
+
+
+function generateGamerID(gamer) {
+    return [gamer.platform, gamer.username].join('-');
 }

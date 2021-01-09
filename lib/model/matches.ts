@@ -47,6 +47,7 @@ export async function getMinMaxMatchTimestamps(gamer) {
         query_username: gamer.username,
         query_platform: gamer.platform
     });
+
     return gamers[0] || {};
 }
 
@@ -59,19 +60,23 @@ export async function getMinMaxMatchTimestamps(gamer) {
  * @returns {*}
  */
 export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepTime = MATCH_DETAILS_SLEEP_TIME) {
-    console.log('# of Details API calls needed for gamer:' + gamer.username + ' on platform:' + gamer.platform + ': ' + queryTimeframes.length);
-    console.log('getting match details for: ' + gamer.username + ' on platform:' + gamer.platform);
+    const gamerID = [gamer.platform, gamer.username].join('-');
 
-    const matches = await Bluebird.mapSeries(queryTimeframes, async (item) => {
+    console.log(gamerID + ': Getting match details');
+    console.log(gamerID + ': # of match details API calls needed: ' + queryTimeframes.length);
+
+    const matches = await Bluebird.mapSeries(queryTimeframes, async (item, index) => {
         const output = await api.MWcombatwzdate(gamer.username, item.start, item.end, gamer.platform);
         const matches = UtilityService.validateItem(output.matches, 'array', []);
 
-        console.log('Num matches for interval for gamer:' + gamer.username + ' on platform:' + gamer.platform + ':' + matches.length);
+        console.log(`${gamer.platform}-${gamer.username}: ${index + 1} of ${queryTimeframes.length}, getting ${matches.length} match details from API`);
 
         UtilityService.sleep(sleepTime);
 
         return matches;
     });
+
+    console.log(gamerID + ': completed getting match details');
 
     return UtilityService.validateItem(matches, 'array', []).flatMap((matchArr) => matchArr);
 }
