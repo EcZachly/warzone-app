@@ -1,4 +1,6 @@
 import {NextApiRequest, NextApiResponse} from 'next';
+import _ from 'lodash';
+import moment from 'moment';
 
 import responseHandler from '../responseHandler';
 
@@ -11,6 +13,7 @@ import randomstring from 'randomstring';
 import {AuthService} from '../../lib/components/Auth';
 import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
 import {update} from '../../lib/components/Database/DAO';
+import {RawUser, User} from '../../src/components/Users/UserTypes';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -128,7 +131,10 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
     let errorMap = {
         'missing_data': {message: 'body.email (String) and body.password (String) are required'},
         'invalid_combination': {message: 'Invalid email/password combination'},
-        'account_confirmation_required': {message: 'account confirmation required', userMessage: 'Your email is unverified, we\'ve sent you a new confirmation email. Please check your email and click the link to confirm your account before you login.'}
+        'account_confirmation_required': {
+            message: 'account confirmation required',
+            userMessage: 'Your email is unverified, we\'ve sent you a new confirmation email. Please check your email and click the link to confirm your account before you login.'
+        }
     };
     let {email, password} = req.body;
 
@@ -145,7 +151,7 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
             return responseHandler.handleError(req, res, errorMap['invalid_combination'], 400);
         }
 
-        let user = users[0];
+        let user = users[0] as Partial<RawUser>;
 
         let passwordsMatch = await AuthService.comparePassword(password, user.password);
 
@@ -154,7 +160,14 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
         }
 
         if (user.confirm_string) {
-            await EmailService.sendEmail('confirm_account', user);
+            let lastConfirmEmailSent = _.get(user, 'metadata.last_confirm_account_email_timestamp');
+
+            if (!lastConfirmEmailSent || moment().diff(moment(lastConfirmEmailSent), 'minutes') > 5) {
+                await EmailService.sendEmail('confirm_account', user as User);
+                user.metadata.last_confirm_account_email_timestamp = new Date().getTime();
+                await UserController.updateUser({user_id: user.user_id}, {metadata: user.metadata});
+            }
+
             return responseHandler.handleError(req, res, errorMap['account_confirmation_required'], 400);
         }
 
