@@ -38,8 +38,6 @@ export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options
             url: (options.baseUrl || '') + '/api/gamer-match',
             query: query
         }).then((response) => {
-            console.log(response);
-
             if (response.status === 200 || response.status === 204) {
                 resolve(UtilityService.validateItem(response.data, 'array', []).map(sanitizeGamerMatch));
             } else {

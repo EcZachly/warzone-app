@@ -9,20 +9,22 @@ import {Input} from '../SmartComponents';
 import {Loading} from './../AppComponents';
 import {GAME_CATEGORIES} from '../../../lib/constants';
 import _ from 'lodash';
+import {Gamer, GamerList} from './GamerTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 type GamerSearchInputProps = {
-    size: 'xl' | 'lg' | 'md' | 'sm',
+    size?: 'xl' | 'lg' | 'md' | 'sm',
     baseUrl?: string,
     focus?: boolean,
     gameCategory?: String,
     mode?: null | 'condensed',
-    onGamerClick?: (gamer) => void
+    onGamerClick?: (gamer: Gamer) => void
+    onResultChange?: (gamers: GamerList) => void
 }
 
 export default function GamerSearchInput(props: GamerSearchInputProps) {
-    const {size, baseUrl, focus, mode, gameCategory = GAME_CATEGORIES.ALL, onGamerClick} = props;
+    const {size, baseUrl, focus, mode, gameCategory = GAME_CATEGORIES.ALL, onResultChange, onGamerClick} = props;
 
     const [gamerResults, setGamerResults] = useState([]);
     const [searchHasBeenInitiated, setSearchHasBeenInitiated] = useState(false);
@@ -41,6 +43,10 @@ export default function GamerSearchInput(props: GamerSearchInputProps) {
             const newGamers = await response.json();
             setGamerResults(newGamers.gamers);
             setLoading(false);
+
+            if (onResultChange) {
+                onResultChange(newGamers.gamers);
+            }
         } else {
             setLoading(false);
             setSearchHasBeenInitiated(false);
@@ -64,7 +70,7 @@ export default function GamerSearchInput(props: GamerSearchInputProps) {
                    mode={'plain'}
                    focus={focus === true}
                    inputStyle={{borderRadius: 0, borderBottom: '1px solid #888'}}
-                   size={size}/>
+                   size={size || 'md'}/>
 
 
             <Show show={loading === false && searchHasBeenInitiated}>

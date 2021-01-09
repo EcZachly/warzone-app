@@ -53,19 +53,7 @@ let DashboardPage = ({baseUrl}) => {
         }, {
             text: 'Add Friends',
             id: 'add-friends',
-            content: () => (
-                <CreateGamerRelationship user={user.data}
-                                         onGamerAdd={(gamerRelationship) => {
-                                             setAlert({
-                                                 message: 'Friend successfully added',
-                                                 type: 'success',
-                                                 time: 3000
-                                             });
-
-                                             getData(view, gameCategory);
-                                         }
-                                         }/>
-            )
+            content: addFriend
         }]
     };
 
@@ -161,24 +149,24 @@ let DashboardPage = ({baseUrl}) => {
                         </Show>
 
                         <Show show={!gamerRelationships.loading && !!mainGamer}>
-                                <GamerLinkList loading={gamerRelationships.loading} gamer={mainGamer}/>
+                            <GamerLinkList loading={gamerRelationships.loading} gamer={mainGamer}/>
 
-                                <ListGroup>
-                                    <ListGroupItem onClick={() => {
-                                        router.push(gamerEndpoint + '?view=recent_matches');
-                                    }}>
-                                        View Recent Matches
-                                    </ListGroupItem>
+                            <ListGroup>
+                                <ListGroupItem onClick={() => {
+                                    router.push(gamerEndpoint + '?view=recent_matches');
+                                }}>
+                                    View Recent Matches
+                                </ListGroupItem>
 
-                                    <ListGroupItem onClick={() => {
-                                        router.push(gamerEndpoint + '?view=trends');
-                                    }}>
-                                        View Trends
-                                    </ListGroupItem>
-                                </ListGroup>
+                                <ListGroupItem onClick={() => {
+                                    router.push(gamerEndpoint + '?view=trends');
+                                }}>
+                                    View Trends
+                                </ListGroupItem>
+                            </ListGroup>
+
+                            {getFriendsOnFire()}
                         </Show>
-
-                        {getFriendsOnFire()}
                     </Sidebar>
 
 
@@ -247,7 +235,15 @@ let DashboardPage = ({baseUrl}) => {
             );
         } else {
             return (
-                <Text>No Recent Matches</Text>
+                <Paragraph>
+                    No Recent Matches.
+
+                    <Paragraph>
+                        <Text italic>
+                            It may take some time for us to gather match info, but we'll get it soon.
+                        </Text>
+                    </Paragraph>
+                </Paragraph>
             );
         }
     }
@@ -256,6 +252,31 @@ let DashboardPage = ({baseUrl}) => {
 
     function getActiveTab() {
         return CONFIG.TAB_VIEW_LIST.filter(({id}) => contentView === id)[0];
+    }
+
+
+
+    function addFriend() {
+
+        return (
+            <Box>
+                <Paragraph>
+                    Add your friends to follow them, see their recent games, and compare stats. <Text italic>You'll also see when they're on a hot streak!</Text>
+                </Paragraph>
+
+                <CreateGamerRelationship user={user.data}
+                                         onGamerAdd={(gamerRelationship) => {
+                                             setAlert({
+                                                 message: 'Friend successfully added',
+                                                 type: 'success',
+                                                 time: 3000
+                                             });
+
+                                             getData(view, gameCategory);
+                                         }
+                                         }/>
+                </Box>
+        )
     }
 
 
@@ -423,6 +444,10 @@ let DashboardPage = ({baseUrl}) => {
 
     function getData(view, category) {
         return getGamerRelationships().then((_gamerRelationships) => {
+            if (_gamerRelationships.length === 1) {
+                setContentView('add-friends');
+            }
+
             getRecentMatches(_gamerRelationships);
 
             let detailPromises = _gamerRelationships.map((gamer) => {
@@ -465,7 +490,6 @@ let DashboardPage = ({baseUrl}) => {
                 loading: false
             });
         });
-        console.log(gamerRelationshipsIDList);
     }
 
 

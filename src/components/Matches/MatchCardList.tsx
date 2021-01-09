@@ -15,8 +15,6 @@ export type MatchCardListProps = {
 
 
 export default function MatchCardList({matches}: MatchCardListProps) {
-    console.log(matches);
-
     return (
         <Box className={'match-list-container'}>
             {matches.map((match) => {
