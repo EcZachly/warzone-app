@@ -31,12 +31,17 @@ create OR REPLACE view warzone.matches_augmented AS SELECT match_id,
                     mode like '%bldmny%' THEN 'Plunder'
                WHEN mode LIKE '%jugg%' THEN 'Juggernaut Royale'
                WHEN mode LIKE '%rmbl%' THEN 'Warzone Rumble'
+               WHEN mode LIKE '%rebirth_mini_royale%' THEN 'Rebirth Mini Royale'
                WHEN mode LIKE '%mini%' THEN 'Mini Royale'
                WHEN mode LIKE '%kingslayer%' THEN 'King Slayer'
                WHEN mode LIKE '%stim%' OR MODE LIKE '%brbb%' THEN 'Buy Back'
-               WHEN mode like '%rebirth%' THEN 'Resurgence'
+               WHEN mode like '%rebirth%'  OR mode like '%rbrth%'
+                        THEN 'Resurgence'
+
+
                WHEN mode LIKE '%truckwar%' THEN 'Truck War'
                WHEN mode LIKE '%zmbroy%' THEN 'Zombie Royale'
+               WHEN mode like '%dmz%' THEN 'DMZ'
                ELSE 'Warzone'
                END                                    as game_category
     FROM warzone.matches

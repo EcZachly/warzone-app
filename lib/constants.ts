@@ -47,6 +47,7 @@ export const GAME_CATEGORIES = {
     ZOMBIE_ROYALE: 'Zombie Royale',
     KING_SLAYER: 'King Slayer',
     PLUNDER: 'Plunder',
+    REBIRTH_MINI_ROYALE: 'Rebirth Mini Royale'
 }
 
 export const BASE_TITLE = 'Warzone Stats Tracker';
