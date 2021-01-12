@@ -3,31 +3,35 @@ import React from 'react';
 import GamerInfluenceCard from './GamerInfluenceCard';
 
 import {Box} from '../SimpleComponents';
+import TypeService from '../../services/TypeService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
 export default function GamerInfluenceList({gamer, teammateRows}) {
+    const MIN_MATCHES_TO_SHOW = 5;
 
-    let relationships = {};
+    let relationshipMap = {};
 
     teammateRows.forEach((relationship) => {
         let key = relationship['helping_player'] + '-' + relationship['helping_player_platform'];
 
-        if (!relationships[key]) {
-            relationships[key] = [relationship];
+        if (!relationshipMap[key]) {
+            relationshipMap[key] = [relationship];
         } else {
-            relationships[key].push(relationship);
+            relationshipMap[key].push(relationship);
         }
     });
 
     return (
         <Box className={'gamer-influence-card-list-container'}>
             {
-                Object.values(relationships).map((relationship) => {
+                Object.values(relationshipMap).filter((relationshipList) => {
+                    return TypeService.isNumeric(relationshipList[0].num_matches) && relationshipList[0].num_matches >= MIN_MATCHES_TO_SHOW;
+                }).map((relationshipList) => {
                     return (
                         <GamerInfluenceCard gamer={gamer}
-                                            relationships={relationship}/>
+                                            relationships={relationshipList}/>
                     );
                 })
             }

@@ -1,46 +1,64 @@
-import React from "react";
+import React from 'react';
 
-import {LabelValue} from "../SmartComponents";
-import {Show, Text} from "../SimpleComponents";
-import UtilityService from "../../services/UtilityService";
-import {COLORS} from "../../config/CONSTANTS";
+import {LabelValue} from '../SmartComponents';
+import {Show, Text} from '../SimpleComponents';
+import UtilityService from '../../services/UtilityService';
+import {COLORS} from '../../config/CONSTANTS';
+import TypeService from '../../services/TypeService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function StatLabelValue({style, label, statValue, inline = true, size = "sm", compareStatLabel = null, compareStatValue=null, lowerIsBetter=false, roundingDecimals=2}){
+export default function StatLabelValue(props) {
+    const {
+        style,
+        label,
+        statValue,
+        inline = true,
+        size = 'sm',
+        compareStatLabel = null,
+        compareStatValue = null,
+        lowerIsBetter = false,
+        roundingDecimals = 2
+    } = props;
 
-    let value = UtilityService.round(statValue, roundingDecimals)
-    let component =  (
-        <Text>{value}</Text>
+    let statIsNull = TypeService.isNumeric(statValue) === false;
+
+    let component = (
+        <Text>{statIsNull ? '-' : UtilityService.round(statValue, roundingDecimals)}</Text>
     );
 
-    if(compareStatValue){
-        let diffValue = (statValue - compareStatValue) / compareStatValue
+    if (compareStatValue && !statIsNull) {
+        let diffValue = (statValue - compareStatValue) / compareStatValue;
         let color = statValue > compareStatValue ? COLORS.GREEN : COLORS.RED;
 
-        if(lowerIsBetter){
+        if (lowerIsBetter) {
             color = statValue < compareStatValue ? COLORS.GREEN : COLORS.RED;
-            diffValue =  (compareStatValue - statValue) / statValue;
+            diffValue = (compareStatValue - statValue) / statValue;
         }
 
-        let percentDiff =  UtilityService.numberToPercentage(diffValue, 1);
+        let percentDiff = UtilityService.numberToPercentage(diffValue, 1);
 
         component = (
             <Text>
-                {UtilityService.round(statValue, 2)}
+                {UtilityService.round(statValue, roundingDecimals)}
 
-                <Text title={compareStatLabel || ''} bold style={{marginLeft: '5px', color:  color}}>
-                    <Show show={statValue >compareStatValue}>+</Show>{percentDiff}
+                <Text title={compareStatLabel || ''}
+                      bold
+                      style={{marginLeft: '5px', color: color}}>
+                    <Show show={lowerIsBetter === false ? statValue > compareStatValue : statValue < compareStatValue}>
+                        +
+                    </Show>{percentDiff}
                 </Text>
             </Text>
-        )
+        );
     }
+
     return (
         <LabelValue style={style}
                     inline={inline}
                     size={size}
                     label={label}
                     value={component}/>
-    )
+    );
 }
