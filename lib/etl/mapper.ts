@@ -28,9 +28,11 @@ export default class WarzoneMapper{
     static mapGamerMatch(match, queryGamer){
         let {playerStats, player} = match;
         let missionsByType = player.brMissionStats?.missionStatsByType;
+        let queryUsername = queryGamer.username === '-' ? player.uno : queryGamer.username;
+        let queryPlatform = queryGamer.platform === '-' ? 'uno' : queryGamer.username;
         const dataObject = {
-            query_username: queryGamer.username,
-            query_platform: queryGamer.platform,
+            query_username: queryUsername,
+            query_platform: queryPlatform,
             username: player.username,
             match_id: match.matchID,
             team: player.team,

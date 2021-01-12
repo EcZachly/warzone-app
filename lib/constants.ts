@@ -1,4 +1,4 @@
-export const MATCH_DETAILS_SLEEP_TIME = 1 * 1000;
+export const MATCH_DETAILS_SLEEP_TIME = 3 * 1000;
 
 
 export const DATABASE_SCHEMA = 'warzone';
@@ -16,6 +16,7 @@ export const TABLES = {
 
 export const VIEWS = {
     MATCHES_AUGMENTED: 'matches_augmented',
+    MATCHES_TO_AUGMENT: 'matches_to_augment',
     FOLLOW_GAMERS: 'followed_gamers',
     GAMER_MATCHES_AUGMENTED: '_gamer_matches_augmented',
     PLAYER_STAT_SUMMARY: 'player_stat_summary_materialized',

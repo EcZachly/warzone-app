@@ -22,7 +22,13 @@ export function getGamerPlatforms() {
             id: 'psn',
             name: 'Playstation Network',
             image: 'playstation'
-        }
+        },
+        {
+            id: 'uno',
+            name: 'Activision Id',
+            image: 'battle'
+        },
+
     ];
 }
 

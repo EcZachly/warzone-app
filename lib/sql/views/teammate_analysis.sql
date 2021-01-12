@@ -7,7 +7,9 @@ WITH source AS (
             gm.*,
             COALESCE(gm2.query_username, 'without teammates')  AS helping_player,
             COALESCE(gm2.query_platform, 'without teammates') AS helping_player_platform
-    FROM warzone.gamer_matches gm
+    FROM warzone.gamers g
+        JOIN warzone.gamer_matches gm
+            ON g.username = gm.query_username AND g.platform = gm.query_platform
          JOIN warzone.matches_augmented m
             ON gm.match_id = m.match_id
          LEFT JOIN warzone.gamer_matches gm2

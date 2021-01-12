@@ -24,10 +24,13 @@ import UtilityService from './../../src/services/UtilityService';
 export function writeGamerMatchesToDatabase(matches, gamer) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
     const gamerMatchPromises = gamerMatches.map(async (m) => {
-        console.log(gamer);
+        let {match_id, uno_id } = m;
         let query_username = gamer.username;
         let query_platform = gamer.platform;
-        let {match_id } = m;
+        if(query_username == '-'){
+           query_username = uno_id;
+           query_platform = 'uno';
+        }
         let upsertQuery = {query_username, query_platform, match_id};
         return await insertDatabaseValues(m, TABLES.GAMER_MATCHES, upsertQuery);
     });

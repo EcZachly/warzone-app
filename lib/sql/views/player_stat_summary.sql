@@ -1,11 +1,11 @@
-create or replace view warzone.player_stat_summary as
+CREATE OR REPLACE view warzone.player_stat_summary as
 (
 
 WITH agg AS (
     SELECT COALESCE(m.game_category, '(all)')                                      AS game_category,
            query_username                                                          AS username,
            query_platform                                                          AS platform,
-           ARRAY_AGG(DISTINCT username)                                            AS aliases,
+           ARRAY_AGG(DISTINCT gm.username)                                            AS aliases,
            CAST(MAX(kills) AS INTEGER)                                             AS max_kills,
            CAST(MAX(deaths) AS INTEGER)                                            as max_deaths,
            CAST(MAX(damage_done) AS INTEGER)                                       AS max_damage_done,
@@ -33,10 +33,11 @@ WITH agg AS (
            CAST(AVG(damage_taken) AS REAL)                                         as damage_taken,
            CAST(AVG(headshots) AS REAL)                                            as headshots,
            CAST(SUM(CASE WHEN team_placement = 1 THEN 1 ELSE 0 END) AS REAL) * 100 /
-           COALESCE(NULLIF(COUNT(DISTINCT gm.match_id), 0), 1)                     AS win_percentage
+           COALESCE(NULLIF(COUNT(DISTINCT gm.match_id), 0), 1)                     AS win_percentage,
+           COUNT(DISTINCT gm.match_id)                                              AS num_matches
 
-    FROM warzone.gamer_matches gm
-             JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
+    FROM  warzone.gamer_matches gm
+          JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
     GROUP BY GROUPING SETS ( (m.game_category, gm.query_username, gm.query_platform),
                              (gm.query_username, gm.query_platform)
         )

@@ -1,6 +1,5 @@
 import database from './database';
 import {DATABASE_SCHEMA} from './constants';
-import Bluebird from 'bluebird';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 export async function queryDatabase(table, query, options = {}) {
@@ -17,7 +16,7 @@ export async function executeRawQuery(query){
 	}
 }
 
-export const updateDatabaseValues = async (query: object, data: Array<object> | object, table: string) => {
+export async function updateDatabaseValues(query: object, data: Array<object> | object, table: string) {
 	const db = await database;
 	try {
 		return await db[DATABASE_SCHEMA][table].update(query, data);
@@ -26,8 +25,7 @@ export const updateDatabaseValues = async (query: object, data: Array<object> | 
 	}
 }
 
-
-export const insertDatabaseValues = async (data: Array<object> | object, table: string, upsertQuery: object = null) => {
+export async function insertDatabaseValues(data: Array<object> | object, table: string, upsertQuery: object = null){
 	const db = await database;
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
@@ -53,17 +51,16 @@ export async function queryView(view, query = {}, options = {}){
 		return db[view](Object.values(query));
 	}
 	else{
-		return Bluebird.reject({message:'view ' + view + ' not found in database'});
+		return Promise.reject({message:'view ' + view + ' not found in database'});
 	}
 }
 
-
 export async function refreshMaterializedView(view){
-	const db = await database;
+	const db = await database
 	if(db[DATABASE_SCHEMA][view]){
 		return db[DATABASE_SCHEMA].run(`REFRESH MATERIALIZED VIEW ${view}`);
 	}
 	else{
-		return Bluebird.reject({message:'view ' + view + ' not found in database'});
+		return Promise.reject({message:'view ' + view + ' not found in database'});
 	}
 }

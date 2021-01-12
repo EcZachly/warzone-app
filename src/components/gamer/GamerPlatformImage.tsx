@@ -8,7 +8,8 @@ const CONFIG = {
     PRETTY_PLATFORM_MAP: {
         'xbl': 'Xbox Live',
         'psn': 'Playstation Network',
-        'battle': 'Battle.net'
+        'battle': 'Battle.net',
+        'uno': 'Activision'
     }
 };
 

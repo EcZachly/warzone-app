@@ -36,6 +36,7 @@ export default function GamerLink(props: { gamer: Gamer, single?: boolean, noLin
 
 
     function getUsername() {
+        console.log(gamer);
         if (noLink === true) {
             return (
                 <Text className={'username'}>{gamer.username}</Text>

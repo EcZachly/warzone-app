@@ -1,6 +1,7 @@
-import {queryMatches, getFullMatchDetailsFromAPI, writeGamerMatchesToDatabase} from "../model/matches";
+import {getFullMatchDetailsFromAPI, writeGamerMatchesToDatabase} from "../model/matches";
 import Bluebird from 'bluebird';
-import ApiWrapper from "../api_wrapper";
+import {queryView} from "../database_utils";
+import {VIEWS} from "../constants";
 
 /**
  * First queries the gamers table,
@@ -9,12 +10,17 @@ import ApiWrapper from "../api_wrapper";
  * @returns {PromiseLike<void>}
  */
 async function refreshData(query = {}) {
-    const matches = await queryMatches(query);
+    const matches = await queryView(VIEWS.MATCHES_TO_AUGMENT, {});
     await Bluebird.mapSeries(matches, (match) => {
-        return getFullMatchDetailsFromAPI(match['match_id']).then((data)=>{
-            return writeGamerMatchesToDatabase(data, {});
+        let {match_id} = match;
+        console.log('augmenting match ' + match_id);
+        return getFullMatchDetailsFromAPI(match_id).then((data)=>{
+            return writeGamerMatchesToDatabase(data, { username: '-', platform: '-'});
         })
     }).then((done)=>{
         console.log('done!');
     })
 }
+
+
+refreshData();

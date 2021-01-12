@@ -37,8 +37,6 @@ create OR REPLACE view warzone.matches_augmented AS SELECT match_id,
                WHEN mode LIKE '%stim%' OR MODE LIKE '%brbb%' THEN 'Buy Back'
                WHEN mode like '%rebirth%'  OR mode like '%rbrth%'
                         THEN 'Resurgence'
-
-
                WHEN mode LIKE '%truckwar%' THEN 'Truck War'
                WHEN mode LIKE '%zmbroy%' THEN 'Zombie Royale'
                WHEN mode like '%dmz%' THEN 'DMZ'
