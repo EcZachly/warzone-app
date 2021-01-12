@@ -74,18 +74,22 @@ export default function GamerAdd({recaptchaSiteKey, onAdd, doNotSubmit, baseUrl}
                     }
                 };
             } else {
-                response = await HttpService.http({
-                    url: (baseUrl || '') + '/api/gamer',
-                    method: 'POST',
-                    body: {
-                        username: newUserConfig.username,
-                        platform: newUserConfig.platform,
-                        token: token
-                    }
-                });
+                try {
+                    response = await HttpService.http({
+                        url: (baseUrl || '') + '/api/gamer',
+                        method: 'POST',
+                        body: {
+                            username: newUserConfig.username,
+                            platform: newUserConfig.platform,
+                            token: token
+                        }
+                    });
+                } catch (error) {
+                    response = error;
+                }
             }
 
-            if (response.status === 200) {
+            if (response && response.status === 200) {
                 if (onAdd) {
                     onAdd(response.data.gamer);
                 } else {
@@ -94,8 +98,10 @@ export default function GamerAdd({recaptchaSiteKey, onAdd, doNotSubmit, baseUrl}
             } else {
                 let message: unknown = 'An unknown error occurred while trying to create the user';
 
-                if (response.data && response.data.userMessage) {
+                if ((response.data && response.data.userMessage)) {
                     message = response.data.userMessage as string;
+                } else if (response && response.message) {
+                    message = response.message as string;
                 }
 
                 setLoading(false);
@@ -117,6 +123,11 @@ export default function GamerAdd({recaptchaSiteKey, onAdd, doNotSubmit, baseUrl}
             <Box>
                 <Header size={'sm'}>Add Gamer</Header>
 
+                <Alert type={message['type']}
+                       hideIfEmpty>
+                    {message['message']}
+                </Alert>
+
                 <Input label={'Username'}
                        type={'text'}
                        disabled={disabled}
@@ -132,11 +143,6 @@ export default function GamerAdd({recaptchaSiteKey, onAdd, doNotSubmit, baseUrl}
                        onChange={(value) => setPlatform(value)}/>
 
                 {loadingComponent}
-
-                <Alert type={message['type']}
-                       hideIfEmpty>
-                    {message['message']}
-                </Alert>
 
                 <Button onClick={() => addGamer()}>
                     Add Gamer

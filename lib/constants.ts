@@ -1,10 +1,17 @@
 export const MATCH_DETAILS_SLEEP_TIME = 2 * 1000;
 
+
+export const DATABASE_SCHEMA = 'warzone';
+
 export const TABLES = {
     GAMER_MATCHES: 'gamer_matches_new',
+    MATCHES: 'matches',
     GAMERS: 'gamers',
     USERS: 'users',
-    GAMER_RELATIONSHIPS: 'gamer_relationships'
+    RESOURCES: 'resources',
+    SITE_EVENTS: 'site_events',
+    GAMER_RELATIONSHIPS: 'gamer_relationships',
+    ETL_JOBS: 'etl_jobs'
 };
 
 export const VIEWS = {
@@ -23,7 +30,8 @@ export const VIEWS = {
     GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
-    MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships_materialized'
+    MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships_materialized',
+    MIN_MAX_TIMESTAMPS_VIEW: 'min_max_timestamps'
 };
 
 export const GAME_CATEGORIES = {
@@ -42,13 +50,6 @@ export const GAME_CATEGORIES = {
 
 export const BASE_TITLE = 'Warzone Stats Tracker';
 export const SENDER_EMAIL = 'warzone@brshooter.com'
-export const GAMER_TABLE = 'gamers';
-export const ETL_JOBS = 'etl_jobs';
-export const MATCH_TABLE = 'matches';
-export const GAMER_MATCH_TABLE = 'gamer_matches_new';
-export const MIN_MAX_TIMESTAMPS_VIEW = 'min_max_timestamps';
-export const SITE_EVENTS = 'site_events';
-export const DATABASE_SCHEMA = 'warzone';
 
 export const MATERIALIZED_VIEWS_DEPENDENCIES: Array<string> = [
     VIEWS.GRADING_TABLE,

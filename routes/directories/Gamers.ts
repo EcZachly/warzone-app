@@ -31,8 +31,8 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
     let error = null;
 
     let errorObject = {
-        'missing_data': {userMessage: 'body.username and body.platform (String) are required', status: 400},
-        'recaptcha_fail': {userMessage: 'failed recaptcha verification', status: 400}
+        'missing_data': {message: 'body.username and body.platform (String) are required', status: 400},
+        'recaptcha_fail': {message: 'failed recaptcha verification', status: 400}
     };
 
     if (!username || !platform) {
@@ -131,6 +131,7 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 
         queryOptions.order = [sortObj];
     }
+
     let playerQuery = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, queryParams, queryOptions);
 
     await playerQuery.executeQuery();

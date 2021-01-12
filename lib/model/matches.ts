@@ -3,11 +3,9 @@ import Bluebird from 'bluebird';
 import WarzoneMapper from '../etl/mapper';
 import {insertIntoDatabase, queryDatabase} from '../etl/utils';
 import {
-    GAMER_MATCH_TABLE,
-    MATCH_TABLE,
-    MIN_MAX_TIMESTAMPS_VIEW,
-    MATCH_DETAILS_SLEEP_TIME,
-    GAMER_TABLE
+    TABLES,
+    VIEWS,
+    MATCH_DETAILS_SLEEP_TIME
 } from '../constants';
 import ApiWrapper from '../api_wrapper';
 
@@ -28,7 +26,7 @@ export function writeGamerMatchesToDatabase(matches, gamer) {
     const gamerMatchPromises = gamerMatches.map(async (m) => {
         let {uno_id, match_id } = m;
         let upsertQuery = {uno_id, match_id};
-        return await insertIntoDatabase(m, GAMER_MATCH_TABLE, upsertQuery);
+        return await insertIntoDatabase(m, TABLES.GAMER_MATCHES, upsertQuery);
     });
     return Bluebird.all(gamerMatchPromises);
 }
@@ -41,7 +39,7 @@ export function writeGamerMatchesToDatabase(matches, gamer) {
  */
 export function writeMatchesToDatabase(matches) {
     const mappedMatches = matches.map(WarzoneMapper.mapMatch);
-    const matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, MATCH_TABLE));
+    const matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, TABLES.MATCHES));
     return Bluebird.all(matchPromises);
 }
 
@@ -57,6 +55,7 @@ export async function getMinMaxMatchTimestamps(gamer) {
         query_username: gamer.username,
         query_platform: gamer.platform
     });
+
     return gamers[0] || {};
 }
 
@@ -69,19 +68,23 @@ export async function getMinMaxMatchTimestamps(gamer) {
  * @returns {*}
  */
 export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepTime = MATCH_DETAILS_SLEEP_TIME) {
-    console.log('# of Details API calls needed for gamer:' + gamer.username + ' on platform:' + gamer.platform + ': ' + queryTimeframes.length);
-    console.log('getting match details for: ' + gamer.username + ' on platform:' + gamer.platform);
+    const gamerID = [gamer.platform, gamer.username].join('-');
 
-    const matches = await Bluebird.mapSeries(queryTimeframes, async (item) => {
+    console.log(gamerID + ': Getting match details');
+    console.log(gamerID + ': # of match details API calls needed: ' + queryTimeframes.length);
+
+    const matches = await Bluebird.mapSeries(queryTimeframes, async (item, index) => {
         const output = await api.MWcombatwzdate(gamer.username, item.start, item.end, gamer.platform);
         const matches = UtilityService.validateItem(output.matches, 'array', []);
 
-        console.log('Num matches for interval for gamer:' + gamer.username + ' on platform:' + gamer.platform + ':' + matches.length);
+        console.log(`${gamer.platform}-${gamer.username}: ${index + 1} of ${queryTimeframes.length}, getting ${matches.length} match details from API`);
 
         UtilityService.sleep(sleepTime);
 
         return matches;
     });
+
+    console.log(gamerID + ': completed getting match details');
 
     return UtilityService.validateItem(matches, 'array', []).flatMap((matchArr) => matchArr);
 }
@@ -98,7 +101,7 @@ export async function getFullMatchDetailsFromAPI(match_id){
 
 export async function queryMatches(query, options = {}) {
     query = UtilityService.validateItem(query, 'object', {});
-    return queryDatabase(MATCH_TABLE, query, options);
+    return queryDatabase(TABLES.MATCHES, query, options);
 }
 
 

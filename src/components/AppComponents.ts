@@ -68,7 +68,8 @@ export {GamerInfluenceList};
 
 
 //L
-
+import Loading from './app-components/Loading';
+export {Loading};
 
 //M
 export {Navbar};
@@ -108,6 +109,7 @@ export default {
     ClassBadgeList: ClassBadgeList,
     GamerAliasList: GamerAliasList,
     GamerHeat: GamerHeat,
+    Loading,
     ClassBadge: ClassBadge,
     GamerCard: GamerCard,
     GamerGradeChart: GamerGradeChart,

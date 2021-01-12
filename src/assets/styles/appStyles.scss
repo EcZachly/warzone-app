@@ -3,7 +3,9 @@
 
 html {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -52,7 +54,7 @@ a:active {
   background-size: cover;
 }
 
-#section-display h1 {
+#section-display h1.xl {
   font-size: 3em;
   line-height: 100%;
   font-weight: 500;
@@ -83,7 +85,7 @@ a:active {
   }
 
 
-  #section-display h1 {
+  #section-display h1.xl {
     font-size: 4em;
   }
 }
@@ -126,6 +128,124 @@ a:active {
     display: flex;
     flex-flow: row;
   }
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SECTION ABOUT
+
+#section-about {
+  padding-top: 75px;
+  padding-bottom: 75px;
+}
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SECTION-FEATURES
+
+#section-features {
+  background: lighten($theme-background-color, 5);
+}
+
+#section-features .info-container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#section-features .info-container .container {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+#section-features .info-container.accent {
+  background-color: lighten($theme-background-color, 8);
+}
+
+#section-features .info-container .details {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#section-features .info-container .image {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+@media (min-width: 576px) {
+  #section-features .info-container .container {
+    flex-flow: row wrap;
+  }
+
+  #section-features .info-container .details {
+    width: 30%;
+    margin: 0;
+  }
+
+  #section-features .info-container .image {
+    width: 60%;
+    margin: 0;
+  }
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+
+//===-=--=-=-=--==--==--=-=-=-===-=--=-=-=--==--==--=-=-=-//
+//SECTION-ACTION
+
+#section-action {
+  padding-top: 75px;
+  padding-bottom: 75px;
+}
+
+
+
+@media (min-width: 576px) {
+
+}
+
+@media (min-width: 768px) {
+
 }
 
 @media (min-width: 992px) {

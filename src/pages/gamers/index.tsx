@@ -101,6 +101,10 @@ export default function Gamers({
                                        {
                                            value: {sort: 'win_percentage', direction: 'asc'},
                                            text: 'Win Rate (Low to High)'
+                                       },
+                                       {
+                                           value: {sort: 'heat_score', direction: 'desc'},
+                                           text: 'Heat (High to Low)'
                                        }
                                    ]}/>
                             <div>

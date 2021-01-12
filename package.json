@@ -12,6 +12,7 @@
     "refresh-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType refresh",
     "backfill-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType backfill",
     "update-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType update",
+    "view-logs": "heroku logs -t",
     "dev": "ts-node server.ts",
     "_dev": "next dev",
     "start": "NODE_ENV=production ts-node server.ts",

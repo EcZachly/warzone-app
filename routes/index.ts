@@ -10,6 +10,7 @@ const MatchRoutes = require('./../lib/components/Matches/MatchRoutes');
 const GamerMatchRoutes = require('./../lib/components/GamerMatches/GamerMatchRoutes');
 const GamerRelationshipRoutes = require('./directories/GamerRelationshipRoutes');
 const Users = require('./directories/UserRoutes');
+const Resources = require('./directories/Resources');
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -20,7 +21,7 @@ export function include(server) {
     router.post('/api/forgot-password', Users.sendForgotPassword);
     router.put('/api/forgot-password', Users.finishForgotPassword);
     router.get('/api/confirm-user', Users.finishConfirmAccount);
-
+    router.get('/api/resources', Resources.findResources);
     router.post('/api/v1/verify-user-token', Users.verifyUserToken);
 
 

@@ -5,6 +5,7 @@ import {Box, Paragraph} from '../SimpleComponents';
 import {Input} from './../SmartComponents';
 
 import TrendChart from '../charting/TrendChart';
+import {GamerService} from './index';
 
 
 export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, height, width}) {
@@ -21,7 +22,7 @@ export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, hei
 
     let viewData = data.map((row) => {
         trends[chosenChart].forEach((col) => {
-            row[col.split('_').map(_.capitalize).join(' ')] = row[col];
+            row[GamerService.sanitizeStatKey(col)] = row[col];
         });
 
         return row;
@@ -29,7 +30,7 @@ export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, hei
 
 
     if (viewData.length) {
-        let capitalKeys = trends[chosenChart].map((key) => key.split('_').map(_.capitalize).join(' '));
+        let capitalKeys = trends[chosenChart].map((key) => GamerService.sanitizeStatKey(key));
 
         return (
             <Box>
@@ -64,7 +65,7 @@ function getRadioOptions(options) {
     return options.map((option) => {
         return {
             value: option,
-            text: option.split('_').map(_.capitalize).join(' '),
+            text: GamerService.sanitizeStatKey(option),
             className: ''
         };
     });

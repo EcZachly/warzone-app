@@ -1,13 +1,16 @@
 import {queryView} from './analysis';
 
+type ResponseData = Array<any> | Record<string, unknown>;
+type Options = object;
+
 export class ViewQuery {
     view: string;
     query: Record<string, unknown>;
-    options: object;
-    data: Array<any> | object;
-    sanitize: (input: Array<any>| object) => Array<any> | object;
+    options: Options;
+    data: ResponseData;
+    sanitize: (input: ResponseData) => ResponseData;
 
-    constructor(view, query, options: object={}, sanitize=(record: Array<any>) => record) {
+    constructor(view, query, options: Options={}, sanitize=(record: Array<any>) => record) {
         this.view = view;
         this.query = query;
         this.options = options;

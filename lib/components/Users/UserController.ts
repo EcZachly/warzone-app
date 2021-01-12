@@ -5,7 +5,7 @@ import {TABLES} from '../../constants';
 import {User, RawUser, UserList, RawUserList} from './UserTypes';
 import {UserService} from './index';
 import randomstring from 'randomstring';
-import {Metadata} from "../../../src/components/Metadata/MetadataTypes";
+import {Metadata} from '../../../src/components/Metadata/MetadataTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -13,6 +13,7 @@ import {Metadata} from "../../../src/components/Metadata/MetadataTypes";
 export function createUser(user: Partial<RawUser>): Promise<RawUser> {
     return new Promise((resolve, reject) => {
         user.confirm_string = randomstring.generate(10);
+        // @ts-ignore
         user.metadata = JSON.stringify(createNewMetadata());
         return DAO.insert(TABLES.USERS, user).then((newUser: RawUser) => {
             if (newUser) {
@@ -27,15 +28,17 @@ export function createUser(user: Partial<RawUser>): Promise<RawUser> {
 
 
 export async function updateUser(query: Record<any, unknown>, user: Partial<RawUser>): Promise<RawUser> {
-    try{
-        return await DAO.update(TABLES.USERS, query, user);
+    if (user.metadata) {
+        // @ts-ignore
+        user.metadata = JSON.stringify(user.metadata);
     }
-    catch(e){
+
+    try {
+        return await DAO.update(TABLES.USERS, query, user);
+    } catch (e) {
         throw e;
     }
 }
-
-
 
 
 
@@ -45,7 +48,6 @@ function createNewMetadata(obj: Record<any, unknown> = {}): Metadata {
     };
     return {...defaultMetadata, ...obj};
 }
-
 
 
 

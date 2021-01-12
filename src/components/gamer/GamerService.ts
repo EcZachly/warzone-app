@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import HttpService from '../../services/HttpService';
 import {GamerList} from './GamerTypes';
 
@@ -60,7 +62,7 @@ export function queryGamers(query): Promise<GamerList> {
 
 
 
-export  function minifyUsername(username) {
+export function minifyUsername(username) {
     const MAX_USERNAME_LENGTH = 12;
     let newUsername = username.split('#')[0];
 
@@ -73,10 +75,23 @@ export  function minifyUsername(username) {
 
 
 
+export function sanitizeStatKey(key) {
+    let keywordMap = {
+        'Avg': 'Average',
+        'Kdr': 'KDR',
+        'Num': 'Number of',
+    };
+
+    return key.split('_').map(_.capitalize).map((word) => keywordMap[word] || word).join(' ');
+}
+
+
+
 export default {
     getGamerPlatforms,
     getPlatformObjByID,
     minifyUsername,
     queryGamers,
+    sanitizeStatKey,
     getGamerDetailView
 };
