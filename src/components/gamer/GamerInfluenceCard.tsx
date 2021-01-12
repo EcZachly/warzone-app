@@ -18,7 +18,6 @@ export default function GamerInfluenceCard({gamer, relationships}) {
     } as Gamer;
 
 
-
     let gamerLink = (
         <GamerLink gamer={gamer}/>
     );
@@ -31,7 +30,7 @@ export default function GamerInfluenceCard({gamer, relationships}) {
     );
     let helperStats = getStatLabelValuesForPerson('helper');
 
-    
+
 
     return (
         <Card className={'gamer-influence-card'}>
@@ -73,7 +72,14 @@ export default function GamerInfluenceCard({gamer, relationships}) {
     function getStatLabelValuesForPerson(type: 'gamer' | 'helper') {
         let isGamer = (type === 'gamer');
 
-        return relationships.map((relationship) => {
+        const numberOfMatchesRelationship = {
+            relationship_stat: 'num_matches',
+            label: 'Matches',
+            stat_with_player: relationships[0].num_matches,
+            helper_stat_with_player: relationships[0].num_matches
+        };
+
+        return [numberOfMatchesRelationship, ...relationships].map((relationship) => {
             let statName = GamerService.sanitizeStatKey(relationship['relationship_stat']);
 
             return (
