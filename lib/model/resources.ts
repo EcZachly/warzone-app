@@ -1,5 +1,5 @@
 import UtilityService from "../../src/services/UtilityService";
-import {queryDatabase} from "../etl/utils";
+import {queryDatabase} from "../database_utils";
 import {TABLES} from "../constants";
 
 export function queryResources(query = {}, options = {}){

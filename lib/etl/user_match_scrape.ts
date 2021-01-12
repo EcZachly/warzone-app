@@ -1,6 +1,6 @@
 import Bluebird from 'bluebird';
 
-import {getTimestampList} from './utils';
+import {getTimestampList} from './etl_utils';
 import {queryGamers, queryFollowedGamers, updateGamer} from '../model/gamers';
 import {
     getMatchDetailsFromAPI,
@@ -154,6 +154,8 @@ export async function runBackfills() {
     console.log('runBackfills complete\r\n\r\n');
 }
 
+
+runBackfills()
 
 function generateGamerID(gamer) {
     return [gamer.platform, gamer.username].join('-');

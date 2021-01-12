@@ -1,4 +1,4 @@
-import {queryView} from './analysis';
+import {queryView} from "../database_utils";
 
 type ResponseData = Array<any> | Record<string, unknown>;
 type Options = object;

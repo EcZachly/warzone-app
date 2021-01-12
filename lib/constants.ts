@@ -1,4 +1,4 @@
-export const MATCH_DETAILS_SLEEP_TIME = 5 * 1000;
+export const MATCH_DETAILS_SLEEP_TIME = 1 * 1000;
 
 
 export const DATABASE_SCHEMA = 'warzone';

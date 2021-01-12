@@ -1,4 +1,4 @@
-import {queryDatabase} from '../../etl/utils';
+import {queryDatabase} from '../../database_utils';
 
 import {VIEWS} from '../../constants';
 

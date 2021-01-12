@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird';
 
 import WarzoneMapper from '../etl/mapper';
-import {insertIntoDatabase, queryDatabase} from '../etl/utils';
+import {insertDatabaseValues, queryDatabase, refreshMaterializedView} from '../database_utils';
 import {
     TABLES,
     VIEWS,
@@ -24,9 +24,12 @@ import UtilityService from './../../src/services/UtilityService';
 export function writeGamerMatchesToDatabase(matches, gamer) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
     const gamerMatchPromises = gamerMatches.map(async (m) => {
-        let {uno_id, match_id } = m;
-        let upsertQuery = {uno_id, match_id};
-        return await insertIntoDatabase(m, TABLES.GAMER_MATCHES, upsertQuery);
+        console.log(gamer);
+        let query_username = gamer.username;
+        let query_platform = gamer.platform;
+        let {match_id } = m;
+        let upsertQuery = {query_username, query_platform, match_id};
+        return await insertDatabaseValues(m, TABLES.GAMER_MATCHES, upsertQuery);
     });
     return Bluebird.all(gamerMatchPromises);
 }
@@ -39,7 +42,7 @@ export function writeGamerMatchesToDatabase(matches, gamer) {
  */
 export function writeMatchesToDatabase(matches) {
     const mappedMatches = matches.map(WarzoneMapper.mapMatch);
-    const matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, TABLES.MATCHES));
+    const matchPromises = mappedMatches.map((m) => insertDatabaseValues(m, TABLES.MATCHES));
     return Bluebird.all(matchPromises);
 }
 
@@ -105,10 +108,20 @@ export async function queryMatches(query, options = {}) {
 }
 
 
+export async function refreshMatchAnalytics(){
+    const viewsToRefresh = [
+        VIEWS.PLAYER_STAT_SUMMARY,
+        VIEWS.TEAMMATES
+    ].map((view) => view + '_materialized');
+    return Bluebird.all(viewsToRefresh.map((view)=> refreshMaterializedView(view)))
+}
+
+
 export async function initializeMatches(gamer) {
     const API = await ApiWrapper.getInstance();
     const timestampList = [{start: 0, end: 0}];
     const matches = await getMatchDetailsFromAPI(timestampList, gamer, API, 5);
     await writeMatchesToDatabase(matches);
     await writeGamerMatchesToDatabase(matches, gamer);
+    await refreshMatchAnalytics();
 }

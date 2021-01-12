@@ -1,6 +1,6 @@
-import {insertIntoDatabase} from '../etl/utils';
+import {insertDatabaseValues} from '../database_utils';
 import {TABLES} from '../constants';
 
 export async function createEvent(event) {
-    return insertIntoDatabase(event, TABLES.SITE_EVENTS);
+    return insertDatabaseValues(event, TABLES.SITE_EVENTS);
 }

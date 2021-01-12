@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next';
 import Bluebird from 'bluebird';
 
-import {initializeGamer, updateGamer, queryGamers, sanitizeGamer, sanitizeTeammates} from '../../lib/model/gamers';
+import {initializeGamer, updateGamer, queryGamers} from '../../lib/model/gamers';
 import {getQueryParamToSQLMap} from '../../lib/components/Utils';
 import {initializeMatches} from '../../lib/model/matches';
 

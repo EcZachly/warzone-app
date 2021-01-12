@@ -1,4 +1,4 @@
-import {insertIntoDatabase, queryDatabase, updateDatabaseRecords} from '../etl/utils';
+import {insertDatabaseValues, queryDatabase, updateDatabaseValues} from '../database_utils';
 import WarzoneMapper from '../etl/mapper';
 import {TABLES, VIEWS} from '../constants';
 import ApiWrapper from '../api_wrapper';
@@ -15,7 +15,7 @@ export async function initializeGamer(queryGamer) {
     const unoData = await API.MWcombatwzdate(queryGamer.username, 0,0, queryGamer.platform);
     gamer.uno_id = unoData?.matches[0]?.player.uno;
     gamer.needs_backfill = true;
-    return insertIntoDatabase(WarzoneMapper.mapGamer(gamer), TABLES.GAMERS);
+    return insertDatabaseValues(WarzoneMapper.mapGamer(gamer), TABLES.GAMERS);
 }
 
 
@@ -24,7 +24,7 @@ export async function initializeGamer(queryGamer) {
 
 
 export function updateGamer(query: object, gamer: Partial<Gamer>) {
-    return updateDatabaseRecords(query, gamer, TABLES.GAMERS);
+    return updateDatabaseValues(query, gamer, TABLES.GAMERS);
 }
 
 export function queryFollowedGamers(query, options = {}) {
