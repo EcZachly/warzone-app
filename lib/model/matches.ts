@@ -2,7 +2,11 @@ import Bluebird from 'bluebird';
 
 import WarzoneMapper from '../etl/mapper';
 import {insertIntoDatabase, queryDatabase} from '../etl/utils';
-import {GAMER_MATCH_TABLE, MATCH_TABLE, MIN_MAX_TIMESTAMPS_VIEW, MATCH_DETAILS_SLEEP_TIME} from '../constants';
+import {
+    TABLES,
+    VIEWS,
+    MATCH_DETAILS_SLEEP_TIME
+} from '../constants';
 import ApiWrapper from '../api_wrapper';
 
 import UtilityService from './../../src/services/UtilityService';
@@ -19,7 +23,11 @@ import UtilityService from './../../src/services/UtilityService';
  */
 export function writeGamerMatchesToDatabase(matches, gamer) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
-    const gamerMatchPromises = gamerMatches.map((m) => insertIntoDatabase(m, GAMER_MATCH_TABLE));
+    const gamerMatchPromises = gamerMatches.map(async (m) => {
+        let {uno_id, match_id } = m;
+        let upsertQuery = {uno_id, match_id};
+        return await insertIntoDatabase(m, TABLES.GAMER_MATCHES, upsertQuery);
+    });
     return Bluebird.all(gamerMatchPromises);
 }
 
@@ -31,7 +39,7 @@ export function writeGamerMatchesToDatabase(matches, gamer) {
  */
 export function writeMatchesToDatabase(matches) {
     const mappedMatches = matches.map(WarzoneMapper.mapMatch);
-    const matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, MATCH_TABLE));
+    const matchPromises = mappedMatches.map((m) => insertIntoDatabase(m, TABLES.MATCHES));
     return Bluebird.all(matchPromises);
 }
 
@@ -43,7 +51,7 @@ export function writeMatchesToDatabase(matches) {
  * @returns {*}
  */
 export async function getMinMaxMatchTimestamps(gamer) {
-    const gamers = await queryDatabase(MIN_MAX_TIMESTAMPS_VIEW, {
+    const gamers = await queryDatabase(VIEWS.MIN_MAX_TIMESTAMPS_VIEW, {
         query_username: gamer.username,
         query_platform: gamer.platform
     });
@@ -81,6 +89,20 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
     return UtilityService.validateItem(matches, 'array', []).flatMap((matchArr) => matchArr);
 }
 
+export async function getFullMatchDetailsFromAPI(match_id){
+    let callApi =  await ApiWrapper.getInstance();
+   let data = await callApi.MWFullMatchInfowz(match_id);
+   return data.allPlayers
+}
+
+
+
+
+
+export async function queryMatches(query, options = {}) {
+    query = UtilityService.validateItem(query, 'object', {});
+    return queryDatabase(TABLES.MATCHES, query, options);
+}
 
 
 export async function initializeMatches(gamer) {

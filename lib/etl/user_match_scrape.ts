@@ -1,7 +1,7 @@
 import Bluebird from 'bluebird';
 
 import {getTimestampList} from './utils';
-import {queryGamers, updateGamer} from '../model/gamers';
+import {queryGamers, queryFollowedGamers, updateGamer} from '../model/gamers';
 import {
     getMatchDetailsFromAPI,
     getMinMaxMatchTimestamps,
@@ -136,6 +136,12 @@ async function refreshData(query = {}) {
     await Bluebird.map(gamers, (gamer) => executePipeline(gamer), {concurrency: THREAD_CONCURRENCY_LIMIT});
 }
 
+export async function refreshFollowedGamers(){
+    // only update followed users who have already been backfilled
+    const gamers = await queryFollowedGamers({needs_backfill: false});
+    await Bluebird.map(gamers, (gamer) => executePipeline(gamer), {concurrency: THREAD_CONCURRENCY_LIMIT});
+}
+
 export async function runUpdates() {
     console.log('\r\n\r\nstarting cron job: runUpdates');
     await refreshData({needs_update: true});
@@ -147,13 +153,6 @@ export async function runBackfills() {
     await refreshData({needs_backfill: true});
     console.log('runBackfills complete\r\n\r\n');
 }
-
-export async function runRefresh() {
-    console.log('\r\n\r\nstarting cron job: runRefresh');
-    await refreshData({});
-    console.log('runRefresh complete\r\n\r\n');
-}
-
 
 
 function generateGamerID(gamer) {

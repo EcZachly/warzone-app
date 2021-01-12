@@ -8,6 +8,7 @@ export default class ApiWrapper {
     static getInstance(): CallOfDutyAPI {
         if (!ApiWrapper.API) {
             ApiWrapper.API = new CallOfDutyAPI({ratelimit: {maxRequests: 1, perMilliseconds: 10000, maxRPS: 1}});
+
         }
 
         if(ApiWrapper.API.isLoggedIn()){

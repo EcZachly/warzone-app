@@ -1,7 +1,7 @@
 import {argv} from 'yargs';
 import md5 from 'md5';
 
-import {runBackfills, runRefresh, runUpdates} from '../user_match_scrape';
+import {runBackfills, refreshFollowedGamers, runUpdates} from '../user_match_scrape';
 import {createEtlJob, updateEtlJob} from '../../model/etl_jobs';
 
 const CONFIG = {
@@ -14,9 +14,9 @@ const CONFIG = {
             name: 'user_matches_backfill',
             method: runBackfills
         },
-        refresh: {
-            name: 'user_matches_refresh',
-            method: runRefresh
+        followed_users: {
+            name: 'followed_users',
+            method: refreshFollowedGamers
         }
     }
 };

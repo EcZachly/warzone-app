@@ -1,6 +1,6 @@
 import {insertIntoDatabase, queryDatabase, updateDatabaseRecords} from '../etl/utils';
 import WarzoneMapper from '../etl/mapper';
-import {GAMER_TABLE} from '../constants';
+import {TABLES, VIEWS} from '../constants';
 import ApiWrapper from '../api_wrapper';
 import UtilityService from './../../src/services/UtilityService';
 import {Gamer} from '../../src/components/gamer/GamerTypes';
@@ -12,21 +12,29 @@ import {Gamer} from '../../src/components/gamer/GamerTypes';
 export async function initializeGamer(queryGamer) {
     const API = await ApiWrapper.getInstance();
     const gamer = await API.MWwz(queryGamer.username, queryGamer.platform);
+    const unoData = await API.MWcombatwzdate(queryGamer.username, 0,0, queryGamer.platform);
+    gamer.uno_id = unoData?.matches[0]?.player.uno;
     gamer.needs_backfill = true;
-    return insertIntoDatabase(WarzoneMapper.mapGamer(gamer), GAMER_TABLE);
+    return insertIntoDatabase(WarzoneMapper.mapGamer(gamer), TABLES.GAMERS);
 }
+
+
+
 
 
 
 export function updateGamer(query: object, gamer: Partial<Gamer>) {
-    return updateDatabaseRecords(query, gamer, GAMER_TABLE);
+    return updateDatabaseRecords(query, gamer, TABLES.GAMERS);
 }
 
-
+export function queryFollowedGamers(query, options = {}) {
+    query = UtilityService.validateItem(query, 'object', {});
+    return queryDatabase(VIEWS.FOLLOW_GAMERS, query, options);
+}
 
 export function queryGamers(query, options = {}) {
     query = UtilityService.validateItem(query, 'object', {});
-    return queryDatabase(GAMER_TABLE, query, options);
+    return queryDatabase(TABLES.GAMERS, query, options);
 }
 
 

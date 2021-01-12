@@ -2,6 +2,7 @@ CREATE TABLE warzone.gamer_matches (
     query_username TEXT,
     query_platform TEXT,
     match_id TEXT REFERENCES warzone.matches(match_id),
+    uno_id TEXT,
     username TEXT,
     team TEXT,
     clan_tag TEXT,
@@ -25,6 +26,7 @@ CREATE TABLE warzone.gamer_matches (
     objective JSON,
     xp JSON,
     loadout JSON,
-    FOREIGN KEY (query_username, query_platform) REFERENCES warzone.gamers(username, platform),
-    PRIMARY KEY (query_username, match_id)
+    contracts JSON,
+    raw_data JSON,
+    PRIMARY KEY (query_username, query_platform, uno_id, match_id)
 );
