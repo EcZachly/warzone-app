@@ -1,6 +1,6 @@
 import {insertIntoDatabase, queryDatabase, updateDatabaseRecords} from '../etl/utils';
 import WarzoneMapper from '../etl/mapper';
-import {TABLES} from '../constants';
+import {TABLES, VIEWS} from '../constants';
 import ApiWrapper from '../api_wrapper';
 import UtilityService from './../../src/services/UtilityService';
 import {Gamer} from '../../src/components/gamer/GamerTypes';
@@ -27,7 +27,10 @@ export function updateGamer(query: object, gamer: Partial<Gamer>) {
     return updateDatabaseRecords(query, gamer, TABLES.GAMERS);
 }
 
-
+export function queryFollowedGamers(query, options = {}) {
+    query = UtilityService.validateItem(query, 'object', {});
+    return queryDatabase(VIEWS.FOLLOW_GAMERS, query, options);
+}
 
 export function queryGamers(query, options = {}) {
     query = UtilityService.validateItem(query, 'object', {});

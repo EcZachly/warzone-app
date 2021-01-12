@@ -18,5 +18,3 @@ async function refreshData(query = {}) {
         console.log('done!');
     })
 }
-
-refreshData({mode: 'br_brduos'});

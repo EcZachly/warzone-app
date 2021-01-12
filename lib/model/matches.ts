@@ -51,7 +51,7 @@ export function writeMatchesToDatabase(matches) {
  * @returns {*}
  */
 export async function getMinMaxMatchTimestamps(gamer) {
-    const gamers = await queryDatabase(MIN_MAX_TIMESTAMPS_VIEW, {
+    const gamers = await queryDatabase(VIEWS.MIN_MAX_TIMESTAMPS_VIEW, {
         query_username: gamer.username,
         query_platform: gamer.platform
     });
