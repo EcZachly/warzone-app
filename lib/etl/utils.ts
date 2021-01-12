@@ -63,7 +63,7 @@ export async function executeRawQuery(query){
 		return failure
 	}
 }
-export async function insertIntoDatabase(data, table) {
+export async function insertIntoDatabase(data, table, upsertQuery = null) {
 	const db = await database;
 	try {
 		return await db[DATABASE_SCHEMA][table].insert(data);
@@ -72,6 +72,11 @@ export async function insertIntoDatabase(data, table) {
 		if (!isDuplicateRecordError) {
 			console.log(failure);
 		}
+		else{
+			if(upsertQuery){
+				return await updateDatabaseRecords(upsertQuery, data, table);
+			}
+		}
 	}
 }
 
@@ -79,7 +84,6 @@ export async function insertIntoDatabase(data, table) {
 
 export async function updateDatabaseRecords(query, data, table) {
 	const db = await database;
-
 	try {
 		return await db[DATABASE_SCHEMA][table].update(query, data);
 	} catch (failure) {

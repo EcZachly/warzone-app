@@ -25,7 +25,11 @@ import UtilityService from './../../src/services/UtilityService';
  */
 export function writeGamerMatchesToDatabase(matches, gamer) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
-    const gamerMatchPromises = gamerMatches.map((m) => insertIntoDatabase(m, GAMER_MATCH_TABLE));
+    const gamerMatchPromises = gamerMatches.map(async (m) => {
+        let {uno_id, match_id } = m;
+        let upsertQuery = {uno_id, match_id};
+        return await insertIntoDatabase(m, GAMER_MATCH_TABLE, upsertQuery);
+    });
     return Bluebird.all(gamerMatchPromises);
 }
 
@@ -87,6 +91,9 @@ export async function getFullMatchDetailsFromAPI(match_id){
    let data = await callApi.MWFullMatchInfowz(match_id);
    return data.allPlayers
 }
+
+
+
 
 
 export async function queryMatches(query, options = {}) {

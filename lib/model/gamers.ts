@@ -12,9 +12,14 @@ import {Gamer} from '../../src/components/gamer/GamerTypes';
 export async function initializeGamer(queryGamer) {
     const API = await ApiWrapper.getInstance();
     const gamer = await API.MWwz(queryGamer.username, queryGamer.platform);
+    const unoData = await API.MWcombatwzdate(queryGamer.username, 0,0, queryGamer.platform);
+    gamer.uno_id = unoData.matches[0].player.uno;
     gamer.needs_backfill = true;
     return insertIntoDatabase(WarzoneMapper.mapGamer(gamer), GAMER_TABLE);
 }
+
+
+
 
 
 

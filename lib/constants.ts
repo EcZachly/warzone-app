@@ -1,7 +1,7 @@
 export const MATCH_DETAILS_SLEEP_TIME = 2 * 1000;
 
 export const TABLES = {
-    GAMER_MATCHES: 'gamer_matches',
+    GAMER_MATCHES: 'gamer_matches_new',
     GAMERS: 'gamers',
     USERS: 'users',
     GAMER_RELATIONSHIPS: 'gamer_relationships'

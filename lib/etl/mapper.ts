@@ -27,7 +27,7 @@ export default class WarzoneMapper{
     }
     static mapGamerMatch(match, queryGamer){
         let {playerStats, player} = match;
-        let missionsByType = player.brMissionStats.missionStatsByType;
+        let missionsByType = player.brMissionStats?.missionStatsByType;
         const dataObject = {
             query_username: queryGamer.username,
             query_platform: queryGamer.platform,
@@ -69,9 +69,9 @@ export default class WarzoneMapper{
                 down_enemy_circle_2: playerStats.objectiveBrDownEnemyCircle2,
                 down_enemy_circle_1: playerStats.objectiveBrDownEnemyCircle1,
                 missions_started: playerStats.objectiveBrMissionPickupTablet,
-                missions_completed: player.brMissionStats.missionsComplete,
-                caches_open: playerStats.objectiveBrCacheOpen,
-                teams_wiped: playerStats.objectiveTeamWiped
+                missions_completed: player?.brMissionStats?.missionsComplete,
+                caches_open: playerStats?.objectiveBrCacheOpen,
+                teams_wiped: playerStats?.objectiveTeamWiped
             }),
             xp: JSON.stringify({
                 medal_xp: playerStats.medalXp,
@@ -84,12 +84,13 @@ export default class WarzoneMapper{
             }),
             loadout: JSON.stringify(player.loadout),
             contracts: JSON.stringify({
-                bounty: missionsByType.assassination && missionsByType.assassination.count,
-                recon: missionsByType.domination && missionsByType.domination.count,
-                scavenger: missionsByType.scavenger && missionsByType.scavenger.count,
-                most_wanted: missionsByType.vip && missionsByType.vip.count,
-                supply_run:  missionsByType.timedrun && missionsByType.timedrun.count,
-            })
+                bounty:  missionsByType?.assassination?.count,
+                recon: missionsByType?.domination?.count,
+                scavenger: missionsByType?.scavenger?.count,
+                most_wanted:  missionsByType?.vip?.count,
+                supply_run:  missionsByType?.timedrun?.count,
+            }),
+            raw_data: JSON.stringify(match)
         };
         return dataObject;
     }
