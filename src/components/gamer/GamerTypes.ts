@@ -1,7 +1,7 @@
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-export type GamerPlatform = 'xbl' | 'psn' | 'battle';
+export type GamerPlatform = 'xbl' | 'psn' | 'battle' | 'uno';
 
 
 export type GamerUsername = string;

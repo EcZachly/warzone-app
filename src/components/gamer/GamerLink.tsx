@@ -36,16 +36,19 @@ export default function GamerLink(props: { gamer: Gamer, single?: boolean, noLin
 
 
     function getUsername() {
-        console.log(gamer);
+        let username = gamer.username;
+        if(gamer.platform === 'uno' && gamer.aliases){
+            username = gamer.aliases[0] + '#'  + gamer.username
+        }
         if (noLink === true) {
             return (
-                <Text className={'username'}>{gamer.username}</Text>
+                <Text className={'username'}>{username}</Text>
             );
         } else {
             return (
                 <a className={'username gamer-link'}
                    href={'/gamer/' + encodeURIComponent(gamer.platform) + '/' + encodeURIComponent(gamer.username)}>
-                    {gamer.username}
+                    {username}
                 </a>
             );
         }

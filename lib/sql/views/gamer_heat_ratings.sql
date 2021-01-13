@@ -15,7 +15,7 @@ SELECT
        last_10_rolling_average_kdr/NULLIF(last_30_rolling_average_kdr, 0) as head_index_10_30,
        last_30_rolling_average_kdr/NULLIF(last_100_rolling_average_kdr, 0) as head_index_30_100,
        CASE
-           WHEN last_10_rolling_average_kdr/NULLIF(last_100_rolling_average_kdr, 0) < 1 THEN 0
+           WHEN last_10_rolling_average_kdr/NULLIF(last_100_rolling_average_kdr, 0) <= 1 THEN 0
            WHEN last_10_rolling_average_kdr/NULLIF(last_100_rolling_average_kdr, 0) < 1.1 THEN 1
            WHEN last_10_rolling_average_kdr/NULLIF(last_100_rolling_average_kdr, 0) < 1.2 THEN 2
            WHEN last_10_rolling_average_kdr/NULLIF(last_100_rolling_average_kdr, 0) < 1.3 THEN 3

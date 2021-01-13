@@ -48,9 +48,9 @@ SELECT a.*,
        CAST(COALESCE(gsh.num_hits, 0) AS INTEGER)           AS num_site_hits,
        CAST(COALESCE(gsh.num_distinct_users, 0) AS INTEGER) AS num_distinct_viewing_users,
        ghr.heat_rating,
-       ghr.last_10_rolling_average_kdr,
-       ghr.last_30_rolling_average_kdr,
-       ghr.last_100_rolling_average_kdr,
+       COALESCE(ghr.last_10_rolling_average_kdr, a.kdr) as last_10_rolling_average_kdr,
+       COALESCE(ghr.last_30_rolling_average_kdr, a.kdr) AS last_30_rolling_average_kdr,
+       COALESCE(ghr.last_100_rolling_average_kdr, a.kdr) AS last_100_rolling_average_kdr,
        concat(a.username, '-', a.platform)                  as platform_username
 FROM agg a
          LEFT JOIN warzone.gamer_site_hits gsh
