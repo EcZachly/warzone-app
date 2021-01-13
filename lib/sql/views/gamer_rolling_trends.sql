@@ -4,7 +4,7 @@ CREATE OR REPLACE VIEW warzone.gamer_rolling_trends AS
              SELECT query_username, query_platform
              FROM warzone.gamer_matches
              GROUP BY 1, 2
-             HAVING COUNT(1) >= 10
+             HAVING COUNT(1) >= 100
          ),
          rolling as (
         SELECT gm.query_username,
