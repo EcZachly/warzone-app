@@ -1,6 +1,6 @@
 CREATE TYPE relationship_edge AS (
                                     relationship_stat text,
-                                    relationship_type TEXT,
+                                    relationship_sort INTEGER,
                                     stat_with_player REAL,
                                     overall_stat REAL,
                                     ratio REAL,

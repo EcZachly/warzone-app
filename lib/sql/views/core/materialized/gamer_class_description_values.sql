@@ -94,5 +94,5 @@ SELECT
               )
         ) as win_percentage_cutoffs
 FROM warzone.player_stat_summary
-WHERE num_matches >= 10
+WHERE num_matches >= 100
 GROUP BY game_category

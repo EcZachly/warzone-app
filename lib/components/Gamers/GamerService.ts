@@ -28,7 +28,7 @@ export const getGamerDetailViewQuery = (view: string, allParams: object = {}, op
     console.log('query', query);
 
     const queryableViews = {
-        [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: new ViewQuery(VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS, query, options),
+        [VIEWS.GAMER_INFLUENCE_RELATIONSHIPS]: new ViewQuery(VIEWS.GAMER_INFLUENCE_RELATIONSHIPS, query, options),
         [VIEWS.GAMER_STAT_SUMMARY]: new ViewQuery(VIEWS.GAMER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: new ViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}),
         [VIEWS.GRADED_STATS]: new ViewQuery(VIEWS.GRADED_STATS, query),

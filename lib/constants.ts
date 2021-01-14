@@ -31,7 +31,7 @@ export const VIEWS = {
     GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
-    MUTUAL_BENEFIT_RELATIONSHIPS: 'mutual_benefit_relationships_materialized',
+    GAMER_INFLUENCE_RELATIONSHIPS: 'gamer_influence_relationships',
     MIN_MAX_TIMESTAMPS_VIEW: 'min_max_timestamps'
 };
 
@@ -64,5 +64,5 @@ export const MATERIALIZED_VIEWS_DEPENDENCIES: Array<string> = [
     VIEWS.GAMER_STAT_SUMMARY,
     VIEWS.TEAMMATES,
     VIEWS.DAILY_PLAYER_STAT_SUMMARY,
-    VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS
+    VIEWS.GAMER_INFLUENCE_RELATIONSHIPS
 ]

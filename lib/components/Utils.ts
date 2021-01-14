@@ -3,7 +3,7 @@ import {TABLES, VIEWS} from '../constants';
 
 export function getQueryParamToSQLMap() {
     return {
-        'teammates': VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS,
+        'teammates': VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
         'placements': VIEWS.GRADED_STATS,
         'stats': VIEWS.GRADED_STATS,
         'time': VIEWS.TIME_ANALYSIS,
@@ -44,7 +44,7 @@ export function restToMassiveQuery(view: string, params: object){
         [VIEWS.SQUADS]: {...squadQuery, ...gameCategoryQuery},
         [VIEWS.TREND_ANALYSIS]: {...userQuery, ...trendQuery, ...gameCategoryQuery},
         [VIEWS.GAMER_MATCHES_AUGMENTED]: {...userQuery, ...gameCategoryQuery},
-        [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: {...userQuery, ...gameCategoryQuery}
+        [VIEWS.GAMER_INFLUENCE_RELATIONSHIPS]: {...userQuery, ...gameCategoryQuery}
 
     };
     return queries[view];
