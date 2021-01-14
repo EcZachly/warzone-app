@@ -11,10 +11,10 @@ import {StatLabelValue} from '../SmartComponents';
 
 
 export default function GamerInfluenceCard({gamer, relationships}) {
-
     let helpingGamer = {
         username: relationships[0].helping_player,
-        platform: relationships[0].helping_player_platform
+        platform: relationships[0].helping_player_platform,
+        aliases: relationships[0].helper_aliases
     } as Gamer;
 
 
@@ -81,15 +81,27 @@ export default function GamerInfluenceCard({gamer, relationships}) {
 
         return [numberOfMatchesRelationship, ...relationships].map((relationship) => {
             let statName = GamerService.sanitizeStatKey(relationship['relationship_stat']);
+            let roundingDecimals = 2;
+            let statValue = isGamer ? relationship.stat_with_player : relationship.helper_stat_with_player;
+            let compareStatValue = isGamer ? relationship.overall_stat : relationship.helper_overall_stat;
+            let suffix = '';
+            if(statName.includes('Rate')){
+                statValue = 100 *  statValue;
+                compareStatValue = 100 * compareStatValue;
+                suffix = '%';
+            }
+
 
             return (
                 <StatLabelValue style={{marginBottom: '0px'}}
                                 lowerIsBetter={relationship.lower_is_better}
                                 size={'sm'}
                                 label={statName}
-                                statValue={isGamer ? relationship.stat_with_player : relationship.helper_stat_with_player}
+                                roundingDecimals={roundingDecimals}
+                                statValue={statValue}
+                                suffix={suffix}
                                 compareStatLabel={'compared with overall ' + statName}
-                                compareStatValue={isGamer ? relationship.overall_stat : relationship.helper_overall_stat}/>
+                                compareStatValue={compareStatValue}/>
             );
         });
     }

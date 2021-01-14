@@ -38,7 +38,7 @@ export default function GamerLink(props: { gamer: Gamer, single?: boolean, noLin
     function getUsername() {
         let username = gamer.username;
         if(gamer.platform === 'uno' && gamer.aliases){
-            username = gamer.aliases[0] + '#'  + gamer.username
+            username = gamer.aliases[0] + '#'  + gamer.username.substring(0, 6);
         }
         if (noLink === true) {
             return (

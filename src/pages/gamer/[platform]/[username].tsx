@@ -142,6 +142,9 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         let username = '';
         if (gamer) {
             username = gamer.username;
+            if(gamer.platform == 'uno'){
+                username = gamer.aliases[0] + '#' + gamer.username.substring(0, 6);
+            }
         }
 
         return (

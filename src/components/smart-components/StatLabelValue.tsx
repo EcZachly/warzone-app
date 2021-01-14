@@ -19,6 +19,7 @@ export default function StatLabelValue(props) {
         compareStatLabel = null,
         compareStatValue = null,
         lowerIsBetter = false,
+        suffix = '',
         roundingDecimals = 2
     } = props;
 
@@ -41,7 +42,7 @@ export default function StatLabelValue(props) {
 
         component = (
             <Text>
-                {UtilityService.round(statValue, roundingDecimals)}
+                {UtilityService.round(statValue, roundingDecimals) + suffix}
 
                 <Text title={compareStatLabel || ''}
                       bold
