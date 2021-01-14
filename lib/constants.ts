@@ -22,7 +22,7 @@ export const VIEWS = {
     GAMER_CLASS_DESCRIPTIONS: 'gamer_class_description_values',
     SQUAD_CLASS_DESCRIPTIONS: 'squad_class_description_values',
     GAMER_SITE_HITS: 'gamer_site_hits',
-    GRADED_STATS: 'gamer_stats_graded',
+    GRADED_STATS: 'gamer_stats_graded_materialized',
     GRADING_TABLE: 'grading_table',
     TIME_ANALYSIS: 'time_analysis',
     TREND_ANALYSIS: 'trend_analysis',
