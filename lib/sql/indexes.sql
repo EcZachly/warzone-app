@@ -5,5 +5,6 @@ CREATE UNIQUE INDEX mutual_benefit_relationships_unique ON warzone.mutual_benefi
 CREATE UNIQUE INDEX gamer_matches_unique ON warzone.gamer_matches (query_username, query_platform, match_id)
 CREATE INDEX gamer_matches_username_platform ON warzone.gamer_matches (query_username, query_platform)
 CREATE INDEX gamer_matches_matches ON warzone.gamer_matches (match_id)
+CREATE INDEX team_type_category ON warzone.matches(team_type, game_category, start_timestamp)
 
 

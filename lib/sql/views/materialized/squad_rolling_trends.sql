@@ -18,5 +18,5 @@ SELECT
       AVG(kills) OVER(PARTITION BY query_platform, query_username ORDER BY m.start_time ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS since_start_rolling_average_kills,
       AVG(deaths) OVER(PARTITION BY query_platform, query_username ORDER BY m.start_time ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as since_start_rolling_average_deaths
 FROM warzone.gamer_matches gm
-    JOIN warzone.matches_augmented m on m.match_id = gm.match_id
+    JOIN warzone.matches m on m.match_id = gm.match_id
 ORDER BY start_timestamp DESC

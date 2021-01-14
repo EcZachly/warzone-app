@@ -1,4 +1,4 @@
-import {VIEWS} from '../constants';
+import {TABLES, VIEWS} from '../constants';
 
 
 export function getQueryParamToSQLMap() {
@@ -9,7 +9,7 @@ export function getQueryParamToSQLMap() {
         'time': VIEWS.TIME_ANALYSIS,
         'squads': VIEWS.SQUADS,
         'trends': VIEWS.TREND_ANALYSIS,
-        'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED
+        'recent_matches': TABLES.MATCHES
     };
 }
 

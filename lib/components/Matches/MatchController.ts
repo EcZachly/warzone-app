@@ -1,6 +1,6 @@
 import {queryDatabase} from '../../database_utils';
 
-import {VIEWS} from '../../constants';
+import {TABLES} from '../../constants';
 
 import {MatchList, RawMatchList} from './MatchTypes';
 
@@ -9,7 +9,7 @@ import {MatchList, RawMatchList} from './MatchTypes';
 
 
 export async function queryMatches(query, options): Promise<MatchList> {
-    return queryDatabase(VIEWS.MATCHES_AUGMENTED, query, options);
+    return queryDatabase(TABLES.MATCHES, query, options);
 }
 
 

@@ -34,7 +34,7 @@ export function writeGamerMatchesToDatabase(matches, gamer) {
         let upsertQuery = {query_username, query_platform, match_id};
         return await insertDatabaseValues(m, TABLES.GAMER_MATCHES, upsertQuery);
     });
-    return Bluebird.all(gamerMatchPromises);
+    return Bluebird.all(gamerMatchPromises, {concurrency: 3});
 }
 
 

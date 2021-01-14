@@ -8,5 +8,9 @@ CREATE TABLE warzone.matches (
     version INT,
     game_type TEXT,
     player_count INT,
-    team_count INT
+    team_count INT,
+    team_type TEXT,
+    game_category TEXT,
+    start_timestamp TIMESTAMP,
+    end_timestamp TIMESTAMP
 );

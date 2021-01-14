@@ -24,7 +24,7 @@ type GamerSearchInputProps = {
 }
 
 export default function GamerSearchInput(props: GamerSearchInputProps) {
-    const {size, baseUrl, focus, mode, gameCategory = GAME_CATEGORIES.ALL, onResultChange, onGamerClick} = props;
+    const {size, baseUrl, focus, mode, gameCategory = GAME_CATEGORIES.WARZONE, onResultChange, onGamerClick} = props;
 
     const [gamerResults, setGamerResults] = useState([]);
     const [searchHasBeenInitiated, setSearchHasBeenInitiated] = useState(false);

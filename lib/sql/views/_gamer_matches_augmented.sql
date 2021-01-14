@@ -40,4 +40,4 @@ SELECT gm.query_username as username,
        m.game_category,
        concat(gm.query_platform, '-', gm.query_username) as platform_username
 FROM warzone.gamer_matches gm
-         JOIN warzone.matches_augmented m ON gm.match_id = m.match_id;
+         JOIN warzone.matches m ON gm.match_id = m.match_id;

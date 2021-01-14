@@ -3,7 +3,7 @@ CREATE OR REPLACE view warzone.player_stat_summary as
 (
 
 WITH agg AS (
-    SELECT COALESCE(m.game_category, '(all)')                                      AS game_category,
+    SELECT m.game_category                                    AS game_category,
            query_username                                                          AS username,
            query_platform                                                          AS platform,
            ARRAY_AGG(DISTINCT gm.username)                                            AS aliases,
@@ -34,26 +34,28 @@ WITH agg AS (
            CAST(AVG(damage_taken) AS REAL)                                         as damage_taken,
            CAST(AVG(headshots) AS REAL)                                            as headshots,
            CAST(SUM(CASE WHEN team_placement = 1 THEN 1 ELSE 0 END) AS REAL) * 100 /
-           COALESCE(NULLIF(COUNT(DISTINCT gm.match_id), 0), 1)                     AS win_percentage,
-           COUNT(DISTINCT gm.match_id)                                              AS num_matches
+           COALESCE(NULLIF(COUNT(1), 0), 1)                     AS win_percentage,
+           AVG(CASE WHEN team_type = 'trio' THEN gm.team_placement END)                               AS avg_trio_placement,
+           AVG(CASE WHEN team_type = 'quad' THEN gm.team_placement END)                               AS avg_quad_placement,
+           AVG(CASE WHEN team_type = 'duo' THEN gm.team_placement END)                                AS avg_duo_placement,
+           AVG(CASE WHEN team_type = 'solo' THEN gm.team_placement END)                               AS avg_solo_placement,
+           COUNT(1)                                              AS num_matches
 
     FROM  warzone.gamer_matches gm
-          JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
-    GROUP BY GROUPING SETS ( (m.game_category, gm.query_username, gm.query_platform),
-                             (gm.query_username, gm.query_platform)
-        )
+          JOIN warzone.matches m ON gm.match_id = m.match_id
+    GROUP BY m.game_category, gm.query_username, gm.query_platform
 )
 
 
 SELECT a.*,
-       CAST(COALESCE(gsh.num_distinct_users, 0) AS INTEGER) AS num_distinct_viewing_users,
-       ghr.heat_rating,
+       COALESCE(ghr.heat_rating, 0) AS heat_rating,
        COALESCE(ghr.last_10_rolling_average_kdr, a.kdr) as last_10_rolling_average_kdr,
        COALESCE(ghr.last_30_rolling_average_kdr, a.kdr) AS last_30_rolling_average_kdr,
        COALESCE(ghr.last_100_rolling_average_kdr, a.kdr) AS last_100_rolling_average_kdr,
-       concat(a.username, '-', a.platform)                  as platform_username
-FROM agg a LEFT JOIN warzone.gamer_heat_ratings ghr
+       CONCAT(a.username, '-', a.platform)                  as platform_username
+FROM agg a LEFT JOIN warzone.gamer_rolling_trends ghr
                    ON a.username = ghr.query_username
                    AND a.platform = ghr.query_platform
                    AND ghr.game_category = a.game_category
+                   AND ghr.is_latest_game = TRUE
     );

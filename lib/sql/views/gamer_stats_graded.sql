@@ -10,7 +10,7 @@ CREATE OR REPLACE VIEW warzone.gamer_stats_graded AS
 SELECT
    gm.query_username as username,
        gm.query_platform as platform,
-       COALESCE(m.game_category, '(all)') as game_category,
+       m.game_category,
 
         COUNT(CASE WHEN gm.score >= gt.a_grade_score THEN 1 END) AS a_grade_score,
               COUNT(CASE WHEN gm.score < gt.a_grade_score  AND gm.score >= gt.b_grade_score THEN 1 END) AS b_grade_score,
@@ -95,9 +95,6 @@ SELECT
         COUNT(CASE WHEN m.team_type = 'quad'
                            AND gm.team_placement > gt.d_grade_quad THEN 1 END) AS f_grade_quad_placements
     FROM mapped gm
-        JOIN warzone.matches_augmented m on m.match_id = gm.match_id
+        JOIN warzone.matches m on m.match_id = gm.match_id
         JOIN warzone.grading_table gt ON gt.game_category = m.game_category
- GROUP BY GROUPING SETS (
-     (gm.query_username, gm.query_platform),
-     (gm.query_username, gm.query_platform, m.game_category)
- )
+ GROUP BY gm.query_username, gm.query_platform, m.game_category

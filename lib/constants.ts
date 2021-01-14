@@ -15,7 +15,6 @@ export const TABLES = {
 };
 
 export const VIEWS = {
-    MATCHES_AUGMENTED: 'matches_augmented',
     MATCHES_TO_AUGMENT: 'matches_to_augment',
     FOLLOW_GAMERS: 'followed_gamers',
     GAMER_MATCHES_AUGMENTED: '_gamer_matches_augmented',
@@ -38,7 +37,6 @@ export const VIEWS = {
 
 export const GAME_CATEGORIES = {
     WARZONE: 'Warzone',
-    ALL: '(all)',
     JUGGERNAUT_ROYALE: 'Juggernaut Royale',
     MINI_ROYALE: 'Mini Royale',
     RESURGENCE: 'Resurgence',
@@ -48,6 +46,7 @@ export const GAME_CATEGORIES = {
     ZOMBIE_ROYALE: 'Zombie Royale',
     KING_SLAYER: 'King Slayer',
     PLUNDER: 'Plunder',
+    DMZ: 'DMZ',
     REBIRTH_MINI_ROYALE: 'Rebirth Mini Royale'
 }
 

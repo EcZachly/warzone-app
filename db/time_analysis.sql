@@ -5,7 +5,7 @@ SELECT *,
        EXTRACT(HOUR FROM to_timestamp(m.start_time) AT TIME ZONE $3) AS hour_of_timestamp,
        EXTRACT(DOW FROM to_timestamp(m.start_time) AT TIME ZONE $3) as day_of_week
 FROM warzone.gamer_matches gm
-         JOIN warzone.matches_augmented m ON gm.match_id = m.match_id
+         JOIN warzone.matches m ON gm.match_id = m.match_id
 WHERE gm.query_username = $1
 AND gm.query_platform = $2
 ),
