@@ -83,8 +83,8 @@ export default class WarzoneMapper{
             game_type: match.gameType,
             player_count: match.playerCount,
             team_count: match.teamCount,
-            game_category: this.getMatchCategory(match),
-            team_type: this.getMatchTeamType(match)
+            game_category: WarzoneMapper.getMatchCategory(match),
+            team_type: WarzoneMapper.getMatchTeamType(match)
         };
         return dataObject;
     }
