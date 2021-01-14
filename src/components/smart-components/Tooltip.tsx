@@ -1,10 +1,20 @@
 import React, {useState} from 'react';
+
 import {Box} from './../SimpleComponents';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-const Tooltip = (props: TooltipProps) => {
+
+type TooltipProps = {
+    className?: string,
+    style?: React.CSSProperties,
+    children?: React.ReactNode | React.ReactNodeArray,
+    showFunction: (tooltipProps) => {},
+}
+
+
+export default function Tooltip(props: TooltipProps) {
     const [show, updateShow] = useState(false);
 
     return (
@@ -21,13 +31,3 @@ const Tooltip = (props: TooltipProps) => {
         </Box>
     );
 };
-export default Tooltip;
-
-
-
-type TooltipProps = {
-    className?: string,
-    style?: React.CSSProperties,
-    children?: React.ReactNode | React.ReactNodeArray,
-    showFunction: (tooltipProps) => {},
-}
