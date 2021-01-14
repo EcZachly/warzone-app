@@ -67,14 +67,6 @@ WITH source AS (
        AVG(CASE WHEN team_type = 'quad' THEN gm.team_placement END)                               AS avg_quad_placement,
        AVG(CASE WHEN team_type = 'duo' THEN gm.team_placement END)                                AS avg_duo_placement,
        AVG(CASE WHEN team_type = 'solo' THEN gm.team_placement END)                               AS avg_solo_placement,
-       SUM(COALESCE(CAST(objective->>'teams_wiped' AS INT), 0))                                                            AS total_teams_wiped,
-       AVG(COALESCE(CAST(objective->>'teams_wiped' AS INT), 0))                                                            AS avg_teams_wiped,
-       SUM(COALESCE(CAST(objective->>'missions_started' AS INT), 0))                                                       AS total_missions_started,
-       AVG(COALESCE(CAST(objective->>'missions_started' AS INT), 0))                                                       AS avg_missions_started,
-       SUM(COALESCE(CAST(helper_objective->>'teams_wiped' AS INT), 0))                                                            AS total_helper_teams_wiped,
-       AVG(COALESCE(CAST(helper_objective->>'teams_wiped' AS INT), 0))                                                            AS avg_helper_teams_wiped,
-       SUM(COALESCE(CAST(helper_objective->>'missions_started' AS INT), 0))                                                       AS total_helper_missions_started,
-       AVG(COALESCE(CAST(helper_objective->>'missions_started' AS INT), 0))                                                       AS avg_helper_missions_started,
        MIN(start_timestamp)                                                                      AS first_game_time,
        MAX(start_timestamp)                                                                      AS last_game_time
 FROM source gm

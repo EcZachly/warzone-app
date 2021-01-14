@@ -113,8 +113,7 @@ export async function queryMatches(query, options = {}) {
 
 export async function refreshMatchAnalytics(){
     const viewsToRefresh = [
-        VIEWS.PLAYER_STAT_SUMMARY,
-        VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS
+        VIEWS.PLAYER_STAT_SUMMARY
     ].map((view) => view + '_materialized');
     return Bluebird.all(viewsToRefresh.map((view)=> refreshMaterializedView(view)))
 }

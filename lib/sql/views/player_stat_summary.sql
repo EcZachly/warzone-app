@@ -1,7 +1,6 @@
 
 CREATE OR REPLACE view warzone.player_stat_summary as
 (
-
 WITH agg AS (
     SELECT m.game_category                                    AS game_category,
            query_username                                                          AS username,
@@ -27,10 +26,6 @@ WITH agg AS (
            CAST(AVG(team_survival_time) / 1000 / 60 AS REAL)                       AS team_survival_time_mins,
            CAST(AVG(percent_time_moving) AS REAL)                                  as percent_time_moving,
            CAST(AVG(distance_traveled) AS REAL)                                    AS distance_traveled,
-           CAST(AVG(CAST(objective ->> 'down_enemy_circle_1' AS INTEGER)) AS REAL) as down_enemy_circle_1,
-           CAST(AVG(CAST(objective ->> 'caches_open' AS INTEGER)) AS REAL)         as caches_open,
-           CAST(AVG(CAST(objective ->> 'missions_started' AS INTEGER)) AS REAL)    as missions_started,
-           CAST(AVG(CAST(objective ->> 'teams_wiped' AS INTEGER)) AS REAL)         as teams_wiped,
            CAST(AVG(damage_taken) AS REAL)                                         as damage_taken,
            CAST(AVG(headshots) AS REAL)                                            as headshots,
            CAST(SUM(CASE WHEN team_placement = 1 THEN 1 ELSE 0 END) AS REAL) * 100 /
