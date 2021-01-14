@@ -14,16 +14,12 @@ async function refreshData(query = {}) {
     await Bluebird.mapSeries(matches, (match) => {
         let {match_id} = match;
         console.log('augmenting match ' + match_id);
-        return getFullMatchDetailsFromAPI(match_id).then((data)=>{
-            return Bluebird.mapSeries(data.map((match, index)=>{
-                console.log(`writin ${index}th role`);
-                return writeGamerMatchesToDatabase([match], { username: '-', platform: '-'});
-            }));
+        return getFullMatchDetailsFromAPI(match_id).then((data) => {
+            return writeGamerMatchesToDatabase(data, {username: '-', platform: '-'});
         });
-    }).then((done)=>{
+    }).then((done) => {
         console.log('done!');
     })
 }
-
 
 refreshData();

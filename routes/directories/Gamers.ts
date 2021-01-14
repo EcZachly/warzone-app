@@ -182,7 +182,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
 
     await viewToQuery.executeQuery();
     const viewData = viewToQuery.data;
-    console.log(viewData);
+
     await updateGamerUponRequest(gamer);
     const seoMetadata = {
         title: 'Warzone stats for ' + gamer['username'],

@@ -35,13 +35,6 @@ const CONFIG = {
                                                                 width={chartState.width}
                                                                 data={chartState.viewData[0]}/>,
 
-        stats: (gamer, chartState) => <GamerGradeChart height={260}
-                                                       width={chartState.width}
-                                                       key={'stat_chart'}
-                                                       data={chartState.viewData}
-                                                       options={['kdr', 'damage', 'kills', 'score']}
-                                                       selectedValue="kdr"/>,
-
         time: (gamer, chartState) => <GamerTimeChart height={260}
                                                      width={chartState.width}
                                                      key={'placement_chart'}
@@ -76,7 +69,17 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
+    const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key)=>{
+        const allowableUnoKeys = ['squads', 'trends', 'recent_matches']
+        if(gamer.platform == 'uno'){
+            return allowableUnoKeys.includes(key);
+        }
+        else{
+            return true;
+        }
+    })
+
+
     const tabOptions = tabNames.map((id) => {
         return {
             text: UtilityService.camelToProperCase(id),
