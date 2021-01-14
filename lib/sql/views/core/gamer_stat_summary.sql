@@ -5,6 +5,7 @@ WITH agg AS (
            query_username                                                              AS username,
            query_platform                                                              AS platform,
            ARRAY_AGG(DISTINCT gm.username)                                             AS aliases,
+           ARRAY_TO_STRING(ARRAY_AGG(DISTINCT gm.username)   , '-' )                   AS aliases_search_string,
            CAST(MAX(kills) AS INTEGER)                                                 AS max_kills,
            CAST(MAX(deaths) AS INTEGER)                                                as max_deaths,
            CAST(MAX(damage_done) AS INTEGER)                                           AS max_damage_done,
