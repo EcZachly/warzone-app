@@ -287,7 +287,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view, game_category} = context.query;
     const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
     const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
-    const selectedView = validViewNames.includes(view as string) ? context.query.view : 'teammates';
+    let defaultView = 'teammates';
+    if(platform == 'uno'){
+        defaultView = 'recent_matches';
+    }
+    const selectedView = validViewNames.includes(view as string) ? context.query.view : defaultView;
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await GamerService.getGamerDetailView(username as string,
         platform as string,
