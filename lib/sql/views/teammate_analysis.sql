@@ -74,6 +74,7 @@ GROUP BY game_category, query_username, query_platform, helping_player, helping_
      )
 
      SELECT * FROM with_teammates
+     ORDER BY num_matches DESC
 
 
 

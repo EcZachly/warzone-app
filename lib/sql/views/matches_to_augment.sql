@@ -6,4 +6,4 @@ SELECT
 
 FROM warzone.gamer_matches gm JOIN warzone.matches m ON m.match_id = gm.match_id
 GROUP BY 1
-HAVING COUNT(1) < MAX(m.player_count)
+HAVING CAST(COUNT(1) AS REAL)/MAX(m.player_count) < .95

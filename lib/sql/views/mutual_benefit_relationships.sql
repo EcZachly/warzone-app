@@ -52,6 +52,7 @@ SELECT no.game_category,
        (no.relations).helper_ratio            as helper_ratio,
        (no.relations).lower_is_better         as lower_is_better
 FROM unnested no
+ORDER BY num_matches DESC
 
 
 
