@@ -19,7 +19,7 @@ WITH source AS (
          LEFT JOIN warzone.gamer_matches gm2
                    ON gm.team = gm2.team
                        AND gm.match_id = gm2.match_id
-    WHERE gm.uno_id <> gm2.uno_id
+                        AND CONCAT(gm.query_platform, '-', gm.query_username) <> CONCAT(gm2.query_platform, '-', gm2.query_username)
 ),
      with_teammates AS (
 

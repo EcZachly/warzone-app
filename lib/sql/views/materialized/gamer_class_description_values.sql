@@ -30,42 +30,42 @@ SELECT
             'nomad', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY distance_traveled), 'percentile', .90)
             )
     ) as distance_traveled_cutoffs,
-    JSON_BUILD_OBJECT(
-        'category', 'down_enemy_circle_1',
-        'description', '',
-        'percentiles', JSON_BUILD_OBJECT(
-            'pacifist', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .1),
-            'peacemaker', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .33),
-            'aggressor', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .66),
-            'warmonger', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .90)
-            )
-    ) as down_enemy_circle_1_cutoffs,
-        JSON_BUILD_OBJECT(
-        'category', 'caches_open',
-        'description', '',
-        'percentiles', JSON_BUILD_OBJECT(
-             'pirate', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY caches_open), 'percentile', .66),
-            'tomb_raider', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY caches_open), 'percentile', .90)
-            )
-    ) as looting_cutoffs,
-    JSON_BUILD_OBJECT(
-        'category', 'missions_started',
-        'description', '',
-        'percentiles', JSON_BUILD_OBJECT(
-            'intern', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY missions_started), 'percentile', .1),
-            'field_agent', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY missions_started), 'percentile', .33),
-            'seal', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY missions_started), 'percentile', .66),
-            'secret_agent', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY missions_started), 'percentile', .90)
-            )
-    ) as missions_cutoffs,
-        JSON_BUILD_OBJECT(
-        'category', 'teams_wiped',
-        'description', '',
-        'percentiles', JSON_BUILD_OBJECT(
-            'vanquisher', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .50),
-            'conqueror', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .90)
-            )
-    ) as team_wipe_cutoffs,
+--    JSON_BUILD_OBJECT(
+--        'category', 'down_enemy_circle_1',
+--        'description', '',
+--        'percentiles', JSON_BUILD_OBJECT(
+--            'pacifist', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .1),
+--            'peacemaker', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .33),
+--            'aggressor', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .66),
+--            'warmonger', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY down_enemy_circle_1), 'percentile', .90)
+--            )
+--    ) as down_enemy_circle_1_cutoffs,
+--        JSON_BUILD_OBJECT(
+--        'category', 'caches_open',
+--        'description', '',
+--        'percentiles', JSON_BUILD_OBJECT(
+--             'pirate', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY caches_open), 'percentile', .66),
+--            'tomb_raider', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY caches_open), 'percentile', .90)
+--            )
+--    ) as looting_cutoffs,
+--    JSON_BUILD_OBJECT(
+--        'category', 'missions_started',
+--        'description', '',
+--        'percentiles', JSON_BUILD_OBJECT(
+--            'intern', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.10) WITHIN GROUP (ORDER BY missions_started), 'percentile', .1),
+--            'field_agent', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.33) WITHIN GROUP (ORDER BY missions_started), 'percentile', .33),
+--            'seal', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY missions_started), 'percentile', .66),
+--            'secret_agent', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY missions_started), 'percentile', .90)
+--            )
+--    ) as missions_cutoffs,
+--        JSON_BUILD_OBJECT(
+--        'category', 'teams_wiped',
+--        'description', '',
+--        'percentiles', JSON_BUILD_OBJECT(
+--            'vanquisher', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .50),
+--            'conqueror', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY teams_wiped), 'percentile', .90)
+--            )
+--    ) as team_wipe_cutoffs,
          JSON_BUILD_OBJECT(
         'category', 'damage_taken',
         'description', '',

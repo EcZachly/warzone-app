@@ -9,7 +9,7 @@ export function getQueryParamToSQLMap() {
         'time': VIEWS.TIME_ANALYSIS,
         'squads': VIEWS.SQUADS,
         'trends': VIEWS.TREND_ANALYSIS,
-        'recent_matches': TABLES.MATCHES
+        'recent_matches': VIEWS.GAMER_MATCHES_AUGMENTED
     };
 }
 
