@@ -31,7 +31,7 @@ export const VIEWS = {
     GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
-    GAMER_INFLUENCE_RELATIONSHIPS: 'gamer_influence_relationships',
+    GAMER_INFLUENCE_RELATIONSHIPS: 'gamer_influence_relationships_materialized',
     MIN_MAX_TIMESTAMPS_VIEW: 'min_max_timestamps'
 };
 
