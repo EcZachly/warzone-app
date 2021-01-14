@@ -27,8 +27,8 @@ export const VIEWS = {
     TIME_ANALYSIS: 'time_analysis',
     TREND_ANALYSIS: 'trend_analysis',
     SQUADS: 'squad_stat_summary',
-    TEAMMATES: 'teammate_analysis_materialized',
-    GAMER_HEAT_RATINGS: 'gamer_heat_ratings',
+    // TEAMMATES: 'teammate_analysis_materialized', //removed on 1/13/2021, ZW
+    // GAMER_HEAT_RATINGS: 'gamer_heat_ratings', //removed on 1/13/2021, ZW
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
     GAMER_INFLUENCE_RELATIONSHIPS: 'gamer_influence_relationships_materialized',
@@ -57,12 +57,10 @@ export const MATERIALIZED_VIEWS_DEPENDENCIES: Array<string> = [
     VIEWS.GRADING_TABLE,
     VIEWS.SQUADS,
     VIEWS.GAMER_ROLLING_TRENDS,
-    VIEWS.GAMER_HEAT_RATINGS,
     VIEWS.SQUAD_CLASS_DESCRIPTIONS,
     VIEWS.GAMER_CLASS_DESCRIPTIONS,
     VIEWS.GAMER_SITE_HITS,
     VIEWS.GAMER_STAT_SUMMARY,
-    VIEWS.TEAMMATES,
     VIEWS.DAILY_PLAYER_STAT_SUMMARY,
     VIEWS.GAMER_INFLUENCE_RELATIONSHIPS
 ]
