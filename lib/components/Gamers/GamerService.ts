@@ -31,7 +31,6 @@ export const getGamerDetailViewQuery = (view: string, allParams: object = {}, op
         [VIEWS.GAMER_STAT_SUMMARY]: new ViewQuery(VIEWS.GAMER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: new ViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}),
         [VIEWS.GRADED_STATS]: new ViewQuery(VIEWS.GRADED_STATS, query),
-        [VIEWS.TEAMMATES]: new ViewQuery(VIEWS.TEAMMATES, query, {}, (data) => sanitizeTeammates(data)),
         [VIEWS.TIME_ANALYSIS]: new ViewQuery(VIEWS.TIME_ANALYSIS, query),
         [VIEWS.SQUADS]: new ViewQuery(VIEWS.SQUADS, query, {}, (data) => data.map(SquadService.sanitizeSquad)),
         [VIEWS.TREND_ANALYSIS]: new ViewQuery(VIEWS.TREND_ANALYSIS, query),

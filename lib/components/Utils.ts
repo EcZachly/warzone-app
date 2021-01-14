@@ -39,7 +39,6 @@ export function restToMassiveQuery(view: string, params: object){
         [VIEWS.GAMER_STAT_SUMMARY]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: {},
         [VIEWS.GRADED_STATS]: {...userQuery, ...gameCategoryQuery},
-        [VIEWS.TEAMMATES]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.TIME_ANALYSIS]: {...userQuery, ...timezoneQuery, ...gameCategoryQuery},
         [VIEWS.SQUADS]: {...squadQuery, ...gameCategoryQuery},
         [VIEWS.TREND_ANALYSIS]: {...userQuery, ...trendQuery, ...gameCategoryQuery},
