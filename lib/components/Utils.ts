@@ -36,7 +36,7 @@ export function restToMassiveQuery(view: string, params: object){
 
     const trendQuery = {lookback: parseFloat(params['lookback'] as string) || 30};
     const queries = {
-        [VIEWS.PLAYER_STAT_SUMMARY]: {...userQuery, ...gameCategoryQuery},
+        [VIEWS.GAMER_STAT_SUMMARY]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: {},
         [VIEWS.GRADED_STATS]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.TEAMMATES]: {...userQuery, ...gameCategoryQuery},

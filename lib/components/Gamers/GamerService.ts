@@ -17,7 +17,7 @@ export const getGamerClassDescriptions = async (): Promise<GamerClassDescription
 }
 
 export const getSingleGamerData = async (username, platform, game_category=GAME_CATEGORIES.WARZONE): Promise<Gamer> => {
-    let val = getGamerDetailViewQuery(VIEWS.PLAYER_STAT_SUMMARY, {username, platform, game_category}, {})
+    let val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {})
     await val.executeQuery()
     return val.data[0] as Gamer
 }
@@ -29,7 +29,7 @@ export const getGamerDetailViewQuery = (view: string, allParams: object = {}, op
 
     const queryableViews = {
         [VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS]: new ViewQuery(VIEWS.MUTUAL_BENEFIT_RELATIONSHIPS, query, options),
-        [VIEWS.PLAYER_STAT_SUMMARY]: new ViewQuery(VIEWS.PLAYER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
+        [VIEWS.GAMER_STAT_SUMMARY]: new ViewQuery(VIEWS.GAMER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
         [VIEWS.GAMER_CLASS_DESCRIPTIONS]: new ViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}),
         [VIEWS.GRADED_STATS]: new ViewQuery(VIEWS.GRADED_STATS, query),
         [VIEWS.TEAMMATES]: new ViewQuery(VIEWS.TEAMMATES, query, {}, (data) => sanitizeTeammates(data)),
