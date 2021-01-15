@@ -70,5 +70,6 @@ export default {
     find,
     insert,
     update,
-    destroy
+    destroy,
+    validateTable
 };

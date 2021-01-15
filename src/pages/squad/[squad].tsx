@@ -25,8 +25,6 @@ export default function SquadDetail({squadData, errorMessage, view, baseUrl}) {
     const squad = squads[0];
     const squadExists = !!squad;
 
-    console.log('squad', squad);
-
     if (!squadExists) {
         errorMessage = 'No squad was found';
     }

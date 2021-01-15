@@ -20,8 +20,6 @@ export async function createGamerRelationship(gamerRelationship: Partial<RawGame
                 gamerRelationship
             }
         }).then(async (response) => {
-            console.log(response);
-
             if (response.status === 200) {
                 StorageService.remove(USER_GAMER_RELATIONSHIPS_STORAGE_KEY, {session: true});
                 await queryGamerRelationships({user_id: UserService.getUser().user_id}).finally();
