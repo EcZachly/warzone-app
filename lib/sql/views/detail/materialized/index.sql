@@ -1,0 +1,3 @@
+CREATE UNIQUE INDEX grading_table_unique ON warzone.grading_table(game_category);
+CREATE UNIQUE INDEX gamer_stats_graded_unique ON warzone.gamer_stats_graded_materialized(username, platform, game_category);
+CREATE UNIQUE INDEX gamer_influence_relationships_materialized_unique ON warzone.gamer_influence_relationships_materialized(game_category, username, platform, helping_player, helping_player_platform, relationship_stat);

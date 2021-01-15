@@ -26,7 +26,7 @@ export const VIEWS = {
     GRADING_TABLE: 'grading_table',
     TIME_ANALYSIS: 'time_analysis',
     TREND_ANALYSIS: 'trend_analysis',
-    SQUADS: 'squad_stat_summary',
+    SQUADS: 'squad_stat_summary_materialized',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
     GAMER_INFLUENCE_RELATIONSHIPS: 'gamer_influence_relationships_materialized',
@@ -57,8 +57,9 @@ export const MATERIALIZED_VIEWS_DEPENDENCIES: Array<string> = [
     VIEWS.GAMER_ROLLING_TRENDS,
     VIEWS.SQUAD_CLASS_DESCRIPTIONS,
     VIEWS.GAMER_CLASS_DESCRIPTIONS,
-    VIEWS.GAMER_SITE_HITS,
     VIEWS.GAMER_STAT_SUMMARY,
-    VIEWS.DAILY_PLAYER_STAT_SUMMARY,
-    VIEWS.GAMER_INFLUENCE_RELATIONSHIPS
+    VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
+//TODO once these are integrated somewhere in the app add them back to the refresh list
+    // VIEWS.DAILY_PLAYER_STAT_SUMMARY,
+    // VIEWS.GAMER_SITE_HITS,
 ]

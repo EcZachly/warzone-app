@@ -69,7 +69,7 @@ async function refreshMaterializedViews() {
             logger.trace(`refreshing view ${index + 1} of ${viewCount}: ${viewName}`);
             let startTime = new Date().getTime();
 
-            executeRawQuery(`REFRESH MATERIALIZED VIEW ${DATABASE_SCHEMA}.${viewName}`).then((response) => {
+            executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${viewName}`).then((response) => {
                 let endTime = new Date().getTime();
 
                 resolve({

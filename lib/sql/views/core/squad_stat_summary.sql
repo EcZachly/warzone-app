@@ -1,4 +1,4 @@
-CREATE MATERIALIZED VIEW warzone.squad_stat_summary AS
+CREATE OR REPLACE VIEW warzone.squad_stat_summary AS
 WITH team_cnt AS (
     SELECT
            gm.match_id,
