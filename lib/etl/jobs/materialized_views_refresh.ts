@@ -3,15 +3,61 @@ const logger = tracer.colorConsole();
 
 import Bluebird from 'bluebird';
 
-import {DATABASE_SCHEMA, MATERIALIZED_VIEWS_DEPENDENCIES} from '../../constants';
+import {DATABASE_SCHEMA, VIEWS} from '../../constants';
 import {executeRawQuery} from '../../database_utils';
 import {DAO} from '../../components/Database';
+import UtilityService from '../../../src/services/UtilityService';
 
 const isDevMode = (process.env.NODE_ENV === 'development');
 let time = {
     start: null,
     end: null
 };
+
+
+const minutesBetweenRuns = 10;
+const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
+
+const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, timesPerDay: number }> = [
+    {
+        name: VIEWS.GRADING_TABLE,
+        timesPerDay: jobsRunPerDay
+    },
+    {
+        name: VIEWS.SQUADS,
+        timesPerDay: jobsRunPerDay
+    },
+    {
+        name: VIEWS.GAMER_ROLLING_TRENDS,
+        timesPerDay: jobsRunPerDay
+    },
+    {
+        name: VIEWS.SQUAD_CLASS_DESCRIPTIONS,
+        timesPerDay: 2
+    },
+    {
+        name: VIEWS.GAMER_CLASS_DESCRIPTIONS,
+        timesPerDay: 2
+    },
+    {
+        name: VIEWS.GAMER_STAT_SUMMARY,
+        timesPerDay: jobsRunPerDay
+    },
+    {
+        name: VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
+        timesPerDay: jobsRunPerDay
+    },
+    {
+        name: VIEWS.DAILY_PLAYER_STAT_SUMMARY,
+        timesPerDay: jobsRunPerDay,
+        skip: true
+    },
+    {
+        name: VIEWS.GAMER_SITE_HITS,
+        timesPerDay: jobsRunPerDay,
+        skip: true
+    }
+];
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -54,8 +100,8 @@ async function run() {
 async function validateViewNames() {
     logger.trace('validating view names');
 
-    return Bluebird.mapSeries(getViews(), (viewName) => {
-        return DAO.validateTable(viewName);
+    return Bluebird.mapSeries(getViews(), ({name}) => {
+        return DAO.validateTable(name);
     });
 }
 
@@ -64,30 +110,60 @@ async function validateViewNames() {
 async function refreshMaterializedViews() {
     logger.trace('refreshing materialized views');
 
-    return Bluebird.mapSeries(getViews(), (viewName, index, viewCount) => {
+    return Bluebird.mapSeries(getViews(), (viewConfig, index, viewCount) => {
         return new Promise((resolve, reject) => {
-            logger.trace(`refreshing view ${index + 1} of ${viewCount}: ${viewName}`);
-            let startTime = new Date().getTime();
+            const {name, timesPerDay, skip} = viewConfig;
 
-            executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${viewName}`).then((response) => {
-                let endTime = new Date().getTime();
+            let status = 'refreshing';
 
+            if (skip === true) {
+                status = 'skipping';
+            } else if (jobShouldBeRun(timesPerDay) === false) {
+                status = 'ignoring';
+            }
+
+            logger.trace(`${status} view ${index + 1} of ${viewCount}: ${name}`);
+
+            if (status !== 'refreshing') {
                 resolve({
-                    view: viewName,
-                    duration: {
-                        ms: endTime - startTime,
-                        seconds: Math.floor(((endTime - startTime) / 1000) * 10) / 10
-                    }
+                    view: name,
+                    status: status
                 });
-            }, reject);
+            } else {
+                let startTime = new Date().getTime();
+
+                executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${name}`).then((response) => {
+                    let endTime = new Date().getTime();
+
+                    resolve({
+                        view: name,
+                        status: status,
+                        duration: {
+                            ms: endTime - startTime,
+                            seconds: Math.floor(((endTime - startTime) / 1000) * 10) / 10
+                        }
+                    });
+                }, reject);
+            }
         });
     });
 }
 
 
 
+function jobShouldBeRun(timesPerDay) {
+    if (timesPerDay === jobsRunPerDay) {
+        return true;
+    }
+
+    let randomNumber = UtilityService.generateRandomInteger(0, 1000) / 1000;
+    return randomNumber < (timesPerDay / jobsRunPerDay);
+}
+
+
+
 function getViews() {
-    return MATERIALIZED_VIEWS_DEPENDENCIES;
+    return MATERIALIZED_VIEWS_DEPENDENCY_LIST;
 }
 
 
@@ -101,7 +177,7 @@ function setTime(type) {
 function logJobDuration() {
     let timeDiffMS = time.end - time.start;
     let timeDiffSeconds = Math.floor(timeDiffMS / 1000 * 10) / 10;
-    let averageTimePerView = Math.floor(getViews().length / timeDiffSeconds);
+    let averageTimePerView = Math.floor(timeDiffSeconds / getViews().length);
 
     logger.info(`It took ${timeDiffSeconds} seconds to complete the job with an average of ${averageTimePerView} seconds per view`);
 }

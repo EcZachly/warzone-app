@@ -1,4 +1,3 @@
-
 CREATE MATERIALIZED VIEW warzone.gamer_class_description_values AS
 SELECT
      game_category,
@@ -93,6 +92,6 @@ SELECT
                 'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
               )
         ) as win_percentage_cutoffs
-FROM warzone.player_stat_summary
+FROM warzone.gamer_stat_summary
 WHERE num_matches >= 100
 GROUP BY game_category

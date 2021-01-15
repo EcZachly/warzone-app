@@ -23,7 +23,17 @@ WITH valid_users AS (
                 CAST(AVG(deaths)
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_deaths,
                 CAST(AVG(deaths)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_deaths
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_deaths,
+                CAST(AVG(assists)
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 10 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_assists,
+                CAST(AVG(assists)
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 30 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_assists,
+                CAST(AVG(assists)
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_assists,
+                CAST(AVG(gulag_kills)
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_kills,
+                CAST(AVG(gulag_deaths)
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_deaths
          FROM warzone.gamer_matches gm
                   JOIN warzone.matches m on m.match_id = gm.match_id
                   JOIN valid_users v ON gm.query_username = v.query_username and gm.query_platform = v.query_platform
@@ -36,6 +46,14 @@ WITH valid_users AS (
                      NULLIF(last_30_rolling_average_deaths, 0) AS REAL) AS  last_30_rolling_average_kdr,
                 CAST(last_100_rolling_average_kills /
                      NULLIF(last_100_rolling_average_deaths, 0) AS REAL) AS last_100_rolling_average_kdr,
+                CAST((last_10_rolling_average_kills + (last_10_rolling_average_assists / 2)) /
+                     NULLIF(last_10_rolling_average_deaths, 0) AS REAL) AS  last_10_rolling_average_kadr,
+                CAST((last_30_rolling_average_kills + (last_30_rolling_average_assists / 2)) /
+                     NULLIF(last_30_rolling_average_deaths, 0) AS REAL) AS  last_30_rolling_average_kadr,
+                CAST((last_100_rolling_average_kills + (last_100_rolling_average_assists / 2)) /
+                     NULLIF(last_100_rolling_average_deaths, 0) AS REAL) AS last_100_rolling_average_kadr,
+                CAST(last_100_rolling_average_gulag_kills /
+                     NULLIF(last_100_rolling_average_gulag_deaths, 0) AS REAL) AS last_100_rolling_average_gulag_kdr,
                 CASE
                     WHEN LEAD(query_username, 1)
                          OVER (PARTITION BY query_username, query_platform, game_category ORDER BY start_timestamp) IS NULL

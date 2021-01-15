@@ -63,6 +63,10 @@ SELECT a.*,
        COALESCE(ghr.last_10_rolling_average_kdr, a.kdr)  as last_10_rolling_average_kdr,
        COALESCE(ghr.last_30_rolling_average_kdr, a.kdr)  AS last_30_rolling_average_kdr,
        COALESCE(ghr.last_100_rolling_average_kdr, a.kdr) AS last_100_rolling_average_kdr,
+       COALESCE(ghr.last_10_rolling_average_kadr, a.kdr)  as last_10_rolling_average_kadr,
+       COALESCE(ghr.last_30_rolling_average_kadr, a.kdr)  AS last_30_rolling_average_kadr,
+       COALESCE(ghr.last_100_rolling_average_kadr, a.kdr) AS last_100_rolling_average_kadr,
+       COALESCE(ghr.last_100_rolling_average_gulag_kdr, a.kdr) AS last_100_rolling_average_gulag_kdr,
        CONCAT(a.username, '-', a.platform)               as platform_username
 FROM agg a
          LEFT JOIN warzone.gamer_rolling_trends ghr

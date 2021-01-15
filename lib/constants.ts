@@ -50,16 +50,3 @@ export const GAME_CATEGORIES = {
 
 export const BASE_TITLE = 'Warzone Stats Tracker';
 export const SENDER_EMAIL = 'warzone@brshooter.com'
-
-export const MATERIALIZED_VIEWS_DEPENDENCIES: Array<string> = [
-    VIEWS.GRADING_TABLE,
-    VIEWS.SQUADS,
-    VIEWS.GAMER_ROLLING_TRENDS,
-    VIEWS.SQUAD_CLASS_DESCRIPTIONS,
-    VIEWS.GAMER_CLASS_DESCRIPTIONS,
-    VIEWS.GAMER_STAT_SUMMARY,
-    VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
-//TODO once these are integrated somewhere in the app add them back to the refresh list
-    // VIEWS.DAILY_PLAYER_STAT_SUMMARY,
-    // VIEWS.GAMER_SITE_HITS,
-]
