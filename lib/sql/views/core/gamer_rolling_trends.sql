@@ -25,7 +25,7 @@ WITH valid_users AS (
                 CAST(AVG(deaths)
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_deaths,
                 CAST(AVG(assists)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 10 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_assists,
+                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_assists,
                 CAST(AVG(assists)
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 30 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_assists,
                 CAST(AVG(assists)
