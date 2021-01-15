@@ -11,6 +11,7 @@ import {VIEWS} from "../constants";
  */
 async function refreshData(query = {}) {
     const matches = await queryView(VIEWS.MATCHES_TO_AUGMENT, {});
+    console.log('found ' + matches.length + ' matches to augment!');
     await Bluebird.mapSeries(matches, (match) => {
         let {match_id} = match;
         console.log('augmenting match ' + match_id);

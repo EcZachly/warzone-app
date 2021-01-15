@@ -93,6 +93,6 @@ SELECT
                 'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
               )
         ) as win_percentage_cutoffs
-FROM warzone.full_squad_stat_summary
+FROM warzone.squad_stat_summary
 WHERE num_matches >= 5
 GROUP BY team_type, game_category

@@ -114,7 +114,7 @@ async function executePipeline(gamer) {
         } else {
             console.log(`${generateGamerID(gamer)}: No new matches found for gamer`);
         }
-
+        
         if (gamer.needs_update) {
             await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_update: false});
         }
@@ -154,8 +154,6 @@ export async function runBackfills() {
     console.log('runBackfills complete\r\n\r\n');
 }
 
-
-runBackfills()
 
 function generateGamerID(gamer) {
     return [gamer.platform, gamer.username].join('-');
