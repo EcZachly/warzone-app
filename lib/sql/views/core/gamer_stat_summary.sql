@@ -67,7 +67,8 @@ SELECT a.*,
        COALESCE(ghr.last_30_rolling_average_kadr, a.kdr)  AS last_30_rolling_average_kadr,
        COALESCE(ghr.last_100_rolling_average_kadr, a.kdr) AS last_100_rolling_average_kadr,
        COALESCE(ghr.last_100_rolling_average_gulag_kdr, a.kdr) AS last_100_rolling_average_gulag_kdr,
-       CONCAT(a.username, '-', a.platform)               as platform_username
+       CONCAT(a.username, '-', a.platform)               as platform_username,
+       COALESCE(ghr.heat_score, 0) as heat_score
 FROM agg a
          LEFT JOIN warzone.gamer_rolling_trends ghr
                    ON a.username = ghr.query_username

@@ -12,6 +12,10 @@ import UtilityService, {getBaseUrlWithProtocol} from '../../services/UtilityServ
 import {GamerAdd} from './../../components/gamer/index';
 import GamerCardList from '../../components/gamer/GamerCardList';
 
+const MODULE_CONSTANTS = {
+    MIN_MATCHES: 25
+};
+
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
@@ -28,12 +32,12 @@ export default function Gamers({
     const [gamerValues, setGamers] = useState({[gameCategory]: gamers});
     const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
     const [searchValue, setSearchValue] = useState(username);
+    const [minMatchCount, setMinMatchCount] = useState(MODULE_CONSTANTS.MIN_MATCHES);
     const [sorting, updateSorting] = useState(sort);
     const [filterCategory, setGameCategory] = useState(gameCategory);
 
     useEffect(() => {
         fetchMoreGamers(0, filterCategory, true);
-
     }, [sorting]);
 
     const router = useRouter();
@@ -68,6 +72,28 @@ export default function Gamers({
                                label={'Search'}
                                placeholder={'Username and aliases'}/>
 
+                        <Input type={'radio'}
+                               label={`Only Show Gamers with at least`}
+                               value={minMatchCount}
+                               options={[
+                                   {
+                                       text: 'No Minimum',
+                                       value: 5
+                                   },
+                                   {
+                                       text: '25 matches',
+                                       value: 25
+                                   },
+                                   {
+                                       text: '100 matches',
+                                       value: 100
+                                   }
+                               ]}
+                               onChange={(value) => {
+                                   setMinMatchCount(value);
+                                   searchGamers(searchValue);
+                               }}/>
+
                     </Sidebar>
 
                     <SidebarCompanion>
@@ -79,6 +105,10 @@ export default function Gamers({
                                    label={'Sort'}
                                    options={[
                                        {
+                                           value: {sort: 'heat_score', direction: 'desc'},
+                                           text: 'Heat (High to Low)'
+                                       },
+                                       {
                                            value: {sort: 'last_100_rolling_average_kdr', direction: 'desc'},
                                            text: 'KDR (High to Low)'
                                        },
@@ -87,11 +117,11 @@ export default function Gamers({
                                            text: 'KDR (Low to High)'
                                        },
                                        {
-                                           value: {sort: 'gulag_win_rate', direction: 'desc'},
+                                           value: {sort: 'last_100_rolling_average_gulag_kdr', direction: 'desc'},
                                            text: 'Gulag Win Rate (High to Low)'
                                        },
                                        {
-                                           value: {sort: 'gulag_win_rate', direction: 'asc'},
+                                           value: {sort: 'last_100_rolling_average_gulag_kdr', direction: 'asc'},
                                            text: 'Gulag Win Rate (Low to High)'
                                        },
                                        {
@@ -101,10 +131,6 @@ export default function Gamers({
                                        {
                                            value: {sort: 'win_percentage', direction: 'asc'},
                                            text: 'Win Rate (Low to High)'
-                                       },
-                                       {
-                                           value: {sort: 'heat_score', direction: 'desc'},
-                                           text: 'Heat (High to Low)'
                                        }
                                    ]}/>
                             <div>
@@ -137,17 +163,19 @@ export default function Gamers({
         if (inputValue.length == 0) {
             setFeedHasMore(true);
         }
-        if (inputValue.length) {
-            router.replace({
-                pathname: '/gamers',
-                query: {username: inputValue, game_category: filterCategory}
-            });
-        } else {
-            router.replace({
-                pathname: '/gamers',
-                query: {game_category: filterCategory}
-            });
+
+        let query = {
+            game_category: filterCategory
+        };
+
+        if (inputValue.length > 0) {
+            query['username'] = inputValue;
         }
+
+        router.replace({
+            pathname: '/gamers',
+            query: query
+        });
 
         setFeedHasMore(false);
         setSearchValue(inputValue);
@@ -168,6 +196,9 @@ export default function Gamers({
         if (searchValue) {
             searchQueryParams['username.ilike'] = `%${searchValue}%`;
         }
+
+        searchQueryParams['num_matches >='] = minMatchCount;
+
         const dataUrl = baseUrl + '/api/gamer?' + UtilityService.objectToUrlParameters(searchQueryParams);
 
         const rawResponse = await fetch(dataUrl);
@@ -210,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     let username = query.username || '';
 
     let gameCategory = query['game_category'] || 'Warzone';
-    const sort = query.sort || 'last_100_rolling_average_kdr';
+    const sort = query.sort || 'heat_score';
 
     const sortDirection = query.direction || 'desc';
 
@@ -218,7 +249,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         sort: undefined,
         direction: undefined,
         'username.ilike': undefined,
-        game_category: gameCategory as string
+        game_category: gameCategory as string,
+        'num_matches >=': MODULE_CONSTANTS.MIN_MATCHES
     };
 
     if (username) {

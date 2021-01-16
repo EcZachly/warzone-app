@@ -42,9 +42,14 @@ export type RawGamer = {
     distance?: number,
     aggressiveness?: number,
     heat_rating?: number,
+    overall_top_10_rate?: number,
     last_10_rolling_average_kdr?: number,
     last_30_rolling_average_kdr?: number,
     last_100_rolling_average_kdr?: number,
+    last_10_rolling_average_kadr?: number,
+    last_30_rolling_average_kadr?: number,
+    last_100_rolling_average_kadr?: number,
+    last_100_rolling_average_gulag_kdr?: number,
     classDescriptions?: Array<object>,
     needs_update?: boolean
 };
@@ -56,7 +61,10 @@ export type RawGamerList = RawGamer[];
 export type Gamer = RawGamer & {
     pretty_gulag_win_rate?: string,
     gulag_kdr?: string,
-    heat_score?: number
+    heat_score?: number,
+    pretty_last_100_gulag_win_rate?: string,
+    last_100_kadr_kdr_difference?: number,
+    last_100_kadr_kdr_difference_percent?: string,
 };
 
 

@@ -108,7 +108,7 @@ class Input extends React.Component<InputType> {
                            onEnter={props.onEnter}
                            disabled={props.disabled}
                            placeholder={props.placeholder}
-                           value={props.value}/>
+                           value={props.value as string}/>
             );
         } else if (mappedType === 'number') {
             return (
@@ -119,7 +119,7 @@ class Input extends React.Component<InputType> {
                              style={inputStyle}
                              hasError={!!props.errorMessage}
                              disabled={props.disabled}
-                             value={props.value}/>
+                             value={props.value as string}/>
             );
         } else if (mappedType === 'date') {
 
@@ -129,7 +129,7 @@ class Input extends React.Component<InputType> {
                            style={inputStyle}
                            hasError={!!props.errorMessage}
                            disabled={props.disabled}
-                           value={props.value}
+                           value={props.value as string}
                            innerRef={props.innerRef}/>
             );
         } else if (mappedType === 'checkbox') {
@@ -140,7 +140,7 @@ class Input extends React.Component<InputType> {
                                style={inputStyle}
                                hasError={!!props.errorMessage}
                                disabled={props.disabled}
-                               value={props.value}/>
+                               value={props.value as any}/>
             );
         } else if (mappedType === 'select') {
             return (
@@ -177,7 +177,7 @@ class Input extends React.Component<InputType> {
                           hasError={!!props.errorMessage}
                           disabled={props.disabled}
                           placeholder={props.placeholder}
-                          value={props.value}
+                          value={props.value as string}
                           textCenter={props.textCenter}/>
             );
         }
@@ -246,7 +246,7 @@ type InputType = {
     disabled?: boolean,
     size?: 'xl' | 'lg' | 'md' | 'sm',
     placeholder?: string,
-    value?: string,
+    value?: string | number | boolean,
     textCenter?: boolean,
     onEnter?: () => void,
     labelSize?: string,

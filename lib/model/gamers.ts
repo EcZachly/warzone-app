@@ -12,14 +12,11 @@ import {Gamer} from '../../src/components/gamer/GamerTypes';
 export async function initializeGamer(queryGamer) {
     const API = await ApiWrapper.getInstance();
     const gamer = await API.MWwz(queryGamer.username, queryGamer.platform);
-    const unoData = await API.MWcombatwzdate(queryGamer.username, 0,0, queryGamer.platform);
+    const unoData = await API.MWcombatwzdate(queryGamer.username, 0, 0, queryGamer.platform);
     gamer.uno_id = unoData?.matches[0]?.player.uno;
     gamer.needs_backfill = true;
     return insertDatabaseValues(WarzoneMapper.mapGamer(gamer), TABLES.GAMERS);
 }
-
-
-
 
 
 
@@ -46,6 +43,11 @@ export function sanitizeGamer(gamer) {
     gamer.kdr = (UtilityService.validateItem(gamer.kdr, 'number', 0).toFixed(4)).toString();
     gamer.aliases = UtilityService.validateItem(gamer.aliases, 'array', []);
     gamer.heat_score = (gamer.last_10_rolling_average_kdr / gamer.last_100_rolling_average_kdr - 1) * 100;
+
+    gamer.pretty_last_100_gulag_win_rate = UtilityService.numberToPercentage(gamer.last_100_rolling_average_gulag_kdr / (gamer.last_100_rolling_average_gulag_kdr + 1), 2);
+    // gamer.pretty_last_100_gulag_win_rate = UtilityService.numberToPercentage(gamer.last_100_rolling_average_gulag_kdr / (gamer.last_100_rolling_average_gulag_kdr + 1), 1);
+    gamer.last_100_kadr_kdr_difference = gamer.last_100_rolling_average_kadr - gamer.last_100_rolling_average_kdr;
+    gamer.last_100_kadr_kdr_difference_percent = UtilityService.numberToPercentage(gamer.last_100_kadr_kdr_difference / gamer.last_100_rolling_average_kdr, 1);
 
     return gamer;
 }

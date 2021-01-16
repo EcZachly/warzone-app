@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Card, CardBody, Image, CardHeader, Small, Text} from '../SimpleComponents';
+import {Box, Card, Show, CardBody, Image, CardHeader, Small, Text} from '../SimpleComponents';
 
 import {LabelValue, Placeholder} from './../SmartComponents';
 
@@ -40,6 +40,8 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
         if (!gamer) {
             return <Card/>;
         }
+
+        console.log(gamer);
 
         const isCondensed = (mode === 'condensed');
         const modeClass = isCondensed ? 'condensed' : 'standard';
@@ -81,23 +83,39 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                         <Box className={'details'}>
 
-                            <LabelValue label={(<Text title={'including kills and deaths in gulag'}>KDR <Small>(last
-                                                                                                               100)</Small></Text>)}
+                            <LabelValue label={(
+                                <Text title={'including kills and deaths in gulag'}>KDR <Small>[last 100]</Small></Text>
+                            )}
                                         value={UtilityService.round(gamer.last_100_rolling_average_kdr, 2)}/>
 
                             <LabelValue label={'Max Kills'}
                                         labelTitle={'Including kills in gulag'}
                                         value={gamer.max_kills}/>
 
-                            <LabelValue label={'Overall Win Rate'}
-                                        value={overallWinRate}/>
-
-                            <LabelValue label={(<Text>Gulag Win Rate <Small>(KDR)</Small></Text>)}
+                            <LabelValue label={<Text>Win Rate <Small>(top 10 rate)</Small></Text>}
                                         value={(
                                             <Text>
-                                                {gamer.pretty_gulag_win_rate} <Small>({gamer.gulag_kdr})</Small>
+                                                {overallWinRate} <Small>
+                                                ({UtilityService.numberToPercentage(gamer.overall_top_10_rate, 1)})
+                                            </Small>
                                             </Text>
                                         )}/>
+
+                            <LabelValue label={(<Text>Last 100 Gulag Win Rate <Small>(KDR)</Small></Text>)}
+                                        value={(
+                                            <Text>
+                                                <Text>
+                                                    {gamer.pretty_last_100_gulag_win_rate}
+                                                </Text> <Small>
+                                                    ({UtilityService.round(gamer.last_100_rolling_average_gulag_kdr, 1)})
+                                                </Small>
+                                            </Text>
+                                        )}/>
+
+                            <LabelValue size={'sm'}
+                                        labelTitle={'(Kills + (Assists / 2)) / Deaths'}
+                                        label={'KADR [last 100]'}
+                                        value={`${UtilityService.round(gamer.last_100_rolling_average_kadr, 2)}`}/>
 
                             <LabelValue size={'sm'}
                                         labelTitle={'Including kills in gulag'}
