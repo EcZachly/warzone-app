@@ -30,9 +30,9 @@ WITH valid_users AS (
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 30 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_assists,
                 CAST(AVG(assists)
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_assists,
-                CAST(AVG(gulag_kills)
+                CAST(AVG(CASE WHEN gulag_kills >= 1 then 1 else 0 end)
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_kills,
-                CAST(AVG(gulag_deaths)
+                CAST(AVG(CASE WHEN gulag_deaths >= 1 then 1 else 0 end)
                      OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_deaths
          FROM warzone.gamer_matches gm
                   JOIN warzone.matches m on m.match_id = gm.match_id
