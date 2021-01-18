@@ -6,8 +6,6 @@ WITH overall AS (
      not_overall AS (
          SELECT *
          FROM warzone.teammate_analysis
-         WHERE helping_player NOT IN ('without teammates')
-           AND helping_player_platform NOT IN ('without teammates')
      ),
      a AS (
          SELECT no.game_category,
@@ -38,10 +36,9 @@ WITH overall AS (
                 o2.aliases                 as helper_aliases
          FROM not_overall no
                   join overall o
-                       ON no.username = o.username AND no.platform = o.platform AND no.game_category = o.game_category
+                       ON no.uno_id = o.uno_id AND no.game_category = o.game_category
                   JOIN overall o2
-                       ON no.helping_player = o2.username AND no.helping_player_platform = o2.platform
-                           AND no.game_category = o2.game_category
+                       ON no.helper_uno_id = o2.uno_id AND no.game_category = o2.game_category
      ),
      unnested AS (
          SELECT *, unnest(relationships) as relations

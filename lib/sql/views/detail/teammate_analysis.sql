@@ -4,8 +4,8 @@ WITH source AS (
            m.team_type,
            m.game_category,
            m.match_id,
-           gm.query_username,
-           gm.query_platform,
+           g.username as query_username,
+           g.platform as query_platform,
            gm.team_placement,
            gm.kills,
            gm.damage_done,
@@ -13,29 +13,34 @@ WITH source AS (
            gm.deaths,
            gm.gulag_kills,
            gm.gulag_deaths,
-           COALESCE(gm2.query_username, 'without teammates') AS helping_player,
-           COALESCE(gm2.query_platform, 'without teammates') AS helping_player_platform,
+           gm.uno_id,
+           COALESCE(g2.username, CAST(gm2.uno_id AS TEXT))                 AS helping_player,
+           COALESCE(g2.platform, 'uno')                      AS helping_player_platform,
            gm2.kills                                         AS helper_kills,
            gm2.damage_done                                   AS helper_damage_done,
            gm2.score                                         AS helper_score,
            gm2.deaths                                        as helper_deaths,
            gm2.gulag_kills                                   AS helper_gulag_kills,
-           gm2.gulag_deaths                                  AS helper_gulag_deaths
+           gm2.gulag_deaths                                  AS helper_gulag_deaths,
+           gm2.uno_id                                        AS helper_uno_id
     FROM warzone.gamer_matches gm
-             JOIN warzone.gamers g ON gm.query_username = g.username and gm.query_platform = g.platform
+             JOIN warzone.gamers g ON gm.uno_id = g.uno_id
              JOIN warzone.matches m ON gm.match_id = m.match_id
-             LEFT JOIN warzone.gamer_matches gm2
+             JOIN warzone.gamer_matches gm2
                        ON gm.team = gm2.team
                            AND gm.match_id = gm2.match_id
-                           AND CONCAT(gm.query_platform, '-', gm.query_username) <>
-                               CONCAT(gm2.query_platform, '-', gm2.query_username)
+                           AND gm.uno_id <> gm2.uno_id
+             LEFT JOIN warzone.gamers g2 ON g2.uno_id = gm2.uno_id
+
 ),
      with_teammates AS (
          SELECT game_category,
-                gm.query_username                                                         AS username,
-                gm.query_platform                                                         AS platform,
-                helping_player,
-                helping_player_platform,
+                gm.uno_id,
+                helper_uno_id,
+                MAX(gm.query_username)                                                    AS username,
+                MAX(gm.query_platform)                                                    AS platform,
+                MAX(helping_player)                                                       AS helping_player,
+                MAX(helping_player_platform)                                              AS helping_player_platform,
                 COUNT(DISTINCT gm.match_id)                                               AS num_matches,
 
                 CAST(COUNT(CASE WHEN team_placement = 1 THEN match_id END) AS REAL) /
@@ -100,7 +105,7 @@ WITH source AS (
                 MIN(start_timestamp)                                                      AS first_game_time,
                 MAX(start_timestamp)                                                      AS last_game_time
          FROM source gm
-         GROUP BY game_category, query_username, query_platform, helping_player, helping_player_platform
+         GROUP BY game_category, uno_id, helper_uno_id
      )
 
 SELECT *

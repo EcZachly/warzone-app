@@ -5,6 +5,6 @@ CREATE TABLE warzone.gamers
 	priority_number INTEGER,
 	needs_backfill BOOLEAN,
 	needs_update BOOLEAN,
-	uno_id TEXT,
+	uno_id NUMERIC(38, 0),
 	PRIMARY KEY (username, platform)
 );

@@ -1,8 +1,8 @@
 CREATE TABLE warzone.gamer_matches (
     query_username TEXT,
     query_platform TEXT,
-    match_id TEXT REFERENCES warzone.matches(match_id),
-    uno_id TEXT,
+    match_id NUMERIC(38, 0) REFERENCES warzone.matches(match_id),
+    uno_id NUMERIC(38, 0),
     username TEXT,
     team TEXT,
     clan_tag TEXT,
@@ -10,8 +10,8 @@ CREATE TABLE warzone.gamer_matches (
     assists INT,
     deaths INT,
     score INT,
-    damage_done INT,
-    damage_taken INT,
+    damage_done BIGINT,
+    damage_taken BIGINT,
     team_placement INT,
     longest_streak INT,
     time_played INT,
@@ -28,5 +28,5 @@ CREATE TABLE warzone.gamer_matches (
     loadout JSON,
     contracts JSON,
     raw_data JSON,
-    PRIMARY KEY (query_username, query_platform, uno_id, match_id)
+    PRIMARY KEY (uno_id, match_id)
 );
