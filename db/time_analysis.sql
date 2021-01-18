@@ -2,17 +2,16 @@ WITH source AS (
 
 SELECT *,
 
-       EXTRACT(HOUR FROM to_timestamp(m.start_time) AT TIME ZONE $3) AS hour_of_timestamp,
-       EXTRACT(DOW FROM to_timestamp(m.start_time) AT TIME ZONE $3) as day_of_week
+       EXTRACT(HOUR FROM to_timestamp(m.start_time) AT TIME ZONE $2) AS hour_of_timestamp,
+       EXTRACT(DOW FROM to_timestamp(m.start_time) AT TIME ZONE $2) as day_of_week
 FROM warzone.gamer_matches gm
          JOIN warzone.matches m ON gm.match_id = m.match_id
-WHERE gm.query_username = $1
-AND gm.query_platform = $2
+WHERE gm.uno_id = CAST($1 AS NUMERIC)
 ),
 hours_mapped AS (
     SELECT *,
             'hour_of_day' AS analysis_type,
-           $3                                                               as timezone,
+           $2                                                               as timezone,
            CASE
                WHEN hour_of_timestamp = 0 THEN '12 AM'
                WHEN hour_of_timestamp = 12 THEN '12 PM'
@@ -22,12 +21,12 @@ hours_mapped AS (
            END                                                       AS time_grain,
            hour_of_timestamp AS sorter
     FROM source
-    WHERE (game_category = $5 or  $5 = '(all)')
+    WHERE game_category = $4
 ),
 day_of_week_mapped AS (
     SELECT *,
            'day_of_week' AS analysis_type,
-           $3                                                                as timezone,
+           $2                                                               as timezone,
            CASE
              WHEN day_of_week = 0 THEN 'Sunday'
                   WHEN day_of_week = 1 THEN 'Monday'
@@ -40,7 +39,7 @@ day_of_week_mapped AS (
             as time_grain,
            day_of_week AS sorter
     FROM source
-    WHERE (game_category = $5 or  $5 = '(all)')
+    WHERE game_category = $4
 ),
 combined AS (
 
@@ -80,7 +79,7 @@ SELECT gm.query_username as username,
        CAST(COUNT(1)            AS REAL)                                                      AS num_games
 FROM combined gm
 GROUP BY 1, 2, 3, 4, 5, 6
-HAVING COUNT(1) >= $4
+HAVING COUNT(1) >= $3
 ORDER BY gm.sorter
 )
 

@@ -16,12 +16,10 @@ export function getQueryParamToSQLMap() {
 
 export function restToMassiveQuery(view: string, params: object){
     let userQuery = params;
-
-    // if params specifies username exactly, then we query for it
-    if(params['username']) {
+    // if params specifies uno_id exactly, then we query for it
+    if(params['uno_id']) {
         userQuery = {
-            username: params['username'],
-            platform: params['platform']
+            uno_id: params['uno_id']
         }
     }
     let gameCategoryQuery = {
@@ -42,10 +40,9 @@ export function restToMassiveQuery(view: string, params: object){
         [VIEWS.GRADED_STATS]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.TIME_ANALYSIS]: {...userQuery, ...timezoneQuery, ...gameCategoryQuery},
         [VIEWS.SQUADS]: {...squadQuery, ...gameCategoryQuery},
-        [VIEWS.TREND_ANALYSIS]: {...userQuery, ...trendQuery, ...gameCategoryQuery},
+        [VIEWS.TREND_ANALYSIS]: {...userQuery,   ...trendQuery, ...gameCategoryQuery},
         [VIEWS.GAMER_MATCHES_AUGMENTED]: {...userQuery, ...gameCategoryQuery},
         [VIEWS.GAMER_INFLUENCE_RELATIONSHIPS]: {...userQuery, ...gameCategoryQuery}
-
     };
     return queries[view];
 }

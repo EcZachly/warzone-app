@@ -58,8 +58,8 @@ async function selectAndInsert(){
 
 
 
-    let gamerMatchLength = 2005757;
-    let offset = 1605757;
+    let gamerMatchLength = 2105757;
+    let offset = 2005757;
     let increment = 10000;
     while(offset <  gamerMatchLength){
         let gamerMatchData = await oldDb['warzone']['uno_id_filled_gamer_matches'].find({}, {offset: offset, order: [{field: 'match_id'}], limit: increment})
