@@ -6,8 +6,6 @@ WITH overall AS (
      not_overall AS (
          SELECT *
          FROM warzone.teammate_analysis
-         WHERE helping_player NOT IN ('without teammates')
-           AND helping_player_platform NOT IN ('without teammates')
      ),
      a AS (
          SELECT no.game_category,
@@ -34,14 +32,15 @@ WITH overall AS (
                     ROW ('trio_placement', 10, no.avg_trio_placement, o.avg_trio_placement, no.avg_trio_placement / NULLIF(o.avg_trio_placement, 0), no.avg_trio_placement, o2.avg_trio_placement, no.avg_trio_placement / NULLIF(o2.avg_trio_placement, 0), TRUE),
                     ROW ('quad_placement', 11, no.avg_quad_placement, o.avg_quad_placement, no.avg_quad_placement / NULLIF(o.avg_quad_placement, 0), no.avg_quad_placement, o2.avg_quad_placement, no.avg_quad_placement / NULLIF(o2.avg_quad_placement, 0), TRUE)
                     ]::relationship_edge[] as relationships,
+                o.uno_id,
+                o2.uno_id as helper_uno_id,
                 o.aliases,
                 o2.aliases                 as helper_aliases
          FROM not_overall no
                   join overall o
-                       ON no.username = o.username AND no.platform = o.platform AND no.game_category = o.game_category
+                       ON no.uno_id = o.uno_id AND no.game_category = o.game_category
                   JOIN overall o2
-                       ON no.helping_player = o2.username AND no.helping_player_platform = o2.platform
-                           AND no.game_category = o2.game_category
+                       ON no.helper_uno_id = o2.uno_id AND no.game_category = o2.game_category
      ),
      unnested AS (
          SELECT *, unnest(relationships) as relations
@@ -52,9 +51,11 @@ SELECT no.game_category,
        no.num_matches,
        no.username,
        no.platform,
+       no.uno_id,
        no.aliases,
        no.helping_player,
        no.helping_player_platform,
+       no.helper_uno_id,
        no.helper_aliases,
        (no.relations).relationship_stat       as relationship_stat,
        (no.relations).relationship_sort       as relationship_sort,

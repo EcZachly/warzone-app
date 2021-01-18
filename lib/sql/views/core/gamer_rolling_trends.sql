@@ -1,61 +1,59 @@
 CREATE OR REPLACE VIEW warzone.gamer_rolling_trends AS
 
 WITH valid_users AS (
-    SELECT query_username, query_platform
+    SELECT  uno_id
     FROM warzone.gamer_matches
-    GROUP BY 1, 2
+    GROUP BY 1
     HAVING COUNT(1) >= 100
 ),
      rolling as (
-         SELECT gm.query_username,
-                gm.query_platform,
+         SELECT
                 username,
+                gm.uno_id,
                 start_timestamp,
                 m.game_category,
                 CAST(AVG(kills)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_kills,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_kills,
                 CAST(AVG(kills)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_kills,
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_kills,
                 CAST(AVG(kills)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_kills,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_kills,
                 CAST(AVG(deaths)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_deaths,
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_deaths,
                 CAST(AVG(deaths)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_deaths,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 29 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_deaths,
                 CAST(AVG(deaths)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_deaths,
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_deaths,
                 CAST(AVG(assists)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_assists,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 9 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_10_rolling_average_assists,
                 CAST(AVG(assists)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 30 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_assists,
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 30 PRECEDING AND CURRENT ROW ) AS REAL)  AS last_30_rolling_average_assists,
                 CAST(AVG(assists)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_assists,
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_assists,
                 CAST(AVG(CASE WHEN gulag_kills >= 1 then 1 else 0 end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_kills,
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_kills,
                 CAST(AVG(CASE WHEN gulag_deaths >= 1 then 1 else 0 end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_deaths,
-
+                     OVER (PARTITION BY  gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_rolling_average_gulag_deaths,
                 CAST(AVG(CASE WHEN team_type = 'solo' THEN kills end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_solo_rolling_average_kills,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_solo_rolling_average_kills,
                 CAST(AVG(CASE WHEN team_type = 'duo' THEN kills end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_duo_rolling_average_kills,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_duo_rolling_average_kills,
                 CAST(AVG(CASE WHEN team_type = 'trio' THEN kills end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_trio_rolling_average_kills,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_trio_rolling_average_kills,
                 CAST(AVG(CASE WHEN team_type = 'quad' THEN kills end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_quad_rolling_average_kills,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_quad_rolling_average_kills,
 
                 CAST(AVG(CASE WHEN team_type = 'solo' THEN deaths end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_solo_rolling_average_deaths,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_solo_rolling_average_deaths,
                 CAST(AVG(CASE WHEN team_type = 'duo' THEN deaths end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_duo_rolling_average_deaths,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_duo_rolling_average_deaths,
                 CAST(AVG(CASE WHEN team_type = 'trio' THEN deaths end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_trio_rolling_average_deaths,
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_trio_rolling_average_deaths,
                 CAST(AVG(CASE WHEN team_type = 'quad' THEN deaths end)
-                     OVER (PARTITION BY gm.query_platform, gm.query_username, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_quad_rolling_average_deaths,
-
+                     OVER (PARTITION BY gm.uno_id, game_category ORDER BY m.start_time ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_quad_rolling_average_deaths
          FROM warzone.gamer_matches gm
                   JOIN warzone.matches m on m.match_id = gm.match_id
-                  JOIN valid_users v ON gm.query_username = v.query_username and gm.query_platform = v.query_platform
+                  JOIN valid_users v ON gm.uno_id = v.uno_id
      ),
      include_kdrs AS (
          SELECT *,
@@ -84,8 +82,8 @@ WITH valid_users AS (
                 CAST(last_100_rolling_average_gulag_kills /
                      NULLIF(last_100_rolling_average_gulag_deaths, 0) AS REAL) AS last_100_rolling_average_gulag_kdr,
                 CASE
-                    WHEN LEAD(query_username, 1)
-                         OVER (PARTITION BY query_username, query_platform, game_category ORDER BY start_timestamp) IS NULL
+                    WHEN LEAD(uno_id, 1)
+                         OVER (PARTITION BY uno_id, game_category ORDER BY start_timestamp) IS NULL
                         THEN TRUE
                     ELSE FALSE END as                                       is_latest_game
          FROM rolling
@@ -104,5 +102,3 @@ SELECT *,
            ELSE 5
            END                                                               as heat_rating
 FROM include_kdrs
-
-

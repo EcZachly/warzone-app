@@ -25,7 +25,6 @@ export const getSingleGamerData = async (username, platform, game_category=GAME_
 
 export const getGamerDetailViewQuery = (view: string, allParams: object = {}, options: object = {}): ViewQuery => {
     let query = restToMassiveQuery(view, allParams)
-
     const queryableViews = {
         [VIEWS.GAMER_INFLUENCE_RELATIONSHIPS]: new ViewQuery(VIEWS.GAMER_INFLUENCE_RELATIONSHIPS, query, options),
         [VIEWS.GAMER_STAT_SUMMARY]: new ViewQuery(VIEWS.GAMER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),

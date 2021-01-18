@@ -8,8 +8,7 @@ CREATE OR REPLACE VIEW warzone.gamer_stats_graded AS
 
     )
 SELECT
-   gm.query_username as username,
-       gm.query_platform as platform,
+        gm.uno_id,
        m.game_category,
 
         COUNT(CASE WHEN gm.score >= gt.a_grade_score THEN 1 END) AS a_grade_score,
@@ -97,4 +96,4 @@ SELECT
     FROM mapped gm
         JOIN warzone.matches m on m.match_id = gm.match_id
         JOIN warzone.grading_table gt ON gt.game_category = m.game_category
- GROUP BY gm.query_username, gm.query_platform, m.game_category
+ GROUP BY gm.uno_id, m.game_category

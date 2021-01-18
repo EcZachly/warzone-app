@@ -1,7 +1,5 @@
 SELECT * FROM warzone.gamer_rolling_trends_materialized
-WHERE
-query_username = $1 AND
-query_platform = $2 AND
-start_timestamp >= CURRENT_TIMESTAMP - INTERVAL '$3 DAYS' AND
-game_category = $4
+WHERE uno_id = CAST($1 AS NUMERIC(38, 0)) AND
+start_timestamp >= CURRENT_TIMESTAMP - INTERVAL '$2 DAYS' AND
+game_category = $3
 ORDER BY start_timestamp

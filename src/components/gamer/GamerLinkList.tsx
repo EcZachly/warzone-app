@@ -20,7 +20,7 @@ export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer
 
     if (TypeService.isArray(gamers) === false) {
         if (loading === true) {
-            gamers = [{username: 'test', platform: 'xbl'}];
+            gamers = [{username: 'test', platform: 'xbl', uno_id: 11111111}];
         } else {
             throw new Error('props.gamers (GamerList) OR props.gamer (Gamer) is required');
         }

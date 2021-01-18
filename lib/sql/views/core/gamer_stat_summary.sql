@@ -2,8 +2,9 @@ CREATE OR REPLACE view warzone.gamer_stat_summary as
 (
 WITH agg AS (
     SELECT m.game_category                                                             AS game_category,
-           query_username                                                              AS username,
-           query_platform                                                              AS platform,
+           gm.uno_id                                                                   AS uno_id,
+           MAX(COALESCE(g.username, CAST(gm.uno_id AS TEXT)))                                           AS username,
+           MAX(COALESCE(g.platform, 'uno'))                                            AS platform,
            ARRAY_AGG(DISTINCT gm.username)                                             AS aliases,
            ARRAY_TO_STRING(ARRAY_AGG(DISTINCT gm.username)   , '-' )                   AS aliases_search_string,
            CAST(MAX(kills) AS INTEGER)                                                 AS max_kills,
@@ -93,7 +94,12 @@ WITH agg AS (
 
     FROM warzone.gamer_matches gm
              JOIN warzone.matches m ON gm.match_id = m.match_id
-    GROUP BY m.game_category, gm.query_username, gm.query_platform
+             LEFT JOIN warzone.gamers g ON gm.uno_id = g.uno_id
+    GROUP BY m.game_category, gm.uno_id
+),
+gamer_rolling AS (
+    SELECT * FROm warzone.gamer_rolling_trends
+    WHERE is_latest_game = TRUE
 )
 
 
@@ -115,9 +121,7 @@ SELECT a.*,
        CONCAT(a.username, '-', a.platform)               as platform_username,
        COALESCE(ghr.heat_index_10_100, 0) as heat_score
 FROM agg a
-         LEFT JOIN warzone.gamer_rolling_trends ghr
-                   ON a.username = ghr.query_username
-                       AND a.platform = ghr.query_platform
-                       AND ghr.game_category = a.game_category
-                       AND ghr.is_latest_game = TRUE
+         LEFT JOIN gamer_rolling ghr
+                   ON a.uno_id = ghr.uno_id
+                   AND a.game_category = ghr.game_category
     )

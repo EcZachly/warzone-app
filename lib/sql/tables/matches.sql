@@ -1,5 +1,5 @@
 CREATE TABLE warzone.matches (
-    match_id TEXT PRIMARY KEY,
+    match_id NUMERIC(38,0) PRIMARY KEY,
     start_time BIGINT,
     end_time BIGINT,
     map TEXT,

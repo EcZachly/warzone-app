@@ -21,19 +21,27 @@ import UtilityService from './../../src/services/UtilityService';
  * @param gamer
  * @returns {PromiseLike<any> | Promise<any>}
  */
-export function writeGamerMatchesToDatabase(matches, gamer) {
+export function writeGamerMatchesToDatabase(matches, gamer, doUpsert = true) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
-    const gamerMatchPromises = gamerMatches.map(async (m) => {
-        let {match_id, uno_id } = m;
-        let query_username = gamer.username;
-        let query_platform = gamer.platform;
-        if(query_username == '-'){
-           query_username = uno_id;
-           query_platform = 'uno';
-        }
-        let upsertQuery = {query_username, query_platform, match_id};
-        return await insertDatabaseValues(m, TABLES.GAMER_MATCHES, upsertQuery);
-    });
+    let gamerMatchPromises = [];
+
+
+    if(doUpsert){
+        gamerMatchPromises = gamerMatches.map(async (m) => {
+            let {match_id, uno_id } = m;
+            let query_username = gamer.username;
+            let query_platform = gamer.platform;
+            if(query_username == '-'){
+                query_username = uno_id;
+                query_platform = 'uno';
+            }
+            let upsertQuery = {query_username, query_platform, match_id};
+            return await insertDatabaseValues(m, TABLES.GAMER_MATCHES, upsertQuery);
+        });
+    }
+    else{
+        gamerMatchPromises.push(insertDatabaseValues(matches, TABLES.GAMER_MATCHES))
+    }
     return Bluebird.all(gamerMatchPromises, {concurrency: 3});
 }
 

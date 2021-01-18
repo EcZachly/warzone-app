@@ -178,8 +178,12 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
 
-    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, allParams);
+
     const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string);
+    let queryParams = {...allParams, uno_id: gamer.uno_id}
+    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, queryParams);
+
+
     const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
 
     if (!gamer) {

@@ -10,7 +10,6 @@ import GamerPlatformImage from './GamerPlatformImage';
 import GamerSearchInput from './GamerSearchInput';
 import GamerService from './GamerService';
 import GamerTimeChart from './GamerTimeChart';
-import TeammateTable from './TeammateTable';
 import GamerAdd from './GamerAdd';
 
 export {GamerCard};
@@ -48,10 +47,6 @@ export {GamerService};
 
 export {GamerTimeChart};
 
-
-export {TeammateTable};
-
-
 export {GamerAdd};
 
 
@@ -69,6 +64,5 @@ export default {
     GamerSearchInput,
     GamerService,
     GamerTimeChart,
-    TeammateTable,
     GamerAdd
 };

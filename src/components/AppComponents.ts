@@ -23,7 +23,6 @@ import Navbar from './app-components/Navbar';
 //P
 import Page from './app-components/Page';
 //T
-import TeammateTable from './gamer/TeammateTable';
 
 export {ClassBadgeList}
 
@@ -85,7 +84,6 @@ export {Page};
 
 
 //S
-export {TeammateTable};
 
 //U
 
@@ -119,6 +117,5 @@ export default {
     GamerTrendChart: GamerTrendChart,
     GamerInfluenceList: GamerInfluenceList,
     Navbar: Navbar,
-    TeammateTable: TeammateTable,
     Page: Page,
 };
