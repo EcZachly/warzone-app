@@ -47,10 +47,49 @@ WITH agg AS (
            NULLIF(COUNT(DISTINCT CASE WHEN team_type = 'quad' THEN m.match_id END), 0) AS quad_win_rate,
 
 
+           AVG(CASE WHEN team_type = 'solo' THEN gm.team_placement END)                AS avg_solo_placement,
+           AVG(CASE WHEN team_type = 'duo' THEN gm.team_placement END)                 AS avg_duo_placement,
            AVG(CASE WHEN team_type = 'trio' THEN gm.team_placement END)                AS avg_trio_placement,
            AVG(CASE WHEN team_type = 'quad' THEN gm.team_placement END)                AS avg_quad_placement,
-           AVG(CASE WHEN team_type = 'duo' THEN gm.team_placement END)                 AS avg_duo_placement,
-           AVG(CASE WHEN team_type = 'solo' THEN gm.team_placement END)                AS avg_solo_placement,
+
+
+           count(CASE WHEN team_type = 'solo' THEN m.match_id end)  as solo_match_count,
+           count(CASE WHEN team_type = 'duo' THEN m.match_id end)  as duo_match_count,
+           count(CASE WHEN team_type = 'trio' THEN m.match_id end)  as trio_match_count,
+           count(CASE WHEN team_type = 'quad' THEN m.match_id end)  as quad_match_count,
+
+
+           count(CASE WHEN team_type = 'solo' AND team_placement = 1 then m.match_id END) AS solo_wins,
+           count(CASE WHEN team_type = 'duo' AND team_placement = 1 then m.match_id END) AS duo_wins,
+           count(CASE WHEN team_type = 'trio' AND team_placement = 1 then m.match_id END) AS trio_wins,
+           count(CASE WHEN team_type = 'quad' AND team_placement = 1 then m.match_id END) AS quad_wins,
+
+
+           CAST(COUNT(CASE WHEN team_type = 'solo' AND team_placement <= 10 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'solo' then m.match_id END)), 0)    AS solo_top_10_rate,
+           CAST(COUNT(CASE WHEN team_type = 'duo' AND team_placement <= 10 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'duo' then m.match_id END)), 0)    AS duo_top_10_rate,
+           CAST(COUNT(CASE WHEN team_type = 'trio' AND team_placement <= 10 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'trio' then m.match_id END)), 0)    AS trio_top_10_rate,
+           CAST(COUNT(CASE WHEN team_type = 'quad' AND team_placement <= 10 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'quad' then m.match_id END)), 0)    AS quad_top_10_rate,
+
+
+           CAST(COUNT(CASE WHEN team_type = 'solo' AND team_placement <= 15 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'solo' then m.match_id END)), 0)    AS solo_top_10_percent_rate,
+           CAST(COUNT(CASE WHEN team_type = 'duo' AND team_placement <= 8 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'duo' then m.match_id END)), 0)    AS duo_top_10_percent_rate,
+           CAST(COUNT(CASE WHEN team_type = 'trio' AND team_placement <= 5 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'trio' then m.match_id END)), 0)    AS trio_top_10_percent_rate,
+           CAST(COUNT(CASE WHEN team_type = 'quad' AND team_placement <= 4 THEN m.match_id END) AS REAL) /
+           NULLIF(COUNT(DISTINCT (case when team_type = 'quad' then m.match_id END)), 0)    AS quad_top_10_percent_rate,
+
+
+           CAST(MAX(CASE WHEN team_type = 'solo' THEN kills END) AS INTEGER)    AS solo_max_kills,
+           CAST(MAX(CASE WHEN team_type = 'duo' THEN kills END) AS INTEGER)    AS duo_max_kills,
+           CAST(MAX(CASE WHEN team_type = 'trio' THEN kills END) AS INTEGER)    AS trio_max_kills,
+           CAST(MAX(CASE WHEN team_type = 'quad' THEN kills END) AS INTEGER)    AS quad_max_kills,
+
            COUNT(1)                                                                    AS num_matches
 
     FROM warzone.gamer_matches gm
@@ -69,14 +108,20 @@ SELECT a.*,
        COALESCE(ghr.last_10_rolling_average_kdr, a.kdr)  as last_10_rolling_average_kdr,
        COALESCE(ghr.last_30_rolling_average_kdr, a.kdr)  AS last_30_rolling_average_kdr,
        COALESCE(ghr.last_100_rolling_average_kdr, a.kdr) AS last_100_rolling_average_kdr,
+
+       COALESCE(ghr.last_100_solo_rolling_average_kdr, a.kdr) AS last_100_solo_rolling_average_kdr,
+       COALESCE(ghr.last_100_duo_rolling_average_kdr, a.kdr) AS last_100_duo_rolling_average_kdr,
+       COALESCE(ghr.last_100_trio_rolling_average_kdr, a.kdr) AS last_100_trio_rolling_average_kdr,
+       COALESCE(ghr.last_100_quad_rolling_average_kdr, a.kdr) AS last_100_quad_rolling_average_kdr,
+
        COALESCE(ghr.last_10_rolling_average_kadr, a.kdr)  as last_10_rolling_average_kadr,
        COALESCE(ghr.last_30_rolling_average_kadr, a.kdr)  AS last_30_rolling_average_kadr,
        COALESCE(ghr.last_100_rolling_average_kadr, a.kdr) AS last_100_rolling_average_kadr,
        COALESCE(ghr.last_100_rolling_average_gulag_kdr, a.kdr) AS last_100_rolling_average_gulag_kdr,
        CONCAT(a.username, '-', a.platform)               as platform_username,
-       COALESCE(ghr.heat_rating, 0) as heat_score
+       COALESCE(ghr.heat_index_10_100, 0) as heat_score
 FROM agg a
          LEFT JOIN gamer_rolling ghr
                    ON a.uno_id = ghr.uno_id
                    AND a.game_category = ghr.game_category
-    );
+    )

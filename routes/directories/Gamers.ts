@@ -155,19 +155,25 @@ async function updateGamerUponRequest(gamer: Gamer) {
 export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
     const {view, game_category} = req.query;
     delete req.query.view;
+
     const {username, platform} = req.params;
+
     let allParams = {...req.params, ...req.query};
 
     let paramMap = getQueryParamToSQLMap();
+
     let errorObject = {
         'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
         'invalid_view': 'invalid view query param needs to be in ' + Object.keys(paramMap).join(','),
         'not_found': username + ' on platform: ' + platform + ' was not found!'
     };
+
     if (!platform || !username) {
         return handleError(req, res, {message: errorObject['missing_data']});
     }
+
     const sqlView = paramMap[view as string];
+
     if (!sqlView) {
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
@@ -184,11 +190,13 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     const viewData = viewToQuery.data;
 
     await updateGamerUponRequest(gamer);
+
     const seoMetadata = {
         title: 'Warzone stats for ' + gamer['username'],
         keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
         description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
     };
+
     handleResponse(req, res, {
         gamer,
         viewData,
