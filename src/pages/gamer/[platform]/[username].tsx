@@ -1,6 +1,15 @@
 import {GetServerSideProps} from 'next';
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Container, Header, LineBreak, Main, Small} from './../../../components/SimpleComponents';
+import {
+    Box,
+    Button,
+    Paragraph,
+    Container,
+    Header,
+    LineBreak,
+    Main,
+    Small
+} from './../../../components/SimpleComponents';
 import {LabelValue, Sidebar, SidebarCompanion, StatLabelValue, TabNav} from '../../../components/SmartComponents';
 import {
     ClassBadgeList,
@@ -28,6 +37,58 @@ import {GamerService} from '../../../components/gamer';
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
+        // overview: (gamer, chartState) => {
+        //     console.log(gamer);
+        //
+        //     return (
+        //         <Box>
+        //             <Header size={'md'}>Overall</Header>
+        //
+        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_placement, 1)}/>
+        //
+        //
+        //             <Header size={'md'}>Solos</Header>
+        //
+        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_solo_placement, 1)}/>
+        //
+        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.solo_win_rate, 1)}/>
+        //
+        //             <Header size={'md'}>Duos</Header>
+        //
+        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_duo_placement, 1)}/>
+        //
+        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.duo_win_rate, 1)}/>
+        //
+        //
+        //             <Header size={'md'}>Trios</Header>
+        //
+        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_trio_placement, 1)}/>
+        //
+        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.trio_win_rate, 1)}/>
+        //
+        //
+        //             <Header size={'md'}>Quads</Header>
+        //
+        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_quad_placement, 1)}/>
+        //
+        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.quad_win_rate, 1)}/>
+        //
+        //
+        //             <LabelValue label={'Matches'} value={UtilityService.numberToPercentage(gamer.quad_match_count, 1)}/>
+        //
+        //             <LabelValue label={'Wins'} value={UtilityService.numberToPercentage(gamer.quad_wins, 1)}/>
+        //
+        //             <LabelValue label={'Top 10 Rate'} value={UtilityService.numberToPercentage(gamer.quad_top_10_rate, 1)}/>
+        //
+        //             <LabelValue label={'Top 10% Rate'} value={UtilityService.numberToPercentage(gamer.quad_top_10_percent_rate, 1)}/>
+        //
+        //             <LabelValue label={'Last 100 KDR'} value={UtilityService.numberToPercentage(gamer.last_100_quad_rolling_kdr, 1)}/>
+        //
+        //             <LabelValue label={'Max Kills'} value={UtilityService.numberToPercentage(gamer.quad_max_kills, 1)}/>
+        //         </Box>
+        //     );
+        // },
+
         teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer}
                                                               teammateRows={chartState.viewData}/>,
 
@@ -69,15 +130,14 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     }
     const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
 
-    const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key)=>{
-        const allowableUnoKeys = ['squads', 'trends', 'recent_matches']
-        if(gamer.platform == 'uno'){
+    const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key) => {
+        const allowableUnoKeys = ['squads', 'trends', 'recent_matches'];
+        if (gamer.platform == 'uno') {
             return allowableUnoKeys.includes(key);
-        }
-        else{
+        } else {
             return true;
         }
-    })
+    });
 
 
     const tabOptions = tabNames.map((id) => {
@@ -145,7 +205,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         let username = '';
         if (gamer) {
             username = gamer.username;
-            if(gamer.platform == 'uno'){
+            if (gamer.platform == 'uno') {
                 username = gamer.aliases[0] + '#' + gamer.username.substring(0, 6);
             }
         }
@@ -288,9 +348,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
     const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
     let defaultView = 'teammates';
-    if(platform == 'uno'){
+
+    if (platform == 'uno') {
         defaultView = 'recent_matches';
     }
+
     const selectedView = validViewNames.includes(view as string) ? context.query.view : defaultView;
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const rawGamerList = await GamerService.getGamerDetailView(username as string,
