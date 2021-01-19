@@ -23,13 +23,14 @@ create or replace view warzone.daily_player_stat_summary AS
        avg(gm.kills)                                                           AS kills,
        avg(gm.deaths)                                                          AS deaths,
        avg(gm.damage_done)                                                     AS damage_done,
-       sum(gm.kills)::real / sum(gm.deaths)::double precision                  AS kdr,
+       sum(gm.kills)::real / NULLIF(sum(gm.deaths), 0)::double precision                  AS kdr,
        sum(gm.gulag_kills)::real / COALESCE(NULLIF(sum(
                    CASE
                        WHEN gm.gulag_deaths <= 1 THEN gm.gulag_deaths
                        ELSE NULL::integer
                        END + gm.gulag_kills), 0), 1)::double precision                 AS gulag_win_rate
 FROM warzone.gamer_matches gm
+         JOIN warzone.gamers g ON gm.uno_id = g.uno_id
          JOIN warzone.matches m ON gm.match_id = m.match_id
 GROUP BY m.game_category, date_trunc('day'::text, to_timestamp(m.start_time::double precision)), gm.query_username, gm.query_platform
 

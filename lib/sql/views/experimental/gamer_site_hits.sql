@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE MATERIALIZED VIEW warzone.gamer_site_hits AS
+CREATE MATERIALIZED VIEW warzone.gamer_site_hits AS
 (
 
 WITH events AS (

@@ -27,18 +27,14 @@ export async function updateDatabaseValues(query: object, data: Array<object> | 
     }
 }
 
-export async function insertDatabaseValues(data: Array<object> | object, table: string, upsertQuery: object = null) {
+export async function insertDatabaseValues(data: Array<object> | object, table: string, writeOptions = {}) {
     const db = await database;
     try {
-        return await db[DATABASE_SCHEMA][table].insert(data);
+        return await db[DATABASE_SCHEMA][table].insert(data, writeOptions);
     } catch (failure) {
         const isDuplicateRecordError = failure.code === '23505';
         if (!isDuplicateRecordError) {
             console.log(failure);
-        } else {
-            if (upsertQuery) {
-                return await updateDatabaseValues(upsertQuery, data, table);
-            }
         }
     }
 }

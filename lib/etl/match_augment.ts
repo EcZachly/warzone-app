@@ -12,13 +12,20 @@ import {VIEWS} from "../constants";
 async function refreshData(query = {}) {
     const matches = await queryView(VIEWS.MATCHES_TO_AUGMENT, {});
     console.log('found ' + matches.length + ' matches to augment!');
-    await Bluebird.mapSeries(matches, (match) => {
+    await Bluebird.map(matches, (match) => {
         let {match_id} = match;
         console.log('augmenting match ' + match_id);
+
+        let writeOptions = {
+            onConflict: {
+                target: ['uno_id', 'match_id'],
+                action: 'ignore'
+            }
+        }
         return getFullMatchDetailsFromAPI(match_id).then((data) => {
-            return writeGamerMatchesToDatabase(data, {username: '-', platform: '-'});
+            return writeGamerMatchesToDatabase(data, {username: '-', platform: '-'}, writeOptions);
         });
-    }).then((done) => {
+    }, {concurrency: 3}).then((done) => {
         console.log('done!');
     })
 }

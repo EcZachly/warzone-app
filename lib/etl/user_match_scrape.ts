@@ -69,8 +69,20 @@ function getQueryTimeframes(matchHistory, queriedTimestamps, gamer) {
 async function getMatchDetails(queryTimeframes, gamer, API) {
     const matches = await getMatchDetailsFromAPI(queryTimeframes, gamer, API);
 
-    await writeMatchesToDatabase(matches);
-    await writeGamerMatchesToDatabase(matches, gamer);
+    let gamerMatchWriteOptions = {
+        onConflict: {
+            target: ['uno_id', 'match_id'],
+            action: 'ignore'
+        }
+    }
+    let matchWriteOptions = {
+        onConflict: {
+            target: ['match_id'],
+            action: 'ignore'
+        }
+    }
+    await writeMatchesToDatabase(matches, matchWriteOptions);
+    await writeGamerMatchesToDatabase(matches, gamer, gamerMatchWriteOptions);
 
     if (gamer.needs_backfill) {
         await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_backfill: false});
