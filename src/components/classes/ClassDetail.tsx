@@ -94,7 +94,7 @@ export default function ClassDetail({category, style, statName, width, height, s
 }
 
 type GamerClassDetailProps = {
-    category?: object,
+    category?: Record<any, unknown>,
     stat?: number,
     style?: React.CSSProperties,
     badgeRef?: React.LegacyRef<HTMLDivElement>,

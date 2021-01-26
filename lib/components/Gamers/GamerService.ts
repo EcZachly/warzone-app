@@ -27,7 +27,7 @@ export const getSingleGamerData = async (username, platform, game_category = GAM
 };
 
 
-export const getGamerDetailViewQuery = (view: string, allParams: object = {}, options: object = {}): ViewQuery => {
+export const getGamerDetailViewQuery = (view: string, allParams: Record<any, unknown> = {}, options: object = {}): ViewQuery => {
     const query = restToMassiveQuery(view, allParams);
 
     const queryableViews = {

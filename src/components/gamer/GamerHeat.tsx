@@ -8,7 +8,7 @@ import {Gamer} from './GamerTypes';
 
 export type GamerCardProps = {
     gamer: Gamer,
-    classDescriptions?: object,
+    classDescriptions?: Record<any, unknown>,
     size?: 'sm'
 };
 

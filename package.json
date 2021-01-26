@@ -23,8 +23,10 @@
     "_dev": "next dev",
     "start": "NODE_ENV=production ts-node server.ts",
     "etl": "ts-node src/lib/etl/user_match_scrape.js",
+    "git-add": "git add .",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "lint-fix": "eslint . --fix",
+    "validate": "npm ls"
   },
   "author": "",
   "license": "ISC",
@@ -58,6 +60,7 @@
     "moment": "^2.29.1",
     "next": "^9.5.5",
     "node-sass": "^4.7.2",
+    "precommit-hook": "^3.0.0",
     "randomstring": "^1.1.5",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

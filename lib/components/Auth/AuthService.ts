@@ -25,7 +25,7 @@ const CONFIG = {
 //--==--==----==--==--==--==----==--==----==--==----==--==--==--==----==--==--//
 
 
-export function validatePassword(password): boolean | string {
+export function validatePassword(password: string): boolean | string {
     if (TypeService.isString(password, true) === false) {
         return 'password (String) is required and cannot be empty';
     } else if (password.length < MIN_PASSWORD_LENGTH) {
@@ -78,11 +78,12 @@ export function comparePassword(unencryptedPassword: string, encryptedPassword: 
 
 
 
-export function setJWTTokenCookie(tokenStorageObj, res) {
+export function setJWTTokenCookie(tokenStorageObj: { user_id: UserID }, res: NextApiResponse): void {
     const token = generateAuthToken({
         user_id: tokenStorageObj.user_id
     });
 
+    // @ts-ignore
     res.cookie('jwt', token, {
         expires: _generateExpirationDate(),
         httpOnly: true
@@ -90,7 +91,7 @@ export function setJWTTokenCookie(tokenStorageObj, res) {
 }
 
 
-export function generateAuthToken(tokenStorageObj) {
+export function generateAuthToken(tokenStorageObj: { user_id: UserID, [x: string]: any }): string {
     if (TypeService.isObject(tokenStorageObj) === false) {
         throw new Error('tokenStorageObj (Object) is required');
     } else if (TypeService.isInteger(tokenStorageObj.user_id) === false) {
@@ -103,7 +104,7 @@ export function generateAuthToken(tokenStorageObj) {
 
 
 
-export function _generateExpirationDate() {
+export function _generateExpirationDate(): Date {
     return moment().add(7, 'days').toDate();
 }
 
@@ -127,7 +128,7 @@ export function generateStorablePasswordString(iterations: number, salt: string,
 
 
 
-export function extractDetailsFromStoredPassword(encryptedPassword: string): { iterations, salt, hash } {
+export function extractDetailsFromStoredPassword(encryptedPassword: string): { iterations: number, salt: string, hash: string } {
     if (TypeService.isString(encryptedPassword) === false) {
         throw new Error('encryptedPassword (String) is required');
     }
@@ -160,13 +161,13 @@ export function generateSalt(): string {
 
 
 
-export function passwordIsInListOfMostCommonPasswords(password): boolean {
+export function passwordIsInListOfMostCommonPasswords(password: string): boolean {
     return MOST_COMMON_PASSWORDS[password];
 }
 
 
 
-export function decodeJWTToken(token) {
+export function decodeJWTToken(token: string): Record<any, unknown> {
     let decodedToken;
 
     try {
@@ -180,7 +181,7 @@ export function decodeJWTToken(token) {
 
 
 
-export function verifyJWTToken(decodedToken, options) {
+export function verifyJWTToken(decodedToken: { user_id: UserID, expiration_timestamp: Date }, options: Record<any, unknown>): Promise<string> {
     return new Promise((resolve, reject) => {
         options = (TypeService.isObject(options)) ? options : {};
         if (TypeService.isObject(decodedToken) === false) {

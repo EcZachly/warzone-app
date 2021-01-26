@@ -12,7 +12,8 @@ import {Gamer, GamerList} from './GamerTypes';
 
 
 export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer, loading?: boolean, block?: boolean, noLink?: boolean }) {
-    let {gamers, gamer, block, loading, noLink} = props;
+    let {gamers} = props;
+    const {gamer, block, loading, noLink} = props;
 
     if (TypeService.isArray(gamers) === false && TypeService.isObject(gamer)) {
         gamers = [gamer];
@@ -33,7 +34,8 @@ export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer
                     gamers.map((gamer) => {
                         const key = [gamer.platform, gamer.username].join('-');
 
-                        return (<GamerLinkList key={key} gamer={gamer} noLink={noLink} loading={loading} block={false}/>);
+                        return (
+                            <GamerLinkList key={key} gamer={gamer} noLink={noLink} loading={loading} block={false}/>);
                     })
                 }
             </>

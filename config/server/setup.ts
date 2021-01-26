@@ -1,4 +1,4 @@
-export function checkForAllEnvironmentVariables() {
+export function checkForAllEnvironmentVariables(): void {
     const requiredEnvironmentVariables = [
         'WARZONE_JWT_SECRET',
         'WARZONE_SENDGRID_API_KEY'

@@ -82,7 +82,7 @@ export default function SquadCard({squad, classDescriptions}) {
                 <Box>
                     <GamerLinkList gamers={gamerList}/>
 
-                    <ClassBadgeList subject={squad as object}
+                    <ClassBadgeList subject={squad as Record<any, unknown>}
                                     classDescriptions={filteredDescriptions}/>
                 </Box>
 

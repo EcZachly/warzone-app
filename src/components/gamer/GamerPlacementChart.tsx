@@ -7,7 +7,7 @@ import {Box, Header, Paragraph} from '../SimpleComponents';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 type GamerCardChartProps = {
-    data: Object,
+    data: Record<any, unknown>,
     height: number,
     width: number,
 };

@@ -38,21 +38,21 @@ export async function insert(table: string, data: Record<any, unknown>): Promise
 
 
 
-export async function update(table: string, query: Record<any, unknown>, data: Record<any, unknown>) {
+export async function update(table: string, query: Record<any, unknown>, data: Record<any, unknown>): Promise<any> {
     const db = await database;
     return await db[DATABASE_SCHEMA][table].update(query, data);
 }
 
 
 
-export async function destroy(table: string, query: Record<any, unknown>) {
+export async function destroy(table: string, query: Record<any, unknown>): Promise<any> {
     const db = await database;
     return await db[DATABASE_SCHEMA][table].destroy(query);
 }
 
 
 
-export async function validateTable(table) {
+export async function validateTable(table: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
         const db = await database;
 

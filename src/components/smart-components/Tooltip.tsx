@@ -10,7 +10,7 @@ type TooltipProps = {
     className?: string,
     style?: React.CSSProperties,
     children?: React.ReactNode | React.ReactNodeArray,
-    showFunction: (tooltipProps) => {},
+    showFunction: (tooltipProps) => unknown,
 }
 
 

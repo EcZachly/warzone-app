@@ -20,7 +20,7 @@ import {GamerRelationshipService} from '../GamerRelationships';
 
 export type GamerCardProps = {
     gamer?: Gamer,
-    classDescriptions?: object,
+    classDescriptions?: Record<any, unknown>,
     loading?: boolean,
     mode?: null | 'condensed',
     onGamerClick?: (gamer) => void
@@ -74,7 +74,7 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
                         <GamerHeat gamer={gamer}/>
 
-                        <ClassBadgeList subject={gamer as object}
+                        <ClassBadgeList subject={gamer}
                                         classDescriptions={classDescriptions}/>
 
                     </CardHeader>

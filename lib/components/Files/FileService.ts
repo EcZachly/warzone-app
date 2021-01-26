@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 import TypeService from '../../../src/services/TypeService';
 
@@ -11,10 +11,12 @@ export async function readFile(fullFilePath: string, options?: { encoding?: stri
         options = (TypeService.isObject(options)) ? options : {};
         const encoding = (TypeService.isString(options.encoding, true)) ? options.encoding : 'utf-8';
 
+        // @ts-ignore
         fs.access(fullFilePath, fs.F_OK, (error) => {
             if (error) {
                 reject(new Error('file at ' + fullFilePath + ' does not exist'));
             } else {
+                // @ts-ignore
                 fs.readFile(fullFilePath, {encoding}, (error, data) => {
                     if (error) {
                         reject(error);

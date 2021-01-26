@@ -120,8 +120,8 @@ export default function TrendChart({
     const buttonList = trendWindows.map((trendWindow) => {
         return (
             <Button key={'trend' + trendWindow.size}
-                    type={trendValue == trendWindow.size ? 'purple' : 'light'}
-                    onClick={() => trendValue == trendWindow.size ? '' : setTrendWindowAndFetchData(trendWindow.size)}>
+                    type={trendValue === trendWindow.size ? 'purple' : 'light'}
+                    onClick={() => trendValue === trendWindow.size ? '' : setTrendWindowAndFetchData(trendWindow.size)}>
 
                 {trendWindow.name}
 

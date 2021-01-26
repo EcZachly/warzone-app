@@ -1,7 +1,10 @@
 import {FileService} from './../../lib/components/Files';
 
-const logger = require('tracer').colorConsole();
-const exec = require('child_process').exec;
+import tracer from 'tracer';
+const logger = tracer.colorConsole();
+
+import childProcess from 'child_process';
+const exec = childProcess.exec;
 
 
 const CONFIG = {
@@ -14,7 +17,7 @@ const lb = '--==-=-=-==----==-=-=-==----==-=-=-==----==-=-=-==----==-=-=-==----=
 //=--=-=--==--=-==-=-=-==-=-=--=-=--==--=-==-=-=-==-=-=--=-=--==--=-==-=-=-==-=-//
 
 
-export function check() {
+export function check(): void {
     readPackageJsonFile().then(() => {
         checkNodeVersion();
         checkNpmVersion();

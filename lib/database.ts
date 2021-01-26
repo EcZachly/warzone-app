@@ -1,5 +1,3 @@
-const logger = require('tracer').colorConsole();
-
 const WARZONE_DATABASE_URL = process.env.WARZONE_DATABASE_URL;
 
 if (typeof WARZONE_DATABASE_URL !== 'string' || WARZONE_DATABASE_URL.length < 1) {

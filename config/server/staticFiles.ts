@@ -1,22 +1,17 @@
 import tracer from 'tracer';
 const logger = tracer.colorConsole();
 
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
+import express from 'express';
+import path from 'path';
+import favicon from 'serve-favicon';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-/**
- *
- * @param server
- * @param {Object} [options]
- */
-export function include(server, options) {
+export function include(server: express.Application): void {
     const frontEndAccessFolder = '/assets';
     const pathToAssets = path.join(__dirname, '..', '..', 'src', 'assets');
 
-    options = {
+    const options = {
         // maxage: (dev) ? '0' : '30d'
     };
 

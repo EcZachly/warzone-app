@@ -7,7 +7,7 @@ import UtilityService from '../../services/UtilityService';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 type GamerClassBadgeProps = {
-    category: object,
+    category: Record<any, unknown>,
     stat: number,
     statName: string
 }
@@ -51,7 +51,7 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
                    innerRef={(ref) => badgeRef = ref}
                    size={'sm'}
                    color={'dark'}
-                   title={description}
+                   title={description as string}
                    style={style}>
                 {UtilityService.camelToProperCase(categoryName)}
             </Badge>

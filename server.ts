@@ -21,7 +21,7 @@ const PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
 const app = generateNextConfig({
     dev,
     directory: CONSTANTS.PAGES_DIRECTORY,
-    port: PORT
+    port: PORT as number
 });
 
 const handle = app.getRequestHandler();

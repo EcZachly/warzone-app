@@ -30,7 +30,7 @@ export default function Gamers({
                                    gameCategory
                                }) {
     const [gamerValues, setGamers] = useState({[gameCategory]: gamers});
-    const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
+    const [feedHasMore, setFeedHasMore] = useState(username.length === 0);
     const [searchValue, setSearchValue] = useState(username);
     const [minMatchCount, setMinMatchCount] = useState(MODULE_CONSTANTS.MIN_MATCHES);
     const [sorting, updateSorting] = useState(sort);
@@ -147,7 +147,7 @@ export default function Gamers({
 
 
                             <GamerCardList gamers={gamerValues[filterCategory] || []}
-                                           classDescriptions={classDescriptions.filter((d) => d['game_category'] == filterCategory)[0]}/>
+                                           classDescriptions={classDescriptions.filter((d) => d['game_category'] === filterCategory)[0]}/>
 
                         </InfiniteScroll>
                     </SidebarCompanion>
@@ -160,7 +160,7 @@ export default function Gamers({
 
 
     async function searchGamers(inputValue) {
-        if (inputValue.length == 0) {
+        if (inputValue.length === 0) {
             setFeedHasMore(true);
         }
 

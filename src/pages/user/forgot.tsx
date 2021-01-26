@@ -91,7 +91,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {forgot_string} = context.query;
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const userConfirmed = await fetch(`${baseUrl}/api/users?forgot_string=${forgot_string}`);
-    const allData = (await userConfirmed.json()) as Array<object>;
+
+    const allData = (await userConfirmed.json()) as Record<any, unknown>[];
+
     if (allData.length) {
         return {
             props: {
