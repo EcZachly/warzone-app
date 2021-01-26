@@ -1,9 +1,6 @@
-import tracer from 'tracer';
 const logger = require('tracer').colorConsole();
 
 const WARZONE_DATABASE_URL = process.env.WARZONE_DATABASE_URL;
-
-logger.debug(WARZONE_DATABASE_URL);
 
 if (typeof WARZONE_DATABASE_URL !== 'string' || WARZONE_DATABASE_URL.length < 1) {
     throw new Error('process.env.WARZONE_DATABASE_URL (String) is required and cannot be empty');
