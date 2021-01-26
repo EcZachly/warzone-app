@@ -2,5 +2,5 @@
     "watch": ["src", "bin", "config", "lib", "routes", "server.ts"],
     "ext": "js, tsx, ts, json",
     "ignore": ["src/.next"],
-    "exec": "npm run dev"
+    "exec": "npm run dev-start-only"
 }
