@@ -14,9 +14,9 @@ export type ClassBadgeProps = {
 
 export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeProps) {
     if (classDescriptions) {
-        let badges = Object.keys(classDescriptions).filter((key) => key.includes('cutoff')).map((key) => {
+        const badges = Object.keys(classDescriptions).filter((key) => key.includes('cutoff')).map((key) => {
                 const percentiles = classDescriptions[key]['percentiles'];
-                let statValue = subject[classDescriptions[key]['category']];
+                const statValue = subject[classDescriptions[key]['category']];
                 return (
                     <ClassBadge statName={classDescriptions[key]['category']} category={percentiles} stat={statValue}/>
                 );

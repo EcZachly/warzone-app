@@ -96,7 +96,7 @@ class InputSelect extends React.Component<InputSelectProps> {
                         console.warn(`InputRadio.props.options[${index}].text (String) is required`);
                     } else {
                         let {value, text} = option;
-                        let valueIsJson = (TypeService.isArray(value) || TypeService.isObject(value));
+                        const valueIsJson = (TypeService.isArray(value) || TypeService.isObject(value));
                         value = (valueIsJson) ? JSON.stringify(value) : value;
 
                         return (

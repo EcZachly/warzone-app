@@ -13,11 +13,11 @@ type GamerClassBadgeProps = {
 }
 
 export default function ClassBadge({category, stat, statName}: GamerClassBadgeProps) {
-    let style = {};
+    const style = {};
 
     let categoryName = '';
 
-    let keys = Object.keys(category);
+    const keys = Object.keys(category);
 
     keys.sort((left, right) => category[left]['percentile'] < category[right]['percentile'] ? -1 : 1);
 
@@ -31,7 +31,7 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
         return <></>;
     }
 
-    let description = category['description'] ? category['description'] : '';
+    const description = category['description'] ? category['description'] : '';
     let badgeRef;
 
     return (

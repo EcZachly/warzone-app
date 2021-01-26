@@ -39,7 +39,7 @@ export function round(number, decimals) {
 
 
 
-export function numberWithCommas(number: number = 0) {
+export function numberWithCommas(number = 0) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
@@ -165,7 +165,7 @@ export function objectToUrlParameters(params: Record<any, string | number | bool
 
 
 
-export function sortArrayOfObjectsByKey(items: any[], key: string, descending: boolean=false): any[] {
+export function sortArrayOfObjectsByKey(items: any[], key: string, descending=false): any[] {
     items = validateItem(items, 'array', []);
 
     return items.sort(function(a, b) {

@@ -34,16 +34,16 @@ export default function TrendChart({
                                        timestampColumn = 'start_timestamp'
                                    }) {
 
-    let colors = [
+    const colors = [
         COLORS.NEON_PURPLE,
         COLORS.NEON_YELLOW,
         COLORS.NEON_PINK
     ];
 
-    let [trendValue, setTrendValue] = useState(30);
-    let [maxTrendWindow, setMaxTrendWindow] = useState(30);
-    let [chartData, setChartData] = useState(data);
-    let [filteredData, setFilteredData] = useState(data);
+    const [trendValue, setTrendValue] = useState(30);
+    const [maxTrendWindow, setMaxTrendWindow] = useState(30);
+    const [chartData, setChartData] = useState(data);
+    const [filteredData, setFilteredData] = useState(data);
 
 
     const fetchViewData = async (windowSize) => {
@@ -53,14 +53,14 @@ export default function TrendChart({
         return await response.json();
     };
 
-    let today = new Date();
+    const today = new Date();
 
     const setTrendWindowAndFetchData = async (windowSize) => {
         if (maxTrendWindow < windowSize) {
             const fetchedData = await fetchViewData(windowSize);
 
-            let filtered = fetchedData.viewData.filter((row) => {
-                let diff = datediff(new Date(row[timestampColumn]), today);
+            const filtered = fetchedData.viewData.filter((row) => {
+                const diff = datediff(new Date(row[timestampColumn]), today);
                 return diff < windowSize;
             });
 
@@ -68,8 +68,8 @@ export default function TrendChart({
             setMaxTrendWindow(windowSize);
             setChartData(fetchedData.viewData);
         } else {
-            let filtered = _.clone(chartData).filter((row) => {
-                let diff = datediff(new Date(row[timestampColumn]), today);
+            const filtered = _.clone(chartData).filter((row) => {
+                const diff = datediff(new Date(row[timestampColumn]), today);
                 return diff < windowSize;
             });
 
@@ -81,7 +81,7 @@ export default function TrendChart({
         setTrendValue(windowSize);
     };
 
-    let trendWindows = [
+    const trendWindows = [
         {
             size: 3,
             name: '3 days'
@@ -117,7 +117,7 @@ export default function TrendChart({
     ];
 
 
-    let buttonList = trendWindows.map((trendWindow) => {
+    const buttonList = trendWindows.map((trendWindow) => {
         return (
             <Button key={'trend' + trendWindow.size}
                     type={trendValue == trendWindow.size ? 'purple' : 'light'}
@@ -129,7 +129,7 @@ export default function TrendChart({
         );
     });
 
-    let viewData = filteredData.map((d) => {
+    const viewData = filteredData.map((d) => {
         d.timestamp = dateToYMD(new Date(d[timestampColumn]));
 
         keysToChart.forEach((key) => {

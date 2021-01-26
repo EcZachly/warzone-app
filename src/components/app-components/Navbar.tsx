@@ -24,7 +24,7 @@ class Navbar extends React.Component {
     render() {
         const props = this.props;
 
-        let userIsLoggedIn = UserService.userIsLoggedIn();
+        const userIsLoggedIn = UserService.userIsLoggedIn();
 
         return (
             <Box id={'navbar'} className={'navbar'} style={props['style']}>

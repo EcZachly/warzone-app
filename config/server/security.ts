@@ -44,8 +44,8 @@ function validateSecureRequest(req, res, next) {
 
     //if token is valid, next()
 
-    let cookies = req.cookies;
-    let token = cookies.jwt;
+    const cookies = req.cookies;
+    const token = cookies.jwt;
     let decodedToken = null;
 
     try {

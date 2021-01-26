@@ -1,4 +1,4 @@
-import {queryView} from "../database_utils";
+import {queryView} from '../database_utils';
 
 type ResponseData = Array<any> | Record<string, unknown>;
 type Options = object;
@@ -14,7 +14,7 @@ export class ViewQuery {
         this.view = view;
         this.query = query;
         this.options = options;
-        this.sanitize = sanitize
+        this.sanitize = sanitize;
     }
 
     async executeQuery() {

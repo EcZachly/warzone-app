@@ -1,7 +1,7 @@
 import {Metadata} from './MetadataTypes';
 import randomstring from 'randomstring';
 export function createNewMetadata(obj: Record<any, unknown> = {}): Metadata {
-    let defaultMetadata = {
+    const defaultMetadata = {
         create_timestamp: new Date()
     };
 

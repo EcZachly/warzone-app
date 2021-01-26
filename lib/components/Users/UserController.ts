@@ -43,7 +43,7 @@ export async function updateUser(query: Record<any, unknown>, user: Partial<RawU
 
 
 function createNewMetadata(obj: Record<any, unknown> = {}): Metadata {
-    let defaultMetadata = {
+    const defaultMetadata = {
         create_timestamp: new Date()
     };
     return {...defaultMetadata, ...obj};

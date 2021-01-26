@@ -48,11 +48,11 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
 
         const noLink = !!onGamerClick;
 
-        let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
-        let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills));
-        let gamesPlayedIsMoreThan1000 = gamesPlayed >= 1000;
+        const overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
+        const gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills));
+        const gamesPlayedIsMoreThan1000 = gamesPlayed >= 1000;
 
-        let gamesPlayedText = (gamesPlayedIsMoreThan1000) ? '1,000+' : UtilityService.numberWithCommas(UtilityService.round(gamesPlayed, 0));
+        const gamesPlayedText = (gamesPlayedIsMoreThan1000) ? '1,000+' : UtilityService.numberWithCommas(UtilityService.round(gamesPlayed, 0));
 
         if (isCondensed) {
             return getCondensedCard();
@@ -215,7 +215,7 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
                                style={style}
                                clickHover={true}
                                onClick={() => {
-                                   let gamerRelationship = {
+                                   const gamerRelationship = {
                                        user_id: UserService.getUser().user_id,
                                        platform: gamer.platform,
                                        username: gamer.username

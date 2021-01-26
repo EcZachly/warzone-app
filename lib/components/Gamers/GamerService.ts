@@ -15,20 +15,20 @@ import {GamerClassDescription} from '../Classes/ClassDescriptionType';
 
 
 export const getGamerClassDescriptions = async (): Promise<GamerClassDescription> => {
-    let query = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}, {});
+    const query = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}, {});
     await query.executeQuery();
     return query.data as GamerClassDescription;
 };
 
 export const getSingleGamerData = async (username, platform, game_category = GAME_CATEGORIES.WARZONE): Promise<Gamer> => {
-    let val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {});
+    const val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {});
     await val.executeQuery();
     return val.data[0] as Gamer;
 };
 
 
 export const getGamerDetailViewQuery = (view: string, allParams: object = {}, options: object = {}): ViewQuery => {
-    let query = restToMassiveQuery(view, allParams);
+    const query = restToMassiveQuery(view, allParams);
 
     const queryableViews = {
         [VIEWS.GAMER_INFLUENCE_RELATIONSHIPS]: new ViewQuery(VIEWS.GAMER_INFLUENCE_RELATIONSHIPS, query, options),

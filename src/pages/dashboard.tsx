@@ -40,7 +40,7 @@ import CreateGamerRelationship from '../components/GamerRelationships/CreateGame
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-let DashboardPage = ({baseUrl}) => {
+const DashboardPage = ({baseUrl}) => {
     const CONFIG = {
         TAB_VIEW_LIST: [{
             text: 'Recent Matches',
@@ -58,20 +58,20 @@ let DashboardPage = ({baseUrl}) => {
     };
 
 
-    let router = useRouter();
+    const router = useRouter();
 
-    let [hasMounted, setHasMounted] = useState(false);
+    const [hasMounted, setHasMounted] = useState(false);
     // let [loading, setLoading] = useState(true);
-    let [newUserSearch, setNewUserSearch] = useState('search');
-    let [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
-    let [view, setView] = useState('time');
-    let [contentView, setContentView] = useState('recent_matches');
-    let [error, setError] = useState(null);
-    let [alert, setAlert] = useState({type: null, time: null, message: null});
+    const [newUserSearch, setNewUserSearch] = useState('search');
+    const [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
+    const [view, setView] = useState('time');
+    const [contentView, setContentView] = useState('recent_matches');
+    const [error, setError] = useState(null);
+    const [alert, setAlert] = useState({type: null, time: null, message: null});
 
-    let [user, setUser] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
-    let [gamerRelationships, setGamerRelationships] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
-    let [recentMatches, setRecentMatches] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([] as MatchList)));
+    const [user, setUser] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
+    const [gamerRelationships, setGamerRelationships] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
+    const [recentMatches, setRecentMatches] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([] as MatchList)));
     // let [gamerRelationships, setGamerRelationships] = useState([]);
 
     hasMounted === false && setHasMounted(true);
@@ -131,9 +131,9 @@ let DashboardPage = ({baseUrl}) => {
 
         if (!user.loading) {
             const mainGamer = getMainGamer();
-            let platform = mainGamer && mainGamer.platform;
-            let username = mainGamer && mainGamer.username;
-            let gamerEndpoint = '/gamer/' + encodeURIComponent(platform) + '/' + encodeURIComponent(username);
+            const platform = mainGamer && mainGamer.platform;
+            const username = mainGamer && mainGamer.username;
+            const gamerEndpoint = '/gamer/' + encodeURIComponent(platform) + '/' + encodeURIComponent(username);
 
             return (
                 <>
@@ -276,7 +276,7 @@ let DashboardPage = ({baseUrl}) => {
                                          }
                                          }/>
                 </Box>
-        )
+        );
     }
 
 
@@ -450,7 +450,7 @@ let DashboardPage = ({baseUrl}) => {
 
             getRecentMatches(_gamerRelationships);
 
-            let detailPromises = _gamerRelationships.map((gamer) => {
+            const detailPromises = _gamerRelationships.map((gamer) => {
                 return getGamerDetails(gamer.username, gamer.platform, view, category);
             });
 
@@ -474,11 +474,11 @@ let DashboardPage = ({baseUrl}) => {
             return [platform, username].join('-');
         });
 
-        let query = {
+        const query = {
             platform_username: gamerRelationshipsIDList
         };
 
-        let queryOptions = {
+        const queryOptions = {
             baseUrl,
             limit: 20,
             order: [{field: 'end_timestamp', direction: 'desc'}]

@@ -12,9 +12,9 @@ import {GamerLinkList} from '../gamer';
 
 export default function SquadCard({squad, classDescriptions}) {
     //Only use classes that correspond with the right team type, otherwise we'd be comparing duos to quads, etc
-    let filteredDescriptions = classDescriptions.filter((description) => description.team_type == squad.team_type)[0];
+    const filteredDescriptions = classDescriptions.filter((description) => description.team_type == squad.team_type)[0];
     console.log(squad, filteredDescriptions);
-    let stats = {
+    const stats = {
         'Total Matches': {
             value: UtilityService.numberWithCommas(squad.num_matches),
             placement: 'left'
@@ -71,7 +71,7 @@ export default function SquadCard({squad, classDescriptions}) {
     };
 
 
-    let gamerList = squad.gamers.map((gamer) => {
+    const gamerList = squad.gamers.map((gamer) => {
         const [platform, username] = gamer.split('-');
         return {platform, username};
     });
@@ -125,10 +125,10 @@ export default function SquadCard({squad, classDescriptions}) {
 
 
     function getSquadStatsByColumn(column: 'left' | 'right') {
-        let labels = Object.keys(stats);
+        const labels = Object.keys(stats);
 
         return labels.map((label) => {
-            let statConfig = stats[label];
+            const statConfig = stats[label];
             statConfig.label = label;
             return statConfig;
         }).filter(({placement}) => placement === column);

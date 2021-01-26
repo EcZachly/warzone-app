@@ -19,5 +19,5 @@ export default function Loading(props: LoadingProps) {
 
 type LoadingProps = {
     style?: React.CSSProperties,
-    className?: String
+    className?: string
 };

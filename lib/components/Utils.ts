@@ -20,9 +20,9 @@ export function restToMassiveQuery(view: string, params: object){
     if(params['uno_id']) {
         userQuery = {
             uno_id: params['uno_id']
-        }
+        };
     }
-    let gameCategoryQuery = {
+    const gameCategoryQuery = {
         game_category: params['game_category']
     };
 

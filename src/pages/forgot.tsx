@@ -29,18 +29,18 @@ import _ from 'lodash';
 export default function ForgotPassword(props) {
     const recaptcha = React.createRef<GoogleReCaptchaProvider>();
 
-    let [email, setEmail] = useState('');
-    let [token, setToken] = useState('');
-    let [formIsDisabled, setFormIsDisabled] = useState(true);
-    let [errorMessage, setErrorMessage] = useState(null);
-    let [emailSent, setEmailSent] = useState(false);
+    const [email, setEmail] = useState('');
+    const [token, setToken] = useState('');
+    const [formIsDisabled, setFormIsDisabled] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [emailSent, setEmailSent] = useState(false);
 
     async function sendResetEmail() {
         setFormIsDisabled(true);
         setErrorMessage(null);
 
         try {
-            let response = await UserService.sendForgotPassword(email);
+            const response = await UserService.sendForgotPassword(email);
             console.log(response);
             setEmailSent(true);
         } catch (error) {

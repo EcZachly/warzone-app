@@ -36,7 +36,7 @@ export default function Placeholder(props: PlaceholderTypes) {
     return (
         <p style={style} className={classes}/>
     );
-};
+}
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//

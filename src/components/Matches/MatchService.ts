@@ -18,7 +18,7 @@ export async function queryMatches(queryInput: Partial<Match>, options: { baseUr
         options.baseUrl = UtilityService.validateItem(options.baseUrl, 'string', '');
 
 
-        let query = UtilityService.validateItem(queryInput, 'object', {});
+        const query = UtilityService.validateItem(queryInput, 'object', {});
 
         if (options.limit) {
             query.limit = options.limit;

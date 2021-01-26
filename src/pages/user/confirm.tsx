@@ -20,9 +20,9 @@ import {BASE_TITLE} from '../../../lib/constants';
 
 export default function confirmUserAccount() {
     const router = useRouter();
-    let {status} = router.query;
+    const {status} = router.query;
 
-    let isSuccessful = (status === 'success');
+    const isSuccessful = (status === 'success');
 
     let message = 'An unknown error occurred while trying to confirm your account. Please try the link again.';
 

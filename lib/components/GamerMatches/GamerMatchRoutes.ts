@@ -15,7 +15,7 @@ import {RouteService} from '../Routes';
 export async function queryGamerMatches(req: NextApiRequest, res: NextApiResponse) {
     const query = RouteService.sanitizeQueryParameters(req.query);
 
-    let options = {
+    const options = {
         limit: undefined as number,
         offset: undefined as number,
         order: undefined as []

@@ -24,7 +24,7 @@ import UtilityService from './../../src/services/UtilityService';
 export function writeGamerMatchesToDatabase(matches, gamer, writeOptions = {}) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
 
-    return insertDatabaseValues(gamerMatches, TABLES.GAMER_MATCHES, writeOptions)
+    return insertDatabaseValues(gamerMatches, TABLES.GAMER_MATCHES, writeOptions);
 }
 
 
@@ -85,9 +85,9 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
 }
 
 export async function getFullMatchDetailsFromAPI(match_id){
-    let callApi =  await ApiWrapper.getInstance();
-   let data = await callApi.MWFullMatchInfowz(match_id);
-   return data.allPlayers
+    const callApi =  await ApiWrapper.getInstance();
+   const data = await callApi.MWFullMatchInfowz(match_id);
+   return data.allPlayers;
 }
 
 
@@ -104,7 +104,7 @@ export async function refreshMatchAnalytics(){
     const viewsToRefresh = [
         VIEWS.GAMER_STAT_SUMMARY
     ].map((view) => view + '_materialized');
-    return Bluebird.all(viewsToRefresh.map((view)=> refreshMaterializedView(view)))
+    return Bluebird.all(viewsToRefresh.map((view)=> refreshMaterializedView(view)));
 }
 
 

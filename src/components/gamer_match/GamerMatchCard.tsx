@@ -28,15 +28,15 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
     const damageRatio = UtilityService.round((gamerMatch.damage_done / gamerMatch.damage_taken) || 0, 2);
 
     const startTimestamp = moment(gamerMatch.start_timestamp);
-    let startTimestampPretty = startTimestamp.format('LLL');
+    const startTimestampPretty = startTimestamp.format('LLL');
 
-    let endTimestamp = moment(gamerMatch.end_timestamp);
-    let endTimestampPretty = endTimestamp.format('LT');
+    const endTimestamp = moment(gamerMatch.end_timestamp);
+    const endTimestampPretty = endTimestamp.format('LT');
 
     const gameDurationPretty = calculatePrettyDuration(startTimestamp, endTimestamp);
     const timeDifferencePretty = calculatePrettyDuration(endTimestamp, moment());
 
-    let placementPercentage = 'Top ' + UtilityService.numberToPercentage(gamerMatch.team_placement / gamerMatch.team_count, 0);
+    const placementPercentage = 'Top ' + UtilityService.numberToPercentage(gamerMatch.team_placement / gamerMatch.team_count, 0);
 
     return (
         <Card className={'gamer-match-card'} style={{marginBottom: '10px'}}>

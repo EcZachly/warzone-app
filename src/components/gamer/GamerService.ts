@@ -36,7 +36,7 @@ export function getGamerPlatforms() {
 
 export async function getGamerDetailView(username: string, platform: string, view: string, gameCategory: string, baseUrl: string = null) {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    let dataUrl = (baseUrl || '') + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + '&timeZone=' + timeZone + '&game_category=' + gameCategory;
+    const dataUrl = (baseUrl || '') + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + '&timeZone=' + timeZone + '&game_category=' + gameCategory;
 
     const response = await fetch(dataUrl);
     return await response.json();
@@ -82,7 +82,7 @@ export function minifyUsername(username) {
 
 
 export function sanitizeStatKey(key) {
-    let keywordMap = {
+    const keywordMap = {
         'Avg': 'Average',
         'Kdr': 'KDR',
         'Num': 'Number of',

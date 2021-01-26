@@ -22,7 +22,7 @@ export default function AddGamerFriend({user, onGamerAdd}: AddGamerFriendProps) 
         if (gamer) {
             const {username, platform} = gamer;
 
-            let userIsOkay = confirm(`select OK to make ${username} (${GamerService.getPlatformObjByID(platform).name}) your friend`);
+            const userIsOkay = confirm(`select OK to make ${username} (${GamerService.getPlatformObjByID(platform).name}) your friend`);
 
             if (userIsOkay) {
                 GamerRelationshipService.createGamerRelationship({

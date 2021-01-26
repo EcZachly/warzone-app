@@ -13,8 +13,8 @@ const favicon = require('serve-favicon');
  * @param {Object} [options]
  */
 export function include(server, options) {
-    let frontEndAccessFolder = '/assets';
-    let pathToAssets = path.join(__dirname, '..', '..', 'src', 'assets');
+    const frontEndAccessFolder = '/assets';
+    const pathToAssets = path.join(__dirname, '..', '..', 'src', 'assets');
 
     options = {
         // maxage: (dev) ? '0' : '30d'

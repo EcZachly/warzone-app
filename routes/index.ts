@@ -15,7 +15,7 @@ const Resources = require('./directories/Resources');
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 export function include(server) {
-    let router = express.Router();
+    const router = express.Router();
 
     router.post('/api/login', Users.login);
     router.post('/api/forgot-password', Users.sendForgotPassword);

@@ -18,4 +18,4 @@ export function configure(server, options) {
 
 export default {
     configure
-}
+};

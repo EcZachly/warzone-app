@@ -5,4 +5,4 @@ export {StorageService};
 
 export default {
     StorageService
-}
+};

@@ -34,7 +34,7 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
     const {username, platform} = newUser;
     let error = null;
 
-    let errorObject = {
+    const errorObject = {
         'missing_data': {message: 'body.username and body.platform (String) are required', status: 400},
         'recaptcha_fail': {message: 'failed recaptcha verification', status: 400}
     };
@@ -88,8 +88,8 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
 function manageComplexQueryParameters(queryParams) {
     Object.keys(queryParams).forEach((key) => {
         if (key.includes('.')) {
-            let column = key.split('.')[0];
-            let operator = key.split('.')[1];
+            const column = key.split('.')[0];
+            const operator = key.split('.')[1];
             queryParams[column + ' ' + operator] = queryParams[key];
             delete queryParams[key];
         } else if (UtilityService.isJson(queryParams[key])) {
@@ -121,10 +121,10 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 
     manageComplexQueryParameters(queryParams);
     const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
-    let queryOptions = {offset, limit, order: undefined};
+    const queryOptions = {offset, limit, order: undefined};
 
     if (sort) {
-        let sortObj = {
+        const sortObj = {
             field: sort,
             direction: undefined
         };
@@ -136,10 +136,10 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
         queryOptions.order = [sortObj];
     }
 
-    let playerQuery = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, queryParams, queryOptions);
+    const playerQuery = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, queryParams, queryOptions);
 
     await playerQuery.executeQuery();
-    let gamers = playerQuery.data;
+    const gamers = playerQuery.data;
 
     handleResponse(req, res, {gamers, classDescriptions});
 }
@@ -165,11 +165,11 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
 
     const {username, platform} = req.params;
 
-    let allParams = {...req.params, ...req.query};
+    const allParams = {...req.params, ...req.query};
 
-    let paramMap = getQueryParamToSQLMap();
+    const paramMap = getQueryParamToSQLMap();
 
-    let errorObject = {
+    const errorObject = {
         'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
         'invalid_view': 'invalid view query param needs to be in ' + Object.keys(paramMap).join(','),
         'not_found': username + ' on platform: ' + platform + ' was not found!'
@@ -187,20 +187,20 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
     }
 
     try {
-        let gamer = await getSingleGamerData(username, platform, game_category as string);
+        const gamer = await getSingleGamerData(username, platform, game_category as string);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});
         }
 
-        let queryParams = {...allParams, uno_id: gamer.uno_id};
+        const queryParams = {...allParams, uno_id: gamer.uno_id};
 
-        let viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
+        const viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
 
         await viewToQuery.executeQuery();
         const viewData = viewToQuery.data;
 
-        let classDescriptions = await getGamerClassDescriptions();
+        const classDescriptions = await getGamerClassDescriptions();
 
         await updateGamerUponRequest(gamer);
 

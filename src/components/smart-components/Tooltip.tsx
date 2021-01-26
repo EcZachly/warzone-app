@@ -30,4 +30,4 @@ export default function Tooltip(props: TooltipProps) {
             {props.children}
         </Box>
     );
-};
+}

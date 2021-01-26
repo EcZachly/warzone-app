@@ -15,16 +15,16 @@ type GamerCardChartProps = {
 export default function GamerGradeChart({data, height, width}: GamerCardChartProps) {
     try {
 
-        let chartData = generateChartData(data);
+        const chartData = generateChartData(data);
         let dataValid = true;
 
         chartData.forEach((row)=>{
-            Object.keys(row).filter((key)=> key.includes("percent")).forEach((key)=>{
+            Object.keys(row).filter((key)=> key.includes('percent')).forEach((key)=>{
                 if(isNaN(row[key])){
                     dataValid = false;
                 }
-            })
-        })
+            });
+        });
         if(dataValid){
             return (
                 <Box style={{marginTop: 15}}>
@@ -78,12 +78,12 @@ export default function GamerGradeChart({data, height, width}: GamerCardChartPro
             );
         }
         else{
-            return <div>No data to display</div>
+            return <div>No data to display</div>;
         }
 
     }
     catch(e){
-        return <div>Error getting data</div>
+        return <div>Error getting data</div>;
     }
 }
 
@@ -93,7 +93,7 @@ function generateChartData(data) {
     const placements = ['a', 'b', 'c', 'd', 'f'];
 
     const gameTypeSummaryList = gameTypes.map((gameType) => {
-        let gameTypeSummary = {
+        const gameTypeSummary = {
             type: gameType,
             totalGames: 0
         };
@@ -123,7 +123,7 @@ function generateChartData(data) {
         };
 
         gameTypeSummaryList.forEach((gameTypeSummary) => {
-            let typeKey = ['type', gameTypeSummary.type].join('_');
+            const typeKey = ['type', gameTypeSummary.type].join('_');
 
             placementSummary[typeKey + '_count'] = gameTypeSummary['count_' + placement];
             placementSummary[typeKey + '_percentage'] = gameTypeSummary['percentage_' + placement];

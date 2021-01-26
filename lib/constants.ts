@@ -46,7 +46,7 @@ export const GAME_CATEGORIES = {
     PLUNDER: 'Plunder',
     DMZ: 'DMZ',
     REBIRTH_MINI_ROYALE: 'Rebirth Mini Royale'
-}
+};
 
 export const BASE_TITLE = 'Warzone Stats Tracker';
-export const SENDER_EMAIL = 'warzone@brshooter.com'
+export const SENDER_EMAIL = 'warzone@brshooter.com';

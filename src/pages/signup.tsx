@@ -30,7 +30,7 @@ import TypeService from '../services/TypeService';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-let SignUpPage = () => {
+const SignUpPage = () => {
     const MAX_LENGTH = 130;
     const MIN_PASSWORD_LENGTH = 8;
 
@@ -88,7 +88,7 @@ let SignUpPage = () => {
         }
     };
 
-    let [inputs, updateInputs] = useState({
+    const [inputs, updateInputs] = useState({
         first_name: '',
         email: '',
         validate_email: '',
@@ -96,7 +96,7 @@ let SignUpPage = () => {
         validate_password: ''
     });
 
-    let [errors, updateErrors] = useState({
+    const [errors, updateErrors] = useState({
         first_name: '',
         email: '',
         validate_email: '',
@@ -104,12 +104,12 @@ let SignUpPage = () => {
         validate_password: ''
     });
 
-    let [isDisabled, setDisabled] = useState(false);
-    let [formMessage, setFormErrorMessage] = useState({
+    const [isDisabled, setDisabled] = useState(false);
+    const [formMessage, setFormErrorMessage] = useState({
         type: 'error',
         message: ''
     });
-    let router = useRouter();
+    const router = useRouter();
 
     return (
         <Page title={'Sign Up'}>
@@ -258,7 +258,7 @@ let SignUpPage = () => {
         setFormErrorMessage({type: 'error', message: ''});
 
         if (formIsValid()) {
-            let signupDetails = getDatabaseObject();
+            const signupDetails = getDatabaseObject();
 
             UserService.createUser(signupDetails).then((newUser) => {
                 setFormErrorMessage({
@@ -316,14 +316,14 @@ let SignUpPage = () => {
 
 
     function getInputErrors() {
-        let inputKeys = Object.keys(inputs);
-        let errorMessages = {} as any;
+        const inputKeys = Object.keys(inputs);
+        const errorMessages = {} as any;
 
         inputKeys.forEach((key) => {
-            let value = inputs[key];
+            const value = inputs[key];
 
             if (FORM_INPUT_CONFIG[key]) {
-                let errorMessage = FORM_INPUT_CONFIG[key].validate(value);
+                const errorMessage = FORM_INPUT_CONFIG[key].validate(value);
 
                 if (errorMessage) {
                     errorMessages[key] = errorMessage;

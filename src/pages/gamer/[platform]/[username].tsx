@@ -124,7 +124,7 @@ const CONFIG = {
 
 export default function GamerDetail({gamerData, view, gameCategory, baseUrl, error}) {
 
-    let containerRef = React.useRef<HTMLDivElement>();
+    const containerRef = React.useRef<HTMLDivElement>();
     if (error) {
         return <div>{error}</div>;
     }
@@ -156,8 +156,8 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         width: 512
     });
 
-    let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
-    let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
+    const overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
+    const gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
 
@@ -360,7 +360,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         selectedView as string,
         queryCategory as string, baseUrl);
 
-    let props = {
+    const props = {
         gamerData: rawGamerList,
         gameCategory: queryCategory,
         view: selectedView,

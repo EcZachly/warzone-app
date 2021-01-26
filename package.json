@@ -1,7 +1,7 @@
 {
   "name": "warzone",
   "version": "1.0.0",
-  "description": "A warzone website stats",
+  "description": "A Call of Duty: Warzone stats tracking site for gamers and their squads",
   "main": "index.js",
   "exact-engines": {
     "node": "12.20.0",

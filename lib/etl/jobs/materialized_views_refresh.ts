@@ -9,7 +9,7 @@ import {DAO} from '../../components/Database';
 import UtilityService from '../../../src/services/UtilityService';
 
 const isDevMode = (process.env.NODE_ENV === 'development');
-let time = {
+const time = {
     start: null,
     end: null
 };
@@ -130,10 +130,10 @@ async function refreshMaterializedViews() {
                     status: status
                 });
             } else {
-                let startTime = new Date().getTime();
+                const startTime = new Date().getTime();
 
                 executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${name}`).then((response) => {
-                    let endTime = new Date().getTime();
+                    const endTime = new Date().getTime();
 
                     resolve({
                         view: name,
@@ -156,7 +156,7 @@ function jobShouldBeRun(timesPerDay) {
         return true;
     }
 
-    let randomNumber = UtilityService.generateRandomInteger(0, 1000) / 1000;
+    const randomNumber = UtilityService.generateRandomInteger(0, 1000) / 1000;
     return randomNumber < (timesPerDay / jobsRunPerDay);
 }
 
@@ -175,9 +175,9 @@ function setTime(type) {
 
 
 function logJobDuration() {
-    let timeDiffMS = time.end - time.start;
-    let timeDiffSeconds = Math.floor(timeDiffMS / 1000 * 10) / 10;
-    let averageTimePerView = Math.floor(timeDiffSeconds / getViews().length);
+    const timeDiffMS = time.end - time.start;
+    const timeDiffSeconds = Math.floor(timeDiffMS / 1000 * 10) / 10;
+    const averageTimePerView = Math.floor(timeDiffSeconds / getViews().length);
 
     logger.info(`It took ${timeDiffSeconds} seconds to complete the job with an average of ${averageTimePerView} seconds per view`);
 }

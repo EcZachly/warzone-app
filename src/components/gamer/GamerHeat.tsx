@@ -17,17 +17,17 @@ export default function GamerHeat({gamer, size}: GamerCardProps) {
     let heatFlames = <div/>;
 
     if (gamer.heat_rating > 0) {
-        let delta = gamer.heat_score;
+        const delta = gamer.heat_score;
 
         if (delta >= 0.1) {
             let cnt = 0;
-            let array = [];
+            const array = [];
 
-            let standardHeight = 18;
-            let standardWidth = 16;
+            const standardHeight = 18;
+            const standardWidth = 16;
 
-            let height = (size === 'sm' ? .75 : 1) * standardHeight + 'px';
-            let width = (size === 'sm' ? .75 : 1) * standardWidth + 'px';
+            const height = (size === 'sm' ? .75 : 1) * standardHeight + 'px';
+            const width = (size === 'sm' ? .75 : 1) * standardWidth + 'px';
 
 
 
@@ -39,7 +39,7 @@ export default function GamerHeat({gamer, size}: GamerCardProps) {
                 cnt = cnt + 1;
             }
 
-            let viewDelta = delta.toFixed(1) + '%';
+            const viewDelta = delta.toFixed(1) + '%';
 
             heatFlames = (
                 <Box className={'heat-container'}>

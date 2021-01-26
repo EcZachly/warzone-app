@@ -13,7 +13,7 @@ import {Gamer} from './GamerTypes';
 export default function GamerLink(props: { gamer: Gamer, single?: boolean, noLink?: boolean, loading?: boolean }) {
     const {gamer, single, noLink, loading} = props;
 
-    let classNames = [
+    const classNames = [
         'gamer-link-container',
         single === true ? 'single' : null
     ].filter((value) => !!value).join(' ');

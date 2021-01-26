@@ -1,4 +1,4 @@
-export function defaultStateData(defaultData: any = null, isLoading: boolean = true): { data: any, loading: boolean, error: null } {
+export function defaultStateData(defaultData: any = null, isLoading = true): { data: any, loading: boolean, error: null } {
     return {
         data: defaultData,
         loading: isLoading,

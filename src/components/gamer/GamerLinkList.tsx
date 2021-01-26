@@ -31,7 +31,7 @@ export default function GamerLinkList(props: { gamers?: GamerList, gamer?: Gamer
             <>
                 {
                     gamers.map((gamer) => {
-                        let key = [gamer.platform, gamer.username].join('-');
+                        const key = [gamer.platform, gamer.username].join('-');
 
                         return (<GamerLinkList key={key} gamer={gamer} noLink={noLink} loading={loading} block={false}/>);
                     })

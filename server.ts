@@ -4,7 +4,7 @@ const logger = tracer.colorConsole({format: '{{message}}'});
 const express = require('express');
 const path = require('path');
 
-let server = express();
+const server = express();
 
 import {generateNextConfig} from './config/server/nextConfig';
 import createAPIEventMiddleware from './routes/siteTrafficMiddlware';
@@ -16,7 +16,7 @@ const CONSTANTS = {
     UNSECURED_PORT: 3000
 };
 
-let PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
+const PORT = process.env.PORT || CONSTANTS.UNSECURED_PORT || 3000;
 
 const app = generateNextConfig({
     dev,
@@ -57,7 +57,7 @@ async function run() {
             Routes.include(server);
 
             server.use((req, res, next) => {
-                let domains = {
+                const domains = {
                     'brshooter.com': true,
                     'www.brshooter.com': true
                 };

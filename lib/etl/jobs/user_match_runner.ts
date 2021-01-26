@@ -45,7 +45,7 @@ function run() {
 async function executeJob(jobConfig) {
     const jobTime: number = new Date().getTime();
 
-    let newJob = {
+    const newJob = {
         job_name: jobConfig.name,
         job_id: md5(jobTime + jobConfig.name),
         execution_start_time: jobTime,
