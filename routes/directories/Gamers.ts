@@ -1,4 +1,7 @@
 import {NextApiRequest, NextApiResponse} from 'next';
+
+import tracer from 'tracer';
+const logger = tracer.colorConsole();
 import Bluebird from 'bluebird';
 
 import {initializeGamer, updateGamer, queryGamers} from '../../lib/model/gamers';
@@ -19,6 +22,7 @@ import {Gamer} from '../../src/components/gamer/GamerTypes';
 import {ViewQuery} from '../../lib/model/view_query';
 import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
 import UtilityService from '../../src/services/UtilityService';
+import {DEFAULT_ERROR_MESSAGE} from '../../src/config/CONSTANTS';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -111,7 +115,7 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.direction;
 
 
-    if(!queryParams['game_category']){
+    if (!queryParams['game_category']) {
         queryParams['game_category'] = GAME_CATEGORIES.WARZONE;
     }
 
@@ -148,11 +152,14 @@ async function updateGamerUponRequest(gamer: Gamer) {
         gamer.needs_update = true;
         gamerPromise = updateGamer({username: gamer.username, platform: gamer.platform}, gamer);
     }
+
     return await gamerPromise;
 }
 
 
 export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
+    logger.trace('getGamerDetails');
+
     const {view, game_category} = req.query;
     delete req.query.view;
 
@@ -168,6 +175,7 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         'not_found': username + ' on platform: ' + platform + ' was not found!'
     };
 
+
     if (!platform || !username) {
         return handleError(req, res, {message: errorObject['missing_data']});
     }
@@ -178,35 +186,44 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
 
+    try {
+        let gamer = await getSingleGamerData(username, platform, game_category as string);
 
-    const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string);
-    let queryParams = {...allParams, uno_id: gamer.uno_id}
-    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, queryParams);
+        if (!gamer) {
+            return handleError(req, res, {message: errorObject['not_found']});
+        }
 
+        let queryParams = {...allParams, uno_id: gamer.uno_id};
 
-    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
+        let viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
 
-    if (!gamer) {
-        return handleError(req, res, {message: errorObject['not_found']});
+        await viewToQuery.executeQuery();
+        const viewData = viewToQuery.data;
+
+        let classDescriptions = await getGamerClassDescriptions();
+
+        await updateGamerUponRequest(gamer);
+
+        const seoMetadata = {
+            title: 'Warzone stats for ' + gamer['username'],
+            keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
+            description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
+        };
+
+        handleResponse(req, res, {
+            gamer,
+            viewData,
+            seoMetadata,
+            classDescriptions
+        });
+
+    } catch (error) {
+        logger.error(error);
+        return handleError(req, res, {message: DEFAULT_ERROR_MESSAGE});
     }
 
-    await viewToQuery.executeQuery();
-    const viewData = viewToQuery.data;
 
-    await updateGamerUponRequest(gamer);
 
-    const seoMetadata = {
-        title: 'Warzone stats for ' + gamer['username'],
-        keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
-        description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
-    };
-
-    handleResponse(req, res, {
-        gamer,
-        viewData,
-        seoMetadata,
-        classDescriptions
-    });
 }
 
 

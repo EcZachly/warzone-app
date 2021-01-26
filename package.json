@@ -46,7 +46,7 @@
     "jsonwebtoken": "^8.5.1",
     "localstorage-polyfill": "^1.0.1",
     "lodash": "^4.17.20",
-    "massive": "^6.6.2",
+    "massive": "^6.6.4",
     "md5": "^2.3.0",
     "mocha": "^8.2.1",
     "moment": "^2.29.1",
