@@ -10,3 +10,8 @@ export function checkForAllEnvironmentVariables(): void {
         throw new Error('The following environment variables are required and missing: ' + JSON.stringify(missingEnvironmentVariables));
     }
 }
+
+
+export default {
+    checkForAllEnvironmentVariables
+};

@@ -1,4 +1,5 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
+
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -14,17 +15,22 @@ import {AuthService} from '../../lib/components/Auth';
 import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
 import {update} from '../../lib/components/Database/DAO';
 import {RawUser, User} from '../../src/components/Users/UserTypes';
+import {AnyObject} from '../../lib/components/Types';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
-export async function queryUsers(req: NextApiRequest, res: NextApiResponse) {
-    const query = {...req.query as object};
+
+
+
+export async function queryUsers(req: Request, res: Response) {
+    const query = {...req.query as AnyObject};
     const users = await UserController.queryUsers(query);
     return responseHandler.handleResponse(req, res, users);
 }
 
 
-export async function finishForgotPassword(req: NextApiRequest, res: NextApiResponse) {
+
+export async function finishForgotPassword(req: Request, res: Response) {
     const {forgot_string, password, email} = req.body.user;
     const encryptedPassword = await AuthService.encryptPassword(password);
     const updatedUser = await UserController.updateUser({forgot_string, email}, {
@@ -34,7 +40,9 @@ export async function finishForgotPassword(req: NextApiRequest, res: NextApiResp
     return responseHandler.handleResponse(req, res, updatedUser);
 }
 
-export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResponse) {
+
+
+export async function finishConfirmAccount(req: Request, res: Response) {
     const {confirm_string} = req.query;
     const usersToUpdate = await UserController.queryUsers({confirm_string: confirm_string});
     let status = 'failure';
@@ -45,7 +53,9 @@ export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResp
     return res.redirect('/user/confirm?status=' + status);
 }
 
-export async function createUser(req: NextApiRequest, res: NextApiResponse) {
+
+
+export async function createUser(req: Request, res: Response) {
 
     const errorMap = {
         'missing_data': {message: 'body.user (Object), body.user.email (String), body.user.first_name (String), and body.user.password are required'},
@@ -58,7 +68,9 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
         return responseHandler.handleError(req, res, errorMap['missing_data'], 400);
     }
 
-    let {email, first_name, password} = user;
+    let {email, first_name} = user;
+    const {password} = user;
+
     const hasMissingData = !TypeService.isString(email, true) ||
         !TypeService.isString(first_name, true) ||
         !TypeService.isString(password, true);
@@ -98,7 +110,7 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
 
 
 
-export async function sendForgotPassword(req: NextApiRequest, res: NextApiResponse) {
+export async function sendForgotPassword(req: Request, res: Response) {
     const {email} = req.body;
 
     if (!UtilityService.isValidEmail(email)) {
@@ -127,7 +139,7 @@ export async function sendForgotPassword(req: NextApiRequest, res: NextApiRespon
 
 
 
-export async function login(req: NextApiRequest, res: NextApiResponse) {
+export async function login(req: Request, res: Response) {
     const errorMap = {
         'missing_data': {message: 'body.email (String) and body.password (String) are required'},
         'invalid_combination': {message: 'Invalid email/password combination'},
@@ -184,7 +196,7 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
 
 
 
-export function verifyUserToken(req, res) {
+export function verifyUserToken(req: Request, res: Response) {
     const {jwt} = req.cookies;
     const {user_id} = req.body;
     if (TypeService.isInteger(user_id)) {
@@ -233,8 +245,10 @@ export function verifyUserToken(req, res) {
 }
 
 
+
 export default {
     createUser,
+    queryUsers,
     finishForgotPassword,
     finishConfirmAccount,
     sendForgotPassword,

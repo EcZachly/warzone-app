@@ -21,7 +21,7 @@ export function isNull(item: any): boolean {
  * @param {Boolean} [allowString=false] - allow a user to test if an item is a string and a valid date object
  * @returns {Boolean} - true or false
  */
-export function isDate(item: any, allowString: boolean=false): boolean {
+export function isDate(item: any, allowString = false): boolean {
     const isNotInvalidType = (!isUndefined(item) && !isNull(item) && !isNumeric(item) && !isBoolean(item) && !isArray(item));
     const stringAllowance = (allowString !== true) ? !isString(item) : true;
 
@@ -46,7 +46,7 @@ export function isDate(item: any, allowString: boolean=false): boolean {
  * @param {*=} [equalityVal=null] - (true/false) if equalityVal is present, it will check to see if the value is true or false
  * @returns {Boolean} - true or false
  */
-export function isBoolean(item: any, allowString: boolean=false, equalityVal=null): boolean {
+export function isBoolean(item: any, allowString = false, equalityVal = null): boolean {
     const itemIsBoolean = (item === true || item === false);
     const itemIsStringBoolean = (item === 'true' || item === 'false');
 
@@ -69,7 +69,7 @@ export function isBoolean(item: any, allowString: boolean=false, equalityVal=nul
  * @param {Boolean} [withoutTypeConversion=false] - require that the item is not a string
  * @returns {Boolean} - true or false
  */
-export function isInteger(item: any, withoutTypeConversion: boolean=false): boolean {
+export function isInteger(item: any, withoutTypeConversion = false): boolean {
     const itemIsInteger = (!isUndefined(item) && !isNull(item) && !isNaN(item) && (parseInt(item) == item) && !isNaN(parseInt(item, 10))); // eslint-disable-line
     const isNotString = (withoutTypeConversion === true) ? (itemIsInteger === true && !isString(item)) : true;
     return (itemIsInteger === true && isNotString === true);
@@ -82,7 +82,7 @@ export function isInteger(item: any, withoutTypeConversion: boolean=false): bool
  * @param {Boolean} [withoutTypeConversion=false] - require that the item is not a string
  * @returns {Boolean} - true or false
  */
-export function isNumeric(item: any, withoutTypeConversion: boolean=false): boolean {
+export function isNumeric(item: any, withoutTypeConversion = false): boolean {
     const itemIsNumeric = (!isUndefined(item) && !isNull(item) && !isNaN(parseFloat(item)) && isFinite(item));
     const isNotString = (withoutTypeConversion === true) ? (itemIsNumeric === true && !isString(item)) : true;
     return (itemIsNumeric === true && isNotString === true);
@@ -107,7 +107,7 @@ export function isFunction(item: any): boolean {
  * @param {Boolean} [requireNotEmpty=false] - require that the string has a length of at least one
  * @returns {Boolean} - true or false
  */
-export function isString(item: any, requireNotEmpty: boolean=false): boolean {
+export function isString(item: any, requireNotEmpty = false): boolean {
     const itemIsString = (!isUndefined(item) && !isNull(item) && typeof item === 'string');
     const isNotEmpty = (requireNotEmpty === true) ? (itemIsString === true && item.length > 0) : true;
     return (itemIsString === true && isNotEmpty === true);
@@ -120,7 +120,7 @@ export function isString(item: any, requireNotEmpty: boolean=false): boolean {
  * @param {Boolean} [requireNotEmpty=false] - require that the object has at least one key
  * @returns {Boolean} - true or false
  */
-export function isObject(item: any, requireNotEmpty: boolean=false): boolean {
+export function isObject(item: any, requireNotEmpty = false): boolean {
     const itemIsObject = (!isUndefined(item) && !isNull(item) && !isDate(item) && typeof item === 'object' && !isFunction(item) && Array.isArray(item) === false);
     const isNotEmpty = (requireNotEmpty === true) ? (itemIsObject === true && Object.keys(item).length > 0) : true;
     return (itemIsObject === true && isNotEmpty === true);
@@ -134,7 +134,7 @@ export function isObject(item: any, requireNotEmpty: boolean=false): boolean {
  * @param {Boolean} [requireNotEmpty=false] - require that the array has a length of at least one
  * @returns {Boolean} - true or false
  */
-export function isArray(item: any, requireNotEmpty: boolean=false): boolean {
+export function isArray(item: any, requireNotEmpty = false): boolean {
     const isArray = !isUndefined(item) && !isNull(item) && Array.isArray(item);
     const isNotEmpty = (requireNotEmpty === true) ? (isArray === true && item.length > 0) : true;
     return (isArray === true && isNotEmpty === true);

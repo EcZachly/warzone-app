@@ -1,16 +1,16 @@
-import {createGamerRelationship} from './directories/GamerRelationshipRoutes';
-const logger = require('tracer').colorConsole();
+import tracer from 'tracer';
+const logger = tracer.colorConsole();
 
-const express = require('express');
+import express from 'express';
 
-const Gamers = require('./directories/Gamers');
-const Squads = require('./directories/Squads');
+import Gamers from './directories/Gamers';
+import Squads from './directories/Squads';
 
-const MatchRoutes = require('./../lib/components/Matches/MatchRoutes');
-const GamerMatchRoutes = require('./../lib/components/GamerMatches/GamerMatchRoutes');
-const GamerRelationshipRoutes = require('./directories/GamerRelationshipRoutes');
-const Users = require('./directories/UserRoutes');
-const Resources = require('./directories/Resources');
+import MatchRoutes from './../lib/components/Matches/MatchRoutes';
+import GamerMatchRoutes from './../lib/components/GamerMatches/GamerMatchRoutes';
+import GamerRelationshipRoutes from './directories/GamerRelationshipRoutes';
+import Users from './directories/UserRoutes';
+import Resources from './directories/Resources';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 

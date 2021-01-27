@@ -39,7 +39,7 @@ export function round(number: number, decimals: number): number {
 
 
 
-export function numberWithCommas(number: number = 0): string {
+export function numberWithCommas(number = 0): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 

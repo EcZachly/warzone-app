@@ -1,9 +1,9 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
 import {GAME_CATEGORIES} from '../../lib/constants';
 import {getSquadDescriptionValues, querySquads} from '../../lib/model/squads';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
-export async function findSquads(req: NextApiRequest, res: NextApiResponse) {
+export async function findSquads(req: Request, res: Response) {
     const queryParams = req.query;
     const limit = req.query.limit || 10;
     delete queryParams.limit;

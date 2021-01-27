@@ -21,11 +21,11 @@
     "jsx": "preserve"
   },
   "include": [
-    "./routes/**/*",
-    "./src/**/*",
-    "./bin/**/*",
-    "./config/**/*",
-    "./lib/**/*"
+      "./routes/**/*",
+      "./src/**/*",
+      "./bin/**/*",
+      "./config/**/*",
+      "./lib/**/*"
   ],
   "exclude": [
     "node_modules",

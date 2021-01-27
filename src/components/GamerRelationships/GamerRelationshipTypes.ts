@@ -6,7 +6,7 @@ import {UserID} from '../Users/UserTypes';
 
 
 
-export type GamerRelationshipMetadata = Metadata & {}
+export type GamerRelationshipMetadata = Metadata & Record<any, unknown>;
 
 export type RawGamerRelationship = {
     user_id: UserID,
@@ -15,7 +15,7 @@ export type RawGamerRelationship = {
     type: 'self' | 'friend',
     is_favorite: boolean,
     metadata: GamerRelationshipMetadata | string,
-    detailData?: object
+    detailData?: Record<any, unknown>
 };
 
 

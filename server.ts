@@ -1,13 +1,21 @@
 import tracer from 'tracer';
 const logger = tracer.colorConsole({format: '{{message}}'});
 
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
 
 const server = express();
 
+
 import {generateNextConfig} from './config/server/nextConfig';
 import createAPIEventMiddleware from './routes/siteTrafficMiddlware';
+
+import StaticFiles from './config/server/staticFiles';
+import Security from './config/server/security';
+import Tools from './config/server/tools';
+import Setup from './config/server/setup';
+// const FrontEndPageMap = require('./../src/page-map/');
+import Routes from './routes';
 import database from './lib/database';
 
 const dev = (process.env.NODE_ENV !== 'production');
@@ -25,13 +33,6 @@ const app = generateNextConfig({
 });
 
 const handle = app.getRequestHandler();
-
-const StaticFiles = require('./config/server/staticFiles');
-const Security = require('./config/server/security');
-const Tools = require('./config/server/tools');
-const Setup = require('./config/server/setup');
-// const FrontEndPageMap = require('./../src/page-map/');
-const Routes = require('./routes');
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
@@ -56,6 +57,10 @@ async function run() {
             Security.configure(server);
             Routes.include(server);
 
+            // server.use(function (err, req, res, next) {
+            //
+            // });
+
             server.use((req, res, next) => {
                 const domains = {
                     'brshooter.com': true,
@@ -77,15 +82,23 @@ async function run() {
                 return handle(req, res);
             });
 
-            server.listen(PORT, (err) => {
-                if (err) {
-                    throw err;
-                }
+            server.listen(PORT, () => {
+                // if (err) {
+                //     throw err;
+                // }
 
                 resolve(server);
 
                 logger.trace('Server Listening http://localhost:' + PORT);
+            }).on('error', function (error) {
+                logger.error(error);
+                throw error;
             });
+
+            // server.on('error', (error) => {
+            //     logger.error(error);
+            //     throw error;
+            // });
         }).catch((ex) => {
             logger.error(ex.stack);
             process.exit(1);

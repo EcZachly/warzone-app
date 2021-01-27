@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
 
 import tracer from 'tracer';
 const logger = tracer.colorConsole();
@@ -27,7 +27,7 @@ import {DEFAULT_ERROR_MESSAGE} from '../../src/config/CONSTANTS';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
+export async function createGamer(req: Request, res: Response) {
     const newUser = req.body;
     const recaptcha = await handleRecaptchaVerify(newUser.token);
     const recaptchaSuccess = recaptcha.success;
@@ -99,7 +99,7 @@ function manageComplexQueryParameters(queryParams) {
 }
 
 
-export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
+export async function findGamers(req: Request, res: Response) {
     const queryParams = req.query;
 
     const offset = queryParams.offset || 0;
@@ -145,19 +145,19 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-async function updateGamerUponRequest(gamer: Gamer) {
+async function updateGamerUponRequest(gamer: Gamer): Promise<Gamer> {
     let gamerPromise = Bluebird.resolve(gamer);
 
     if (!gamer.needs_update) {
         gamer.needs_update = true;
-        gamerPromise = updateGamer({username: gamer.username, platform: gamer.platform}, gamer);
+        gamerPromise = updateGamer({username: gamer.username, platform: gamer.platform}, gamer) as Bluebird<Gamer>;
     }
 
     return await gamerPromise;
 }
 
 
-export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
+export async function getGamerDetails(req: Request & { params: { username: string, platform: string } }, res: Response) {
     logger.trace('getGamerDetails');
 
     const {view, game_category} = req.query;

@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Response} from 'express';
 import crypto from 'crypto';
 import moment from 'moment';
 import jwt from 'jsonwebtoken';
@@ -78,7 +78,7 @@ export function comparePassword(unencryptedPassword: string, encryptedPassword: 
 
 
 
-export function setJWTTokenCookie(tokenStorageObj: { user_id: UserID }, res: NextApiResponse): void {
+export function setJWTTokenCookie(tokenStorageObj: { user_id: UserID }, res: Response): void {
     const token = generateAuthToken({
         user_id: tokenStorageObj.user_id
     });

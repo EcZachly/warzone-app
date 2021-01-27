@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
 
 import responseHandler from '../responseHandler';
 
@@ -21,7 +21,8 @@ import {RawGamer} from '../../src/components/gamer/GamerTypes';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-export async function queryGamerRelationships(req: NextApiRequest, res: NextApiResponse) {
+
+export async function queryGamerRelationships(req: Request, res: Response) {
     const queryParams = req.query;
 
     const options = {
@@ -50,7 +51,8 @@ export async function queryGamerRelationships(req: NextApiRequest, res: NextApiR
 }
 
 
-export async function createGamerRelationship(req: NextApiRequest, res: NextApiResponse) {
+
+export async function createGamerRelationship(req: Request, res: Response) {
     const gamerRelationship = req.body.gamerRelationship;
     const errorMap = {
         'missing_data': {
@@ -90,7 +92,7 @@ export async function createGamerRelationship(req: NextApiRequest, res: NextApiR
 
 
 
-export async function removeGamerRelationship(req: NextApiRequest, res: NextApiResponse) {
+export async function removeGamerRelationship(req: Request, res: Response) {
     const gamerRelationship = req.body.gamerRelationship;
 
     const missingData = [
@@ -112,7 +114,9 @@ export async function removeGamerRelationship(req: NextApiRequest, res: NextApiR
 }
 
 
+
 export default {
     queryGamerRelationships,
-    createGamerRelationship
+    createGamerRelationship,
+    removeGamerRelationship
 };

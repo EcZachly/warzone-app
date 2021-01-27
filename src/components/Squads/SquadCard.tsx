@@ -12,7 +12,7 @@ import {GamerLinkList} from '../gamer';
 
 export default function SquadCard({squad, classDescriptions}) {
     //Only use classes that correspond with the right team type, otherwise we'd be comparing duos to quads, etc
-    const filteredDescriptions = classDescriptions.filter((description) => description.team_type == squad.team_type)[0];
+    const filteredDescriptions = classDescriptions.filter((description) => description.team_type === squad.team_type)[0];
     console.log(squad, filteredDescriptions);
     const stats = {
         'Total Matches': {

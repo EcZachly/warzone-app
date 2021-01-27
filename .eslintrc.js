@@ -45,6 +45,9 @@ module.exports = {
 		'@typescript-eslint/explicit-module-boundary-types': [
 			'off'
 		],
+		'@typescript-eslint/no-inferrable-types': [
+			'error'
+		],
 		'eqeqeq': [
 			'error',
 			'smart'

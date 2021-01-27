@@ -1,11 +1,12 @@
 import {queryView} from '../database_utils';
+import {AnyObject} from '../components/Types';
 
-type ResponseData = Array<any> | Record<string, unknown>;
-type Options = object;
+type ResponseData = Array<any> | AnyObject;
+type Options = AnyObject;
 
 export class ViewQuery {
     view: string;
-    query: Record<string, unknown>;
+    query: AnyObject;
     options: Options;
     data: ResponseData;
     sanitize: (input: ResponseData) => ResponseData;

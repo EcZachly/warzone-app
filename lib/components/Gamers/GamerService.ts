@@ -9,6 +9,7 @@ export * from './../../../src/components/gamer/GamerService';
 
 import {Gamer} from '../../../src/components/gamer/GamerTypes';
 import {GamerClassDescription} from '../Classes/ClassDescriptionType';
+import {AnyObject} from '../Types';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -20,6 +21,8 @@ export const getGamerClassDescriptions = async (): Promise<GamerClassDescription
     return query.data as GamerClassDescription;
 };
 
+
+
 export const getSingleGamerData = async (username, platform, game_category = GAME_CATEGORIES.WARZONE): Promise<Gamer> => {
     const val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {});
     await val.executeQuery();
@@ -27,7 +30,8 @@ export const getSingleGamerData = async (username, platform, game_category = GAM
 };
 
 
-export const getGamerDetailViewQuery = (view: string, allParams: Record<any, unknown> = {}, options: object = {}): ViewQuery => {
+
+export const getGamerDetailViewQuery = (view: string, allParams: AnyObject = {}, options: AnyObject = {}): ViewQuery => {
     const query = restToMassiveQuery(view, allParams);
 
     const queryableViews = {

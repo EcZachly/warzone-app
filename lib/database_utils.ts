@@ -1,21 +1,22 @@
 import database from './database';
 import {DATABASE_SCHEMA} from './constants';
 
-type DatabaseResponse = Record<any, unknown>[] | Record<any, unknown> | any;
-type DatabaseEntry = Record<any, unknown>[] | Record<any, unknown>;
+type AnyObject = Record<any, unknown>
+type DatabaseResponse = AnyObject[] | AnyObject | any;
+type DatabaseEntry = AnyObject[] | AnyObject;
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
 
-export async function queryDatabase(table, query, options = {}): Promise<DatabaseResponse> {
+export async function queryDatabase(table: string, query: AnyObject, options = {}): Promise<DatabaseResponse> {
     const db = await database;
     return db[DATABASE_SCHEMA][table].find(query, options);
 }
 
 
 
-export async function executeRawQuery(query): Promise<DatabaseResponse> {
+export async function executeRawQuery(query: AnyObject): Promise<DatabaseResponse> {
     const db = await database;
 
     try {
@@ -27,7 +28,7 @@ export async function executeRawQuery(query): Promise<DatabaseResponse> {
 
 
 
-export async function updateDatabaseValues(query: object, data: DatabaseEntry, table: string): Promise<DatabaseResponse> {
+export async function updateDatabaseValues(query: AnyObject, data: DatabaseEntry, table: string): Promise<DatabaseResponse> {
     const db = await database;
 
     try {
@@ -54,7 +55,7 @@ export async function insertDatabaseValues(data: DatabaseEntry, table: string, w
 
 
 
-export async function queryView(view, query = {}, options = {}): Promise<DatabaseResponse> {
+export async function queryView(view: string, query = {}, options = {}): Promise<DatabaseResponse> {
     const db = await database;
 
     if (db[DATABASE_SCHEMA][view]) {
@@ -68,7 +69,7 @@ export async function queryView(view, query = {}, options = {}): Promise<Databas
 
 
 
-export async function refreshMaterializedView(view): Promise<DatabaseResponse> {
+export async function refreshMaterializedView(view: string): Promise<DatabaseResponse> {
     const db = await database;
 
     if (db[DATABASE_SCHEMA][view]) {

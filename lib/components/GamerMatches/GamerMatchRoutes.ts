@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
 
 import responseHandler from './../../../routes/responseHandler';
 
@@ -12,7 +12,7 @@ import {RouteService} from '../Routes';
 
 
 
-export async function queryGamerMatches(req: NextApiRequest, res: NextApiResponse) {
+export async function queryGamerMatches(req: Request, res: Response) {
     const query = RouteService.sanitizeQueryParameters(req.query);
 
     const options = {

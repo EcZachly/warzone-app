@@ -1,15 +1,18 @@
-import {insertDatabaseValues, queryDatabase, updateDatabaseValues} from '../database_utils';
-import WarzoneMapper from '../etl/mapper';
-import {TABLES, VIEWS} from '../constants';
 import ApiWrapper from '../api_wrapper';
+import WarzoneMapper from '../etl/mapper';
+import {insertDatabaseValues, queryDatabase, updateDatabaseValues} from '../database_utils';
+
+import {TABLES, VIEWS} from '../constants';
 import UtilityService from './../../src/services/UtilityService';
-import {Gamer} from '../../src/components/gamer/GamerTypes';
+
+import {Gamer, RawGamer} from '../../src/components/gamer/GamerTypes';
+import {AnyObject} from '../components/Types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
 
-export async function initializeGamer(queryGamer) {
+export async function initializeGamer(queryGamer: AnyObject) {
     const API = await ApiWrapper.getInstance();
     const gamer = await API.MWwz(queryGamer.username, queryGamer.platform);
     const unoData = await API.MWcombatwzdate(queryGamer.username, 0, 0, queryGamer.platform);
@@ -20,16 +23,16 @@ export async function initializeGamer(queryGamer) {
 
 
 
-export function updateGamer(query: object, gamer: Partial<Gamer>) {
+export function updateGamer(query: AnyObject, gamer: Partial<Gamer>) {
     return updateDatabaseValues(query, gamer, TABLES.GAMERS);
 }
 
-export function queryFollowedGamers(query, options = {}) {
+export function queryFollowedGamers(query: AnyObject, options = {}) {
     query = UtilityService.validateItem(query, 'object', {});
     return queryDatabase(VIEWS.FOLLOW_GAMERS, query, options);
 }
 
-export function queryGamers(query, options = {}) {
+export function queryGamers(query: AnyObject, options = {}) {
     query = UtilityService.validateItem(query, 'object', {});
     return queryDatabase(TABLES.GAMERS, query, options);
 }
