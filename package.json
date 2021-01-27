@@ -90,5 +90,9 @@
   },
   "post-commit": [
     "reminder"
+  ],
+  "pre-commit": [
+    "lint-fix",
+    "git-add"
   ]
 }
