@@ -18,7 +18,7 @@ import {
     getGamerDetailViewQuery,
     getSingleGamerData
 } from '../../lib/components/Gamers/GamerService';
-import {Gamer} from '../../src/components/gamer/GamerTypes';
+import {Gamer, GamerPlatform} from '../../src/components/gamer/GamerTypes';
 import {ViewQuery} from '../../lib/model/view_query';
 import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
 import UtilityService from '../../src/services/UtilityService';
@@ -187,7 +187,7 @@ export async function getGamerDetails(req: Request & { params: { username: strin
     }
 
     try {
-        const gamer = await getSingleGamerData(username, platform, game_category as string);
+        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category as string);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});

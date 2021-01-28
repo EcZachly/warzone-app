@@ -12,7 +12,7 @@ import {RouteService} from '../Routes';
 
 
 
-export async function queryGamerMatches(req: Request, res: Response) {
+export async function queryGamerMatches(req: Request, res: Response): Promise<void> {
     const query = RouteService.sanitizeQueryParameters(req.query);
 
     const options = {
