@@ -23,9 +23,9 @@ type queryGamerMatchesOptions = {
 
 export async function queryGamerMatches(queryInput: Partial<GamerMatch>, options: queryGamerMatchesOptions): Promise<GamerMatchList> {
     return new Promise(async (resolve, reject) => {
-        let query = UtilityService.validateItem(queryInput, 'object', {});
+        const query = UtilityService.validateItem(queryInput, 'object', {});
 
-        let qualifiers = ['limit', 'offset', 'order'];
+        const qualifiers = ['limit', 'offset', 'order'];
 
         qualifiers.forEach((key) => {
             if (options[key]) {

@@ -35,7 +35,7 @@ export const STATUS_CODE = {
     SUCCESS: 200,
     OKAY: 200,
     NO_CONTENT: 204
-}
+};
 
 
 

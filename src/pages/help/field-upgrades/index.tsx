@@ -17,15 +17,15 @@ import {BASE_TITLE} from '../../../../lib/constants';
 
 const FieldUpgradesList = ({resources}) => {
 
-    let resourceList = resources.map((resource)=>{
+    const resourceList = resources.map((resource)=>{
         return <Card>
             <CardHeader>
-                <a href={"/help/field-upgrades/" + resource.resource_id}><h2>{resource.name}</h2></a>
+                <a href={'/help/field-upgrades/' + resource.resource_id}><h2>{resource.name}</h2></a>
             </CardHeader>
             <CardBody>
                 <img style={{width: '50px', height: 'auto'}} src={resource.image_url}/>
             </CardBody>
-        </Card>
+        </Card>;
     });
 
     return (

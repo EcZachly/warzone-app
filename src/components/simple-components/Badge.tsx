@@ -36,7 +36,11 @@ const Badge = (props:BadgeProps) => {
     const classNames = getClassNames(props);
     
     return (
-        <div {...props} className={classNames} style={props.style} title={props.title} ref={props.innerRef}>
+        <div {...props}
+             className={classNames}
+             style={props.style}
+             title={props.title}
+             ref={props.innerRef}>
             {props.children}
         </div>
     );

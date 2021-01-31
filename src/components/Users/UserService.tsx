@@ -68,7 +68,7 @@ export async function login(loginDetails: { email: string, password: string }): 
             body: loginDetails
         }).then(async (response) => {
             if (response.status === 200) {
-                let user = response.data.user;
+                const user = response.data.user;
 
                 StorageService.save('user', user);
                 StorageService.save('auth-token-manually-verified', true, {session: true});
@@ -98,13 +98,13 @@ export function userIsLoggedIn() {
 
 
 export function gamerIsFriend(platform: Gamer['platform'], username: Gamer['username']): boolean {
-    let gamerRelationships = GamerRelationshipService.getGamerRelationshipsFromStorage();
+    const gamerRelationships = GamerRelationshipService.getGamerRelationshipsFromStorage();
     return gamerRelationships.filter((gamerRelationship) => gamerRelationship.platform === platform && gamerRelationship.username === username).length > 0;
 }
 
 
 export function gamerIsSelf(platform: Gamer['platform'], username: Gamer['username']): boolean {
-    let gamerRelationships = GamerRelationshipService.getGamerRelationshipsFromStorage();
+    const gamerRelationships = GamerRelationshipService.getGamerRelationshipsFromStorage();
     return gamerRelationships.filter((gamerRelationship) => gamerRelationship.platform === platform && gamerRelationship.username === username && gamerRelationship.type === 'self').length > 0;
 }
 
@@ -142,7 +142,7 @@ export function sanitizeEmailForStorage(email) {
 export function verifyCurrentUserAndToken() {
     return new Promise((resolve, reject) => {
         if (userIsLoggedIn()) {
-            let user = getUser();
+            const user = getUser();
 
             HttpService.http({
                 url: '/api/v1/verify-user-token',

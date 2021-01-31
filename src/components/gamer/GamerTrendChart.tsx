@@ -9,10 +9,10 @@ import {GamerService} from './index';
 
 
 export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, height, width}) {
-    let [chosenChart, setChosenChart] = useState('kdr');
-    let rollingViews = ['last_10_rolling_average', 'last_30_rolling_average', 'last_100_rolling_average'];
+    const [chosenChart, setChosenChart] = useState('kdr');
+    const rollingViews = ['last_10_rolling_average', 'last_30_rolling_average', 'last_100_rolling_average'];
 
-    let trends = {
+    const trends = {
         'kdr': rollingViews.map((view) => `${view}_kdr`),
         'kills': rollingViews.map((view) => `${view}_kills`),
         'deaths': rollingViews.map((view) => `${view}_deaths`),
@@ -20,7 +20,7 @@ export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, hei
 
     const radioOptions = getRadioOptions(Object.keys(trends));
 
-    let viewData = data.map((row) => {
+    const viewData = data.map((row) => {
         trends[chosenChart].forEach((col) => {
             row[GamerService.sanitizeStatKey(col)] = row[col];
         });
@@ -30,7 +30,7 @@ export default function GamerTrendChart({gamer, gameCategory, baseUrl, data, hei
 
 
     if (viewData.length) {
-        let capitalKeys = trends[chosenChart].map((key) => GamerService.sanitizeStatKey(key));
+        const capitalKeys = trends[chosenChart].map((key) => GamerService.sanitizeStatKey(key));
 
         return (
             <Box>

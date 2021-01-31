@@ -1,4 +1,7 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
+
+import tracer from 'tracer';
+const logger = tracer.colorConsole();
 import Bluebird from 'bluebird';
 
 import {initializeGamer, updateGamer, queryGamers} from '../../lib/model/gamers';
@@ -15,22 +18,23 @@ import {
     getGamerDetailViewQuery,
     getSingleGamerData
 } from '../../lib/components/Gamers/GamerService';
-import {Gamer} from '../../src/components/gamer/GamerTypes';
+import {Gamer, GamerPlatform} from '../../src/components/gamer/GamerTypes';
 import {ViewQuery} from '../../lib/model/view_query';
 import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
 import UtilityService from '../../src/services/UtilityService';
+import {DEFAULT_ERROR_MESSAGE} from '../../src/config/CONSTANTS';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
+export async function createGamer(req: Request, res: Response) {
     const newUser = req.body;
     const recaptcha = await handleRecaptchaVerify(newUser.token);
     const recaptchaSuccess = recaptcha.success;
     const {username, platform} = newUser;
     let error = null;
 
-    let errorObject = {
+    const errorObject = {
         'missing_data': {message: 'body.username and body.platform (String) are required', status: 400},
         'recaptcha_fail': {message: 'failed recaptcha verification', status: 400}
     };
@@ -84,8 +88,8 @@ export async function createGamer(req: NextApiRequest, res: NextApiResponse) {
 function manageComplexQueryParameters(queryParams) {
     Object.keys(queryParams).forEach((key) => {
         if (key.includes('.')) {
-            let column = key.split('.')[0];
-            let operator = key.split('.')[1];
+            const column = key.split('.')[0];
+            const operator = key.split('.')[1];
             queryParams[column + ' ' + operator] = queryParams[key];
             delete queryParams[key];
         } else if (UtilityService.isJson(queryParams[key])) {
@@ -95,7 +99,7 @@ function manageComplexQueryParameters(queryParams) {
 }
 
 
-export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
+export async function findGamers(req: Request, res: Response) {
     const queryParams = req.query;
 
     const offset = queryParams.offset || 0;
@@ -111,16 +115,16 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
     delete queryParams.direction;
 
 
-    if(!queryParams['game_category']){
+    if (!queryParams['game_category']) {
         queryParams['game_category'] = GAME_CATEGORIES.WARZONE;
     }
 
     manageComplexQueryParameters(queryParams);
     const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
-    let queryOptions = {offset, limit, order: undefined};
+    const queryOptions = {offset, limit, order: undefined};
 
     if (sort) {
-        let sortObj = {
+        const sortObj = {
             field: sort,
             direction: undefined
         };
@@ -132,41 +136,45 @@ export async function findGamers(req: NextApiRequest, res: NextApiResponse) {
         queryOptions.order = [sortObj];
     }
 
-    let playerQuery = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, queryParams, queryOptions);
+    const playerQuery = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, queryParams, queryOptions);
 
     await playerQuery.executeQuery();
-    let gamers = playerQuery.data;
+    const gamers = playerQuery.data;
 
     handleResponse(req, res, {gamers, classDescriptions});
 }
 
 
-async function updateGamerUponRequest(gamer: Gamer) {
+async function updateGamerUponRequest(gamer: Gamer): Promise<Gamer> {
     let gamerPromise = Bluebird.resolve(gamer);
 
     if (!gamer.needs_update) {
         gamer.needs_update = true;
-        gamerPromise = updateGamer({username: gamer.username, platform: gamer.platform}, gamer);
+        gamerPromise = updateGamer({username: gamer.username, platform: gamer.platform}, gamer) as Bluebird<Gamer>;
     }
+
     return await gamerPromise;
 }
 
 
-export async function getGamerDetails(req: NextApiRequest & { params: { username: string, platform: string } }, res: NextApiResponse) {
+export async function getGamerDetails(req: Request & { params: { username: string, platform: string } }, res: Response) {
+    logger.trace('getGamerDetails');
+
     const {view, game_category} = req.query;
     delete req.query.view;
 
     const {username, platform} = req.params;
 
-    let allParams = {...req.params, ...req.query};
+    const allParams = {...req.params, ...req.query};
 
-    let paramMap = getQueryParamToSQLMap();
+    const paramMap = getQueryParamToSQLMap();
 
-    let errorObject = {
+    const errorObject = {
         'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
         'invalid_view': 'invalid view query param needs to be in ' + Object.keys(paramMap).join(','),
         'not_found': username + ' on platform: ' + platform + ' was not found!'
     };
+
 
     if (!platform || !username) {
         return handleError(req, res, {message: errorObject['missing_data']});
@@ -178,35 +186,44 @@ export async function getGamerDetails(req: NextApiRequest & { params: { username
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
 
+    try {
+        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category as string);
 
-    const gamer: Gamer = await getSingleGamerData(username, platform, game_category as string);
-    let queryParams = {...allParams, uno_id: gamer.uno_id}
-    const viewToQuery: ViewQuery = getGamerDetailViewQuery(sqlView, queryParams);
+        if (!gamer) {
+            return handleError(req, res, {message: errorObject['not_found']});
+        }
 
+        const queryParams = {...allParams, uno_id: gamer.uno_id};
 
-    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
+        const viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
 
-    if (!gamer) {
-        return handleError(req, res, {message: errorObject['not_found']});
+        await viewToQuery.executeQuery();
+        const viewData = viewToQuery.data;
+
+        const classDescriptions = await getGamerClassDescriptions();
+
+        await updateGamerUponRequest(gamer);
+
+        const seoMetadata = {
+            title: 'Warzone stats for ' + gamer['username'],
+            keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
+            description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
+        };
+
+        handleResponse(req, res, {
+            gamer,
+            viewData,
+            seoMetadata,
+            classDescriptions
+        });
+
+    } catch (error) {
+        logger.error(error);
+        return handleError(req, res, {message: DEFAULT_ERROR_MESSAGE});
     }
 
-    await viewToQuery.executeQuery();
-    const viewData = viewToQuery.data;
 
-    await updateGamerUponRequest(gamer);
 
-    const seoMetadata = {
-        title: 'Warzone stats for ' + gamer['username'],
-        keywords: ['warzone', 'stats', 'kdr', 'gulag wins'],
-        description: 'KDR: ' + gamer['kdr'] + ' Gulag Win Rate: ' + gamer['gulag_win_rate']
-    };
-
-    handleResponse(req, res, {
-        gamer,
-        viewData,
-        seoMetadata,
-        classDescriptions
-    });
 }
 
 

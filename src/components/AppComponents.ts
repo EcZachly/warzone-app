@@ -24,9 +24,9 @@ import Navbar from './app-components/Navbar';
 import Page from './app-components/Page';
 //T
 
-export {ClassBadgeList}
+export {ClassBadgeList};
 
-export {ClassBadge}
+export {ClassBadge};
 
 
 //D
@@ -36,7 +36,7 @@ export {ClassBadge}
 export {Footer};
 
 //G
-export {GamerAliasList, GamerHeat, GamerPlacementChart}
+export {GamerAliasList, GamerHeat, GamerPlacementChart};
 
 export {GamerCard};
 
@@ -48,7 +48,7 @@ export {GamerLink};
 
 export {GamerPlatformImage};
 
-export {GamerTrendChart}
+export {GamerTrendChart};
 
 export {GamerTimeChart};
 

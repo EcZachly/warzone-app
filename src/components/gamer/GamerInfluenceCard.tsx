@@ -11,24 +11,24 @@ import {StatLabelValue} from '../SmartComponents';
 
 
 export default function GamerInfluenceCard({gamer, relationships}) {
-    let helpingGamer = {
+    const helpingGamer = {
         username: relationships[0].helping_player,
         platform: relationships[0].helping_player_platform,
         aliases: relationships[0].helper_aliases
     } as Gamer;
 
 
-    let gamerLink = (
+    const gamerLink = (
         <GamerLink gamer={gamer}/>
     );
-    let gamerStats = getStatLabelValuesForPerson('gamer');
+    const gamerStats = getStatLabelValuesForPerson('gamer');
 
 
 
-    let helperLink = (
+    const helperLink = (
         <GamerLink gamer={helpingGamer}/>
     );
-    let helperStats = getStatLabelValuesForPerson('helper');
+    const helperStats = getStatLabelValuesForPerson('helper');
 
 
 
@@ -70,7 +70,7 @@ export default function GamerInfluenceCard({gamer, relationships}) {
 
 
     function getStatLabelValuesForPerson(type: 'gamer' | 'helper') {
-        let isGamer = (type === 'gamer');
+        const isGamer = (type === 'gamer');
 
         const numberOfMatchesRelationship = {
             relationship_stat: 'num_matches',
@@ -80,8 +80,8 @@ export default function GamerInfluenceCard({gamer, relationships}) {
         };
 
         return [numberOfMatchesRelationship, ...relationships].map((relationship) => {
-            let statName = GamerService.sanitizeStatKey(relationship['relationship_stat']);
-            let roundingDecimals = 2;
+            const statName = GamerService.sanitizeStatKey(relationship['relationship_stat']);
+            const roundingDecimals = 2;
             let statValue = isGamer ? relationship.stat_with_player : relationship.helper_stat_with_player;
             let compareStatValue = isGamer ? relationship.overall_stat : relationship.helper_overall_stat;
             let suffix = '';

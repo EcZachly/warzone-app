@@ -1,14 +1,21 @@
-import {NextApiRequest, NextApiResponse} from "next";
-import {queryResources} from "../../lib/model/resources";
+import {Request, Response} from 'express';
+import {queryResources} from '../../lib/model/resources';
 
-export async function findResources(req: NextApiRequest, res: NextApiResponse){
+//===---==--=-=--==---===----===---==--=-=--==---===----//
+
+
+
+export async function findResources(req: Request, res: Response) {
     console.log(req.query);
-    let query = req.query || {};
-    let data =  await queryResources(query);
+
+    const query = req.query || {};
+    const data = await queryResources(query);
+
     res.json(data);
 }
 
 
+
 export default {
     findResources
-}
+};

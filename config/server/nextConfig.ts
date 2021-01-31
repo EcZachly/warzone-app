@@ -1,10 +1,17 @@
-const next = require('next');
+import next from 'next';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
+type generateNextConfigProps = {
+    directory: string,
+    dev: boolean,
+    port: any,
+}
 
-export function generateNextConfig({directory, dev, port}) {
+
+//ts-expect-error
+export function generateNextConfig({directory, dev, port}: generateNextConfigProps): any {
     const typescriptLoader = {
         test: /\.ts(x?)$/,
         use: 'ts-loader',

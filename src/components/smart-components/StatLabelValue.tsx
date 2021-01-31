@@ -23,7 +23,7 @@ export default function StatLabelValue(props) {
         roundingDecimals = 2
     } = props;
 
-    let statIsNull = TypeService.isNumeric(statValue) === false;
+    const statIsNull = TypeService.isNumeric(statValue) === false;
 
     let component = (
         <Text>{statIsNull ? '-' : UtilityService.round(statValue, roundingDecimals)}</Text>
@@ -38,7 +38,7 @@ export default function StatLabelValue(props) {
             diffValue = (compareStatValue - statValue) / statValue;
         }
 
-        let percentDiff = UtilityService.numberToPercentage(diffValue, 1);
+        const percentDiff = UtilityService.numberToPercentage(diffValue, 1);
 
         component = (
             <Text>

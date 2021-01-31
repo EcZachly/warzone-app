@@ -25,7 +25,7 @@ export type RawGamer = {
     total_kills?: number,
     avg_kills?: number,
     avg_deaths?: number,
-    gamer_class_object?: object,
+    gamer_class_object?: Record<any, unknown>,
     distance_class?: string,
     movement_class?: string,
     mission_class?: string,
@@ -51,7 +51,7 @@ export type RawGamer = {
     last_30_rolling_average_kadr?: number,
     last_100_rolling_average_kadr?: number,
     last_100_rolling_average_gulag_kdr?: number,
-    classDescriptions?: Array<object>,
+    classDescriptions?: Record<any, unknown>[],
     needs_update?: boolean
 };
 

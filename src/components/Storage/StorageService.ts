@@ -43,13 +43,13 @@ export function get(key: string, options?: { session?: boolean, temp?: boolean }
  * @returns {null|*|string}
  */
 export function save(key: string, value: any, options?: { session?: boolean, temp?: boolean }): any {
-    let storageObj = {
+    const storageObj = {
         value: value,
         expiration: null,
         saved: new Date()
     };
 
-    let storageString = JSON.stringify(storageObj);
+    const storageString = JSON.stringify(storageObj);
 
     if (isTemporary(options)) {
         sessionStorage.setItem(key, storageString);

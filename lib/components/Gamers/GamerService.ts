@@ -1,30 +1,38 @@
-import {GAME_CATEGORIES, VIEWS} from "../../constants";
-import {ViewQuery} from "../../model/view_query";
-import {sanitizeGamer, sanitizeTeammates} from "../../model/gamers";
-import {SquadService} from "../Squads";
-import {restToMassiveQuery} from "../Utils";
+import {GAME_CATEGORIES, VIEWS} from '../../constants';
+import {ViewQuery} from '../../model/view_query';
+import {sanitizeGamer, sanitizeTeammates} from '../../model/gamers';
+import {SquadService} from '../Squads';
+import {restToMassiveQuery} from '../Utils';
 
-export {default} from './../../../src/components/gamer/GamerService'
+export {default} from './../../../src/components/gamer/GamerService';
 export * from './../../../src/components/gamer/GamerService';
-import {Gamer} from "../../../src/components/gamer/GamerTypes";
-import { GamerClassDescription } from "../Classes/ClassDescriptionType";
+
+import {Gamer, GamerPlatform} from '../../../src/components/gamer/GamerTypes';
+import {GamerClassDescription} from '../Classes/ClassDescriptionType';
+import {AnyObject} from '../Types';
+
+//===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export const getGamerClassDescriptions = async (): Promise<GamerClassDescription> => {
-   let query = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}, {})
+export async function getGamerClassDescriptions(): Promise<GamerClassDescription> {
+    const query = getGamerDetailViewQuery(VIEWS.GAMER_CLASS_DESCRIPTIONS, {}, {});
     await query.executeQuery();
-    return query.data as GamerClassDescription
-}
-
-export const getSingleGamerData = async (username, platform, game_category=GAME_CATEGORIES.WARZONE): Promise<Gamer> => {
-    let val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {})
-    await val.executeQuery()
-    return val.data[0] as Gamer
+    return query.data as GamerClassDescription;
 }
 
 
-export const getGamerDetailViewQuery = (view: string, allParams: object = {}, options: object = {}): ViewQuery => {
-    let query = restToMassiveQuery(view, allParams)
+
+export async function getSingleGamerData(username: string, platform: GamerPlatform, game_category = GAME_CATEGORIES.WARZONE): Promise<Gamer> {
+    const val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {});
+    await val.executeQuery();
+    return val.data[0] as Gamer;
+}
+
+
+
+export function getGamerDetailViewQuery(view: string, allParams: AnyObject = {}, options: AnyObject = {}): ViewQuery {
+    const query = restToMassiveQuery(view, allParams);
+
     const queryableViews = {
         [VIEWS.GAMER_INFLUENCE_RELATIONSHIPS]: new ViewQuery(VIEWS.GAMER_INFLUENCE_RELATIONSHIPS, query, options),
         [VIEWS.GAMER_STAT_SUMMARY]: new ViewQuery(VIEWS.GAMER_STAT_SUMMARY, query, options, (data) => data.map(sanitizeGamer)),
@@ -41,6 +49,7 @@ export const getGamerDetailViewQuery = (view: string, allParams: object = {}, op
                 nulls: 'last'
             }]
         })
-    }
-    return queryableViews[view as string]
+    };
+
+    return queryableViews[view as string];
 }

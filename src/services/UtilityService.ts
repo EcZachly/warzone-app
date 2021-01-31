@@ -5,7 +5,7 @@ import {IncomingMessage} from 'http';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
-export function sleep(milliseconds: number) {
+export function sleep(milliseconds: number): void {
     const date = Date.now();
     let currentDate = null;
     do {
@@ -15,7 +15,7 @@ export function sleep(milliseconds: number) {
 
 
 
-export function isValidEmail(email) {
+export function isValidEmail(email: string): boolean {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (TypeService.isString(email)) {
@@ -27,25 +27,25 @@ export function isValidEmail(email) {
 
 
 
-export function numberToPercentage(number, decimals) {
+export function numberToPercentage(number: number, decimals: number): string {
     return round(number * 100, decimals) + '%';
 }
 
 
 
-export function round(number, decimals) {
+export function round(number: number, decimals: number): number {
     return +(Math.round(number + ('e+' + decimals) as any) + 'e-' + decimals);
 }
 
 
 
-export function numberWithCommas(number: number = 0) {
+export function numberWithCommas(number = 0): string {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 
 
-export function getBaseUrlWithProtocol(request: IncomingMessage) {
+export function getBaseUrlWithProtocol(request: IncomingMessage): string {
     const host = request.headers.host;
     const protocol = host.includes('localhost') ? 'http://' : 'https://';
     return protocol + host;
@@ -53,19 +53,13 @@ export function getBaseUrlWithProtocol(request: IncomingMessage) {
 
 
 
-export function camelToProperCase(string?: string) {
+export function camelToProperCase(string?: string): string {
     return (string || '').split('_').map(_.capitalize).join(' ');
 }
 
-/**
- *
- * @param {*} item
- * @param {'undefined' | 'null' | 'object' | 'date' | 'boolean' | 'integer' | 'number' | 'function' | 'string' | 'array'} type
- * @param {*} [defaultValue]
- *
- * @returns {*}
- */
-export function validateItem(item: any, type: string, defaultValue: any) {
+
+
+export function validateItem(item: any, type: string, defaultValue: any): any {
     const typeMap = {
         'undefined': TypeService.isUndefined,
         'null': TypeService.isNull,
@@ -90,22 +84,21 @@ export function validateItem(item: any, type: string, defaultValue: any) {
 }
 
 
-export function copyObject(value) {
+
+export function copyObject(value: any): any {
     return {...{item: value}}['item'];
 }
 
 
-/**
- *
- * @param {Number} length
- * @returns {string}
- */
-export function generateRandomNumberString(length) {
+
+export function generateRandomNumberString(length: number): any {
     if (TypeService.isInteger(length, true) === false) {
         throw new Error('length (Integer) is required');
     }
 
-    return repeatFunction(generateRandomInteger, length).join('');
+    return repeatFunction(() => {
+        return generateRandomInteger(0, 9);
+    }, length).join('');
 }
 
 
@@ -116,7 +109,7 @@ export function generateRandomNumberString(length) {
  * @param {Number} count
  * @returns {Array}
  */
-export function repeatFunction(callback: Function, count) {
+export function repeatFunction(callback: () => any, count: number): any[] {
     if (TypeService.isFunction(callback) === false) {
         throw new Error('callback (Function) is required');
     }
@@ -137,7 +130,7 @@ export function repeatFunction(callback: Function, count) {
 
 
 
-export function generateRandomInteger(min, max) {
+export function generateRandomInteger(min?: number, max?: number): number {
     min = validateItem(min, 'integer', 0);
     max = validateItem(max, 'integer', 9);
 
@@ -146,7 +139,7 @@ export function generateRandomInteger(min, max) {
 
 
 
-export function isJson(item) {
+export function isJson(item: any | string): boolean {
     try {
         item = JSON.parse(item);
     } catch (e) {
@@ -158,17 +151,17 @@ export function isJson(item) {
 
 
 
-export function objectToUrlParameters(params: Record<any, string | number | boolean>) {
+export function objectToUrlParameters(params: Record<any, string | number | boolean>): string {
     // @ts-ignore
     return Object.entries(params).filter(([key, val]) => !!val).map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`).join('&');
 }
 
 
 
-export function sortArrayOfObjectsByKey(items: any[], key: string, descending: boolean=false): any[] {
+export function sortArrayOfObjectsByKey(items: any[], key: string, descending = false): any[] {
     items = validateItem(items, 'array', []);
 
-    return items.sort(function(a, b) {
+    return items.sort(function (a, b) {
         const valueA = _getValueForSorting(_.get(a, key));
         const valueB = _getValueForSorting(_.get(b, key));
 
@@ -185,8 +178,7 @@ export function sortArrayOfObjectsByKey(items: any[], key: string, descending: b
 }
 
 
-
-function _getValueForSorting(value) {
+function _getValueForSorting(value: any): any {
     if (TypeService.isNumeric(value)) {
         return Number(value);
     } else if (TypeService.isString(value)) {
@@ -197,7 +189,6 @@ function _getValueForSorting(value) {
         return value;
     }
 }
-
 
 
 

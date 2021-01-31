@@ -11,10 +11,10 @@ import TypeService from '../../services/TypeService';
 export default function GamerInfluenceList({gamer, teammateRows}) {
     const MIN_MATCHES_TO_SHOW = 5;
 
-    let relationshipMap = {};
+    const relationshipMap = {};
 
     teammateRows.forEach((relationship) => {
-        let key = relationship['helping_player'] + '-' + relationship['helping_player_platform'];
+        const key = relationship['helping_player'] + '-' + relationship['helping_player_platform'];
 
         if (!relationshipMap[key]) {
             relationshipMap[key] = [relationship];

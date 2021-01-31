@@ -1,5 +1,5 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -10,7 +10,7 @@ const path = require('path');
  * @param app
  * @param {Object} [options]
  */
-export function include(server, app, options) {
+export function include(server, app, options): void {
     server.get('/gamers', (req, res) => {
         const actualPage = '/gamers/index';
         const queryParameters = req.params;

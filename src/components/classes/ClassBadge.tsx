@@ -7,17 +7,17 @@ import UtilityService from '../../services/UtilityService';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 type GamerClassBadgeProps = {
-    category: object,
+    category: Record<any, unknown>,
     stat: number,
     statName: string
 }
 
 export default function ClassBadge({category, stat, statName}: GamerClassBadgeProps) {
-    let style = {};
+    const style = {};
 
     let categoryName = '';
 
-    let keys = Object.keys(category);
+    const keys = Object.keys(category);
 
     keys.sort((left, right) => category[left]['percentile'] < category[right]['percentile'] ? -1 : 1);
 
@@ -31,7 +31,7 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
         return <></>;
     }
 
-    let description = category['description'] ? category['description'] : '';
+    const description = category['description'] ? category['description'] : '';
     let badgeRef;
 
     return (
@@ -51,7 +51,7 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
                    innerRef={(ref) => badgeRef = ref}
                    size={'sm'}
                    color={'dark'}
-                   title={description}
+                   title={description as string}
                    style={style}>
                 {UtilityService.camelToProperCase(categoryName)}
             </Badge>

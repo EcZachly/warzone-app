@@ -41,7 +41,7 @@ export type RawGamerMatch = RawMatch & {
 export type RawGamerMatchList = RawGamerMatch[];
 
 
-export type GamerMatch = RawGamerMatch & RawMatch & {};
+export type GamerMatch = RawGamerMatch & RawMatch & Record<any, unknown>;
 
 
 export type GamerMatchList = GamerMatch[];

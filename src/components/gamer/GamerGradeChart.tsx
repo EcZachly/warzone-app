@@ -7,8 +7,8 @@ import {Box, InputRadio, Show} from '../SimpleComponents';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 type GamerCardChartProps = {
-    data?: Object[],
-    rawData?: Object[],
+    data?: Record<any, unknown>[],
+    rawData?: Record<any, unknown>[],
     options?: string[],
     selectedValue: string,
     height: number,

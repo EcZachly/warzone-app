@@ -1,12 +1,13 @@
 import database from './../../database';
 import {DATABASE_SCHEMA} from './../../constants';
+import {AnyObject} from '../Types';
 
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export async function find(table: string, query?: Record<any, unknown>, options?: Record<any, unknown>): Promise<any[]> {
+export async function find(table: string, query?: AnyObject, options?: AnyObject): Promise<any[]> {
     return new Promise(async (resolve, reject) => {
         validateTable(table).then(async (isValid) => {
             const db = await database;
@@ -18,7 +19,7 @@ export async function find(table: string, query?: Record<any, unknown>, options?
 
 
 
-export async function insert(table: string, data: Record<any, unknown>): Promise<any> {
+export async function insert(table: string, data: AnyObject): Promise<any> {
     return new Promise(async (resolve, reject) => {
         validateTable(table).then(async (isValid) => {
             const db = await database;
@@ -38,21 +39,21 @@ export async function insert(table: string, data: Record<any, unknown>): Promise
 
 
 
-export async function update(table: string, query: Record<any, unknown>, data: Record<any, unknown>) {
+export async function update(table: string, query: AnyObject, data: AnyObject): Promise<any> {
     const db = await database;
     return await db[DATABASE_SCHEMA][table].update(query, data);
 }
 
 
 
-export async function destroy(table: string, query: Record<any, unknown>) {
+export async function destroy(table: string, query: AnyObject): Promise<any> {
     const db = await database;
     return await db[DATABASE_SCHEMA][table].destroy(query);
 }
 
 
 
-export async function validateTable(table) {
+export async function validateTable(table: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
         const db = await database;
 

@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
 
 import responseHandler from './../../../routes/responseHandler';
 
@@ -10,7 +10,7 @@ import MatchController from './MatchController';
 
 
 
-export async function queryMatches(req: NextApiRequest, res: NextApiResponse) {
+export async function queryMatches(req: Request, res: Response) {
     const queryParams = req.query;
 
     const limit = req.query.limit || 10;

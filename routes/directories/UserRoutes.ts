@@ -1,4 +1,5 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
+
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -14,29 +15,36 @@ import {AuthService} from '../../lib/components/Auth';
 import {DEFAULT_ERROR_MESSAGE, STATUS_CODE} from '../../src/config/CONSTANTS';
 import {update} from '../../lib/components/Database/DAO';
 import {RawUser, User} from '../../src/components/Users/UserTypes';
+import {AnyObject} from '../../lib/components/Types';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
-export async function queryUsers(req: NextApiRequest, res: NextApiResponse) {
-    let query = {...req.query as object};
-    let users = await UserController.queryUsers(query);
+
+
+
+export async function queryUsers(req: Request, res: Response) {
+    const query = {...req.query as AnyObject};
+    const users = await UserController.queryUsers(query);
     return responseHandler.handleResponse(req, res, users);
 }
 
 
-export async function finishForgotPassword(req: NextApiRequest, res: NextApiResponse) {
-    let {forgot_string, password, email} = req.body.user;
-    let encryptedPassword = await AuthService.encryptPassword(password);
-    let updatedUser = await UserController.updateUser({forgot_string, email}, {
+
+export async function finishForgotPassword(req: Request, res: Response) {
+    const {forgot_string, password, email} = req.body.user;
+    const encryptedPassword = await AuthService.encryptPassword(password);
+    const updatedUser = await UserController.updateUser({forgot_string, email}, {
         password: encryptedPassword,
         forgot_string: undefined
     });
     return responseHandler.handleResponse(req, res, updatedUser);
 }
 
-export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResponse) {
-    let {confirm_string} = req.query;
-    let usersToUpdate = await UserController.queryUsers({confirm_string: confirm_string});
+
+
+export async function finishConfirmAccount(req: Request, res: Response) {
+    const {confirm_string} = req.query;
+    const usersToUpdate = await UserController.queryUsers({confirm_string: confirm_string});
     let status = 'failure';
     if (usersToUpdate.length > 0) {
         await UserController.updateUser({confirm_string}, {confirm_string: null});
@@ -45,25 +53,29 @@ export async function finishConfirmAccount(req: NextApiRequest, res: NextApiResp
     return res.redirect('/user/confirm?status=' + status);
 }
 
-export async function createUser(req: NextApiRequest, res: NextApiResponse) {
 
-    let errorMap = {
+
+export async function createUser(req: Request, res: Response) {
+
+    const errorMap = {
         'missing_data': {message: 'body.user (Object), body.user.email (String), body.user.first_name (String), and body.user.password are required'},
         'invalid_email': {message: 'body.user.email (String) is not a valid email'},
         'invalid_password': {message: 'Password is invalid, please try something else'}
     };
-    let {user} = req.body;
-    let noUserObject = !TypeService.isObject(user);
+    const {user} = req.body;
+    const noUserObject = !TypeService.isObject(user);
     if (noUserObject) {
         return responseHandler.handleError(req, res, errorMap['missing_data'], 400);
     }
 
-    let {email, first_name, password} = user;
-    let hasMissingData = !TypeService.isString(email, true) ||
+    let {email, first_name} = user;
+    const {password} = user;
+
+    const hasMissingData = !TypeService.isString(email, true) ||
         !TypeService.isString(first_name, true) ||
         !TypeService.isString(password, true);
 
-    let invalidEmail = !UtilityService.isValidEmail(email);
+    const invalidEmail = !UtilityService.isValidEmail(email);
 
     if (hasMissingData) {
         return responseHandler.handleError(req, res, errorMap['missing_data'], 400);
@@ -79,14 +91,14 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
     }
 
     try {
-        let encryptedPassword = await AuthService.encryptPassword(password);
+        const encryptedPassword = await AuthService.encryptPassword(password);
         email = UserService.sanitizeEmailForStorage(email);
         first_name = first_name.trim();
-        let createdUser = await UserController.createUser({
+        const createdUser = await UserController.createUser({
             email, first_name,
             password: encryptedPassword
         });
-        let emailSent = await EmailService.sendEmail('confirm_account', user);
+        const emailSent = await EmailService.sendEmail('confirm_account', user);
         return responseHandler.handleResponse(req, res, {
             user: UserService.sanitizeUser(createdUser),
             emailSent: emailSent
@@ -98,20 +110,20 @@ export async function createUser(req: NextApiRequest, res: NextApiResponse) {
 
 
 
-export async function sendForgotPassword(req: NextApiRequest, res: NextApiResponse) {
-    let {email} = req.body;
+export async function sendForgotPassword(req: Request, res: Response) {
+    const {email} = req.body;
 
     if (!UtilityService.isValidEmail(email)) {
         return responseHandler.handleError(req, res, {userMessage: 'invalid email'});
     }
 
-    let users = await UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)});
+    const users = await UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)});
 
     if (users.length === 0) {
         return responseHandler.handleError(req, res, {userMessage: 'invalid email'});
     }
 
-    let user = users[0];
+    const user = users[0];
 
     user.forgot_string = randomstring.generate(7);
 
@@ -127,8 +139,8 @@ export async function sendForgotPassword(req: NextApiRequest, res: NextApiRespon
 
 
 
-export async function login(req: NextApiRequest, res: NextApiResponse) {
-    let errorMap = {
+export async function login(req: Request, res: Response) {
+    const errorMap = {
         'missing_data': {message: 'body.email (String) and body.password (String) are required'},
         'invalid_combination': {message: 'Invalid email/password combination'},
         'account_confirmation_required': {
@@ -136,31 +148,31 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
             userMessage: 'Your email is unverified, we\'ve sent you a new confirmation email. Please check your email and click the link to confirm your account before you login.'
         }
     };
-    let {email, password} = req.body;
+    const {email, password} = req.body;
 
-    let hasMissingData = !TypeService.isString(email, true) || !TypeService.isString(password, true);
+    const hasMissingData = !TypeService.isString(email, true) || !TypeService.isString(password, true);
 
     if (hasMissingData) {
         return responseHandler.handleError(req, res, errorMap['missing_data'], 400);
     }
     try {
-        let users = await UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)}, {}, {sanitize: false});
-        let userIsOkay = users && TypeService.isObject(users[0], true);
+        const users = await UserController.queryUsers({email: UserService.sanitizeEmailForStorage(email)}, {}, {sanitize: false});
+        const userIsOkay = users && TypeService.isObject(users[0], true);
 
         if (!userIsOkay) {
             return responseHandler.handleError(req, res, errorMap['invalid_combination'], 400);
         }
 
-        let user = users[0] as Partial<RawUser>;
+        const user = users[0] as Partial<RawUser>;
 
-        let passwordsMatch = await AuthService.comparePassword(password, user.password);
+        const passwordsMatch = await AuthService.comparePassword(password, user.password);
 
         if (!passwordsMatch) {
             return responseHandler.handleError(req, res, errorMap['invalid_combination'], 400);
         }
 
         if (user.confirm_string) {
-            let lastConfirmEmailSent = _.get(user, 'metadata.last_confirm_account_email_timestamp');
+            const lastConfirmEmailSent = _.get(user, 'metadata.last_confirm_account_email_timestamp');
 
             if (!lastConfirmEmailSent || moment().diff(moment(lastConfirmEmailSent), 'minutes') > 5) {
                 await EmailService.sendEmail('confirm_account', user as User);
@@ -184,9 +196,9 @@ export async function login(req: NextApiRequest, res: NextApiResponse) {
 
 
 
-export function verifyUserToken(req, res) {
-    let {jwt} = req.cookies;
-    let {user_id} = req.body;
+export function verifyUserToken(req: Request, res: Response) {
+    const {jwt} = req.cookies;
+    const {user_id} = req.body;
     if (TypeService.isInteger(user_id)) {
         if (TypeService.isString(jwt)) {
             let decodedToken;
@@ -233,8 +245,10 @@ export function verifyUserToken(req, res) {
 }
 
 
+
 export default {
     createUser,
+    queryUsers,
     finishForgotPassword,
     finishConfirmAccount,
     sendForgotPassword,

@@ -8,7 +8,7 @@ import {Footer, Navbar, Page} from './../../components/AppComponents';
 import {getBaseUrlWithProtocol} from '../../services/UtilityService';
 
 import {SquadCard, SquadService} from './../../components/Squads';
-import {GAME_CATEGORIES} from "../../../lib/constants";
+import {GAME_CATEGORIES} from '../../../lib/constants';
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//

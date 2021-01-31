@@ -1,4 +1,4 @@
-import {GAME_CATEGORIES} from "../constants";
+import {GAME_CATEGORIES} from '../constants';
 
 
 export default class WarzoneMapper{
@@ -13,33 +13,33 @@ export default class WarzoneMapper{
 
     static getMatchTeamType(match){
         let team_type = null;
-        let {mode, team_count} = match;
-        let config = ['solo', 'duo', 'trio', 'quad'];
+        const {mode, team_count} = match;
+        const config = ['solo', 'duo', 'trio', 'quad'];
         config.forEach((val)=>{
             if(mode.includes(val)){
                 team_type = val;
             }
-        })
+        });
 
         if(!team_type){
             if(team_count > 100){
-                team_type = 'solo'
+                team_type = 'solo';
             }
             else if(team_type > 60){
-                team_type = 'duo'
+                team_type = 'duo';
             }
             else if(team_type > 45){
-                team_type = 'trio'
+                team_type = 'trio';
             }
             else if(team_type <= 45 && team_type >= 30){
-                team_type = 'quad'
+                team_type = 'quad';
             }
         }
         return team_type;
     }
 
     static getMatchCategory(match){
-        let config = {
+        const config = {
             [GAME_CATEGORIES.PLUNDER]: ['plnd', 'plun', 'pln', 'bldmny'],
             [GAME_CATEGORIES.JUGGERNAUT_ROYALE]: ['jugg'],
             [GAME_CATEGORIES.WARZONE_RUMBLE]: ['rmbl'],
@@ -51,20 +51,20 @@ export default class WarzoneMapper{
             [GAME_CATEGORIES.TRUCK_WAR]: ['truckwar'],
             [GAME_CATEGORIES.ZOMBIE_ROYALE]: ['zmbroy'],
             [GAME_CATEGORIES.DMZ]: ['dmz']
-        }
+        };
 
         let category = GAME_CATEGORIES.WARZONE;
         let differentCategoryFound = false;
 
         Object.keys(config).forEach((key)=>{
-            let values = config[key];
+            const values = config[key];
             values.forEach((val)=>{
                 if(match.mode.includes(val) && !differentCategoryFound){
                     category = key;
                     differentCategoryFound = true;
                 }
-            })
-        })
+            });
+        });
 
         return category;
     }
@@ -89,10 +89,10 @@ export default class WarzoneMapper{
         return dataObject;
     }
     static mapGamerMatch(match, queryGamer){
-        let {playerStats, player} = match;
-        let missionsByType = player.brMissionStats?.missionStatsByType;
-        let queryUsername = queryGamer.username === '-' ? player.uno : queryGamer.username;
-        let queryPlatform = queryGamer.platform === '-' ? 'uno' : queryGamer.platform;
+        const {playerStats, player} = match;
+        const missionsByType = player.brMissionStats?.missionStatsByType;
+        const queryUsername = queryGamer.username === '-' ? player.uno : queryGamer.username;
+        const queryPlatform = queryGamer.platform === '-' ? 'uno' : queryGamer.platform;
         const dataObject = {
             query_username: queryUsername,
             query_platform: queryPlatform,

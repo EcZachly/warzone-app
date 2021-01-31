@@ -30,7 +30,7 @@ export default function Gamers({
                                    gameCategory
                                }) {
     const [gamerValues, setGamers] = useState({[gameCategory]: gamers});
-    const [feedHasMore, setFeedHasMore] = useState(username.length == 0);
+    const [feedHasMore, setFeedHasMore] = useState(username.length === 0);
     const [searchValue, setSearchValue] = useState(username);
     const [minMatchCount, setMinMatchCount] = useState(MODULE_CONSTANTS.MIN_MATCHES);
     const [sorting, updateSorting] = useState(sort);
@@ -73,7 +73,7 @@ export default function Gamers({
                                placeholder={'Username and aliases'}/>
 
                         <Input type={'radio'}
-                               label={`Only Show Gamers with at least`}
+                               label={'Only Show Gamers with at least'}
                                value={minMatchCount}
                                options={[
                                    {
@@ -147,7 +147,7 @@ export default function Gamers({
 
 
                             <GamerCardList gamers={gamerValues[filterCategory] || []}
-                                           classDescriptions={classDescriptions.filter((d) => d['game_category'] == filterCategory)[0]}/>
+                                           classDescriptions={classDescriptions.filter((d) => d['game_category'] === filterCategory)[0]}/>
 
                         </InfiniteScroll>
                     </SidebarCompanion>
@@ -160,11 +160,11 @@ export default function Gamers({
 
 
     async function searchGamers(inputValue) {
-        if (inputValue.length == 0) {
+        if (inputValue.length === 0) {
             setFeedHasMore(true);
         }
 
-        let query = {
+        const query = {
             game_category: filterCategory
         };
 
@@ -184,8 +184,8 @@ export default function Gamers({
     }
 
 
-    async function fetchMoreGamers(page: number = 0, category = 'Warzone', restart?: boolean) {
-        let searchQueryParams = {
+    async function fetchMoreGamers(page = 0, category = 'Warzone', restart?: boolean) {
+        const searchQueryParams = {
             limit,
             game_category: category,
             offset: limit * page,
@@ -203,7 +203,7 @@ export default function Gamers({
 
         const rawResponse = await fetch(dataUrl);
         const response = await rawResponse.json();
-        let newGamerList = response.gamers;
+        const newGamerList = response.gamers;
 
         if (newGamerList.length === 0) {
             setFeedHasMore(false);
@@ -215,17 +215,17 @@ export default function Gamers({
                 totalGamers = newGamerList;
             }
 
-            let seenGamerTags = {};
+            const seenGamerTags = {};
 
             totalGamers.forEach((gamer) => {
-                let gamerTag = gamer['platform'] + '-' + gamer['username'];
+                const gamerTag = gamer['platform'] + '-' + gamer['username'];
 
                 if (!seenGamerTags[gamerTag]) {
                     filteredGamers.push(gamer);
                     seenGamerTags[gamerTag] = true;
                 }
             });
-            let copyGamers = JSON.parse(JSON.stringify(gamerValues));
+            const copyGamers = JSON.parse(JSON.stringify(gamerValues));
             copyGamers[filterCategory] = filteredGamers;
             setGamers(copyGamers);
             setGameCategory(category);
@@ -238,14 +238,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const query = context.query;
 
     const baseUrl = getBaseUrlWithProtocol(context.req);
-    let username = query.username || '';
+    const username = query.username || '';
 
-    let gameCategory = query['game_category'] || 'Warzone';
+    const gameCategory = query['game_category'] || 'Warzone';
     const sort = query.sort || 'heat_score';
 
     const sortDirection = query.direction || 'desc';
 
-    let searchQueryParams = {
+    const searchQueryParams = {
         sort: undefined,
         direction: undefined,
         'username.ilike': undefined,
@@ -262,7 +262,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         searchQueryParams.direction = sortDirection;
     }
 
-    let url = baseUrl + '/api/gamer?' + UtilityService.objectToUrlParameters(searchQueryParams);
+    const url = baseUrl + '/api/gamer?' + UtilityService.objectToUrlParameters(searchQueryParams);
     const rawGamerList = await fetch(url);
     const gamerJson = await rawGamerList.json();
 

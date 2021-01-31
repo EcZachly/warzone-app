@@ -9,10 +9,10 @@ import UtilityService from '../../services/UtilityService';
 
 
 export default function GamerAliasList(props: { gamer: Gamer }) {
-    let {gamer} = props;
+    const {gamer} = props;
 
-    let aliases = UtilityService.validateItem(gamer.aliases, 'array', []).filter((alias) => alias !== gamer.username);
-    let showAliases = aliases.length > 0;
+    const aliases = UtilityService.validateItem(gamer.aliases, 'array', []).filter((alias) => alias !== gamer.username);
+    const showAliases = aliases.length > 0;
 
     return (
         <Show show={showAliases}>

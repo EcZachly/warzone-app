@@ -22,7 +22,7 @@ export async function querySquads(queryInput: Partial<Squad>, options: { baseUrl
         options.baseUrl = UtilityService.validateItem(options.baseUrl, 'string', '');
 
 
-        let query = UtilityService.validateItem(queryInput, 'object', {});
+        const query = UtilityService.validateItem(queryInput, 'object', {});
 
         if (options.limit) {
             query.limit = options.limit;

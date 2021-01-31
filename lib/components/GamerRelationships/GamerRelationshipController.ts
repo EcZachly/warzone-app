@@ -4,15 +4,16 @@ import {TABLES} from '../../constants';
 
 import {GamerRelationshipList, RawGamerRelationship} from './GamerRelationshipTypes';
 import {MetadataService} from '../../../src/components/Metadata';
+import {AnyObject} from '../Types';
 
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-export async function queryGamerRelationships(query, options): Promise<GamerRelationshipList> {
+export async function queryGamerRelationships(query: Partial<RawGamerRelationship>, options: AnyObject): Promise<GamerRelationshipList> {
     return DAO.find(TABLES.GAMER_RELATIONSHIPS, query, options);
 }
 
-export async function removeGamerRelationship(query): Promise<void> {
+export async function removeGamerRelationship(query: Partial<RawGamerRelationship>): Promise<void> {
     return DAO.destroy(TABLES.GAMER_RELATIONSHIPS, query);
 }
 

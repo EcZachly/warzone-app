@@ -17,7 +17,7 @@ type GamerSearchInputProps = {
     size?: 'xl' | 'lg' | 'md' | 'sm',
     baseUrl?: string,
     focus?: boolean,
-    gameCategory?: String,
+    gameCategory?: string,
     mode?: null | 'condensed',
     onGamerClick?: (gamer: Gamer) => void
     onResultChange?: (gamers: GamerList) => void
@@ -58,7 +58,7 @@ export default function GamerSearchInput(props: GamerSearchInputProps) {
 
     const debouncedSearchGamers = useRef(_.debounce((input) => {
         setLoading(true);
-        return searchGamers(input)
+        return searchGamers(input);
     }, 500)).current;
 
 

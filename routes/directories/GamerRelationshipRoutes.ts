@@ -1,4 +1,4 @@
-import {NextApiRequest, NextApiResponse} from 'next';
+import {Request, Response} from 'express';
 
 import responseHandler from '../responseHandler';
 
@@ -21,10 +21,11 @@ import {RawGamer} from '../../src/components/gamer/GamerTypes';
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-export async function queryGamerRelationships(req: NextApiRequest, res: NextApiResponse) {
+
+export async function queryGamerRelationships(req: Request, res: Response) {
     const queryParams = req.query;
 
-    let options = {
+    const options = {
         order: undefined
     };
 
@@ -37,7 +38,7 @@ export async function queryGamerRelationships(req: NextApiRequest, res: NextApiR
     }
 
     try {
-        let gamerRelationships = await GamerRelationshipController.queryGamerRelationships(queryParams, options);
+        const gamerRelationships = await GamerRelationshipController.queryGamerRelationships(queryParams, options);
         if (gamerRelationships.length > 0) {
             responseHandler.handleResponse(req, res, gamerRelationships);
         } else {
@@ -50,9 +51,10 @@ export async function queryGamerRelationships(req: NextApiRequest, res: NextApiR
 }
 
 
-export async function createGamerRelationship(req: NextApiRequest, res: NextApiResponse) {
+
+export async function createGamerRelationship(req: Request, res: Response) {
     const gamerRelationship = req.body.gamerRelationship;
-    let errorMap = {
+    const errorMap = {
         'missing_data': {
             message: `body.gamerRelationship.user_id (integer) is required,
                       body.gamerRelationship.username (string) is required, 
@@ -77,7 +79,7 @@ export async function createGamerRelationship(req: NextApiRequest, res: NextApiR
     }
 
     try {
-        let newGamerRelationship = await GamerRelationshipController.createGamerRelationship(gamerRelationship);
+        const newGamerRelationship = await GamerRelationshipController.createGamerRelationship(gamerRelationship);
         if (newGamerRelationship) {
             return responseHandler.handleResponse(req, res, newGamerRelationship);
         } else {
@@ -90,10 +92,10 @@ export async function createGamerRelationship(req: NextApiRequest, res: NextApiR
 
 
 
-export async function removeGamerRelationship(req: NextApiRequest, res: NextApiResponse) {
+export async function removeGamerRelationship(req: Request, res: Response) {
     const gamerRelationship = req.body.gamerRelationship;
 
-    let missingData = [
+    const missingData = [
         !TypeService.isInteger(gamerRelationship.user_id) && 'body.gamerRelationship.user_id (integer) is required',
         !TypeService.isString(gamerRelationship.username, true) && 'body.gamerRelationship.username (string) is required and cannot be empty',
         !TypeService.isString(gamerRelationship.platform, true) && 'body.gamerRelationship.platform (string) is required and cannot be empty'
@@ -112,7 +114,9 @@ export async function removeGamerRelationship(req: NextApiRequest, res: NextApiR
 }
 
 
+
 export default {
     queryGamerRelationships,
-    createGamerRelationship
+    createGamerRelationship,
+    removeGamerRelationship
 };

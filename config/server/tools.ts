@@ -1,16 +1,9 @@
-const logger = require('tracer').colorConsole();
-
-const express = require('express');
-const cookieParser = require('cookie-parser');
+import express from 'express';
+import cookieParser from 'cookie-parser';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-/**
- *
- * @param server
- * @param {Object} [options]
- */
-export function configure(server, options) {
+export function configure(server: express.Application): void {
     server.use(cookieParser());
 }
 
@@ -18,4 +11,4 @@ export function configure(server, options) {
 
 export default {
     configure
-}
+};

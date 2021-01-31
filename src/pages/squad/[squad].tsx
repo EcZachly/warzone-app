@@ -19,7 +19,7 @@ import HtmlService from '../../services/HtmlService';
 
 export default function SquadDetail({squadData, errorMessage, view, baseUrl}) {
     console.log(errorMessage);
-    let containerRef = React.useRef<HTMLDivElement>();
+    const containerRef = React.useRef<HTMLDivElement>();
 
     const {squads, viewData, classDescriptions} = squadData;
     const squad = squads[0];
@@ -29,8 +29,8 @@ export default function SquadDetail({squadData, errorMessage, view, baseUrl}) {
         errorMessage = 'No squad was found';
     }
 
-    let squadGamers = squad.gamers.map((gamerUsernameID) => {
-        let [platform, username] = gamerUsernameID.split('-');
+    const squadGamers = squad.gamers.map((gamerUsernameID) => {
+        const [platform, username] = gamerUsernameID.split('-');
         return {platform, username};
     });
     const pageTitle = (errorMessage) ? 'error' : 'Stats for Squad: ' + squadGamers.map(({username}) => username).join(', ');

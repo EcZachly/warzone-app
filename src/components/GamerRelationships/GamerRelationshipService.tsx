@@ -75,7 +75,7 @@ export async function queryGamerRelationships(query: Record<any, unknown>, optio
     return new Promise((resolve, reject) => {
         options = UtilityService.validateItem(options, 'object', {});
 
-        let storedRelationships = getGamerRelationshipsFromStorage();
+        const storedRelationships = getGamerRelationshipsFromStorage();
 
         if (options.refresh !== true && TypeService.isArray(storedRelationships, true)) {
             resolve(storedRelationships);
@@ -86,7 +86,7 @@ export async function queryGamerRelationships(query: Record<any, unknown>, optio
                 query
             }).then((response) => {
                 if ([200, 204].includes(response.status)) {
-                    let gamerRelationships = UtilityService.validateItem(response.data, 'array', []).map(sanitizeGamerRelationship);
+                    const gamerRelationships = UtilityService.validateItem(response.data, 'array', []).map(sanitizeGamerRelationship);
                     StorageService.save(USER_GAMER_RELATIONSHIPS_STORAGE_KEY, gamerRelationships, {session: true});
                     resolve(gamerRelationships);
                 } else {

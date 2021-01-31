@@ -12,7 +12,7 @@ type GamerCardListProps = {
     gamers?: GamerList,
     onGamerClick?: (gamer) => void,
     mode?: null | 'condensed',
-    classDescriptions?: object
+    classDescriptions?: Record<any, unknown>
 };
 
 

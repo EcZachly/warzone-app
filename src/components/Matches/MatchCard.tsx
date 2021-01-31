@@ -39,15 +39,15 @@ export default function MatchCard({match}: MatchCardProps) {
     const firstGamer = gamers[0];
 
     const startTimestamp = moment(match.start_timestamp);
-    let startTimestampPretty = startTimestamp.format('LLL');
+    const startTimestampPretty = startTimestamp.format('LLL');
 
-    let endTimestamp = moment(match.end_timestamp);
-    let endTimestampPretty = endTimestamp.format('LT');
+    const endTimestamp = moment(match.end_timestamp);
+    const endTimestampPretty = endTimestamp.format('LT');
 
     const gameDurationPretty = calculatePrettyDuration(startTimestamp, endTimestamp);
     const timeDifferencePretty = calculatePrettyDuration(endTimestamp, moment());
 
-    let placementPercentage = 'Top ' + UtilityService.numberToPercentage(firstGamer.team_placement / match.team_count, 0);
+    const placementPercentage = 'Top ' + UtilityService.numberToPercentage(firstGamer.team_placement / match.team_count, 0);
 
     return (
         <Card className={'match-card'} style={{marginBottom: '10px'}}>

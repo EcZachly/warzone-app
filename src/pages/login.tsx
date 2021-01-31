@@ -22,13 +22,13 @@ import CONSTANTS from './../config/CONSTANTS';
 import {UserService} from './../components/Users';
 import UtilityService from '../services/UtilityService';
 import TypeService from '../services/TypeService';
-import PageLink from "../components/simple-components/Link";
-import {BASE_TITLE} from "../../lib/constants";
+import PageLink from '../components/simple-components/Link';
+import {BASE_TITLE} from '../../lib/constants';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
-let LoginPage = ({baseUrl}) => {
+const LoginPage = ({baseUrl}) => {
     const MAX_LENGTH = 130;
     const MIN_PASSWORD_LENGTH = 8;
 
@@ -73,22 +73,22 @@ let LoginPage = ({baseUrl}) => {
         }
     };
 
-    let [inputs, updateInputs] = useState({
+    const [inputs, updateInputs] = useState({
         email: '',
         password: ''
     });
 
-    let [errors, updateErrors] = useState({
+    const [errors, updateErrors] = useState({
         email: '',
         password: ''
     });
 
-    let [isDisabled, setDisabled] = useState(false);
-    let [formMessage, setFormErrorMessage] = useState({
+    const [isDisabled, setDisabled] = useState(false);
+    const [formMessage, setFormErrorMessage] = useState({
         type: 'error',
         message: ''
     });
-    let router = useRouter();
+    const router = useRouter();
 
     return (
         <Page title={`${BASE_TITLE}: Login`}>
@@ -143,7 +143,7 @@ let LoginPage = ({baseUrl}) => {
                                 </Button>
                             </Box>
 
-                            <a href={"/forgot"}>Forgot your password?</a>
+                            <a href={'/forgot'}>Forgot your password?</a>
                         </CardFooter>
                     </Card>
 
@@ -173,7 +173,7 @@ let LoginPage = ({baseUrl}) => {
         setFormErrorMessage({type: 'error', message: ''});
 
         if (formIsValid()) {
-            let loginDetails = getDatabaseObject();
+            const loginDetails = getDatabaseObject();
 
             UserService.login(loginDetails).then((user) => {
                 setFormErrorMessage({
@@ -231,14 +231,14 @@ let LoginPage = ({baseUrl}) => {
 
 
     function getInputErrors() {
-        let inputKeys = Object.keys(inputs);
-        let errorMessages = {} as any;
+        const inputKeys = Object.keys(inputs);
+        const errorMessages = {} as any;
 
         inputKeys.forEach((key) => {
-            let value = inputs[key];
+            const value = inputs[key];
 
             if (FORM_INPUT_CONFIG[key]) {
-                let errorMessage = FORM_INPUT_CONFIG[key].validate(value);
+                const errorMessage = FORM_INPUT_CONFIG[key].validate(value);
 
                 if (errorMessage) {
                     errorMessages[key] = errorMessage;

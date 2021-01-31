@@ -1,34 +1,34 @@
-import {GetServerSideProps} from "next";
-import {getBaseUrlWithProtocol} from "../../services/UtilityService";
-import {Navbar, Page} from "../../components/AppComponents";
-import React, {useState} from "react";
-import {Input} from "../../components/SmartComponents";
-import {Alert, Box, Button, CardHeader, Container} from "../../components/SimpleComponents";
-import HttpService from "../../services/HttpService";
-import UserService from "../../components/Users/UserService";
-import { useRouter } from 'next/router'
-import {BASE_TITLE} from "../../../lib/constants";
+import {GetServerSideProps} from 'next';
+import {getBaseUrlWithProtocol} from '../../services/UtilityService';
+import {Navbar, Page} from '../../components/AppComponents';
+import React, {useState} from 'react';
+import {Input} from '../../components/SmartComponents';
+import {Alert, Box, Button, CardHeader, Container} from '../../components/SimpleComponents';
+import HttpService from '../../services/HttpService';
+import UserService from '../../components/Users/UserService';
+import { useRouter } from 'next/router';
+import {BASE_TITLE} from '../../../lib/constants';
 
 export default function confirmUserAccount({user, error}) {
     const router = useRouter();
-    let [password, setPassword] = useState("");
-    let [confirmPassword, setConfirmPassword] = useState("");
-    let [formMessage, setFormMessage] = useState({type: 'error', message: ''});
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [formMessage, setFormMessage] = useState({type: 'error', message: ''});
 
     //TODO ADD FORGOT PASSWORD update push
     async function sendResetRequest(){
         if(password === confirmPassword && password.length >= 8){
-            let copyUser = JSON.parse(JSON.stringify(user));
+            const copyUser = JSON.parse(JSON.stringify(user));
             copyUser.password = password;
-            let updated =  await UserService.finishForgotPassword(copyUser);
+            const updated =  await UserService.finishForgotPassword(copyUser);
             router.push('/login');
         }
         else{
             if(password !== confirmPassword){
-                setFormMessage({type: 'error', message: 'passwords do not match'})
+                setFormMessage({type: 'error', message: 'passwords do not match'});
             }
             else if(password.length < 8){
-                setFormMessage({type: 'error', message: 'password needs to be at least 8 characters'})
+                setFormMessage({type: 'error', message: 'password needs to be at least 8 characters'});
             }
         }
     }
@@ -67,10 +67,10 @@ export default function confirmUserAccount({user, error}) {
             </Box>
 
         </div>
-    )
+    );
 
     if(error){
-        content = <h1>Invalid page!</h1>
+        content = <h1>Invalid page!</h1>;
     }
     return <Page title={`${BASE_TITLE}: Confirm Forgot Password`} redirectIfLoggedIn={true}>
         <Navbar/>
@@ -83,7 +83,7 @@ export default function confirmUserAccount({user, error}) {
 
         </Container>
 
-    </Page>
+    </Page>;
 }
 
 
@@ -91,7 +91,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {forgot_string} = context.query;
     const baseUrl = getBaseUrlWithProtocol(context.req);
     const userConfirmed = await fetch(`${baseUrl}/api/users?forgot_string=${forgot_string}`);
-    let allData = (await userConfirmed.json()) as Array<object>;
+
+    const allData = (await userConfirmed.json()) as Record<any, unknown>[];
+
     if (allData.length) {
         return {
             props: {
@@ -106,6 +108,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
                 user: {},
                 error: {message: 'invalid page'}
             }
-        }
+        };
     }
 };

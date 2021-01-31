@@ -1,4 +1,8 @@
-type ClassDescription = { category: string, description: string, percentiles: object }
+type ClassDescription = {
+    category: string,
+    description: string,
+    percentiles: Record<any, unknown>
+};
 
 export type GamerClassDescription = {
     team_survival_cutoffs: ClassDescription,
@@ -11,4 +15,4 @@ export type GamerClassDescription = {
     damage_taken_cutoffs: ClassDescription,
     headshots_cutoffs: ClassDescription,
     win_percentage_cutoffs: ClassDescription
-}
+};

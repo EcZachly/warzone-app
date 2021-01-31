@@ -75,7 +75,7 @@ export {ProgressBar};
 //R
 export {Sidebar};
 
-export {StatLabelValue}
+export {StatLabelValue};
 
 export {SidebarCompanion};
 

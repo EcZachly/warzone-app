@@ -124,7 +124,7 @@ const CONFIG = {
 
 export default function GamerDetail({gamerData, view, gameCategory, baseUrl, error}) {
 
-    let containerRef = React.useRef<HTMLDivElement>();
+    const containerRef = React.useRef<HTMLDivElement>();
     if (error) {
         return <div>{error}</div>;
     }
@@ -132,7 +132,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
 
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key) => {
         const allowableUnoKeys = ['squads', 'trends', 'recent_matches'];
-        if (gamer.platform == 'uno') {
+        if (gamer.platform === 'uno') {
             return allowableUnoKeys.includes(key);
         } else {
             return true;
@@ -156,8 +156,8 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         width: 512
     });
 
-    let overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
-    let gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
+    const overallWinRate = (TypeService.isNumeric(gamer.win_percentage)) ? gamer.win_percentage.toFixed(2) + '%' : '-';
+    const gamesPlayed = (Number(gamer.total_kills) / Number(gamer.avg_kills)).toFixed(0);
     const [_componentDidUpdate, setComponentDidUpdate] = useState(false);
 
 
@@ -205,7 +205,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         let username = '';
         if (gamer) {
             username = gamer.username;
-            if (gamer.platform == 'uno') {
+            if (gamer.platform === 'uno') {
                 username = gamer.aliases[0] + '#' + gamer.username.substring(0, 6);
             }
         }
@@ -349,7 +349,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
     let defaultView = 'teammates';
 
-    if (platform == 'uno') {
+    if (platform === 'uno') {
         defaultView = 'recent_matches';
     }
 
@@ -360,7 +360,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         selectedView as string,
         queryCategory as string, baseUrl);
 
-    let props = {
+    const props = {
         gamerData: rawGamerList,
         gameCategory: queryCategory,
         view: selectedView,

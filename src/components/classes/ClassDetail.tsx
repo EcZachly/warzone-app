@@ -25,13 +25,13 @@ export default function ClassDetail({category, style, statName, width, height, s
         gamerStatDisplayValue = gamerStatDisplayValue.toString() + '%';
     }
 
-    let description = category['description'] || category['category'] || '';
-    let statDisplayName = statName.split('_').map(_.capitalize).join(' ');
+    const description = category['description'] || category['category'] || '';
+    const statDisplayName = statName.split('_').map(_.capitalize).join(' ');
 
-    let displayPercentiles = keys.map((val) => {
-        let displayName = val.split('_').map(_.capitalize).join(' ');
-        let percentile = category[val]['percentile'];
-        let percentileVal = category[val]['value'];
+    const displayPercentiles = keys.map((val) => {
+        const displayName = val.split('_').map(_.capitalize).join(' ');
+        const percentile = category[val]['percentile'];
+        const percentileVal = category[val]['value'];
 
         let displayValue = percentileVal.toFixed(2);
         let perMessage = ' per game';
@@ -94,7 +94,7 @@ export default function ClassDetail({category, style, statName, width, height, s
 }
 
 type GamerClassDetailProps = {
-    category?: object,
+    category?: Record<any, unknown>,
     stat?: number,
     style?: React.CSSProperties,
     badgeRef?: React.LegacyRef<HTMLDivElement>,

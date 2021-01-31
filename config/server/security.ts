@@ -1,22 +1,18 @@
 import tracer from 'tracer';
 const logger = tracer.colorConsole();
 
-const express = require('express');
-const path = require('path');
-const useragent = require('express-useragent');
-const requestIp = require('request-ip');
-const jwt = require('jsonwebtoken');
+import {Application} from 'express';
+import useragent from 'express-useragent';
+import requestIp from 'request-ip';
+import jwt from 'jsonwebtoken';
 
 import CONSTANTS from './../CONSTANTS';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
-/**
- *
- * @param server
- * @param {Object} [options]
- */
-export function configure(server, options) {
+
+
+export function configure(server: Application): void {
     server.use(useragent.express());
     server.use(requestIp.mw());
     server.all('/api/v*/*', validateSecureRequest);
@@ -24,7 +20,7 @@ export function configure(server, options) {
 
 
 
-function validateSecureRequest(req, res, next) {
+function validateSecureRequest(req, res, next): void {
     //we could also create a blacklist of invalidated tokens that would prevent someone from using an old token
 
 
@@ -44,8 +40,8 @@ function validateSecureRequest(req, res, next) {
 
     //if token is valid, next()
 
-    let cookies = req.cookies;
-    let token = cookies.jwt;
+    const cookies = req.cookies;
+    const token = cookies.jwt;
     let decodedToken = null;
 
     try {

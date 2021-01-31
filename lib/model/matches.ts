@@ -24,8 +24,9 @@ import UtilityService from './../../src/services/UtilityService';
 export function writeGamerMatchesToDatabase(matches, gamer, writeOptions = {}) {
     const gamerMatches = matches.map((match) => WarzoneMapper.mapGamerMatch(match, gamer)).filter((match) => match.match_id && match.username);
 
-    return insertDatabaseValues(gamerMatches, TABLES.GAMER_MATCHES, writeOptions)
+    return insertDatabaseValues(gamerMatches, TABLES.GAMER_MATCHES, writeOptions);
 }
+
 
 
 /**
@@ -37,6 +38,7 @@ export function writeMatchesToDatabase(matches, writeOptions = {}) {
     const mappedMatches = matches.map(WarzoneMapper.mapMatch);
     return insertDatabaseValues(mappedMatches, TABLES.MATCHES, writeOptions);
 }
+
 
 
 /**
@@ -54,6 +56,8 @@ export async function getMinMaxMatchTimestamps(gamer) {
     return gamers[0] || {};
 }
 
+
+
 /**
  * It queries the Call Of Duty Api for each time frame in the queryTimeframes
  * @param queryTimeframes
@@ -68,7 +72,7 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
     console.log(gamerID + ': Getting match details');
     console.log(gamerID + ': # of match details API calls needed: ' + queryTimeframes.length);
 
-    const matches = await Bluebird.mapSeries(queryTimeframes, async (item, index) => {
+    const matches = await Bluebird.mapSeries(queryTimeframes, async (item: { start: any, end: any }, index) => {
         const output = await api.MWcombatwzdate(gamer.username, item.start, item.end, gamer.platform);
         const matches = UtilityService.validateItem(output.matches, 'array', []);
 
@@ -84,13 +88,13 @@ export async function getMatchDetailsFromAPI(queryTimeframes, gamer, api, sleepT
     return UtilityService.validateItem(matches, 'array', []).flatMap((matchArr) => matchArr);
 }
 
-export async function getFullMatchDetailsFromAPI(match_id){
-    let callApi =  await ApiWrapper.getInstance();
-   let data = await callApi.MWFullMatchInfowz(match_id);
-   return data.allPlayers
+
+
+export async function getFullMatchDetailsFromAPI(match_id) {
+    const callApi = await ApiWrapper.getInstance();
+    const data = await callApi.MWFullMatchInfowz(match_id);
+    return data.allPlayers;
 }
-
-
 
 
 
@@ -100,12 +104,14 @@ export async function queryMatches(query, options = {}) {
 }
 
 
-export async function refreshMatchAnalytics(){
+
+export async function refreshMatchAnalytics() {
     const viewsToRefresh = [
         VIEWS.GAMER_STAT_SUMMARY
     ].map((view) => view + '_materialized');
-    return Bluebird.all(viewsToRefresh.map((view)=> refreshMaterializedView(view)))
+    return Bluebird.all(viewsToRefresh.map((view) => refreshMaterializedView(view)));
 }
+
 
 
 export async function initializeMatches(gamer) {
@@ -116,3 +122,16 @@ export async function initializeMatches(gamer) {
     await writeGamerMatchesToDatabase(matches, gamer);
     await refreshMatchAnalytics();
 }
+
+
+
+export default {
+    writeGamerMatchesToDatabase,
+    writeMatchesToDatabase,
+    getMinMaxMatchTimestamps,
+    getMatchDetailsFromAPI,
+    getFullMatchDetailsFromAPI,
+    queryMatches,
+    refreshMatchAnalytics,
+    initializeMatches
+};
