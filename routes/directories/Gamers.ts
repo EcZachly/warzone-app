@@ -9,7 +9,6 @@ import {getQueryParamToSQLMap} from '../../lib/components/Utils';
 import {initializeMatches} from '../../lib/model/matches';
 
 import {handleError, handleResponse} from '../responseHandler';
-import DefaultMiddleware from '../defaultMiddleware';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
 import {GAME_CATEGORIES, VIEWS} from '../../lib/constants';
@@ -157,9 +156,12 @@ async function updateGamerUponRequest(gamer: Gamer): Promise<Gamer> {
 }
 
 
-export async function getGamerDetails(req: Request & { params: { username: string, platform: string } }, res: Response) {
+export async function getGamerDetails(req: Request, res: Response) {
     logger.trace('getGamerDetails');
 
+
+    console.log(req.params);
+    console.log(req.query);
     const {view, game_category} = req.query;
     delete req.query.view;
 
@@ -230,5 +232,5 @@ export async function getGamerDetails(req: Request & { params: { username: strin
 export default {
     createGamer,
     findGamers,
-    getGamerDetails: DefaultMiddleware(getGamerDetails)
+    getGamerDetails
 };

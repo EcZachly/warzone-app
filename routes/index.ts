@@ -2,6 +2,7 @@ import tracer from 'tracer';
 const logger = tracer.colorConsole();
 
 import express from 'express';
+import DefaultMiddleware from './defaultMiddleware';
 
 import Gamers from './directories/Gamers';
 import Squads from './directories/Squads';
@@ -27,7 +28,7 @@ export function include(server) {
 
     router.post('/api/gamer', Gamers.createGamer);
     router.get('/api/gamer', Gamers.findGamers);
-    router.get('/api/gamer/:platform/:username', Gamers.getGamerDetails);
+    router.get('/api/gamer/:platform/:username', DefaultMiddleware, Gamers.getGamerDetails);
 
     router.get('/api/squad', Squads.findSquads);
 
