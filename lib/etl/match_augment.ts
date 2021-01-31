@@ -13,7 +13,7 @@ async function refreshData(query = {}) {
     const matches = await queryView(VIEWS.MATCHES_TO_AUGMENT, {});
     console.log('found ' + matches.length + ' matches to augment!');
     await Bluebird.map(matches, (match) => {
-        const {match_id} = match;
+        const match_id = match['match_id'];
         console.log('augmenting match ' + match_id);
 
         const writeOptions = {

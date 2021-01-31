@@ -16,7 +16,7 @@ export async function queryDatabase(table: string, query: AnyObject, options = {
 
 
 
-export async function executeRawQuery(query: AnyObject): Promise<DatabaseResponse> {
+export async function executeRawQuery(query: string): Promise<DatabaseResponse> {
     const db = await database;
 
     try {
