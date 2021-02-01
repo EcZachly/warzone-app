@@ -116,7 +116,7 @@ export default function GamerTypeSummaryTable(props: GamerTypeSummaryTableProps)
         <Box>
 
             <Box>
-                <Table striped>
+                <Table striped responsive>
                     <TableHead>
                         <TableRow>
                             <TableHeader/>
