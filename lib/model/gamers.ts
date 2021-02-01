@@ -48,9 +48,25 @@ export function sanitizeGamer(gamer) {
     gamer.heat_score = (gamer.last_10_rolling_average_kdr / gamer.last_100_rolling_average_kdr - 1) * 100;
 
     gamer.pretty_last_100_gulag_win_rate = UtilityService.numberToPercentage(gamer.last_100_rolling_average_gulag_kdr / (gamer.last_100_rolling_average_gulag_kdr + 1), 2);
-    // gamer.pretty_last_100_gulag_win_rate = UtilityService.numberToPercentage(gamer.last_100_rolling_average_gulag_kdr / (gamer.last_100_rolling_average_gulag_kdr + 1), 1);
+
     gamer.last_100_kadr_kdr_difference = gamer.last_100_rolling_average_kadr - gamer.last_100_rolling_average_kdr;
     gamer.last_100_kadr_kdr_difference_percent = UtilityService.numberToPercentage(gamer.last_100_kadr_kdr_difference / gamer.last_100_rolling_average_kdr, 1);
+
+    gamer.solo_win_rate = gamer.solo_match_count > 0 ? gamer.solo_wins / gamer.solo_match_count : 0;
+    gamer.duo_win_rate = gamer.duo_match_count > 0 ? gamer.duo_wins / gamer.duo_match_count : 0;
+    gamer.trio_win_rate = gamer.trio_match_count > 0 ? gamer.trio_wins / gamer.trio_match_count : 0;
+    gamer.quad_win_rate = gamer.quad_match_count > 0 ? gamer.quad_wins / gamer.quad_match_count : 0;
+
+    gamer.overall_match_count = Number(gamer.solo_match_count || 0) + Number(gamer.duo_match_count || 0) + Number(gamer.trio_match_count || 0) + Number(gamer.quad_match_count || 0);
+    gamer.overall_wins = Number(gamer.solo_wins || 0) + Number(gamer.duo_wins || 0) + Number(gamer.trio_wins || 0) + Number(gamer.quad_wins || 0);
+
+    gamer.solo_top_10_percent_match_count = Math.round(gamer.solo_match_count * gamer.solo_top_10_percent_rate);
+    gamer.duo_top_10_percent_match_count = Math.round(gamer.duo_match_count * gamer.duo_top_10_percent_rate);
+    gamer.trio_top_10_percent_match_count = Math.round(gamer.trio_match_count * gamer.trio_top_10_percent_rate);
+    gamer.quad_top_10_percent_match_count = Math.round(gamer.quad_match_count * gamer.quad_top_10_percent_rate);
+
+    gamer.overall_top_10_percent_match_count = Number(gamer.solo_top_10_percent_match_count || 0) + Number(gamer.duo_top_10_percent_match_count || 0) + Number(gamer.trio_top_10_percent_match_count || 0) + Number(gamer.quad_top_10_percent_match_count || 0);
+    gamer.overall_top_10_percent_rate = gamer.overall_top_10_percent_match_count / gamer.overall_match_count;
 
     return gamer;
 }

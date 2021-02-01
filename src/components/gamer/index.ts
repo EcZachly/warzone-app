@@ -11,6 +11,7 @@ import GamerSearchInput from './GamerSearchInput';
 import GamerService from './GamerService';
 import GamerTimeChart from './GamerTimeChart';
 import GamerAdd from './GamerAdd';
+import GamerTypeSummaryTable from './GamerTypeSummaryTable';
 
 export {GamerCard};
 
@@ -42,6 +43,9 @@ export {GamerPlatformImage};
 export {GamerSearchInput};
 
 
+export {GamerTypeSummaryTable};
+
+
 export {GamerService};
 
 
@@ -62,6 +66,7 @@ export default {
     GamerLinkList,
     GamerPlatformImage,
     GamerSearchInput,
+    GamerTypeSummaryTable,
     GamerService,
     GamerTimeChart,
     GamerAdd

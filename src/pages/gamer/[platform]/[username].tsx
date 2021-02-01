@@ -4,9 +4,18 @@ import {
     Box,
     Button,
     Paragraph,
+    CardHeader,
+    CardBody,
     Container,
     Header,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableHeader,
+    TableData,
     LineBreak,
+    Card,
     Main,
     Small
 } from './../../../components/SimpleComponents';
@@ -26,6 +35,8 @@ import {
     Page
 } from './../../../components/AppComponents';
 
+import {GamerTypeSummaryTable} from './../../../components/gamer';
+
 import UtilityService, {getBaseUrlWithProtocol} from '../../../services/UtilityService';
 import HtmlService from '../../../services/HtmlService';
 import GamerMatchCardList from '../../../components/gamer_match/GamerMatchCardList';
@@ -37,57 +48,7 @@ import {GamerService} from '../../../components/gamer';
 
 const CONFIG = {
     VIEW_NAME_CONFIG: {
-        // overview: (gamer, chartState) => {
-        //     console.log(gamer);
-        //
-        //     return (
-        //         <Box>
-        //             <Header size={'md'}>Overall</Header>
-        //
-        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_placement, 1)}/>
-        //
-        //
-        //             <Header size={'md'}>Solos</Header>
-        //
-        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_solo_placement, 1)}/>
-        //
-        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.solo_win_rate, 1)}/>
-        //
-        //             <Header size={'md'}>Duos</Header>
-        //
-        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_duo_placement, 1)}/>
-        //
-        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.duo_win_rate, 1)}/>
-        //
-        //
-        //             <Header size={'md'}>Trios</Header>
-        //
-        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_trio_placement, 1)}/>
-        //
-        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.trio_win_rate, 1)}/>
-        //
-        //
-        //             <Header size={'md'}>Quads</Header>
-        //
-        //             <LabelValue label={'Average Placement'} value={UtilityService.round(gamer.avg_quad_placement, 1)}/>
-        //
-        //             <LabelValue label={'Win Rate'} value={UtilityService.numberToPercentage(gamer.quad_win_rate, 1)}/>
-        //
-        //
-        //             <LabelValue label={'Matches'} value={UtilityService.numberToPercentage(gamer.quad_match_count, 1)}/>
-        //
-        //             <LabelValue label={'Wins'} value={UtilityService.numberToPercentage(gamer.quad_wins, 1)}/>
-        //
-        //             <LabelValue label={'Top 10 Rate'} value={UtilityService.numberToPercentage(gamer.quad_top_10_rate, 1)}/>
-        //
-        //             <LabelValue label={'Top 10% Rate'} value={UtilityService.numberToPercentage(gamer.quad_top_10_percent_rate, 1)}/>
-        //
-        //             <LabelValue label={'Last 100 KDR'} value={UtilityService.numberToPercentage(gamer.last_100_quad_rolling_kdr, 1)}/>
-        //
-        //             <LabelValue label={'Max Kills'} value={UtilityService.numberToPercentage(gamer.quad_max_kills, 1)}/>
-        //         </Box>
-        //     );
-        // },
+        overview: (gamer, chartState) => <GamerTypeSummaryTable gamer={gamer}/>,
 
         teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer}
                                                               teammateRows={chartState.viewData}/>,
@@ -347,7 +308,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view, game_category} = context.query;
     const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
     const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
-    let defaultView = 'teammates';
+    let defaultView = 'overview';
 
     if (platform === 'uno') {
         defaultView = 'recent_matches';
