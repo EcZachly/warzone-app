@@ -27,7 +27,7 @@ export default function GamerTypeSummaryTable(props: GamerTypeSummaryTableProps)
         {
             key: 'duo',
             maxTeams: 75,
-            top10Percent: 7,
+            top10Percent: 8,
         },
         {
             key: 'trio',
@@ -37,7 +37,7 @@ export default function GamerTypeSummaryTable(props: GamerTypeSummaryTableProps)
         {
             key: 'quad',
             maxTeams: 37,
-            top10Percent: 3,
+            top10Percent: 4,
         }
     ];
     const valueList = [
