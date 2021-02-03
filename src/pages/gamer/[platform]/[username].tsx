@@ -17,7 +17,7 @@ import {
     LineBreak,
     Card,
     Main,
-    Small
+    Small, Text
 } from './../../../components/SimpleComponents';
 import {LabelValue, Sidebar, SidebarCompanion, StatLabelValue, TabNav} from '../../../components/SmartComponents';
 import {
@@ -238,9 +238,27 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
 
                             <LabelValue label={'Total Games'} value={gamesPlayed}/>
 
-                            <LabelValue label={'Gulag Win Rate'} value={gamer.pretty_gulag_win_rate}/>
+                            <LabelValue label={(<Text>Overall Gulag Win Rate <Small>(KDR)</Small></Text>)}
+                                        value={(
+                                            <Text>
+                                                <Text>
+                                                    {gamer.pretty_gulag_win_rate}
+                                                </Text> <Small>
+                                                ({UtilityService.round(gamer.gulag_kdr, 1)})
+                                            </Small>
+                                            </Text>
+                                        )}/>
 
-                            <LabelValue label={'Gulag KDR'} value={gamer.gulag_kdr}/>
+                            <LabelValue label={(<Text>Last 100 Gulag Win Rate <Small>(KDR)</Small></Text>)}
+                                        value={(
+                                            <Text>
+                                                <Text>
+                                                    {gamer.pretty_last_100_gulag_win_rate}
+                                                </Text> <Small>
+                                                ({UtilityService.round(gamer.last_100_rolling_average_gulag_kdr, 1)})
+                                            </Small>
+                                            </Text>
+                                        )}/>
 
                         </Sidebar>
                         <SidebarCompanion innerRef={containerRef}>

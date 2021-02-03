@@ -51,6 +51,44 @@ export type RawGamer = {
     last_30_rolling_average_kadr?: number,
     last_100_rolling_average_kadr?: number,
     last_100_rolling_average_gulag_kdr?: number,
+
+    last_100_solo_rolling_average_kdr?: number,
+    solo_top_10_percent_match_count?: number,
+    solo_top_10_percent_rate?: number,
+    solo_top_10_rate?: number,
+    solo_wins?: number,
+    solo_win_rate?: number,
+    solo_max_kills?: number,
+    solo_match_count?: number,
+
+    last_100_duo_rolling_average_kdr?: number,
+    duo_top_10_percent_match_count?: number,
+    duo_top_10_percent_rate?: number,
+    duo_top_10_rate?: number,
+    duo_wins?: number,
+    duo_win_rate?: number,
+    duo_max_kills?: number,
+    duo_match_count?: number,
+
+    last_100_trio_rolling_average_kdr?: number,
+    trio_top_10_percent_match_count?: number,
+    trio_top_10_percent_rate?: number,
+    trio_top_10_rate?: number,
+    trio_wins?: number,
+    trio_win_rate?: number,
+    trio_max_kills?: number,
+    trio_match_count?: number,
+
+    last_100_quad_rolling_average_kdr?: number,
+    quad_top_10_percent_match_count?: number,
+    quad_top_10_percent_rate?: number,
+    quad_top_10_rate?: number,
+    quad_wins?: number,
+    quad_win_rate?: number,
+    quad_max_kills?: number,
+    quad_match_count?: number,
+
+
     classDescriptions?: Record<any, unknown>[],
     needs_update?: boolean
 };

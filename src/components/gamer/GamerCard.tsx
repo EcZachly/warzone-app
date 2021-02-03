@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box, Card, Show, CardBody, Image, CardHeader, Small, Text} from '../SimpleComponents';
+import {Box, Card, Show, CardBody, Image, LineBreak, CardHeader, Small, Text} from '../SimpleComponents';
 
 import {LabelValue, Placeholder} from './../SmartComponents';
 
@@ -111,6 +111,22 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
                                                 </Small>
                                             </Text>
                                         )}/>
+
+                            <LabelValue size={'sm'}
+                                        label={'Last 100 Solos KDR'}
+                                        value={`${UtilityService.round(gamer.last_100_solo_rolling_average_kdr, 2)}`}/>
+
+                            <LabelValue size={'sm'}
+                                        label={'Last 100 Duos KDR'}
+                                        value={`${UtilityService.round(gamer.last_100_duo_rolling_average_kdr, 2)}`}/>
+
+                            <LabelValue size={'sm'}
+                                        label={'Last 100 Trios KDR'}
+                                        value={`${UtilityService.round(gamer.last_100_trio_rolling_average_kdr, 2)}`}/>
+
+                            <LabelValue size={'sm'}
+                                        label={'Last 100 Quads KDR'}
+                                        value={`${UtilityService.round(gamer.last_100_quad_rolling_average_kdr, 2)}`}/>
 
                             <LabelValue size={'sm'}
                                         labelTitle={'(Kills + (Assists / 2)) / Deaths'}

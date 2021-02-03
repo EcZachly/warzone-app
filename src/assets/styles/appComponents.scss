@@ -245,6 +245,14 @@ main.main {
 
 }
 
+.gamer-match-card.match-won, .match-card.match-won {
+  box-shadow: 0 0 1px 1px rgba(230, 172, 80, .5);
+}
+
+.gamer-match-card.match-top-10, .match-card.match-top-10 {
+  box-shadow: 0 0 1px 1px darken($theme-blue, 15);
+}
+
 .gamer-match-card .card-body, .match-card .card-body {
   display: flex;
   flex-flow: column;

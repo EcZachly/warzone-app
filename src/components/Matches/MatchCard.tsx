@@ -11,6 +11,7 @@ import {
     Show,
     Small,
     Table,
+    Image,
     TableBody,
     TableData,
     TableHead,
@@ -25,6 +26,9 @@ import {GamerLinkList, GamerService} from './../gamer/index';
 import {Match} from './MatchTypes';
 
 import UtilityService from '../../services/UtilityService';
+
+import {COLORS} from '../../config/CONSTANTS';
+import PlacementIndicator from '../gamer_match/PlacementIndicator';
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
@@ -47,10 +51,13 @@ export default function MatchCard({match}: MatchCardProps) {
     const gameDurationPretty = calculatePrettyDuration(startTimestamp, endTimestamp);
     const timeDifferencePretty = calculatePrettyDuration(endTimestamp, moment());
 
-    const placementPercentage = 'Top ' + UtilityService.numberToPercentage(firstGamer.team_placement / match.team_count, 0);
+
+    const placementPercentage = firstGamer.team_placement / match.team_count;
+    const teamWon = (firstGamer.team_placement === 1);
+    const topTenPercent = teamWon === false && placementPercentage <= .10;
 
     return (
-        <Card className={'match-card'} style={{marginBottom: '10px'}}>
+        <Card className={'match-card match-' + (teamWon ? 'won' : (topTenPercent) ? 'top-10' : 'lost')} style={{marginBottom: '10px'}}>
 
             <CardHeader>
                 <Header size={'sm'}>
@@ -73,11 +80,8 @@ export default function MatchCard({match}: MatchCardProps) {
 
                         <LabelValue label={'Placement'}
                                     value={(
-                                        <>
-                                            {firstGamer.team_placement} of {match.team_count} <Small>
-                                                ({placementPercentage})
-                                        </Small>
-                                        </>
+                                        <PlacementIndicator placement={firstGamer.team_placement}
+                                                            teamCount={match.team_count}/>
                                     )}/>
                     </Box>
 
@@ -127,7 +131,9 @@ export default function MatchCard({match}: MatchCardProps) {
                 render: (gamerMatch) => {
                     return (
                         <>
-                        {UtilityService.round(gamerMatch.kills / (gamerMatch.deaths || 1), 2)} <Small>
+                        <Text>
+                            {UtilityService.round(gamerMatch.kills / (gamerMatch.deaths || 1), 2)}
+                        </Text> <Small>
                                 ({gamerMatch.kills} / {gamerMatch.deaths} / {gamerMatch.assists})
                         </Small>
                     </>
@@ -138,7 +144,9 @@ export default function MatchCard({match}: MatchCardProps) {
                 render: (gamerMatch) => {
                     return (
                         <>
-                        {UtilityService.numberWithCommas(gamerMatch.score)} <Small>
+                            <Text>
+                                {UtilityService.numberWithCommas(gamerMatch.score)}
+                            </Text> <Small>
                             ({UtilityService.round(gamerMatch.score / getMinutesPlayed(gamerMatch), 0)} / minute)
                         </Small>
                     </>
@@ -149,8 +157,9 @@ export default function MatchCard({match}: MatchCardProps) {
                 render: (gamerMatch) => {
                     return (
                         <>
-                            {UtilityService.round((gamerMatch.damage_done / (gamerMatch.damage_taken || 100)) || 0, 2)}
-                            <Small>
+                            <Text>
+                                {UtilityService.round((gamerMatch.damage_done / (gamerMatch.damage_taken || 100)) || 0, 2)}
+                            </Text> <Small>
                                 ({UtilityService.numberWithCommas(gamerMatch.damage_done)} / {UtilityService.numberWithCommas(gamerMatch.damage_taken)})
                             </Small>
                         </>

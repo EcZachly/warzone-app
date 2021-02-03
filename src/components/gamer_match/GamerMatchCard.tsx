@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import {Box, Card, CardBody, CardHeader, Header, Show, Small} from '../SimpleComponents';
+import {Box, Card, CardBody, CardHeader, Header, Image, Show, Small, Text} from '../SimpleComponents';
 
 import {LabelValue} from './../SmartComponents';
 
@@ -9,7 +9,10 @@ import {GamerLinkList} from './../gamer/index';
 
 import {Gamer} from './../gamer/GamerTypes';
 import {GamerMatch} from './GamerMatchTypes';
+
+import PlacementIndicator from './PlacementIndicator';
 import UtilityService from '../../services/UtilityService';
+import {COLORS} from '../../config/CONSTANTS';
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
@@ -36,10 +39,15 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
     const gameDurationPretty = calculatePrettyDuration(startTimestamp, endTimestamp);
     const timeDifferencePretty = calculatePrettyDuration(endTimestamp, moment());
 
-    const placementPercentage = 'Top ' + UtilityService.numberToPercentage(gamerMatch.team_placement / gamerMatch.team_count, 0);
+    gamerMatch.team_placement = 6;
+
+    const placementPercentage = gamerMatch.team_placement / gamerMatch.team_count;
+    const teamWon = (gamerMatch.team_placement === 1);
+    const topTenPercent = teamWon === false && placementPercentage <= .10;
 
     return (
-        <Card className={'gamer-match-card'} style={{marginBottom: '10px'}}>
+        <Card className={'gamer-match-card match-' + (teamWon ? 'won' : (topTenPercent) ? 'top-10' : 'lost')}
+              style={{marginBottom: '10px'}}>
 
             <CardHeader>
                 <Header size={'sm'}>
@@ -62,11 +70,8 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
 
                         <LabelValue label={'Placement'}
                                     value={
-                                        <>
-                                            {gamerMatch.team_placement} of {gamerMatch.team_count} <Small>
-                                                ({placementPercentage})
-                                        </Small>
-                                        </>
+                                        <PlacementIndicator placement={gamerMatch.team_placement}
+                                                            teamCount={gamerMatch.team_count}/>
                                     }/>
 
                         <LabelValue label={'KDR (Kills / Deaths)'}
