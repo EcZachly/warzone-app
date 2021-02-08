@@ -92,6 +92,15 @@ export default function MatchCard({match}: MatchCardProps) {
                     <Box className={'details support-details'}>
                         {generateGamerComparisonTable()}
                     </Box>
+
+
+                    <Show show={true}>
+                        <Box>
+                            <a href={'https://www.sbmmwarzone.com/lobby/' + match.match_id}>
+                                View match details on sbmmwarzone.com
+                            </a>
+                        </Box>
+                    </Show>
                 </Box>
             </CardBody>
         </Card>

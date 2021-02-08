@@ -124,6 +124,14 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
 
                         <LabelValue size={'sm'} label={'Teams Wiped'} value={gamerMatch.objective.teams_wiped || 0}/>
                     </Box>
+
+                    <Show show={true}>
+                        <Box>
+                            <a href={'https://www.sbmmwarzone.com/lobby/' + gamerMatch.match_id}>
+                                View match details on sbmmwarzone.com
+                            </a>
+                        </Box>
+                    </Show>
                 </Box>
             </CardBody>
         </Card>
