@@ -56,6 +56,10 @@ export default function MatchCard({match}: MatchCardProps) {
     const teamWon = (firstGamer.team_placement === 1);
     const topTenPercent = teamWon === false && placementPercentage <= .10;
 
+    if (teamWon) {
+        console.log(match);
+    }
+
     return (
         <Card className={'match-card match-' + (teamWon ? 'won' : (topTenPercent) ? 'top-10' : 'lost')} style={{marginBottom: '10px'}}>
 

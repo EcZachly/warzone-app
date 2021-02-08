@@ -39,8 +39,6 @@ export default function GamerMatchCard({gamer, noLink, gamerMatch}: GamerMatchCa
     const gameDurationPretty = calculatePrettyDuration(startTimestamp, endTimestamp);
     const timeDifferencePretty = calculatePrettyDuration(endTimestamp, moment());
 
-    gamerMatch.team_placement = 6;
-
     const placementPercentage = gamerMatch.team_placement / gamerMatch.team_count;
     const teamWon = (gamerMatch.team_placement === 1);
     const topTenPercent = teamWon === false && placementPercentage <= .10;
