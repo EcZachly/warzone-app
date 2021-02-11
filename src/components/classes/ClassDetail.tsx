@@ -18,7 +18,16 @@ import HtmlService from './../../services/HtmlService';
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 
-export default function ClassDetail({category, style, statName, width, height, stat, badgeRef, keys}: GamerClassDetailProps) {
+export default function ClassDetail({
+                                        category,
+                                        style,
+                                        statName,
+                                        width,
+                                        height,
+                                        stat,
+                                        badgeRef,
+                                        keys
+                                    }: GamerClassDetailProps) {
     let gamerStatDisplayValue = parseFloat(stat.toString()).toFixed(2).toString();
 
     if (statName.includes('percent')) {
@@ -55,18 +64,36 @@ export default function ClassDetail({category, style, statName, width, height, s
     });
 
     const badgePosition = HtmlService.getElementPosition(badgeRef);
+    const windowDimensions = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        scrollY: window.scrollY
+    };
 
     const tooltipHeight = height;
-    const tooltipWidth = width;
+    let tooltipWidth = width;
+    let tooltipLeft = badgePosition.leftRightMiddle - (tooltipWidth / 2);
+    let tooltipTop = (badgePosition.top - tooltipHeight) - 10;
 
+    if (tooltipWidth > windowDimensions.width) {
+        tooltipWidth = windowDimensions.width * .95;
+    }
+
+    if (tooltipLeft < 0) {
+        tooltipLeft = 0;
+    }
+
+    if (tooltipTop < 0) {
+        tooltipTop = 10;
+    }
 
     return (
         <Card style={{
             position: 'fixed',
-            top: (badgePosition.top - tooltipHeight) - 10 + 'px',
-            left: badgePosition.leftRightMiddle - (tooltipWidth / 2) + 'px',
+            top: tooltipTop + 'px',
+            left: tooltipLeft + 'px',
             zIndex: 123840,
-            height: tooltipHeight + 'px',
+            minHeight: tooltipHeight + 'px',
             width: tooltipWidth + 'px',
             ...style
         }}>
