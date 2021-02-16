@@ -69,16 +69,15 @@ const DashboardPage = ({baseUrl}) => {
     const [error, setError] = useState(null);
     const [alert, setAlert] = useState({type: null, time: null, message: null});
 
-    const [user, setUser] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
-    const [gamerRelationships, setGamerRelationships] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
-    const [recentMatches, setRecentMatches] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([] as MatchList)));
-    // let [gamerRelationships, setGamerRelationships] = useState([]);
+    const [userState, setUserState] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData()));
+    const [gamerRelationshipsState, setGamerRelationshipsState] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([])));
+    const [recentMatchesState, setRecentMatchesState] = StateService.defaultStateDataUpdater(useState(StateService.defaultStateData([] as MatchList)));
 
     hasMounted === false && setHasMounted(true);
 
     useEffect(() => {
         if (UserService.userIsLoggedIn()) {
-            setUser({
+            setUserState({
                 loading: false,
                 data: UserService.getUser(),
                 error: null
@@ -97,14 +96,14 @@ const DashboardPage = ({baseUrl}) => {
 
 
     useEffect(() => {
-        if (user.data) {
+        if (userState.data) {
             getData(view, gameCategory);
         }
-    }, [user]);
+    }, [userState]);
 
     let title = 'Dashboard';
-    if (user.data) {
-        title = `${user.data.first_name}'s Dashboard`;
+    if (userState.data) {
+        title = `${userState.data.first_name}'s Dashboard`;
     }
 
     return (
@@ -129,7 +128,7 @@ const DashboardPage = ({baseUrl}) => {
 
 
 
-        if (!user.loading) {
+        if (!userState.loading) {
             const mainGamer = getMainGamer();
             const platform = mainGamer && mainGamer.platform;
             const username = mainGamer && mainGamer.username;
@@ -138,18 +137,18 @@ const DashboardPage = ({baseUrl}) => {
             return (
                 <>
                     <Sidebar>
-                        <Header>{user.data.first_name}</Header>
+                        <Header>{userState.data.first_name}</Header>
 
                         <LineBreak/>
 
-                        <Show show={gamerRelationships.loading}>
+                        <Show show={gamerRelationshipsState.loading}>
                             <Placeholder text/>
                             <LineBreak clear/>
                             <Placeholder text/>
                         </Show>
 
-                        <Show show={!gamerRelationships.loading && !!mainGamer}>
-                            <GamerLinkList loading={gamerRelationships.loading} gamer={mainGamer}/>
+                        <Show show={!gamerRelationshipsState.loading && !!mainGamer}>
+                            <GamerLinkList loading={gamerRelationshipsState.loading} gamer={mainGamer}/>
 
                             <ListGroup>
                                 <ListGroupItem onClick={() => {
@@ -171,7 +170,7 @@ const DashboardPage = ({baseUrl}) => {
 
 
                     <SidebarCompanion>
-                        <Show show={!gamerRelationships.loading && !!mainGamer}>
+                        <Show show={!gamerRelationshipsState.loading && !!mainGamer}>
                            <TabNav options={CONFIG.TAB_VIEW_LIST}
                                    value={contentView}
                                    onChange={({id}) => setContentView(id)}/>
@@ -186,13 +185,13 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getMainGamer() {
-        return gamerRelationships.loading !== true && gamerRelationships.data.filter(({type}) => type === 'self')[0];
+        return gamerRelationshipsState.loading !== true && gamerRelationshipsState.data.filter(({type}) => type === 'self')[0];
     }
 
 
 
     function getCategorySwitcher() {
-        if (gamerRelationships.loading) {
+        if (gamerRelationshipsState.loading) {
             return (
                 <Placeholder style={{height: '2em', width: '100%', marginTop: '20px'}}
                              block/>
@@ -219,7 +218,7 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getRecentMatchesContent() {
-        if (recentMatches.loading) {
+        if (recentMatchesState.loading) {
             return (
                 <Card>
                     <CardBody>
@@ -229,9 +228,9 @@ const DashboardPage = ({baseUrl}) => {
                     </CardBody>
                 </Card>
             );
-        } else if (recentMatches.data.length) {
+        } else if (recentMatchesState.data.length) {
             return (
-                <MatchCardList matches={recentMatches.data}/>
+                <MatchCardList matches={recentMatchesState.data}/>
             );
         } else {
             return (
@@ -264,7 +263,7 @@ const DashboardPage = ({baseUrl}) => {
                     Add your friends to follow them, see their recent games, and compare stats. <Text italic>You'll also see when they're on a hot streak!</Text>
                 </Paragraph>
 
-                <CreateGamerRelationship user={user.data}
+                <CreateGamerRelationship user={userState.data}
                                          onGamerAdd={(gamerRelationship) => {
                                              setAlert({
                                                  message: 'Friend successfully added',
@@ -282,14 +281,14 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getGamerList() {
-        const mainGamer = gamerRelationships.data.filter((r) => r.type === 'self')[0];
-        const friends = gamerRelationships.data.filter((r) => r.type === 'friend');
+        const mainGamer = gamerRelationshipsState.data.filter((r) => r.type === 'self')[0];
+        const friends = gamerRelationshipsState.data.filter((r) => r.type === 'friend');
 
-        if (gamerRelationships.loading) {
+        if (gamerRelationshipsState.loading) {
             return (
                 <Box>
                     {getCategorySwitcher()}
-                    <GamerCard loading={gamerRelationships.loading}/>
+                    <GamerCard loading={gamerRelationshipsState.loading}/>
                 </Box>
             );
         } else {
@@ -302,7 +301,7 @@ const DashboardPage = ({baseUrl}) => {
                             (() => {
                                 if (mainGamer) {
                                     return (
-                                        <GamerCard loading={gamerRelationships.loading}
+                                        <GamerCard loading={gamerRelationshipsState.loading}
                                                    gamer={mainGamer && mainGamer.detailData.gamer}/>
                                     );
                                 }
@@ -333,11 +332,11 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getFriendsOnFire() {
-        const friends = gamerRelationships.data.filter((gamerConfig) => {
+        const friends = gamerRelationshipsState.data.filter((gamerConfig) => {
             return _.get(gamerConfig, 'detailData.gamer.heat_rating') > 0;
         });
 
-        if (gamerRelationships.loading) {
+        if (gamerRelationshipsState.loading) {
             return (
                 <Box>
                     <LineBreak clear/>
@@ -378,7 +377,7 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getNewUserContent() {
-        if (!gamerRelationships.loading && gamerRelationships.data.length === 0) {
+        if (!gamerRelationshipsState.loading && gamerRelationshipsState.data.length === 0) {
             return (
                 <>
                 <Header size={'lg'}>
@@ -432,7 +431,7 @@ const DashboardPage = ({baseUrl}) => {
 
             if (userIsOkay) {
                 return GamerRelationshipService.createGamerRelationship({
-                    user_id: user.data.user_id,
+                    user_id: userState.data.user_id,
                     username: username,
                     platform: platform,
                     type: 'self'
@@ -459,7 +458,7 @@ const DashboardPage = ({baseUrl}) => {
                     _gamerRelationships[index].detailData = row;
                 });
 
-                setGamerRelationships({
+                setGamerRelationshipsState({
                     data: JSON.parse(JSON.stringify(_gamerRelationships)),
                     loading: false
                 });
@@ -485,7 +484,7 @@ const DashboardPage = ({baseUrl}) => {
         };
 
         GamerMatchService.queryGamerMatches(query, queryOptions).then((gamerMatches) => {
-            setRecentMatches({
+            setRecentMatchesState({
                 data: GamerMatchService.combineGamerMatches(gamerMatches),
                 loading: false
             });
@@ -501,7 +500,7 @@ const DashboardPage = ({baseUrl}) => {
 
     function getGamerRelationships(): Promise<GamerRelationshipList> {
         return GamerRelationshipService.queryGamerRelationships({
-            user_id: user.data.user_id
+            user_id: userState.data.user_id
         });
     }
 };
