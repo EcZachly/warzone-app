@@ -10,7 +10,7 @@ import {VIEWS} from '../constants';
  * @returns {PromiseLike<void>}
  */
 async function refreshData(query = {}) {
-    const matches = await queryView(VIEWS.MATCHES_TO_AUGMENT, {});
+    const matches = await queryView(VIEWS.MATCHES_TO_AUGMENT, {}, {limit: 1000});
     console.log('found ' + matches.length + ' matches to augment!');
     await Bluebird.map(matches, (match) => {
         const match_id = match['match_id'];
@@ -25,7 +25,7 @@ async function refreshData(query = {}) {
         return getFullMatchDetailsFromAPI(match_id).then((data) => {
             return writeGamerMatchesToDatabase(data, {username: '-', platform: '-'}, writeOptions);
         });
-    }, {concurrency: 3}).then((done) => {
+    }, {concurrency: 1}).then((done) => {
         console.log('done!');
     });
 }
