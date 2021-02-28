@@ -21,7 +21,7 @@ const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
 const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, timesPerDay: number }> = [
     {
         name: VIEWS.GRADING_TABLE,
-        timesPerDay: jobsRunPerDay
+        timesPerDay: 6
     },
     {
         name: VIEWS.SQUADS,
@@ -58,6 +58,8 @@ const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, 
         skip: true
     }
 ];
+
+let IS_REFRESHING = null;
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -132,7 +134,11 @@ async function refreshMaterializedViews() {
             } else {
                 const startTime = new Date().getTime();
 
+                IS_REFRESHING = startTime;
+                logRefreshingStatus();
+
                 executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${name}`).then((response) => {
+                    IS_REFRESHING = null;
                     const endTime = new Date().getTime();
 
                     resolve({
@@ -147,6 +153,21 @@ async function refreshMaterializedViews() {
             }
         });
     });
+}
+
+
+
+function logRefreshingStatus() {
+    if (IS_REFRESHING) {
+        const currentTime = new Date().getTime();
+        const timeDiffSeconds = Math.floor((currentTime - IS_REFRESHING) / 1000);
+
+        console.log('refreshing - elapsed time: ' + timeDiffSeconds + ' seconds');
+
+        setTimeout(() => {
+            logRefreshingStatus();
+        }, 10000);
+    }
 }
 
 
