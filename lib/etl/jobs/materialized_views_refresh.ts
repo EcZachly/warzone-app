@@ -137,7 +137,7 @@ async function refreshMaterializedViews() {
                 const startTime = new Date().getTime();
 
                 IS_REFRESHING = startTime;
-                logRefreshingStatus();
+                logRefreshingStatus(name);
 
                 executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${name}`).then((response) => {
                     IS_REFRESHING = null;
