@@ -159,15 +159,15 @@ async function refreshMaterializedViews() {
 
 
 
-function logRefreshingStatus() {
+function logRefreshingStatus(view) {
     if (IS_REFRESHING) {
         const currentTime = new Date().getTime();
         const timeDiffSeconds = Math.floor((currentTime - IS_REFRESHING) / 1000);
 
-        console.log('refreshing - elapsed time: ' + timeDiffSeconds + ' seconds');
+        console.log('refreshing ' + (view || '') + ' - elapsed time: ' + timeDiffSeconds + ' seconds');
 
         setTimeout(() => {
-            logRefreshingStatus();
+            logRefreshingStatus(view);
         }, 10000);
     }
 }
