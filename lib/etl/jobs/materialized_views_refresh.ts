@@ -83,6 +83,8 @@ async function run() {
         errorResponse = error;
     }
 
+    IS_REFRESHING = null;
+
     if (errorResponse) {
         logger.info('JOB FAILURE: refreshing materialized views');
         logger.error(errorResponse);
