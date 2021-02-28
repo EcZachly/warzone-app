@@ -1,3 +1,6 @@
+import tracer from 'tracer';
+const logger = tracer.colorConsole();
+
 import Bluebird from 'bluebird';
 
 import {getTimestampList} from './etl_utils';
@@ -109,11 +112,23 @@ async function executePipeline(gamer) {
 
     console.log('\r\n' + gamerID + ': Starting update');
 
+    if (gamer.no_permission === true) {
+        logger.warn('gamer.no_permission flag is set to true, not expecting to update');
+    }
+
     const API = await ApiWrapper.getInstance();
     const history = await getMatchHistory(gamer, API);
 
     if (history.errorMessage) {
         console.log(gamerID + ': ERROR: ' + JSON.stringify(history));
+
+        const isPermissionError = history.errorMessage.toLowerCase().includes('not permitted');
+
+        if (isPermissionError && gamer.no_permission !== true) {
+            await updateGamer({username: gamer.username, platform: gamer.platform}, {no_permission: true});
+        }
+
+        return gamer;
     } else {
         console.log(`${generateGamerID(gamer)}: Found ${history.length} matches in history`);
 
@@ -126,7 +141,7 @@ async function executePipeline(gamer) {
         } else {
             console.log(`${generateGamerID(gamer)}: No new matches found for gamer`);
         }
-        
+
         if (gamer.needs_update) {
             await updateGamer({username: gamer.username, platform: gamer.platform}, {needs_update: false});
         }
@@ -148,7 +163,7 @@ async function refreshData(query = {}) {
     await Bluebird.map(gamers, (gamer) => executePipeline(gamer), {concurrency: THREAD_CONCURRENCY_LIMIT});
 }
 
-export async function refreshFollowedGamers(){
+export async function refreshFollowedGamers() {
     // only update followed users who have already been backfilled
     const gamers = await queryFollowedGamers({needs_backfill: false});
     await Bluebird.map(gamers, (gamer) => executePipeline(gamer), {concurrency: THREAD_CONCURRENCY_LIMIT});
