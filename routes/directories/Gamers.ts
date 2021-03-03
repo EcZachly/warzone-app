@@ -18,7 +18,6 @@ import {
     getSingleGamerData
 } from '../../lib/components/Gamers/GamerService';
 import {Gamer, GamerPlatform} from '../../src/components/gamer/GamerTypes';
-import {ViewQuery} from '../../lib/model/view_query';
 import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
 import UtilityService from '../../src/services/UtilityService';
 import {DEFAULT_ERROR_MESSAGE} from '../../src/config/CONSTANTS';

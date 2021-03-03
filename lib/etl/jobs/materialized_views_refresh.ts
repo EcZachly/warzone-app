@@ -24,8 +24,13 @@ const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, 
         timesPerDay: jobsRunPerDay
     },
     {
-        name: VIEWS.SQUADS,
+        name: VIEWS.GAMER_STAT_SUMMARY,
         timesPerDay: jobsRunPerDay
+    },
+    {
+        name: VIEWS.SQUADS,
+        timesPerDay: 1,
+        skip: true
     },
     {
         name: VIEWS.GAMER_ROLLING_TRENDS,
@@ -33,28 +38,25 @@ const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, 
     },
     {
         name: VIEWS.SQUAD_CLASS_DESCRIPTIONS,
-        timesPerDay: 2
+        timesPerDay: 1
     },
     {
         name: VIEWS.GAMER_CLASS_DESCRIPTIONS,
-        timesPerDay: 2
-    },
-    {
-        name: VIEWS.GAMER_STAT_SUMMARY,
-        timesPerDay: jobsRunPerDay
+        timesPerDay: 1
     },
     {
         name: VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
-        timesPerDay: jobsRunPerDay
+        timesPerDay: 1,
+        skip: true
     },
     {
         name: VIEWS.DAILY_PLAYER_STAT_SUMMARY,
-        timesPerDay: jobsRunPerDay,
+        timesPerDay: 1,
         skip: true
     },
     {
         name: VIEWS.GAMER_SITE_HITS,
-        timesPerDay: jobsRunPerDay,
+        timesPerDay: 1,
         skip: true
     }
 ];
