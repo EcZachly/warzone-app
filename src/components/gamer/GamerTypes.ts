@@ -16,6 +16,7 @@ export type RawGamer = {
     platform: GamerPlatform,
     username: GamerUsername,
     uno_id: number,
+    no_permission?: boolean,
     needs_backfill?: boolean,
     aliases?: string[],
     kdr?: number

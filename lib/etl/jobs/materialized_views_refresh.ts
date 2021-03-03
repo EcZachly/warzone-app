@@ -21,7 +21,7 @@ const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
 const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, timesPerDay: number }> = [
     {
         name: VIEWS.GRADING_TABLE,
-        timesPerDay: jobsRunPerDay
+        timesPerDay: 6
     },
     {
         name: VIEWS.GAMER_STAT_SUMMARY,
@@ -61,6 +61,8 @@ const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, 
     }
 ];
 
+let IS_REFRESHING = null;
+
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
 
@@ -82,6 +84,8 @@ async function run() {
     } catch (error) {
         errorResponse = error;
     }
+
+    IS_REFRESHING = null;
 
     if (errorResponse) {
         logger.info('JOB FAILURE: refreshing materialized views');
@@ -134,7 +138,11 @@ async function refreshMaterializedViews() {
             } else {
                 const startTime = new Date().getTime();
 
+                IS_REFRESHING = startTime;
+                logRefreshingStatus(name);
+
                 executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${name}`).then((response) => {
+                    IS_REFRESHING = null;
                     const endTime = new Date().getTime();
 
                     resolve({
@@ -149,6 +157,21 @@ async function refreshMaterializedViews() {
             }
         });
     });
+}
+
+
+
+function logRefreshingStatus(view) {
+    if (IS_REFRESHING) {
+        const currentTime = new Date().getTime();
+        const timeDiffSeconds = Math.floor((currentTime - IS_REFRESHING) / 1000);
+
+        console.log('refreshing ' + (view || '') + ' - elapsed time: ' + timeDiffSeconds + ' seconds');
+
+        setTimeout(() => {
+            logRefreshingStatus(view);
+        }, 10000);
+    }
 }
 
 
