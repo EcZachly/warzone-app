@@ -18,45 +18,54 @@ const time = {
 const minutesBetweenRuns = 10;
 const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
 
+const JOB_RUN_TIMES = {
+    EVERY_10_MINUTES: jobsRunPerDay,
+    HOURLY: 24,
+    EVERY_4_HOURS: 6,
+    EVERY_6_HOURS: 4,
+    TWICE_PER_DAY: 2,
+    ONCE_PER_DAY: 1
+};
+
 const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, timesPerDay: number }> = [
     {
         name: VIEWS.GRADING_TABLE,
-        timesPerDay: 6
+        timesPerDay: JOB_RUN_TIMES.EVERY_4_HOURS
     },
     {
         name: VIEWS.GAMER_STAT_SUMMARY,
-        timesPerDay: jobsRunPerDay
+        timesPerDay: JOB_RUN_TIMES.EVERY_10_MINUTES,
     },
     {
         name: VIEWS.SQUADS,
-        timesPerDay: 1,
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     },
     {
         name: VIEWS.GAMER_ROLLING_TRENDS,
-        timesPerDay: jobsRunPerDay
+        timesPerDay: JOB_RUN_TIMES.EVERY_10_MINUTES,
     },
     {
         name: VIEWS.SQUAD_CLASS_DESCRIPTIONS,
-        timesPerDay: 1
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
     },
     {
         name: VIEWS.GAMER_CLASS_DESCRIPTIONS,
-        timesPerDay: 1
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
     },
     {
         name: VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
-        timesPerDay: 1,
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     },
     {
         name: VIEWS.DAILY_PLAYER_STAT_SUMMARY,
-        timesPerDay: 1,
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     },
     {
         name: VIEWS.GAMER_SITE_HITS,
-        timesPerDay: 1,
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     }
 ];
