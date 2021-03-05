@@ -6,6 +6,7 @@ export const DATABASE_SCHEMA = 'warzone';
 export const TABLES = {
     GAMER_MATCHES: 'gamer_matches',
     MATCHES: 'matches',
+    MATERIALIZED_VIEW_REFRESH: 'materialized_view_refresh',
     GAMERS: 'gamers',
     USERS: 'users',
     RESOURCES: 'resources',

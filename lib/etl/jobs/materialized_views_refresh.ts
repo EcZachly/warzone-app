@@ -1,5 +1,6 @@
 import tracer from 'tracer';
 const logger = tracer.colorConsole();
+import moment from 'moment';
 
 import Bluebird from 'bluebird';
 
@@ -7,6 +8,9 @@ import {DATABASE_SCHEMA, VIEWS} from '../../constants';
 import {executeRawQuery} from '../../database_utils';
 import {DAO} from '../../components/Database';
 import UtilityService from '../../../src/services/UtilityService';
+
+import MaterializedViewRefreshController
+    from '../../components/MaterializedViewRefresh/MaterializedViewRefreshController';
 
 const isDevMode = (process.env.NODE_ENV === 'development');
 const time = {
@@ -29,12 +33,16 @@ const JOB_RUN_TIMES = {
 
 const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, timesPerDay: number }> = [
     {
-        name: VIEWS.GRADING_TABLE,
-        timesPerDay: JOB_RUN_TIMES.EVERY_4_HOURS
+        name: VIEWS.GAMER_STAT_SUMMARY,
+        timesPerDay: JOB_RUN_TIMES.HOURLY
     },
     {
-        name: VIEWS.GAMER_STAT_SUMMARY,
-        timesPerDay: JOB_RUN_TIMES.EVERY_10_MINUTES,
+        name: VIEWS.GAMER_ROLLING_TRENDS,
+        timesPerDay: JOB_RUN_TIMES.HOURLY
+    },
+    {
+        name: VIEWS.GRADING_TABLE,
+        timesPerDay: JOB_RUN_TIMES.EVERY_4_HOURS
     },
     {
         name: VIEWS.SQUADS,
@@ -42,16 +50,12 @@ const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, 
         skip: true
     },
     {
-        name: VIEWS.GAMER_ROLLING_TRENDS,
-        timesPerDay: JOB_RUN_TIMES.EVERY_10_MINUTES,
-    },
-    {
         name: VIEWS.SQUAD_CLASS_DESCRIPTIONS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY
     },
     {
         name: VIEWS.GAMER_CLASS_DESCRIPTIONS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
+        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY
     },
     {
         name: VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
@@ -84,30 +88,34 @@ async function run() {
     logger.info('STARTING JOB: refreshing materialized views');
     setTime('start');
 
-    let response = null;
+    const response = null;
     let errorResponse = null;
 
     try {
         await validateViewNames();
-        response = await refreshMaterializedViews();
+        await testAndRefreshMaterializedView();
     } catch (error) {
         errorResponse = error;
     }
 
-    IS_REFRESHING = null;
+    console.log(errorResponse);
 
-    if (errorResponse) {
-        logger.info('JOB FAILURE: refreshing materialized views');
-        logger.error(errorResponse);
-    } else {
-        logger.info('JOB COMPLETE: refreshing materialized views');
-        setTime('end');
-        logJobDuration();
 
-        if (isDevMode) {
-            logger.info(response);
-        }
-    }
+
+    // IS_REFRESHING = null;
+    //
+    // if (errorResponse) {
+    //     logger.info('JOB FAILURE: refreshing materialized views');
+    //     logger.error(errorResponse);
+    // } else {
+    //     logger.info('JOB COMPLETE: refreshing materialized views');
+    //     setTime('end');
+    //     logJobDuration();
+    //
+    //     if (isDevMode) {
+    //         logger.info(response);
+    //     }
+    // }
 }
 
 
@@ -122,76 +130,136 @@ async function validateViewNames() {
 
 
 
-async function refreshMaterializedViews() {
-    logger.trace('refreshing materialized views');
+async function testAndRefreshMaterializedView(position = 0) {
+    const selectedViewObj = getViews()[position];
 
-    return Bluebird.mapSeries(getViews(), (viewConfig, index, viewCount) => {
-        return new Promise((resolve, reject) => {
-            const {name, timesPerDay, skip} = viewConfig;
+    if (!selectedViewObj) {
+        finishJob();
+    } else if (selectedViewObj.skip === true) {
+        console.log('skipping view');
+        return testAndRefreshMaterializedView(position + 1);
+    }
 
-            let status = 'refreshing';
+    console.log(`checking view (${selectedViewObj.name})`);
 
-            if (skip === true) {
-                status = 'skipping';
-            } else if (jobShouldBeRun(timesPerDay) === false) {
-                status = 'ignoring';
+    const mostRecentRefreshes = await MaterializedViewRefreshController.queryMaterializedViewRefresh({
+        view_id: selectedViewObj.name
+    }, {
+        limit: 1,
+        order: [
+            {
+                field: 'refresh_id',
+                direction: 'desc'
             }
-
-            logger.trace(`${status} view ${index + 1} of ${viewCount}: ${name}`);
-
-            if (status !== 'refreshing') {
-                resolve({
-                    view: name,
-                    status: status
-                });
-            } else {
-                const startTime = new Date().getTime();
-
-                IS_REFRESHING = startTime;
-                logRefreshingStatus(name);
-
-                executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${name}`).then((response) => {
-                    IS_REFRESHING = null;
-                    const endTime = new Date().getTime();
-
-                    resolve({
-                        view: name,
-                        status: status,
-                        duration: {
-                            ms: endTime - startTime,
-                            seconds: Math.floor(((endTime - startTime) / 1000) * 10) / 10
-                        }
-                    });
-                }, reject);
-            }
-        });
+        ]
     });
+    let mostRecentRefresh;
+
+    if (mostRecentRefreshes.length > 0) {
+        mostRecentRefresh = mostRecentRefreshes[0];
+    }
+
+    let viewShouldBeRefreshed = !mostRecentRefresh;
+
+    if (mostRecentRefresh) {
+        const {status, end_timestamp, start_timestamp} = mostRecentRefresh;
+
+        if (status === 'success') {
+            const minutesSinceRefreshEnded = moment().diff(moment(end_timestamp), 'minute');
+            const minMinutesBetweenRefreshes = jobsRunPerDay / selectedViewObj.timesPerDay * 10;
+
+            console.log(`most recent refresh was ${minutesSinceRefreshEnded} minutes ago`);
+            console.log(`min time between refreshes: ${minMinutesBetweenRefreshes}`);
+
+            if (minutesSinceRefreshEnded > minMinutesBetweenRefreshes) {
+                viewShouldBeRefreshed = true;
+            }
+        } else if (status === 'in progress') {
+            const minutesSinceStart = moment().diff(moment(start_timestamp), 'minute');
+
+            if (minutesSinceStart >= (24 * 60)) {
+                console.log('has been more than 24 hours since view was started, refreshing');
+                viewShouldBeRefreshed = true;
+            }
+        } else {
+            console.log('view doesn\'t have success or in progress status, refreshing');
+            viewShouldBeRefreshed = true;
+        }
+    }
+
+    if (viewShouldBeRefreshed) {
+        console.log('view is refreshing');
+
+        try {
+            if (mostRecentRefresh && mostRecentRefresh.duration_seconds) {
+                const durationMinutes = Math.floor(mostRecentRefresh.duration_seconds / 60);
+                console.log(`should take about ${durationMinutes} minutes`);
+            }
+
+            const newViewRefresh = await MaterializedViewRefreshController.createMaterializedViewRefresh({
+                view_id: selectedViewObj.name,
+                start_timestamp: new Date(),
+                status: 'in progress'
+            });
+
+            const startTime = new Date().getTime();
+
+            IS_REFRESHING = startTime;
+            logRefreshingStatus(selectedViewObj.name);
+
+            try {
+                const response = await executeRawQuery(`REFRESH MATERIALIZED VIEW CONCURRENTLY ${DATABASE_SCHEMA}.${selectedViewObj.name}`);
+                newViewRefresh.status = 'success';
+            } catch (error) {
+                console.error(error);
+                newViewRefresh.error_message = error.message;
+                newViewRefresh.status = 'failure';
+            }
+
+            IS_REFRESHING = null;
+            newViewRefresh.end_timestamp = new Date();
+            newViewRefresh.duration_seconds = Math.floor((newViewRefresh.end_timestamp.getTime() - newViewRefresh.start_timestamp.getTime()) / 1000);
+
+            await MaterializedViewRefreshController.updateMaterializedViewRefresh({
+                refresh_id: newViewRefresh.refresh_id
+            }, newViewRefresh);
+
+            finishJob();
+        } catch (error) {
+            finishJob();
+        }
+    } else {
+        console.log('view will not be refreshed now, testing next view');
+        return testAndRefreshMaterializedView(position + 1);
+    }
+
+}
+
+
+function finishJob() {
+    console.log('job finished');
+    IS_REFRESHING = null;
+    // DAO.closeConnection();
 }
 
 
 
 function logRefreshingStatus(view) {
     if (IS_REFRESHING) {
+
         const currentTime = new Date().getTime();
         const timeDiffSeconds = Math.floor((currentTime - IS_REFRESHING) / 1000);
+        const timeDiffType = (timeDiffSeconds >= 3 * 60) ? 'minutes' : 'seconds';
+        const timeDiffUnit = timeDiffType === 'minutes' ? Math.floor(timeDiffSeconds / 60) : timeDiffSeconds;
 
-        console.log('refreshing ' + (view || '') + ' - elapsed time: ' + timeDiffSeconds + ' seconds');
+        const secondsBetweenLogTimes = timeDiffType === 'minutes'  ? 60 : 15;
+
+        console.log('refreshing ' + (view || '') + ' - elapsed time: ' + timeDiffUnit + ' ' + timeDiffType);
 
         setTimeout(() => {
             logRefreshingStatus(view);
-        }, 10000);
+        }, secondsBetweenLogTimes * 1000);
     }
-}
-
-
-
-function jobShouldBeRun(timesPerDay) {
-    if (timesPerDay === jobsRunPerDay) {
-        return true;
-    }
-
-    const randomNumber = UtilityService.generateRandomInteger(0, 1000) / 1000;
-    return randomNumber < (timesPerDay / jobsRunPerDay);
 }
 
 
