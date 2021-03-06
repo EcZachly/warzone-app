@@ -193,7 +193,10 @@ async function testAndRefreshMaterializedView(position = 0) {
         try {
             if (mostRecentRefresh && mostRecentRefresh.duration_seconds) {
                 const durationMinutes = Math.floor(mostRecentRefresh.duration_seconds / 60);
-                console.log(`should take about ${durationMinutes} minutes`);
+
+                if (durationMinutes > 5) {
+                    console.log(`should take about ${durationMinutes} minutes`);
+                }
             }
 
             const newViewRefresh = await MaterializedViewRefreshController.createMaterializedViewRefresh({
@@ -252,7 +255,7 @@ function logRefreshingStatus(view) {
         const timeDiffType = (timeDiffSeconds >= 3 * 60) ? 'minutes' : 'seconds';
         const timeDiffUnit = timeDiffType === 'minutes' ? Math.floor(timeDiffSeconds / 60) : timeDiffSeconds;
 
-        const secondsBetweenLogTimes = timeDiffType === 'minutes'  ? 60 : 15;
+        const secondsBetweenLogTimes = timeDiffType === 'minutes' ? 60 : 15;
 
         console.log('refreshing ' + (view || '') + ' - elapsed time: ' + timeDiffUnit + ' ' + timeDiffType);
 
