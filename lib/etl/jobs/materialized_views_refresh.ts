@@ -23,53 +23,54 @@ const minutesBetweenRuns = 10;
 const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
 
 const JOB_RUN_TIMES = {
-    EVERY_10_MINUTES: jobsRunPerDay,
-    HOURLY: 24,
-    EVERY_4_HOURS: 6,
-    EVERY_6_HOURS: 4,
-    TWICE_PER_DAY: 2,
-    ONCE_PER_DAY: 1
+    EVERY_10_MINUTES: minutesBetweenRuns,
+    HOURLY: 60,
+    EVERY_4_HOURS: 60 * 4,
+    EVERY_6_HOURS: 60 * 6,
+    TWICE_PER_DAY: 60 * 12,
+    ONCE_PER_DAY: 60 * 24
 };
 
-const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, timesPerDay: number }> = [
+
+const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, minutesBetweenRunning: number }> = [
     {
         name: VIEWS.GAMER_STAT_SUMMARY,
-        timesPerDay: JOB_RUN_TIMES.HOURLY
+        minutesBetweenRunning: JOB_RUN_TIMES.HOURLY
     },
     {
         name: VIEWS.GAMER_ROLLING_TRENDS,
-        timesPerDay: JOB_RUN_TIMES.HOURLY
+        minutesBetweenRunning: JOB_RUN_TIMES.HOURLY
     },
     {
         name: VIEWS.GRADING_TABLE,
-        timesPerDay: JOB_RUN_TIMES.EVERY_4_HOURS
+        minutesBetweenRunning: JOB_RUN_TIMES.TWICE_PER_DAY
     },
     {
         name: VIEWS.SQUADS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
+        minutesBetweenRunning: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     },
     {
         name: VIEWS.SQUAD_CLASS_DESCRIPTIONS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY
+        minutesBetweenRunning: JOB_RUN_TIMES.ONCE_PER_DAY
     },
     {
         name: VIEWS.GAMER_CLASS_DESCRIPTIONS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY
+        minutesBetweenRunning: JOB_RUN_TIMES.ONCE_PER_DAY
     },
     {
         name: VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
+        minutesBetweenRunning: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     },
     {
         name: VIEWS.DAILY_PLAYER_STAT_SUMMARY,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
+        minutesBetweenRunning: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     },
     {
         name: VIEWS.GAMER_SITE_HITS,
-        timesPerDay: JOB_RUN_TIMES.ONCE_PER_DAY,
+        minutesBetweenRunning: JOB_RUN_TIMES.ONCE_PER_DAY,
         skip: true
     }
 ];
@@ -166,7 +167,7 @@ async function testAndRefreshMaterializedView(position = 0) {
 
         if (status === 'success') {
             const minutesSinceRefreshEnded = moment().diff(moment(end_timestamp), 'minute');
-            const minMinutesBetweenRefreshes = jobsRunPerDay / selectedViewObj.timesPerDay * 10;
+            const minMinutesBetweenRefreshes = selectedViewObj.minutesBetweenRunning;
 
             console.log(`most recent refresh was ${minutesSinceRefreshEnded} minutes ago`);
             console.log(`min time between refreshes: ${minMinutesBetweenRefreshes}`);
