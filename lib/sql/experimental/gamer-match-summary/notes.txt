@@ -2,6 +2,8 @@ This query returns a list of gamers (uno_id) with a summary of their
 - average placement per team type (solo, duo, trio, quad)
 - average score per team type
 - average kdr per team type
+- average kadr per team type
+- average damage per team type
 filtering by those gamers who have played at least 5 games in each type and at least 100 games played
 
 as of 3/9/2021 it yielded 60 gamers

@@ -1,0 +1,5 @@
+gamer-matches-with-teammates.sql
+This query returns gamer matches with the list of teammates' uno_ids
+
+gamer-matches-with-teammates-with-timestamp.sql
+this query returns gamer matches with the list of teammates' uno_ids AND a timestamp
