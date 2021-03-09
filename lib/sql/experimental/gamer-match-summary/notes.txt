@@ -1,0 +1,183 @@
+This query returns a list of gamers (uno_id) with a summary of their
+- average placement per team type (solo, duo, trio, quad)
+- average score per team type
+- average kdr per team type
+filtering by those gamers who have played at least 5 games in each type and at least 100 games played
+
+as of 3/9/2021 it yielded 60 gamers
+
+---
+
+I thought this could be used to rank the performance of a game. We could rank each of these fields individually, then when a
+team has a game we could develop the grade for that game based on the percentile ranks of this table.
+
+So if the gamer-match has these stats
+type: duos
+placement: 31
+total teams: 75
+placement_percentage: 41.33% (31/75)
+score: 3050
+kills: 3
+assists: 1
+deaths: 2
+KDR: 1.5
+KADR: 2
+damage done: 841
+
+then we could determine where those values rank up against the appropriate duos table and generate a grade
+
+actual values as of 3/9/2021
+
+PLACEMENT PERCENTILE RANKS
+top: 32.369673%
+90%: 38.3% (if above, 100%)
+80%: 39.7%
+70%: 42.2%
+60%: 45.2%
+50%: 46.1% (if below, 0%)
+
+spread: 46.1 - 38.3 = 7.8
+placement weight: 35%
+spread difference: 46.1 - 41.33 = 4.77
+placement score: 4.77 / 7.8 = 61.1%
+weighted placement score: 35% * 61.1% = 21.4%
+
+
+SCORE PERCENTILE RANKS
+top: 9086
+90%: 4243 (if above, 100%)
+80%: 3815
+70%: 3160
+60%: 2733
+50%: 2503 (if below, 0%)
+
+spread: 4243 - 2503 = 1740
+score weight: 25%
+spread difference: 3050 - 2503 = 547
+score score: 547 / 1740 = 31.4%
+weighted score score: 25% * 30% = 7.5%
+
+
+KDR PERCENTILE RANKS
+top: 4.2
+90%: 1.84 (if above, 100%)
+80%: 1.49
+70%: 1.32
+60%: 1.05
+50%: 0.99 (if below, 0%)
+
+spread: 1.84 - .99 = .85
+KDR weight: 30%
+spread difference: 1.5 - .99 = .51
+KDR score: .51 / .85 = 60%
+weighted KDR score: 30% * 60% = 18%
+
+
+
+KADR PERCENTILE RANKS
+top: 4.4
+90%: 1.98 (if above, 100%)
+80%: 1.61
+70%: 1.33
+60%: 1.08
+50%: 1.02 (if below, 0%)
+
+spread: 1.98 - 1.02 = .96
+KADR weight: 10%
+spread difference: 2 - 1.02 = .98
+KADR score: .98 / .96 = 100%
+weighted KDR score: 10% * 100% = 10%
+
+
+
+DAMAGE DONE PERCENTILE RANKS
+top: 2908
+90%: 1478 (if above, 100%)
+80%: 1222
+70%: 1027
+60%: 866
+50%: 781 (if below, 0%)
+
+spread: 1478 - 781 = 698
+damage done weight: 10%
+spread difference: 841 - 781 = 60
+KADR score: 60 / 698 = 8.6%
+weighted KDR score: 10% * 8.6% = 0.9%
+
+
+
+match score = weighted placement score + weighted score score + weighted KDR score + weighted KADR score + weighted damage done score
+match score: 21.4 + 7.5 + 18 + 10 + .9 = 57.8
+
+We could then go one step further and generate percentiles for matches and assign a grade based on the placement in that
+
+for example:
+
+if the percentiles of matches go as follows:
+99%: 94.5
+95%: 91.5
+
+90%: 88.3
+80%: 75.2
+70%: 62.8
+60%: 51.2
+50%: 45.1
+40%: 42.7
+30%: 36.3
+20%: 31.1
+10%: 27.1
+
+Then we could do the same as above and generate a grade based on their position in this rank
+We could calculate the spread from 90% to 50% or from 90% to 10%
+
+90%-50% spread (less diverse)
+spread: 88.3 - 45.1 = 43.2
+spread difference: 57.8 - 45.1 = 12.7
+weighted match grade: 12.7 / 43.2 = 29.4%
+and then generate grades based on the chart with the percentages
+
+90%-10% spread (seems like it would be more diverse, not just assigning people the lowest possible grades)
+spread: 88.3 - 27.1 = 61.2
+spread difference: 57.8 - 27.1 = 30.3
+weighted match grade: 30.3 / 61.2 = 49.5%
+and then generate grades based on the chart with the percentages
+
+A++: >98%
+
+A+: >95%
+A: >90%
+A-: >85%
+
+B+: >80%
+B: >72%
+B-: >64%
+
+C+: >56%
+C: >48%
+C-: >40%
+
+D+: >32%
+D: >26%
+D-: >18%
+
+F+: >10%;
+F: >5%;
+F-: >0%;
+
+
+90-50% spread: match score of 57.4%, their ranked weighted grade would be 28.5%, assigning a D rank to their match
+90-10% spread: match score of 57.4%, their ranked weighted grade would be 49.5%, assigning a C+ rank to their match
+
+--
+
+We could then rank the players based on their rates of match grades
+master: >1%;
+diamond: >5%;
+platinum: >10%;
+gold: >80%;
+silver: >50%;
+copper: >0%;
+
+we could subdivide it out like SBMM does with copper 4, 3, 2, 1, silver 4, 3, 2, 1...
+
+or something like that
