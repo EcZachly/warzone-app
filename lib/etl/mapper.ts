@@ -154,8 +154,7 @@ export default class WarzoneMapper{
                 scavenger: missionsByType?.scavenger?.count,
                 most_wanted:  missionsByType?.vip?.count,
                 supply_run:  missionsByType?.timedrun?.count,
-            }),
-            raw_data: JSON.stringify(match)
+            })
         };
         return dataObject;
     }

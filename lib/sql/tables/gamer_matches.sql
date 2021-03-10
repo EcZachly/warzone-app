@@ -27,6 +27,6 @@ CREATE TABLE warzone.gamer_matches (
     xp JSON,
     loadout JSON,
     contracts JSON,
-    raw_data JSON,
+    game_category TEXT,
     PRIMARY KEY (uno_id, match_id)
 );
