@@ -6,7 +6,7 @@ export function getQueryParamToSQLMap() {
         'teammates': VIEWS.GAMER_INFLUENCE_RELATIONSHIPS,
         'placements': VIEWS.GRADED_STATS,
         'stats': VIEWS.GRADED_STATS,
-        'overview': VIEWS.GRADED_STATS,
+        'overview': null,
         'time': VIEWS.TIME_ANALYSIS,
         'squads': VIEWS.SQUADS,
         'trends': VIEWS.TREND_ANALYSIS,

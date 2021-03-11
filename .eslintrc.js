@@ -27,6 +27,9 @@ module.exports = {
 		'no-async-promise-executor': [
 			'off'
 		],
+		'prefer-const': [
+			'off'
+		],
 		'no-unused-vars': [
 			'off'
 		],

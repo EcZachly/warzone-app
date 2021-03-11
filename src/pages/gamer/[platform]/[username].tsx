@@ -53,14 +53,14 @@ const CONFIG = {
         teammates: (gamer, chartState) => <GamerInfluenceList gamer={gamer}
                                                               teammateRows={chartState.viewData}/>,
 
-        placements: (gamer, chartState) => <GamerPlacementChart height={260}
-                                                                width={chartState.width}
-                                                                data={chartState.viewData[0]}/>,
+        // placements: (gamer, chartState) => <GamerPlacementChart height={260}
+        //                                                         width={chartState.width}
+        //                                                         data={chartState.viewData[0]}/>,
 
         time: (gamer, chartState) => <GamerTimeChart height={260}
                                                      width={chartState.width}
                                                      key={'placement_chart'}
-                                                     viewData={chartState.viewData}
+                                                     viewData={UtilityService.validateItem(chartState.viewData, 'array', [])}
                                                      options={['hour_of_day', 'day_of_week']}
                                                      selectedValue="hour_of_day"/>,
 
@@ -89,7 +89,8 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
     if (error) {
         return <div>{error}</div>;
     }
-    const {gamer, viewData, errorMessage, classDescriptions} = gamerData;
+    let {gamer, viewData, errorMessage, classDescriptions} = gamerData;
+    classDescriptions = UtilityService.validateItem(classDescriptions, 'array', []);
 
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key) => {
         const allowableUnoKeys = ['squads', 'trends', 'recent_matches'];
@@ -326,7 +327,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const {username, platform, view, game_category} = context.query;
     const validViewNames = Object.keys(CONFIG.VIEW_NAME_CONFIG);
     const queryCategory = game_category || GAME_CATEGORIES.WARZONE;
-    let defaultView = 'overview';
+    let defaultView = Object.keys(CONFIG.VIEW_NAME_CONFIG)[0];
 
     if (platform === 'uno') {
         defaultView = 'recent_matches';
