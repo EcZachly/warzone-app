@@ -36,6 +36,7 @@ import {GAME_CATEGORIES} from '../../lib/constants';
 import UtilityService from '../services/UtilityService';
 import GamerMatchService from '../components/gamer_match/GamerMatchService';
 import CreateGamerRelationship from '../components/GamerRelationships/CreateGamerRelationship';
+import {AnyObject} from '../../lib/components/Types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -57,6 +58,7 @@ const DashboardPage = ({baseUrl}) => {
         }]
     };
 
+    let defaultView = 'overview';
 
     const router = useRouter();
 
@@ -64,7 +66,7 @@ const DashboardPage = ({baseUrl}) => {
     // let [loading, setLoading] = useState(true);
     const [newUserSearch, setNewUserSearch] = useState('search');
     const [gameCategory, setCategory] = useState(GAME_CATEGORIES.WARZONE);
-    const [view, setView] = useState('time');
+    const [view, setView] = useState(defaultView);
     const [contentView, setContentView] = useState('recent_matches');
     const [error, setError] = useState(null);
     const [alert, setAlert] = useState({type: null, time: null, message: null});
@@ -442,34 +444,40 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getData(view, category) {
-        return getGamerRelationships().then((_gamerRelationships) => {
-            if (_gamerRelationships.length === 1) {
+        return getGamerRelationships().then((gamerRelationships) => {
+            if (gamerRelationships.length === 1) {
                 setContentView('add-friends');
             }
 
-            getRecentMatches(_gamerRelationships);
+            getRecentMatches(gamerRelationships);
 
-            const detailPromises = _gamerRelationships.map((gamer) => {
-                return getGamerDetails(gamer.username, gamer.platform, view, category);
+            const detailPromises = gamerRelationships.map((gamer) => {
+                return getGamerDetails(gamer.username, gamer.platform, view, category).catch((error) => {
+                    console.log(error);
+                });
             });
 
-            return Promise.all(detailPromises).then((data) => {
+            Promise.all(detailPromises).then((data: any[]) => {
                 data.forEach((row, index) => {
-                    _gamerRelationships[index].detailData = row;
+                    gamerRelationships[index].detailData = UtilityService.validateItem(row, 'object', {});
                 });
 
+                console.log('gamerRelationships', gamerRelationships);
+
                 setGamerRelationshipsState({
-                    data: JSON.parse(JSON.stringify(_gamerRelationships)),
+                    data: JSON.parse(JSON.stringify(gamerRelationships)),
                     loading: false
                 });
+            }).catch((error) => {
+                console.error(error);
             });
         });
     }
 
 
 
-    function getRecentMatches(_gamerRelationships) {
-        const gamerRelationshipsIDList = _gamerRelationships.map(({username, platform}) => {
+    function getRecentMatches(gamerRelationships) {
+        const gamerRelationshipsIDList = gamerRelationships.map(({username, platform}) => {
             return [platform, username].join('-');
         });
 
@@ -493,7 +501,7 @@ const DashboardPage = ({baseUrl}) => {
 
 
 
-    function getGamerDetails(username, platform, view = 'time', category = GAME_CATEGORIES.WARZONE) {
+    function getGamerDetails(username, platform, view = 'overview', category = GAME_CATEGORIES.WARZONE) {
         return GamerService.getGamerDetailView(username, platform, view, category);
     }
 

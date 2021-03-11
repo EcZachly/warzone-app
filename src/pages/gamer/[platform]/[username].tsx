@@ -338,7 +338,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const rawGamerList = await GamerService.getGamerDetailView(username as string,
         platform as string,
         selectedView as string,
-        queryCategory as string, baseUrl);
+        queryCategory as string,
+        baseUrl);
 
     const props = {
         gamerData: rawGamerList,

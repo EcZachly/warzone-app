@@ -158,12 +158,11 @@ async function updateGamerUponRequest(gamer: Gamer): Promise<Gamer> {
 export async function getGamerDetails(req: Request, res: Response) {
     logger.trace('getGamerDetails');
 
-
-    console.log(req.params);
-    console.log(req.query);
+    console.log('req.params', req.params);
+    console.log('req.query', req.query);
 
     const view = req.query.view as string;
-    const {game_category} = req.query;
+    const game_category = req.query.game_category as string;
 
     delete req.query.view;
 
@@ -192,7 +191,7 @@ export async function getGamerDetails(req: Request, res: Response) {
     }
 
     try {
-        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category as string);
+        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});
