@@ -158,10 +158,12 @@ async function updateGamerUponRequest(gamer: Gamer): Promise<Gamer> {
 export async function getGamerDetails(req: Request, res: Response) {
     logger.trace('getGamerDetails');
 
+    console.log('req.params', req.params);
+    console.log('req.query', req.query);
 
-    console.log(req.params);
-    console.log(req.query);
-    const {view, game_category} = req.query;
+    const view = req.query.view as string;
+    const game_category = req.query.game_category as string;
+
     delete req.query.view;
 
     const {username, platform} = req.params;
@@ -169,26 +171,27 @@ export async function getGamerDetails(req: Request, res: Response) {
     const allParams = {...req.params, ...req.query};
 
     const paramMap = getQueryParamToSQLMap();
+    const validViews = Object.keys(paramMap);
+    const isValidView = validViews.includes(view);
 
     const errorObject = {
         'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
-        'invalid_view': 'invalid view query param needs to be in ' + Object.keys(paramMap).join(','),
+        'invalid_view': 'invalid view query param needs to be in ' + JSON.stringify(validViews),
         'not_found': username + ' on platform: ' + platform + ' was not found!'
     };
-
 
     if (!platform || !username) {
         return handleError(req, res, {message: errorObject['missing_data']});
     }
 
-    const sqlView = paramMap[view as string];
+    const sqlView = paramMap[view];
 
-    if (!sqlView) {
+    if (!sqlView && !isValidView) {
         return handleError(req, res, {message: errorObject['invalid_view']});
     }
 
     try {
-        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category as string);
+        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});
@@ -196,12 +199,17 @@ export async function getGamerDetails(req: Request, res: Response) {
 
         const queryParams = {...allParams, uno_id: gamer.uno_id};
 
-        const viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
+        let viewData = null;
 
-        await viewToQuery.executeQuery();
-        const viewData = viewToQuery.data;
+        if (sqlView) {
+            const viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
 
-        const classDescriptions = await getGamerClassDescriptions();
+            await viewToQuery.executeQuery();
+            viewData = viewToQuery.data;
+        }
+
+        // const classDescriptions = await getGamerClassDescriptions();
+        const classDescriptions = [];
 
         await updateGamerUponRequest(gamer);
 

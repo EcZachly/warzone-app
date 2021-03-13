@@ -23,7 +23,7 @@ export async function getGamerClassDescriptions(): Promise<GamerClassDescription
 
 
 export async function getSingleGamerData(username: string, platform: GamerPlatform, game_category = GAME_CATEGORIES.WARZONE): Promise<Gamer> {
-    const val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, platform, game_category}, {});
+    const val = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, {username, game_category, platform}, {});
     await val.executeQuery();
     return val.data[0] as Gamer;
 }

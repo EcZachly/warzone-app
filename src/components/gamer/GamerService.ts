@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import HttpService from '../../services/HttpService';
-import {GamerList} from './GamerTypes';
+import {Gamer, GamerList} from './GamerTypes';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -34,12 +34,22 @@ export function getGamerPlatforms() {
 
 
 
-export async function getGamerDetailView(username: string, platform: string, view: string, gameCategory: string, baseUrl: string = null) {
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const dataUrl = (baseUrl || '') + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + '&timeZone=' + timeZone + '&game_category=' + gameCategory;
+export async function getGamerDetailView(username: string, platform: string, view: string, gameCategory: string, baseUrl: string = null): Promise<{gamer: Gamer, viewData: any, seoMetadata: any, classDescriptions: any}> {
+    return new Promise((resolve, reject) => {
+        const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const dataUrl = (baseUrl || '') + '/api/gamer/' + platform + '/' + encodeURIComponent(username as string) + '?view=' + view + '&timeZone=' + timeZone + '&game_category=' + gameCategory;
 
-    const response = await fetch(dataUrl);
-    return await response.json();
+        HttpService.http({
+            method: 'GET',
+            url: dataUrl,
+        }).then((response) => {
+            if (response.status === 200) {
+                resolve(response.data);
+            } else {
+                reject(new Error('an unknown error occurred while trying to get the gamer details'));
+            }
+        }).catch(reject);
+    });
 }
 
 
