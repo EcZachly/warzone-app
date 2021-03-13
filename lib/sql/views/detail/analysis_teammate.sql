@@ -1,9 +1,9 @@
-CREATE OR REPLACE VIEW warzone.teammate_analysis AS
+CREATE OR REPLACE VIEW warzone.analysis_teammate AS
 WITH source AS (
-    SELECT m.start_timestamp,
-           m.team_type,
-           m.game_category,
-           m.match_id,
+    SELECT gm.start_timestamp,
+           gm.team_type,
+           gm.game_category,
+           gm.match_id,
            g.username as query_username,
            g.platform as query_platform,
            gm.team_placement,
@@ -25,7 +25,6 @@ WITH source AS (
            gm2.uno_id                                        AS helper_uno_id
     FROM warzone.gamer_matches gm
              JOIN warzone.gamers g ON gm.uno_id = g.uno_id
-             JOIN warzone.matches m ON gm.match_id = m.match_id
              JOIN warzone.gamer_matches gm2
                        ON gm.team = gm2.team
                            AND gm.match_id = gm2.match_id

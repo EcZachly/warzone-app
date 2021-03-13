@@ -5,7 +5,7 @@ WITH overall AS (
 ),
      not_overall AS (
          SELECT *
-         FROM warzone.teammate_analysis
+         FROM warzone.analysis_teammate
      ),
      a AS (
          SELECT no.game_category,

@@ -1,4 +1,4 @@
-CREATE TYPE relationship_edge AS (
+CREATE TYPE IF NOT EXISTS relationship_edge AS (
                                     relationship_stat text,
                                     relationship_sort INTEGER,
                                     stat_with_player REAL,

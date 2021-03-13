@@ -8,8 +8,5 @@ CREATE UNIQUE INDEX squad_stat_summary_materialized_unique ON warzone.squad_stat
 CREATE UNIQUE INDEX grading_table_unique ON warzone.grading_table(game_category);
 CREATE UNIQUE INDEX gamer_stats_graded_unique ON warzone.gamer_stats_graded_materialized(uno_id, game_category);
 CREATE UNIQUE INDEX gamer_influence_relationships_materialized_unique ON warzone.gamer_influence_relationships_materialized(game_category, username, platform, helping_player, helping_player_platform, relationship_stat);
-CREATE INDEX gamer_matches_uno_id ON warzone.gamer_matches (uno_id);
-CREATE INDEX gamer_matches_matches ON warzone.gamer_matches (match_id);
-CREATE INDEX team_type_category ON warzone.matches(team_type, game_category, start_timestamp)
 
 

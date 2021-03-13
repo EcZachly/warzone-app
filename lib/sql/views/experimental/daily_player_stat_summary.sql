@@ -1,7 +1,7 @@
 create or replace view warzone.daily_player_stat_summary AS
     SELECT
-       date_trunc('day'::text, to_timestamp(m.start_time::double precision)) AS game_day,
-       COALESCE(m.game_category, '(all)') as game_category,
+       date_trunc('day'::text, gm.start_timestamp) AS game_day,
+       COALESCE(gm.game_category, '(all)') as game_category,
        gm.query_username as username,
        gm.query_platform as platform,
        COUNT(DISTINCT gm.match_id) AS num_matches,
@@ -31,10 +31,9 @@ create or replace view warzone.daily_player_stat_summary AS
                        END + gm.gulag_kills), 0), 1)::double precision                 AS gulag_win_rate
 FROM warzone.gamer_matches gm
          JOIN warzone.gamers g ON gm.uno_id = g.uno_id
-         JOIN warzone.matches m ON gm.match_id = m.match_id
-GROUP BY m.game_category, date_trunc('day'::text, to_timestamp(m.start_time::double precision)), gm.query_username, gm.query_platform
+GROUP BY gm.game_category, date_trunc('day'::text, gm.start_timestamp), gm.query_username, gm.query_platform
 
 ORDER BY gm.query_username, gm.query_platform,
-         (date_trunc('day'::text, to_timestamp(m.start_time::double precision)));
+         (date_trunc('day'::text, gm.start_timestamp));
 
 

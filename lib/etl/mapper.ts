@@ -154,7 +154,12 @@ export default class WarzoneMapper{
                 scavenger: missionsByType?.scavenger?.count,
                 most_wanted:  missionsByType?.vip?.count,
                 supply_run:  missionsByType?.timedrun?.count,
-            })
+            }),
+            game_mode: match.mode,
+            game_category: WarzoneMapper.getMatchCategory(match),
+            start_timestamp: new Date(match.utcStartSeconds*1000),
+            end_timestamp: new Date(match.utcEndSeconds*1000),
+            team_type: WarzoneMapper.getMatchTeamType(match)
         };
         return dataObject;
     }

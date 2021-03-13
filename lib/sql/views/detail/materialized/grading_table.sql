@@ -1,6 +1,6 @@
 CREATE MATERIALIZED VIEW  warzone.grading_table AS
 SELECT
-      m.game_category,
+      game_category,
       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY damage_done) AS f_grade_damage,
       PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY damage_done) AS d_grade_damage,
       PERCENTILE_DISC(0.50) WITHIN GROUP (ORDER BY damage_done) AS c_grade_damage,
@@ -42,5 +42,4 @@ SELECT
       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY CASE WHEN team_type = 'duo' THEN gm.team_placement END DESC) AS f_grade_duo,
       PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY CASE WHEN team_type = 'solo' THEN gm.team_placement END DESC) AS f_grade_solo
 FROM warzone.gamer_matches gm
-JOIN warzone.matches m ON m.match_id = gm.match_id
-GROUP BY m.game_category
+GROUP BY gm.game_category

@@ -2,7 +2,6 @@ create or replace view warzone._gamer_matches_augmented AS
 SELECT
        gm.uno_id AS uno_id,
        gm.query_username as username,
-
        gm.query_platform as platform,
        gm.username       as in_game_username,
        gm.team,
