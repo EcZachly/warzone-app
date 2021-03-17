@@ -1,4 +1,4 @@
-CREATE VIEW warzone.matches_to_augment AS
+CREATE OR REPLACE VIEW warzone.matches_to_augment AS
 SELECT
     gm.match_id,
     MAX(m.player_count) as total_players,

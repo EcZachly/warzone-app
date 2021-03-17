@@ -9,6 +9,10 @@ import {DATABASE_SCHEMA} from './constants';
 const coreViewNames = fs.readdirSync(basePath + '/core').filter((view)=> view.includes('.sql'));
 const coreViews = coreViewNames.map((file) => basePath + '/core/' + file);
 
+
+const etlViewNames = fs.readdirSync(basePath + '/etl').filter((view)=> view.includes('.sql'));
+const etlViews = coreViewNames.map((file) => basePath + '/etl/' + file);
+
 const materializedCoreViewsNames = fs.readdirSync(basePath + '/core/materialized');
 const materializedCoreViews = materializedCoreViewsNames.map((file) => basePath + '/core/materialized/' + file);
 
@@ -21,7 +25,8 @@ const viewObj = {
     'core': coreViews,
     'core_materialized': materializedCoreViews,
     'detail': detailViews,
-    'detail_materialized': materializedDetailViews
+    'detail_materialized': materializedDetailViews,
+    'etl': etlViews
 };
 
 async function dropAllViews(){
