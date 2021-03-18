@@ -51,6 +51,9 @@ module.exports = {
 		'@typescript-eslint/no-inferrable-types': [
 			'error'
 		],
+		'@typescript-eslint/no-var-requires': [
+			'off'
+		],
 		'eqeqeq': [
 			'error',
 			'smart'

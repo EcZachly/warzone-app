@@ -16,6 +16,8 @@
     "refresh-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType refresh",
     "backfill-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType backfill",
     "update-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType update",
+    "regenerate-views": "ts-node lib/sql/utilities/ViewGeneration/index.ts",
+    "drop-view": "ts-node lib/sql/utilities/ViewDrop/index.ts",
     "view-logs": "heroku logs -t",
     "dev": "npm run pre-start && ts-node server.ts",
     "dev-start-only": "ts-node server.ts",
@@ -86,6 +88,7 @@
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-react": "^7.22.0",
     "post-commit": "0.0.1",
+    "prompts": "^2.4.0",
     "ts-loader": "^8.0.14"
   },
   "post-commit": [

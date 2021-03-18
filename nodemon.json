@@ -1,6 +1,7 @@
 {
-    "watch": ["src", "bin", "config", "lib", "routes", "server.ts"],
+    "watch": ["bin", "config", "lib", "routes", "server.ts"],
     "ext": "js, tsx, ts, json",
-    "ignore": ["src/.next"],
-    "exec": "npm run dev-start-only"
+    "ignore": [],
+    "exec": "npm run dev-start-only",
+    "delay": "1500"
 }

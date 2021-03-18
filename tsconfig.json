@@ -25,7 +25,8 @@
       "./src/**/*",
       "./bin/**/*",
       "./config/**/*",
-      "./lib/**/*"
+      "./lib/**/*",
+      "../../Library/Caches/JetBrains/WebStorm2020.3/javascript/typings/node/10.17.48/node_modules/@types/node/globals.d.ts"
   ],
   "exclude": [
     "node_modules",

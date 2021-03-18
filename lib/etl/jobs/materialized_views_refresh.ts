@@ -25,6 +25,8 @@ const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
 const JOB_RUN_TIMES = {
     EVERY_10_MINUTES: minutesBetweenRuns,
     HOURLY: 60,
+    EVERY_HOUR_AND_A_HALF: 60 * 1.5,
+    EVERY_2_HOURS: 60 * 2,
     EVERY_4_HOURS: 60 * 4,
     EVERY_6_HOURS: 60 * 6,
     TWICE_PER_DAY: 60 * 12,
@@ -35,11 +37,11 @@ const JOB_RUN_TIMES = {
 const MATERIALIZED_VIEWS_DEPENDENCY_LIST: Array<{ name: string, skip?: boolean, minutesBetweenRunning: number }> = [
     {
         name: VIEWS.GAMER_STAT_SUMMARY,
-        minutesBetweenRunning: JOB_RUN_TIMES.HOURLY
+        minutesBetweenRunning: JOB_RUN_TIMES.EVERY_HOUR_AND_A_HALF
     },
     {
         name: VIEWS.GAMER_ROLLING_TRENDS,
-        minutesBetweenRunning: JOB_RUN_TIMES.HOURLY
+        minutesBetweenRunning: JOB_RUN_TIMES.EVERY_2_HOURS
     },
     {
         name: VIEWS.GRADING_TABLE,

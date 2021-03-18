@@ -46,6 +46,7 @@ export async function getGamerDetailView(username: string, platform: string, vie
             if (response.status === 200) {
                 resolve(response.data);
             } else {
+                console.log(response);
                 reject(new Error('an unknown error occurred while trying to get the gamer details'));
             }
         }).catch(reject);

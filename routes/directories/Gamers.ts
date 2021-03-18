@@ -12,11 +12,7 @@ import {handleError, handleResponse} from '../responseHandler';
 import {handleRecaptchaVerify} from '../recaptchaMiddleware';
 
 import {GAME_CATEGORIES, VIEWS} from '../../lib/constants';
-import {
-    getGamerClassDescriptions,
-    getGamerDetailViewQuery,
-    getSingleGamerData
-} from '../../lib/components/Gamers/GamerService';
+import {GamerController} from '../../lib/components/Gamers';
 import {Gamer, GamerPlatform} from '../../src/components/gamer/GamerTypes';
 import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
 import UtilityService from '../../src/services/UtilityService';
@@ -98,6 +94,7 @@ function manageComplexQueryParameters(queryParams) {
 
 
 export async function findGamers(req: Request, res: Response) {
+    console.log('find gamers');
     const queryParams = req.query;
 
     const offset = queryParams.offset || 0;
@@ -117,9 +114,20 @@ export async function findGamers(req: Request, res: Response) {
         queryParams['game_category'] = GAME_CATEGORIES.WARZONE;
     }
 
-    manageComplexQueryParameters(queryParams);
-    const classDescriptions: GamerClassDescription = await getGamerClassDescriptions();
-    const queryOptions = {offset, limit, order: undefined};
+    let classDescriptions: GamerClassDescription;
+
+    try {
+        manageComplexQueryParameters(queryParams);
+        classDescriptions = await GamerController.getGamerClassDescriptions();
+    } catch (error) {
+        console.log(error);
+        return handleError(req, res, {error: error.message});
+    }
+
+    const queryOptions = {
+        offset, limit,
+        order: undefined
+    };
 
     if (sort) {
         const sortObj = {
@@ -134,12 +142,19 @@ export async function findGamers(req: Request, res: Response) {
         queryOptions.order = [sortObj];
     }
 
-    const playerQuery = getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, queryParams, queryOptions);
+    try {
+        const playerQuery = GamerController.getGamerDetailViewQuery(VIEWS.GAMER_STAT_SUMMARY, queryParams, queryOptions);
 
-    await playerQuery.executeQuery();
-    const gamers = playerQuery.data;
+        await playerQuery.executeQuery();
+        const gamers = playerQuery.data;
 
-    handleResponse(req, res, {gamers, classDescriptions});
+        return handleResponse(req, res, {gamers, classDescriptions});
+    } catch (error) {
+        console.log(error);
+        return handleError(req, res, {error: error.message});
+    }
+
+
 }
 
 
@@ -158,40 +173,39 @@ async function updateGamerUponRequest(gamer: Gamer): Promise<Gamer> {
 export async function getGamerDetails(req: Request, res: Response) {
     logger.trace('getGamerDetails');
 
-    console.log('req.params', req.params);
-    console.log('req.query', req.query);
-
-    const view = req.query.view as string;
-    const game_category = req.query.game_category as string;
-
-    delete req.query.view;
-
-    const {username, platform} = req.params;
-
-    const allParams = {...req.params, ...req.query};
-
-    const paramMap = getQueryParamToSQLMap();
-    const validViews = Object.keys(paramMap);
-    const isValidView = validViews.includes(view);
-
-    const errorObject = {
-        'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
-        'invalid_view': 'invalid view query param needs to be in ' + JSON.stringify(validViews),
-        'not_found': username + ' on platform: ' + platform + ' was not found!'
-    };
-
-    if (!platform || !username) {
-        return handleError(req, res, {message: errorObject['missing_data']});
-    }
-
-    const sqlView = paramMap[view];
-
-    if (!sqlView && !isValidView) {
-        return handleError(req, res, {message: errorObject['invalid_view']});
-    }
-
     try {
-        const gamer = await getSingleGamerData(username, platform as GamerPlatform, game_category);
+        const view = req.query.view as string;
+        const game_category = req.query.game_category as string;
+
+        delete req.query.view;
+
+        const {username, platform} = req.params;
+
+        const allParams = {...req.params, ...req.query};
+
+        const paramMap = getQueryParamToSQLMap();
+        const validViews = Object.keys(paramMap);
+
+        const errorObject = {
+            'missing_data': 'platform and username (/gamers/:platform/:username, String) are required and cannot be empty',
+            'invalid_view': 'invalid view query param needs to be in ' + JSON.stringify(validViews),
+            'not_found': username + ' on platform: ' + platform + ' was not found!'
+        };
+
+
+        if (!platform || !username) {
+            return handleError(req, res, {message: errorObject['missing_data']});
+        }
+
+        const isValidView = validViews.includes(view);
+        const sqlView = paramMap[view];
+
+        if (!sqlView && !isValidView) {
+            return handleError(req, res, {message: errorObject['invalid_view']});
+        }
+
+        const gamer = await GamerController.getSingleGamerData(username, platform as GamerPlatform, game_category);
+        console.log(gamer);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});
@@ -202,7 +216,7 @@ export async function getGamerDetails(req: Request, res: Response) {
         let viewData = null;
 
         if (sqlView) {
-            const viewToQuery = getGamerDetailViewQuery(sqlView, queryParams);
+            const viewToQuery = GamerController.getGamerDetailViewQuery(sqlView, queryParams);
 
             await viewToQuery.executeQuery();
             viewData = viewToQuery.data;
@@ -227,7 +241,7 @@ export async function getGamerDetails(req: Request, res: Response) {
         });
 
     } catch (error) {
-        logger.error(error);
+        console.log(error);
         return handleError(req, res, {message: DEFAULT_ERROR_MESSAGE});
     }
 
