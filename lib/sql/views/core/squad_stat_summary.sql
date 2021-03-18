@@ -1,12 +1,12 @@
 CREATE OR REPLACE VIEW warzone.squad_stat_summary AS
 WITH team_cnt AS (
     SELECT
-           match_id,
-           team,
-           team_type,
-           ARRAY_AGG( query_platform || '-' || query_username ORDER BY query_username) AS username_list,
-           COUNT(DISTINCT query_username )  AS num_players
-    FROM warzone.gamer_matches
+           gm.match_id,
+           gm.team,
+           gm.team_type,
+           ARRAY_AGG( gm.query_platform || '-' || gm.query_username ORDER BY query_username) AS username_list,
+           COUNT(DISTINCT gm.query_username )  AS num_players
+    FROM warzone.gamer_matches gm JOIN warzone.gamers g  ON gm.uno_id = g.uno_id
     GROUP BY 1,2,3
 ),
      full_teams AS (
