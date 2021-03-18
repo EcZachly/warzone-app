@@ -1,10 +1,10 @@
 WITH source AS (
 
-SELECT *,
-
+SELECT gm.*,
        EXTRACT(HOUR FROM to_timestamp(m.start_time) AT TIME ZONE $2) AS hour_of_timestamp,
        EXTRACT(DOW FROM to_timestamp(m.start_time) AT TIME ZONE $2) as day_of_week
 FROM warzone.gamer_matches gm
+         JOIN warzone.gamers g ON gm.uno_id = g.uno_id
          JOIN warzone.matches m ON gm.match_id = m.match_id
 WHERE gm.uno_id = CAST($1 AS NUMERIC)
 ),
