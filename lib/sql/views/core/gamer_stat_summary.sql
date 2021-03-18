@@ -92,7 +92,7 @@ WITH agg AS (
 
            COUNT(1)                                                                        AS num_matches,
            MAX(end_timestamp)                                                              AS last_match_timestamp,
-           CAST(date_part('day', AGE(now(), MAX(end_timestamp))) AS INTEGER)               AS days_since_last_match
+           (EXTRACT(EPOCH FROM NOW()) - EXTRACT(EPOCH FROM max(end_timestamp)))/3600*24         AS days_since_last_match
 
     FROM warzone.gamer_matches gm
              LEFT JOIN warzone.gamers g ON gm.uno_id = g.uno_id
