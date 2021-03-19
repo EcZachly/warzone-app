@@ -55,6 +55,7 @@ SELECT ft.team_grain,
        NULLIF(SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills), 0)                              as gulag_win_rate
 FROM full_teams ft
     JOIN warzone.gamer_matches gm ON ft.match_id = gm.match_id and ft.team = gm.team
+    JOIN warzone.gamers g ON gm.uno_id = g.uno_id
 WHERE has_full_team_data = TRUE
 GROUP BY ft.team_grain, ft.team_type, gm.game_category
 ORDER BY  CAST(COUNT(DISTINCT CASE WHEN team_placement = 1 THEN ft.match_id END) AS REAL)  DESC
