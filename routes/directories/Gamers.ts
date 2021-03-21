@@ -205,7 +205,6 @@ export async function getGamerDetails(req: Request, res: Response) {
         }
 
         const gamer = await GamerController.getSingleGamerData(username, platform as GamerPlatform, game_category);
-        console.log(gamer);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});
