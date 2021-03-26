@@ -14,14 +14,22 @@ export type ClassBadgeProps = {
 
 export default function ClassBadgeList({subject, classDescriptions}: ClassBadgeProps) {
     if (classDescriptions) {
-        const badges = Object.keys(classDescriptions).filter((key) => key.includes('cutoff')).map((key) => {
+        let keys =  Object.keys(classDescriptions);
+        keys.sort((left, right)=> {
+            if(left.includes('tier')){
+                return -1;
+            }
+           return 1;
+        });
+        const badges = keys.filter((key) => key.includes('cutoff')).map((key) => {
                 const percentiles = classDescriptions[key]['percentiles'];
                 const statValue = subject[classDescriptions[key]['category']];
-
+                const tiered = key.includes('tier');
                 return (
                     <ClassBadge statName={classDescriptions[key]['category']}
                                 category={percentiles}
-                                stat={statValue as number}/>
+                                stat={statValue as number}
+                                tiered={tiered}/>
                 );
             }
         );

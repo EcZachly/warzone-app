@@ -9,13 +9,16 @@ import UtilityService from '../../services/UtilityService';
 type GamerClassBadgeProps = {
     category: Record<any, unknown>,
     stat: number,
-    statName: string
+    statName: string,
+    tiered: boolean
 }
 
-export default function ClassBadge({category, stat, statName}: GamerClassBadgeProps) {
+export default function ClassBadge({category, stat, statName, tiered = false}: GamerClassBadgeProps) {
     const style = {};
 
     let categoryName = '';
+
+
 
     const keys = Object.keys(category);
 
@@ -29,6 +32,29 @@ export default function ClassBadge({category, stat, statName}: GamerClassBadgePr
 
     if (!categoryName) {
         return <></>;
+    }
+
+
+    if(tiered){
+        let colorMap = {
+            'bronze': '#cd7f32',
+            'silver':'#cdcbc7',
+            'gold': '#FFDE2E',
+            'platinum':  '#f1f1ef',
+            'diamond': '#94FFFF'
+        };
+        let tier = categoryName.split('_')[0];
+
+        if(['master', 'legend'].includes(tier)){
+            style['border'] = 'black';
+            style['color'] = 'black';
+            style['font-weight'] = 'bold';
+            style['background-color'] = 'white';
+        }
+        else{
+            style['background-color'] = colorMap[tier];
+            style['color'] = 'black';
+        }
     }
 
     const description = category['description'] ? category['description'] : '';

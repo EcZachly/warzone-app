@@ -17,6 +17,7 @@ import {Gamer, GamerPlatform} from '../../src/components/gamer/GamerTypes';
 import {GamerClassDescription} from '../../lib/components/Classes/ClassDescriptionType';
 import UtilityService from '../../src/services/UtilityService';
 import {DEFAULT_ERROR_MESSAGE} from '../../src/config/CONSTANTS';
+import {getGamerClassDescriptions} from '../../lib/components/Gamers/GamerController';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -205,7 +206,6 @@ export async function getGamerDetails(req: Request, res: Response) {
         }
 
         const gamer = await GamerController.getSingleGamerData(username, platform as GamerPlatform, game_category);
-        console.log(gamer);
 
         if (!gamer) {
             return handleError(req, res, {message: errorObject['not_found']});
@@ -222,8 +222,7 @@ export async function getGamerDetails(req: Request, res: Response) {
             viewData = viewToQuery.data;
         }
 
-        // const classDescriptions = await getGamerClassDescriptions();
-        const classDescriptions = [];
+        const classDescriptions = await getGamerClassDescriptions();
 
         await updateGamerUponRequest(gamer);
 

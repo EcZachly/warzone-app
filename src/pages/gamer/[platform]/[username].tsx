@@ -90,6 +90,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         return <div>{error}</div>;
     }
     let {gamer, viewData, errorMessage, classDescriptions} = gamerData;
+    console.log('descriptions', classDescriptions);
     classDescriptions = UtilityService.validateItem(classDescriptions, 'array', []);
 
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key) => {

@@ -66,7 +66,7 @@ SELECT
                 'master_KDR', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY kdr), 'percentile', .99),
                 'legend_KDR', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY kdr), 'percentile', .999)
                 )
-        ) as  kdr_cutoffs,
+        ) as  kdr_tier_cutoffs,
               JSON_BUILD_OBJECT(
                     'category', 'avg_kills',
                     'description', '',
