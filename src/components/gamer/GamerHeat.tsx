@@ -20,7 +20,7 @@ export default function GamerHeat({gamer, size}: GamerCardProps) {
         const delta = gamer.heat_score;
 
         if (delta >= 0.1) {
-            let cnt = 0;
+            let count = 0;
             const array = [];
 
             const standardHeight = 18;
@@ -31,12 +31,15 @@ export default function GamerHeat({gamer, size}: GamerCardProps) {
 
 
 
-            while (cnt < gamer.heat_rating) {
-                array.push(<Image className={'heat-indicator'}
-                                  style={{width: width, height: height, opacity: (52 + (cnt * 12)) + '%'}}
-                                  src={'/assets/images/icons/heat-sm.png'}
-                                  alt={'number of flames means this player is on a hot streak'}/>);
-                cnt = cnt + 1;
+            while (count < gamer.heat_rating) {
+                array.push(
+                    <Image className={'heat-indicator'}
+                           key={count}
+                           style={{width: width, height: height, opacity: (52 + (count * 12)) + '%'}}
+                           src={'/assets/images/icons/heat-sm.png'}
+                           alt={'number of flames means this player is on a hot streak'}/>
+                );
+                count = count + 1;
             }
 
             const viewDelta = delta.toFixed(1) + '%';

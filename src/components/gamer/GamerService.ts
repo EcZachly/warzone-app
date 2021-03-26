@@ -92,6 +92,19 @@ export function minifyUsername(username) {
 
 
 
+export function generatePlatformUsername(gamer) {
+    return [gamer.username, gamer.platform].join('-');
+}
+
+
+
+
+export function getDefaultGameCategory() {
+    return 'Warzone';
+}
+
+
+
 export function sanitizeStatKey(key) {
     const keywordMap = {
         'Avg': 'Average',
@@ -108,6 +121,8 @@ export default {
     getGamerPlatforms,
     getPlatformObjByID,
     minifyUsername,
+    generatePlatformUsername,
+    getDefaultGameCategory,
     queryGamers,
     sanitizeStatKey,
     getGamerDetailView

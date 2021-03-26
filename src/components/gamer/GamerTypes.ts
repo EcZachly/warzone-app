@@ -88,6 +88,7 @@ export type RawGamer = {
     quad_win_rate?: number,
     quad_max_kills?: number,
     quad_match_count?: number,
+    platform_username?: GamerID,
 
 
     classDescriptions?: Record<any, unknown>[],

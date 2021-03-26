@@ -220,7 +220,13 @@ const DashboardPage = ({baseUrl}) => {
 
 
     function getRecentMatchesContent() {
-        if (recentMatchesState.loading) {
+        if (recentMatchesState.error) {
+            return (
+                <Alert type={'error'}>
+                    {recentMatchesState.error}
+                </Alert>
+            );
+        } else if (recentMatchesState.loading) {
             return (
                 <Card>
                     <CardBody>
@@ -262,7 +268,11 @@ const DashboardPage = ({baseUrl}) => {
         return (
             <Box>
                 <Paragraph>
-                    Add your friends to follow them, see their recent games, and compare stats. <Text italic>You'll also see when they're on a hot streak!</Text>
+                    Add your friends to follow them, see their recent games, and compare stats. <Text italic>You'll also
+                                                                                                             see when
+                                                                                                             they're on
+                                                                                                             a hot
+                                                                                                             streak!</Text>
                 </Paragraph>
 
                 <CreateGamerRelationship user={userState.data}
@@ -276,7 +286,7 @@ const DashboardPage = ({baseUrl}) => {
                                              getData(view, gameCategory);
                                          }
                                          }/>
-                </Box>
+            </Box>
         );
     }
 
@@ -450,27 +460,40 @@ const DashboardPage = ({baseUrl}) => {
             }
 
             getRecentMatches(gamerRelationships);
+            getGamerRelationshipDetails(gamerRelationships);
+        });
+    }
 
-            const detailPromises = gamerRelationships.map((gamer) => {
-                return getGamerDetails(gamer.username, gamer.platform, view, category).catch((error) => {
-                    console.log(error);
-                });
+
+
+    function getGamerRelationshipDetails(gamerRelationships) {
+        let platformUsernameList = gamerRelationships.map(GamerService.generatePlatformUsername);
+
+        GamerService.queryGamers({
+            platform_username: platformUsernameList,
+            game_category: GamerService.getDefaultGameCategory()
+        }).then((gamers) => {
+            let gamerPlatformUsernameMap = gamers.reduce((map, gamer) => {
+                // @ts-ignore
+                map[gamer.platform_username] = gamer;
+                return map;
+            }, {});
+
+            let newGamerRelationships = gamerRelationships.map((gamerRelationship) => {
+                let platformUsername = GamerService.generatePlatformUsername(gamerRelationship);
+                gamerRelationship.detailData = {
+                    gamer: gamerPlatformUsernameMap[platformUsername]
+                };
+
+                return gamerRelationship;
             });
 
-            Promise.all(detailPromises).then((data: any[]) => {
-                data.forEach((row, index) => {
-                    gamerRelationships[index].detailData = UtilityService.validateItem(row, 'object', {});
-                });
-
-                console.log('gamerRelationships', gamerRelationships);
-
-                setGamerRelationshipsState({
-                    data: JSON.parse(JSON.stringify(gamerRelationships)),
-                    loading: false
-                });
-            }).catch((error) => {
-                console.error(error);
+            setGamerRelationshipsState({
+                loading: false,
+                data: JSON.parse(JSON.stringify(newGamerRelationships))
             });
+        }).catch((error) => {
+            console.log(error);
         });
     }
 
@@ -492,9 +515,16 @@ const DashboardPage = ({baseUrl}) => {
         };
 
         GamerMatchService.queryGamerMatches(query, queryOptions).then((gamerMatches) => {
+            console.log('gamerMatches', gamerMatches);
             setRecentMatchesState({
                 data: GamerMatchService.combineGamerMatches(gamerMatches),
                 loading: false
+            });
+        }).catch((error) => {
+            console.error(error);
+            setRecentMatchesState({
+                loading: false,
+                error: 'An unknown error occurred while getting the recent matches'
             });
         });
     }
