@@ -26,7 +26,8 @@ export default function ClassDetail({
                                         height,
                                         stat,
                                         badgeRef,
-                                        keys
+                                        keys,
+                                        tiered = false
                                     }: GamerClassDetailProps) {
     let gamerStatDisplayValue = parseFloat(stat.toString()).toFixed(2).toString();
 
@@ -37,12 +38,14 @@ export default function ClassDetail({
     const description = category['description'] || category['category'] || '';
     const statDisplayName = statName.split('_').map(_.capitalize).join(' ');
 
-    const displayPercentiles = keys.map((val) => {
+    const displayPercentiles = keys.filter((key)=> {
+        return !tiered || key.includes('1') || key.includes('legend') || key.includes('master');
+    }).map((val) => {
         const displayName = val.split('_').map(_.capitalize).join(' ');
         const percentile = category[val]['percentile'];
         const percentileVal = category[val]['value'];
 
-        let displayValue = percentileVal.toFixed(2);
+        let displayValue = parseFloat(percentileVal.toString()).toFixed(2);
         let perMessage = ' per game';
 
         if (statName.includes('percent')) {
@@ -58,7 +61,7 @@ export default function ClassDetail({
             <ListItem key={displayName} style={{fontSize: '.9em', lineHeight: '125%'}}>
                 <Text style={{fontWeight: 'bold'}}>
                     {displayName}
-                </Text>, {'Better than ' + percentile.toFixed(2) * 100 as string + '% of players'}, {'>' + displayValue} {perMessage}
+                </Text>, {'Better than ' + (percentile * 100).toFixed(0) as string + '% of players'}, {'>' + displayValue} {perMessage}
             </ListItem>
         );
     });
@@ -128,5 +131,6 @@ type GamerClassDetailProps = {
     statName?: string,
     height: number,
     width: number,
-    keys?: string[]
+    keys?: string[],
+    tiered?: boolean
 }

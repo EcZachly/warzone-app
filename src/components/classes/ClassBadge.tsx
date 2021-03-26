@@ -70,7 +70,9 @@ export default function ClassBadge({category, stat, statName, tiered = false}: G
                              statName={statName}
                              category={category}
                              keys={keys}
-                             stat={stat}/>
+                             stat={stat}
+                             tiered={tiered}
+                />
             );
         }}>
             <Badge className={'gamer-class-badge'}
