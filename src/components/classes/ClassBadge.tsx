@@ -1,8 +1,11 @@
 import React from 'react';
+
 import {Badge} from '../SimpleComponents';
 import {Tooltip} from '../SmartComponents';
 import {ClassDetail} from './index';
+
 import UtilityService from '../../services/UtilityService';
+import {COLORS} from '../../config/CONSTANTS';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -35,29 +38,29 @@ export default function ClassBadge({category, stat, statName, tiered = false}: G
     }
 
 
-    if(tiered){
+    if (tiered) {
         let colorMap = {
-            'bronze': '#cd7f32',
-            'silver':'#cdcbc7',
-            'gold': '#FFDE2E',
-            'platinum':  '#f1f1ef',
-            'diamond': '#94FFFF'
+            bronze: COLORS.TIER_BRONZE,
+            silver: COLORS.TIER_SILVER,
+            gold: COLORS.TIER_GOLD,
+            platinum: COLORS.TIER_PLATINUM,
+            diamond: COLORS.TIER_DIAMOND
         };
+
         let tier = categoryName.split('_')[0];
 
-        if(['master', 'legend'].includes(tier)){
+        if (['master', 'legend'].includes(tier)) {
             style['border'] = 'black';
             style['color'] = 'black';
             style['font-weight'] = 'bold';
             style['background-color'] = 'white';
-        }
-        else{
+        } else {
             style['background-color'] = colorMap[tier];
             style['color'] = 'black';
         }
     }
 
-    const description = category['description'] ? category['description'] : '';
+    const description = (category['description'] ? category['description'] : '') as string;
     let badgeRef;
 
     return (
@@ -71,15 +74,14 @@ export default function ClassBadge({category, stat, statName, tiered = false}: G
                              category={category}
                              keys={keys}
                              stat={stat}
-                             tiered={tiered}
-                />
+                             tiered={tiered}/>
             );
         }}>
             <Badge className={'gamer-class-badge'}
                    innerRef={(ref) => badgeRef = ref}
                    size={'sm'}
                    color={'dark'}
-                   title={description as string}
+                   title={description}
                    style={style}>
                 {UtilityService.camelToProperCase(categoryName)}
             </Badge>

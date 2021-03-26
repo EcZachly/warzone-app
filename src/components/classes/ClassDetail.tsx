@@ -14,21 +14,37 @@ import {
 } from '../SimpleComponents';
 
 import HtmlService from './../../services/HtmlService';
+import {GamerService} from '../gamer';
+import {ClassPercentile} from './ClassTypes';
+import UtilityService from '../../services/UtilityService';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
+type GamerClassDetailProps = {
+    category?: Record<any, unknown>,
+    stat?: number,
+    style?: React.CSSProperties,
+    badgeRef?: React.LegacyRef<HTMLDivElement>,
+    statName?: string,
+    height: number,
+    width: number,
+    keys?: string[],
+    tiered?: boolean
+}
 
-export default function ClassDetail({
-                                        category,
-                                        style,
-                                        statName,
-                                        width,
-                                        height,
-                                        stat,
-                                        badgeRef,
-                                        keys,
-                                        tiered = false
-                                    }: GamerClassDetailProps) {
+export default function ClassDetail(props: GamerClassDetailProps) {
+    const {
+        category,
+        style,
+        statName,
+        width,
+        height,
+        stat,
+        badgeRef,
+        keys,
+        tiered = false
+    } = props;
+
     let gamerStatDisplayValue = parseFloat(stat.toString()).toFixed(2).toString();
 
     if (statName.includes('percent')) {
@@ -38,23 +54,23 @@ export default function ClassDetail({
     const description = category['description'] || category['category'] || '';
     const statDisplayName = statName.split('_').map(_.capitalize).join(' ');
 
-    const displayPercentiles = keys.filter((key)=> {
+    const displayPercentiles = keys.filter((key) => {
         return !tiered || key.includes('1') || key.includes('legend') || key.includes('master');
     }).map((val) => {
-        const displayName = val.split('_').map(_.capitalize).join(' ');
-        const percentile = category[val]['percentile'];
-        const percentileVal = category[val]['value'];
+        let selectedCategory = category[val] as ClassPercentile;
+        let {percentile, value} = selectedCategory;
+        const displayName = GamerService.sanitizeStatKey(val);
 
-        let displayValue = parseFloat(percentileVal.toString()).toFixed(2);
+        let displayValue = parseFloat(value.toString()).toFixed(2);
         let perMessage = ' per game';
 
         if (statName.includes('percent')) {
-            displayValue = percentileVal.toFixed(2) + '%';
+            displayValue = UtilityService.round(value, 2) + '%';
             perMessage = '';
         }
 
         if (statName.includes('mins')) {
-            displayValue = percentileVal.toFixed(2) + ' minutes';
+            displayValue = UtilityService.round(value, 2) + ' minutes';
         }
 
         return (
@@ -107,10 +123,11 @@ export default function ClassDetail({
                     </Text>
                     <LineBreak clear/>
                     <Text>
-                        Average: <Text bold>{gamerStatDisplayValue}</Text>
+                        Gamer's Average: <Text bold>{gamerStatDisplayValue}</Text>
                     </Text>
                 </Paragraph>
             </CardHeader>
+
             <CardBody>
                 <Show show={!!description}>
                     <Paragraph type={'help'}>{description}</Paragraph>
@@ -121,16 +138,4 @@ export default function ClassDetail({
             </CardBody>
         </Card>
     );
-}
-
-type GamerClassDetailProps = {
-    category?: Record<any, unknown>,
-    stat?: number,
-    style?: React.CSSProperties,
-    badgeRef?: React.LegacyRef<HTMLDivElement>,
-    statName?: string,
-    height: number,
-    width: number,
-    keys?: string[],
-    tiered?: boolean
 }

@@ -14,13 +14,14 @@ import {userIsLoggedIn} from '../Users/UserService';
 import {UserID} from '../Users/UserTypes';
 import {GamerRelationshipList} from '../GamerRelationships/GamerRelationshipTypes';
 import {GamerRelationshipService} from '../GamerRelationships';
+import {ClassDescriptionMap} from '../classes/ClassTypes';
 
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
 export type GamerCardProps = {
     gamer?: Gamer,
-    classDescriptions?: Record<any, unknown>,
+    classDescriptions?: ClassDescriptionMap,
     loading?: boolean,
     mode?: null | 'condensed',
     onGamerClick?: (gamer) => void
@@ -40,8 +41,6 @@ export default function GamerCard({gamer, classDescriptions, mode, loading, onGa
         if (!gamer) {
             return <Card/>;
         }
-
-        console.log(gamer);
 
         const isCondensed = (mode === 'condensed');
         const modeClass = isCondensed ? 'condensed' : 'standard';

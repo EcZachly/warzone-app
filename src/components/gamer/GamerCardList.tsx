@@ -5,6 +5,7 @@ import {Box} from './../SimpleComponents';
 import GamerCard from './GamerCard';
 
 import {GamerList} from './GamerTypes';
+import {ClassDescriptionMap} from '../classes/ClassTypes';
 
 //===---==--=-=--==---===----===---==--=-=--==---===----//
 
@@ -12,7 +13,7 @@ type GamerCardListProps = {
     gamers?: GamerList,
     onGamerClick?: (gamer) => void,
     mode?: null | 'condensed',
-    classDescriptions?: Record<any, unknown>
+    classDescriptions?: ClassDescriptionMap
 };
 
 

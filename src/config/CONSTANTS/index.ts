@@ -23,8 +23,14 @@ export const COLORS = {
     NEON_YELLOW: '#FFB63F',
     NEON_GREEN: '#22C471',
     NEON_BLUE: '#3E7CFF',
-    NEON_PURPLE: '#903aee',
+    NEON_PURPLE: '#903AEE',
     NEON_PINK: '#FF3E7C',
+
+    TIER_BRONZE: '#d68e47',
+    TIER_SILVER: '#CDCBC7',
+    TIER_GOLD: '#FFDE2E',
+    TIER_PLATINUM: '#F1F1EF',
+    TIER_DIAMOND: '#94FFFF'
 };
 
 
