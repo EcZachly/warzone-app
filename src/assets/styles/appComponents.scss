@@ -13,7 +13,6 @@ main.main {
 #navbar {
   height: 100px;
   width: 100%;
-  border-bottom-color: #494949;
   box-shadow: 0px 1px 8px 4px rgba(0, 0, 0, .15);
 }
 
@@ -36,7 +35,7 @@ main.main {
 
 #navbar #brand-image span {
   font-weight: 300;
-  color: $theme-light-gray;
+  //color: $theme-light-gray;
   text-transform: capitalize;
 }
 
@@ -45,11 +44,11 @@ main.main {
 }
 
 #navbar a {
-  color: #eee;
+  //color: #eee;
 }
 
 #navbar a:hover {
-  color: #ffffff;
+  //color: #ffffff;
   text-decoration: none;
 }
 
@@ -93,7 +92,7 @@ main.main {
   font-size: 1.1em;
   padding-top: 60px;
   padding-bottom: 80px;
-  background: #202017;
+  background: var(--theme-accent);
 }
 
 #footer #footer-container {
@@ -121,7 +120,7 @@ main.main {
 
 #footer #footer-container #footer-branding .header .small {
   font-weight: 300;
-  color: $theme-light-gray;
+  color: var(--theme-font-help-color);
 }
 
 #footer #footer-container #footer-item-container {
@@ -141,7 +140,7 @@ main.main {
 
 
 #footer #footer-container #footer-item-container .footer-items a {
-  color: white;
+  color: var(--theme-font-color);
 }
 
 
@@ -479,7 +478,7 @@ main.main {
 }
 
 .gamer-card .aliases {
-  color: $theme-gray;
+  color: var(--theme-font-help-color);
   font-style: italic;
 }
 

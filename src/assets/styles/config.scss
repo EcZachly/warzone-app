@@ -8,6 +8,7 @@ $theme-pink: #D95779;
 $theme-secondary: #4a5950;
 
 $theme-white: #fafafa;
+
 $theme-very-light-gray: #f8f9fa;
 $theme-gray-99: darken($theme-white, 1%);
 $theme-gray-98: darken($theme-white, 2%);
@@ -27,3 +28,138 @@ $theme-background-color: $theme-black;
 $theme-text-color: $theme-gray-98;
 $theme-line-break: lighten($theme-background-color, 25);
 $theme-border-color: lighten($theme-background-color, 13);
+
+
+:root {
+  --theme-red: #{$theme-red};
+  --theme-orange: #{$theme-orange};
+  --theme-yellow: #{$theme-yellow};
+  --theme-green: #{$theme-green};
+  --theme-blue: #{$theme-blue};
+  --theme-purple: #{$theme-purple};
+  --theme-pink: #{$theme-pink};
+
+  --theme-secondary: #{lighten($theme-black, 5)};
+  --theme-secondary-border: #{lighten($theme-black, 10)};
+
+  --theme-accent: #{darken(desaturate($theme-secondary, 3), 8)};
+  --theme-accent-contrast: #{darken($theme-secondary, 5)};
+
+  --theme-background-101: #{darken($theme-black, 1)};
+  --theme-background: #{$theme-black};
+  --theme-background-99: #{lighten($theme-black, 1)};
+  --theme-background-98: #{lighten($theme-black, 2)};
+  --theme-background-97: #{lighten($theme-black, 3)};
+  --theme-background-96: #{lighten($theme-black, 4)};
+  --theme-background-95: #{lighten($theme-black, 5)};
+  --theme-background-90: #{lighten($theme-black, 10)};
+  --theme-background-80: #{lighten($theme-black, 20)};
+
+  --theme-contrast-101: #{darken($theme-white, 4)};
+  --theme-contrast: #{darken($theme-white, 5)};
+  --theme-contrast-99: #{darken($theme-white, 6)};
+  --theme-contrast-98: #{darken($theme-white, 7)};
+  --theme-contrast-95: #{darken($theme-white, 10)};
+  --theme-contrast-90: #{darken($theme-white, 15)};
+  --theme-contrast-80: #{darken($theme-white, 25)};
+
+  --theme-line-break: #{lighten($theme-black, 25)};
+  --theme-border: #{lighten($theme-black, 13)};
+
+  --theme-font-color: #{darken($theme-very-light-gray, 5)};
+  --theme-font-color-hover: #{darken($theme-very-light-gray, 3)};
+  --theme-font-color-click: #{darken($theme-very-light-gray, 8)};
+
+  --theme-font-help-color: #{darken($theme-light-gray, 15)};
+
+  --theme-font-placeholder-color: #{$theme-light-gray};
+
+  --theme-font-label-color: #{$theme-light-gray};
+
+  --theme-font-error-color: #{darken($theme-red, 5)};
+  --theme-font-error-color-glow: #{change-color($theme-red, $alpha: .2)};
+
+  --theme-font-link-color: #{$theme-link};
+  --theme-font-link-color-hover: #{lighten($theme-link, 7)};
+  --theme-font-link-color-click: #{darken($theme-link, 5)};
+  --theme-font-link-color-disabled: #{desaturate($theme-link, 15)};
+  --theme-font-link-color-glow: #{change-color($theme-link, $alpha: .35)};
+
+  --theme-button-background-color: #{lighten($theme-black, 6)};
+  --theme-button-background-color-border: #{lighten($theme-black, 10)};
+  --theme-button-background-color-hover: #{lighten($theme-black, 8)};
+  --theme-button-background-color-hover-border: #{lighten($theme-black, 11)};
+  --theme-button-background-color-click: #{lighten($theme-black, 11)};
+  --theme-button-background-color-click-border: #{lighten($theme-black, 13)};
+  --theme-button-background-color-disabled: #{lighten($theme-black, 5)};
+  --theme-button-background-color-disabled-border: #{lighten($theme-black, 10)};
+}
+
+
+
+
+[data-theme="light"] {
+  --theme-red: #{$theme-red};
+  --theme-orange: #{$theme-orange};
+  --theme-yellow: #{$theme-yellow};
+  --theme-green: #{$theme-green};
+  --theme-blue: #{$theme-blue};
+  --theme-purple: #{$theme-purple};
+  --theme-pink: #{$theme-pink};
+
+  --theme-secondary: #{darken($theme-white, 12)};
+  --theme-secondary-border: #{darken($theme-white, 15)};
+
+  --theme-accent: #{lighten($theme-secondary, 40)};
+  --theme-accent-contrast: #{lighten($theme-secondary, 5)};
+
+  --theme-link: #{$theme-link};
+
+  --theme-background-101: #{lighten($theme-white, 1)};
+  --theme-background: #{$theme-white};
+  --theme-background-99: #{darken($theme-white, 1)};
+  --theme-background-98: #{darken($theme-white, 2)};
+  --theme-background-97: #{darken($theme-white, 3)};
+  --theme-background-96: #{darken($theme-white, 4)};
+  --theme-background-95: #{darken($theme-white, 5)};
+  --theme-background-90: #{darken($theme-white, 10)};
+  --theme-background-80: #{darken($theme-white, 20)};
+
+  --theme-contrast-101: #{lighten($theme-dark-gray, 4)};
+  --theme-contrast: #{lighten($theme-dark-gray, 5)};
+  --theme-contrast-99: #{lighten($theme-dark-gray, 6)};
+  --theme-contrast-98: #{lighten($theme-dark-gray, 7)};
+  --theme-contrast-95: #{lighten($theme-dark-gray, 10)};
+  --theme-contrast-90: #{lighten($theme-dark-gray, 15)};
+  --theme-contrast-80: #{lighten($theme-dark-gray, 25)};
+
+  --theme-font-color: #{lighten($theme-dark-gray, 7)};
+  --theme-font-color-hover: #{lighten($theme-dark-gray, 10)};
+
+  --theme-font-help-color: #{lighten($theme-dark-gray, 20)};
+
+  --theme-font-placeholder-color: #{lighten($theme-dark-gray, 25)};
+
+  --theme-font-label-color: #{lighten($theme-dark-gray, 10)};
+
+  --theme-font-error-color: #{darken($theme-red, 5)};
+  --theme-font-error-color-glow: #{change-color($theme-red, $alpha: .2)};
+
+  --theme-font-link-color: #{lighten($theme-link, 10)};
+  --theme-font-link-color-hover: #{lighten($theme-link, 10)};
+  --theme-font-link-color-click: #{$theme-link};
+  --theme-font-link-color-disabled: #{desaturate($theme-link, 15)};
+  --theme-font-link-color-glow: #{change-color($theme-link, $alpha: .35)};
+
+  --theme-line-break: #{darken($theme-white, 25)};
+  --theme-border: #{darken($theme-white, 13)};
+
+  --theme-button-background-color: #{darken($theme-white, 8)};
+  --theme-button-background-color-border: #{darken($theme-white, 10)};
+  --theme-button-background-color-hover: #{darken($theme-white, 4)};
+  --theme-button-background-color-hover-border: #{darken($theme-white, 7)};
+  --theme-button-background-color-click: #{darken($theme-white, 11)};
+  --theme-button-background-color-click-border: #{darken($theme-white, 13)};
+  --theme-button-background-color-disabled: #{darken($theme-white, 5)};
+  --theme-button-background-color-disabled-border: #{darken($theme-white, 10)};
+}

@@ -35,7 +35,7 @@ class Page extends React.Component<PageProps, PageState> {
         const classNames = this._getClassNames(props);
 
         return (
-            <Box style={props.style} className={classNames}>
+            <Box style={props.style} className={classNames + ' dark-mode'}>
                 <Head>
                     <link rel="stylesheet"
                           href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&family=Roboto:ital,wght@0,300;0,400;0,500;1,400&display=swap"/>

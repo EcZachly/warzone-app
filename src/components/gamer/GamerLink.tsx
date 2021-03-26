@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Badge, Show, Text} from '../SimpleComponents';
+import {Badge, Link, Show, Text} from '../SimpleComponents';
 import {Placeholder} from './../SmartComponents';
 
 import GamerPlatformImage from './GamerPlatformImage';
@@ -46,7 +46,7 @@ export default function GamerLink(props: { gamer: Gamer, single?: boolean, noLin
             );
         } else {
             return (
-                <a className={'username gamer-link'}
+                <a className={'username gamer-link link'}
                    href={'/gamer/' + encodeURIComponent(gamer.platform) + '/' + encodeURIComponent(gamer.username)}>
                     {username}
                 </a>

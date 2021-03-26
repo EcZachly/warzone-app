@@ -22,15 +22,15 @@ html, body {
 }
 
 a {
-  color: $theme-link;
+  color: var(--theme-font-link-color);
 }
 
 a:hover {
-  color: lighten($theme-link, 10%);
+  color: var(--theme-font-link-hover);
 }
 
 a:active {
-  color: darken($theme-link, 5%);
+  color: var(--theme-font-link-click);
 }
 
 .has-click {
@@ -103,7 +103,7 @@ a:active {
 //SECTION OVERVIEW
 
 #section-overview {
-  background: darken($theme-background-color, 5);
+  background: var(--theme-background-95);
   padding-top: 60px;
   padding-bottom: 60px;
 }
@@ -169,7 +169,7 @@ a:active {
 //SECTION-FEATURES
 
 #section-features {
-  background: lighten($theme-background-color, 5);
+  background: var(--theme-background-95);
 }
 
 #section-features .info-container {
@@ -184,7 +184,7 @@ a:active {
 }
 
 #section-features .info-container.accent {
-  background-color: lighten($theme-background-color, 8);
+  background-color: var(--theme-background-90);
 }
 
 #section-features .info-container .details {
