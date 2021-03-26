@@ -280,6 +280,8 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         );
     }
 
+
+
     async function setTabAndFetchData(tabId) {
         const newState = {...chartState};
         newState.activeTab = tabId;
@@ -296,6 +298,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
             setChartState(newState);
         }
     }
+
 
 
     function getChartWidth() {
@@ -319,9 +322,14 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
         return ((windowWidth > 0 && windowWidth > maxWidth) ? maxWidth : windowWidth) - (chartSidePadding);
     }
 
+
+
     async function fetchViewData(tabId): Promise<{ viewData: Record<any, unknown> }> {
         return GamerService.getGamerDetailView(gamer.username as string, gamer.platform, tabId, gameCategory);
     }
+
+
+
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
