@@ -46,7 +46,7 @@ WITH rolling as (
                 CAST(AVG(CASE WHEN team_type = 'quad' THEN deaths end)
                      OVER (PARTITION BY gm.uno_id, game_category ORDER BY gm.start_timestamp ROWS BETWEEN 99 PRECEDING AND CURRENT ROW ) AS REAL) AS last_100_quad_rolling_average_deaths
          FROM warzone.gamer_matches gm
-                  JOIN warzone.gamers g ON gm.uno_id = g.uno_id
+                  JOIN (SELECT DISTINCT uno_id FROM warzone.gamers) g ON gm.uno_id = g.uno_id
      ),
      include_kdrs AS (
          SELECT *,
@@ -95,3 +95,4 @@ SELECT *,
            ELSE 5
            END                                                               as heat_rating
 FROM include_kdrs
+

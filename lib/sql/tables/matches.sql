@@ -12,5 +12,9 @@ CREATE TABLE warzone.matches (
     team_type TEXT,
     game_category TEXT,
     start_timestamp TIMESTAMP,
-    end_timestamp TIMESTAMP
+    end_timestamp TIMESTAMP,
+    average_player_kdr REAL,
+    average_player_score REAL,
+    average_player_skill_score REAL,
+    is_augmented BOOLEAN
 );

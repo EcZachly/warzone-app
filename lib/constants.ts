@@ -27,6 +27,7 @@ export const VIEWS = {
     GRADING_TABLE: 'grading_table',
     TIME_ANALYSIS: 'time_analysis',
     TREND_ANALYSIS: 'trend_analysis',
+    GAMER_STAT_SUMMARY_PREVIOUS: 'gamer_stat_summary_previous',
     SQUADS: 'squad_stat_summary_materialized',
     GAMER_ROLLING_TRENDS: 'gamer_rolling_trends_materialized',
     DAILY_PLAYER_STAT_SUMMARY: 'daily_player_stat_summary_materialized',
