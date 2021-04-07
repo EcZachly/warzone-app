@@ -49,7 +49,7 @@ class InputRadio extends React.Component<InputRadioProps> {
                 const isChecked = (selectedValue === value);
 
                 return (
-                    <div className={'form-check ' + className} key={`${index}-${value}`}>
+                    <div className={'form-check ' + className} style={props.radioStyle} key={`${index}-${value}`}>
                         <input name={name}
                                type={'radio'}
                                checked={isChecked}
@@ -60,6 +60,7 @@ class InputRadio extends React.Component<InputRadioProps> {
                                        props.onChange(value, option);
                                    }
                                }}/>
+
                         <label className={'form-check-label'}>{text}</label>
                     </div>
                 );
@@ -85,6 +86,7 @@ type Option = {
 type InputRadioProps = {
     children?: React.ReactNode,
     style?: React.CSSProperties,
+    radioStyle?: React.CSSProperties,
     className?: string | Array<string>,
 
     options: Option[],

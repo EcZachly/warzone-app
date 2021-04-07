@@ -1,6 +1,7 @@
 import React from 'react';
 import TypeService from '../../services/TypeService';
 import UtilityService from '../../services/UtilityService';
+import {AnyObject} from '../../../lib/components/Types';
 
 //===----=---=-=--=--===--=-===----=---=-=--=--===--=-===----=---=-=--=--===--=-//
 
@@ -136,7 +137,7 @@ type InputSelectProps = {
     options: Option[],
 
     //The value of the input
-    value: string | number | boolean,
+    value: string | number | boolean | AnyObject,
 
     //If true, this will set the focus automatically when the input is loaded
     focus?: boolean,
