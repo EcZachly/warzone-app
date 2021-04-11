@@ -23,7 +23,7 @@ SELECT
                WHEN AVG(score) > 10000 THEN 50
                ELSE AVG(score) / 200 END
                +
-           151 - AVG(team_placement)                                                        AS average_player_skill_score
+           151 - AVG(team_placement)*CASE team_type WHEN 'quad' THEN 4 WHEN 'trio' THEN 3 WHEN 'duo' THEN 2 WHEN 'solo' THEN 1 END  AS average_player_skill_score
     FROM warzone.gamer_matches
     WHERE start_timestamp BETWEEN  TO_DATE($1, 'YYYY-MM-DD') - INTERVAL $2  AND TO_DATE($1, 'YYYY-MM-DD') + INTERVAL '1 day'
       AND game_category = 'Warzone'

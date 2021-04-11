@@ -18,6 +18,9 @@ async function aggregateDailyMatches(matches, date){
                                     .map((match)=> match['match_id']);
 
     console.log('this many matches are relevant', filteredMatchIds.length);
+    if(!filteredMatchIds.length){
+        return Promise.resolve();
+    }
     let gamerMatches =  await queryView(TABLES.GAMER_MATCHES, {match_id: filteredMatchIds, 'start_timestamp >': moment(date).add(-1, 'day'), 'start_timestamp <': moment(date).add(1, 'day') });
 
     console.log(`query ${HISTORY_WINDOW} history`);
@@ -57,7 +60,8 @@ async function aggregateDailyMatches(matches, date){
             summaryStats.average_player_skill_score = summaryStats.average_player_skill_score/averagePlayerMatchData.length;
 
             let updateObject = { is_augmented: true, ...summaryStats};
-            return await updateDatabaseValues({match_id}, updateObject, TABLES.MATCHES);
+            await updateDatabaseValues({match_id}, updateObject, TABLES.MATCHES);
+            return Promise.resolve();
         }
     }));
 }
@@ -65,12 +69,13 @@ async function aggregateDailyMatches(matches, date){
 async function augmentAllMatches(date){
     const matches = await queryView(TABLES.MATCHES, {is_augmented: false, game_category: GAME_CATEGORY, 'start_timestamp >': moment(date).add(-1, 'day')});
     await aggregateDailyMatches(matches, date);
+    return Promise.resolve();
 }
 
 
 async function fireBatchEtl(){
-    let startDate = moment('2020-05-07');
-    let endDate = moment('2021-03-25');
+    let startDate = moment('2021-02-23');
+    let endDate = moment('2021-04-04');
     let dateArr = [];
 
 
@@ -80,7 +85,7 @@ async function fireBatchEtl(){
     }
     await Bluebird.map(dateArr.reverse(), async (date)=>{
         return await augmentAllMatches(date.format('YYYY-MM-DD'));
-    }, {concurrency: 3});
+    }, {concurrency: 1});
 }
 
 fireBatchEtl();
