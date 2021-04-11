@@ -14,6 +14,7 @@ import {
     TextArea
 } from './../SimpleComponents';
 import CSS from 'csstype';
+import {AnyObject} from '../../../lib/components/Types';
 
 const MODULE_CONSTANTS = {
     TYPE_MAP: {
@@ -91,6 +92,7 @@ class Input extends React.Component<InputType> {
 
     _getInput(props: InputType) {
         const inputStyle = {marginBottom: 0, ...props.inputStyle};
+        const {radioStyle} = props;
 
         const mappedType = this._getMappedType();
 
@@ -151,7 +153,7 @@ class Input extends React.Component<InputType> {
                              style={inputStyle}
                              hasError={!!props.errorMessage}
                              disabled={props.disabled}
-                             value={props.value}
+                             value={props.value as string}
                              options={props.options}/>
             );
         } else if (mappedType === 'radio') {
@@ -160,11 +162,12 @@ class Input extends React.Component<InputType> {
                 <InputRadio onChange={props.onChange}
                             focus={props.focus}
                             style={inputStyle}
+                            radioStyle={radioStyle}
                             innerRef={props.innerRef}
                             name={props.name}
                             hasError={!!props.errorMessage}
                             disabled={props.disabled}
-                            value={props.value}
+                            value={props.value as (string | number | boolean)}
                             options={props.options}/>
             );
         } else if (mappedType === 'textarea') {
@@ -233,6 +236,7 @@ type Option = {
 type InputType = {
     className?: string | Array<string>,
     style?: CSS.Properties,
+    radioStyle?: CSS.Properties,
     inputStyle?: CSS.Properties,
     children?: React.ReactNode,
     type?: 'text' | 'number' | 'date' | 'checkbox' | 'select' | 'radio' | 'textarea',

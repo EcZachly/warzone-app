@@ -94,6 +94,7 @@ export default function GamerDetail({gamerData, view, gameCategory, baseUrl, err
 
     const tabNames = Object.keys(CONFIG.VIEW_NAME_CONFIG).filter((key) => {
         const allowableUnoKeys = ['squads', 'trends', 'recent_matches'];
+
         if (gamer.platform === 'uno') {
             return allowableUnoKeys.includes(key);
         } else {
