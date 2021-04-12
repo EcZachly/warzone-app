@@ -14,6 +14,9 @@ WITH source AS (
            gm.gulag_kills,
            gm.gulag_deaths,
            gm.uno_id,
+           m.average_player_kdr,
+           m.average_player_score,
+           m.average_player_skill_score,
            COALESCE(g2.username, CAST(gm2.uno_id AS TEXT))                 AS helping_player,
            COALESCE(g2.platform, 'uno')                      AS helping_player_platform,
            gm2.kills                                         AS helper_kills,
@@ -30,6 +33,7 @@ WITH source AS (
                            AND gm.match_id = gm2.match_id
                            AND gm.uno_id <> gm2.uno_id
              LEFT JOIN warzone.gamers g2 ON g2.uno_id = gm2.uno_id
+             LEFT JOIN warzone.matches m on gm.match_id = m.match_id AND m.game_category = 'Warzone'
 
 ),
      with_teammates AS (
@@ -101,6 +105,23 @@ WITH source AS (
                 AVG(CASE WHEN team_type = 'quad' THEN gm.team_placement END)              AS avg_quad_placement,
                 AVG(CASE WHEN team_type = 'duo' THEN gm.team_placement END)               AS avg_duo_placement,
                 AVG(CASE WHEN team_type = 'solo' THEN gm.team_placement END)              AS avg_solo_placement,
+                AVG(average_player_kdr) AS average_lobby_kdr,
+                AVG(CASE WHEN  gm.team_type = 'solo' THEN average_player_kdr END) AS average_solo_lobby_kdr,
+                AVG(CASE WHEN  gm.team_type = 'duo' THEN average_player_kdr END) AS average_duo_lobby_kdr,
+                AVG(CASE WHEN  gm.team_type = 'trio' THEN average_player_kdr END) AS average_trio_lobby_kdr,
+                AVG(CASE WHEN  gm.team_type = 'quad' THEN average_player_kdr END) AS average_quad_lobby_kdr,
+
+                AVG(average_player_skill_score) AS average_lobby_skill_score,
+                AVG(CASE WHEN  gm.team_type = 'solo' THEN average_player_skill_score END) AS average_solo_lobby_skill_score,
+                AVG(CASE WHEN  gm.team_type = 'duo' THEN average_player_skill_score END) AS average_duo_lobby_skill_score,
+                AVG(CASE WHEN  gm.team_type = 'trio' THEN average_player_skill_score END) AS average_trio_lobby_skill_score,
+                AVG(CASE WHEN  gm.team_type = 'quad' THEN average_player_skill_score END) AS average_quad_lobby_skill_score,
+
+                AVG(average_player_score) AS average_lobby_score,
+                AVG(CASE WHEN gm.team_type = 'solo' THEN average_player_score END) AS average_solo_lobby_score,
+                AVG(CASE WHEN gm.team_type = 'duo' THEN average_player_score END) AS average_duo_lobby_score,
+                AVG(CASE WHEN gm.team_type = 'trio' THEN average_player_score END) AS average_trio_lobby_score,
+                AVG(CASE WHEN gm.team_type = 'quad' THEN average_player_score END) AS average_quad_lobby_score,
                 MIN(start_timestamp)                                                      AS first_game_time,
                 MAX(start_timestamp)                                                      AS last_game_time
          FROM source gm

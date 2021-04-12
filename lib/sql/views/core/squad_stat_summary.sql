@@ -52,10 +52,14 @@ SELECT ft.team_grain,
        CAST(SUM(headshots) AS REAL) AS total_headshots,
        CAST(SUM(headshots) AS REAL)/COUNT(DISTINCT ft.match_id) AS headshots,
        CAST(SUM(gulag_kills) AS REAL) /
-       NULLIF(SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills), 0)                              as gulag_win_rate
+       NULLIF(SUM(CASE WHEN gulag_deaths <= 1 THEN gulag_deaths ELSE 0 END + gulag_kills), 0)                              as gulag_win_rate,
+       AVG(average_player_kdr) AS average_lobby_kdr,
+       AVG(average_player_skill_score) AS average_lobby_skill_score,
+       AVG(average_player_score) AS average_lobby_score
 FROM full_teams ft
     JOIN warzone.gamer_matches gm ON ft.match_id = gm.match_id and ft.team = gm.team
     JOIN warzone.gamers g ON gm.uno_id = g.uno_id
+      LEFT JOIN warzone.matches m ON gm.match_id = m.match_id AND m.game_category = 'Warzone'
 WHERE has_full_team_data = TRUE
 GROUP BY ft.team_grain, ft.team_type, gm.game_category
 ORDER BY  CAST(COUNT(DISTINCT CASE WHEN team_placement = 1 THEN ft.match_id END) AS REAL)  DESC

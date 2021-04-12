@@ -7,7 +7,7 @@ SELECT
         'percentiles', JSON_BUILD_OBJECT(
              'elephant', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.66) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .66),
             'tortoise', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY team_survival_time_mins), 'percentile', .90)
-            )
+          )
     ) as team_survival_cutoffs,
        JSON_BUILD_OBJECT(
         'category', 'percent_time_moving',
@@ -153,123 +153,92 @@ SELECT
                                                                         )
                                                                 ) as  win_percentage_tier_cutoffs,
 
-                                       JSON_BUILD_OBJECT(
-                                                                    'category', 'quad_wins',
-                                                                    'description', '',
-                                                                    'percentiles', JSON_BUILD_OBJECT(
-                                                                        'bronze_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .01),
-                                                                        'bronze_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .05),
-                                                                        'bronze_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .1),
-                                                                        'bronze_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .15),
-                                                                        'silver_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .2),
-                                                                        'silver_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .25),
-                                                                        'silver_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .3),
-                                                                        'silver_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .35),
-                                                                        'gold_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .4),
-                                                                        'gold_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .45),
-                                                                        'gold_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .5),
-                                                                        'gold_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .55),
-                                                                        'platinum_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .6),
-                                                                        'platinum_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .65),
-                                                                        'platinum_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .7),
-                                                                        'platinum_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .75),
-                                                                        'diamond_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .8),
-                                                                        'diamond_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .85),
-                                                                        'diamond_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .9),
-                                                                        'diamond_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .95),
-                                                                        'master_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .99),
-                                                                        'legend_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .999)
-                                                                        )
-                                                                ) as  quad_wins_tier_cutoffs,
+       JSON_BUILD_OBJECT(
+                    'category', 'quad_wins',
+                    'description', '',
+                    'percentiles', JSON_BUILD_OBJECT(
+                        'bronze_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .01),
+                        'bronze_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .05),
+                        'bronze_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .1),
+                        'bronze_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .15),
+                        'silver_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .2),
+                        'silver_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .25),
+                        'silver_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .3),
+                        'silver_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .35),
+                        'gold_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .4),
+                        'gold_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .45),
+                        'gold_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .5),
+                        'gold_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .55),
+                        'platinum_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .6),
+                        'platinum_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .65),
+                        'platinum_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .7),
+                        'platinum_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .75),
+                        'diamond_4_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .8),
+                        'diamond_3_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .85),
+                        'diamond_2_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .9),
+                        'diamond_1_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .95),
+                        'master_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .99),
+                        'legend_Quad_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY Quad_Wins), 'percentile', .999)
+                        )
+                ) as  quad_wins_tier_cutoffs,
 
 
-                                       JSON_BUILD_OBJECT(
-                                                                    'category', 'trio_wins',
-                                                                    'description', '',
-                                                                    'percentiles', JSON_BUILD_OBJECT(
-                                                                        'bronze_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .01),
-                                                                        'bronze_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .05),
-                                                                        'bronze_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .1),
-                                                                        'bronze_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .15),
-                                                                        'silver_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .2),
-                                                                        'silver_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .25),
-                                                                        'silver_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .3),
-                                                                        'silver_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .35),
-                                                                        'gold_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .4),
-                                                                        'gold_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .45),
-                                                                        'gold_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .5),
-                                                                        'gold_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .55),
-                                                                        'platinum_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .6),
-                                                                        'platinum_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .65),
-                                                                        'platinum_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .7),
-                                                                        'platinum_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .75),
-                                                                        'diamond_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .8),
-                                                                        'diamond_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .85),
-                                                                        'diamond_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .9),
-                                                                        'diamond_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .95),
-                                                                        'master_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .99),
-                                                                        'legend_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .999)
-                                                                        )
-                                                                ) as  trio_wins_tier_cutoffs,
-                                                                 JSON_BUILD_OBJECT(
-                                                                                                                                    'category', 'duo_wins',
-                                                                                                                                    'description', '',
-                                                                                                                                    'percentiles', JSON_BUILD_OBJECT(
-                                                                                                                                        'bronze_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .01),
-                                                                                                                                        'bronze_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .05),
-                                                                                                                                        'bronze_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .1),
-                                                                                                                                        'bronze_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .15),
-                                                                                                                                        'silver_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .2),
-                                                                                                                                        'silver_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .25),
-                                                                                                                                        'silver_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .3),
-                                                                                                                                        'silver_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .35),
-                                                                                                                                        'gold_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .4),
-                                                                                                                                        'gold_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .45),
-                                                                                                                                        'gold_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .5),
-                                                                                                                                        'gold_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .55),
-                                                                                                                                        'platinum_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .6),
-                                                                                                                                        'platinum_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .65),
-                                                                                                                                        'platinum_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .7),
-                                                                                                                                        'platinum_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .75),
-                                                                                                                                        'diamond_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .8),
-                                                                                                                                        'diamond_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .85),
-                                                                                                                                        'diamond_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .9),
-                                                                                                                                        'diamond_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .95),
-                                                                                                                                        'master_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .99),
-                                                                                                                                        'legend_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .999)
-                                                                                                                                        )
-                                                                                                                                ) as  duo_wins_tier_cutoffs,
-
-
-
-                                       JSON_BUILD_OBJECT(
-                                                                    'category', 'solo_wins',
-                                                                    'description', '',
-                                                                    'percentiles', JSON_BUILD_OBJECT(
-                                                                        'bronze_4_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .01),
-                                                                        'bronze_3_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .05),
-                                                                        'bronze_2_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .1),
-                                                                        'bronze_1_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .15),
-                                                                        'silver_4_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .2),
-                                                                        'silver_3_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .25),
-                                                                        'silver_2_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .3),
-                                                                        'silver_1_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .35),
-                                                                        'gold_4_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .4),
-                                                                        'gold_3_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .45),
-                                                                        'gold_2_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .5),
-                                                                        'gold_1_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .55),
-                                                                        'platinum_4_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .6),
-                                                                        'platinum_3_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .65),
-                                                                        'platinum_2_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .7),
-                                                                        'platinum_1_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .75),
-                                                                        'diamond_4_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .8),
-                                                                        'diamond_3_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .85),
-                                                                        'diamond_2_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .9),
-                                                                        'diamond_1_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .95),
-                                                                        'master_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .99),
-                                                                        'legend_Solo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY solo_wins), 'percentile', .999)
-                                                                        )
-                                                                ) as  solo_wins_tier_cutoffs,
+       JSON_BUILD_OBJECT(
+                'category', 'trio_wins',
+                'description', '',
+                'percentiles', JSON_BUILD_OBJECT(
+                    'bronze_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .01),
+                    'bronze_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .05),
+                    'bronze_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .1),
+                    'bronze_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .15),
+                    'silver_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .2),
+                    'silver_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .25),
+                    'silver_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .3),
+                    'silver_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .35),
+                    'gold_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .4),
+                    'gold_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .45),
+                    'gold_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .5),
+                    'gold_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .55),
+                    'platinum_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .6),
+                    'platinum_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .65),
+                    'platinum_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .7),
+                    'platinum_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .75),
+                    'diamond_4_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .8),
+                    'diamond_3_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .85),
+                    'diamond_2_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .9),
+                    'diamond_1_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .95),
+                    'master_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .99),
+                    'legend_Trio_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY Trio_Wins), 'percentile', .999)
+                    )
+            ) as  trio_wins_tier_cutoffs,
+     JSON_BUILD_OBJECT(
+                        'category', 'duo_wins',
+                        'description', '',
+                        'percentiles', JSON_BUILD_OBJECT(
+                            'bronze_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .01),
+                            'bronze_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .05),
+                            'bronze_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .1),
+                            'bronze_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .15),
+                            'silver_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .2),
+                            'silver_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .25),
+                            'silver_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .3),
+                            'silver_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .35),
+                            'gold_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .4),
+                            'gold_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .45),
+                            'gold_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .5),
+                            'gold_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .55),
+                            'platinum_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .6),
+                            'platinum_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .65),
+                            'platinum_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .7),
+                            'platinum_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .75),
+                            'diamond_4_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .8),
+                            'diamond_3_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .85),
+                            'diamond_2_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .9),
+                            'diamond_1_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .95),
+                            'master_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .99),
+                            'legend_Duo_Wins', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY Duo_Wins), 'percentile', .999)
+                            )
+        ) as  duo_wins_tier_cutoffs,
         JSON_BUILD_OBJECT(
         'category', 'headshots',
         'description', '',
@@ -286,7 +255,160 @@ SELECT
                 'champion', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .75),
                 'god', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY win_percentage), 'percentile', .90)
               )
-        ) as win_percentage_cutoffs
+        ) as win_percentage_cutoffs,
+
+           JSON_BUILD_OBJECT(
+                    'category', 'avg_deaths',
+                    'description', '',
+                    'percentiles', JSON_BUILD_OBJECT(
+                        'buy_back_baby', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY avg_deaths), 'percentile', .75),
+                        'leave_me_dead', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY avg_deaths), 'percentile', .9)
+                      )
+                ) as avg_deaths_cutoffs,
+
+      JSON_BUILD_OBJECT(
+            'category', 'average_lobby_skill_score',
+            'description', '',
+            'percentiles', JSON_BUILD_OBJECT(
+                'bronze_4_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .01),
+                'bronze_3_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .05),
+                'bronze_2_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .1),
+                'bronze_1_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .15),
+                'silver_4_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .2),
+                'silver_3_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .25),
+                'silver_2_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .3),
+                'silver_1_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .35),
+                'gold_4_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .4),
+                'gold_3_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .45),
+                'gold_2_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .5),
+                'gold_1_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .55),
+                'platinum_4_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .6),
+                'platinum_3_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .65),
+                'platinum_2_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .7),
+                'platinum_1_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .75),
+                'diamond_4_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .8),
+                'diamond_3_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .85),
+                'diamond_2_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .9),
+                'diamond_1_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .95),
+                'master_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .99),
+                'legend_average_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY average_lobby_skill_score), 'percentile', .999)
+                )
+    ) as  average_lobby_skill_score_tier_cutoffs,
+    
+    
+      JSON_BUILD_OBJECT(
+            'category', 'average_solo_lobby_skill_score',
+            'description', '',
+            'percentiles', JSON_BUILD_OBJECT(
+                'bronze_4_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .01),
+                'bronze_3_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .05),
+                'bronze_2_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .1),
+                'bronze_1_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .15),
+                'silver_4_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .2),
+                'silver_3_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .25),
+                'silver_2_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .3),
+                'silver_1_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .35),
+                'gold_4_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .4),
+                'gold_3_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .45),
+                'gold_2_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .5),
+                'gold_1_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .55),
+                'platinum_4_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .6),
+                'platinum_3_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .65),
+                'platinum_2_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .7),
+                'platinum_1_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .75),
+                'diamond_4_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .8),
+                'diamond_3_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .85),
+                'diamond_2_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .9),
+                'diamond_1_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .95),
+                'master_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .99),
+                'legend_average_solo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY average_solo_lobby_skill_score), 'percentile', .999)
+                )
+    ) as  average_solo_lobby_skill_score_tier_cutoffs,
+
+      JSON_BUILD_OBJECT(
+            'category', 'average_duo_lobby_skill_score',
+            'description', '',
+            'percentiles', JSON_BUILD_OBJECT(
+                'bronze_4_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .01),
+                'bronze_3_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .05),
+                'bronze_2_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .1),
+                'bronze_1_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .15),
+                'silver_4_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .2),
+                'silver_3_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .25),
+                'silver_2_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .3),
+                'silver_1_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .35),
+                'gold_4_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .4),
+                'gold_3_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .45),
+                'gold_2_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .5),
+                'gold_1_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .55),
+                'platinum_4_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .6),
+                'platinum_3_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .65),
+                'platinum_2_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .7),
+                'platinum_1_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .75),
+                'diamond_4_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .8),
+                'diamond_3_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .85),
+                'diamond_2_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .9),
+                'diamond_1_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .95),
+                'master_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .99),
+                'legend_average_duo_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY average_duo_lobby_skill_score), 'percentile', .999)
+                )
+    ) as  average_duo_lobby_skill_score_tier_cutoffs,
+         JSON_BUILD_OBJECT(
+                'category', 'average_trio_lobby_skill_score',
+                'description', '',
+                'percentiles', JSON_BUILD_OBJECT(
+                    'bronze_4_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .01),
+                    'bronze_3_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .05),
+                    'bronze_2_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .1),
+                    'bronze_1_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .15),
+                    'silver_4_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .2),
+                    'silver_3_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .25),
+                    'silver_2_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .3),
+                    'silver_1_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .35),
+                    'gold_4_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .4),
+                    'gold_3_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .45),
+                    'gold_2_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .5),
+                    'gold_1_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .55),
+                    'platinum_4_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .6),
+                    'platinum_3_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .65),
+                    'platinum_2_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .7),
+                    'platinum_1_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .75),
+                    'diamond_4_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .8),
+                    'diamond_3_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .85),
+                    'diamond_2_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .9),
+                    'diamond_1_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .95),
+                    'master_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .99),
+                    'legend_average_trio_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY average_trio_lobby_skill_score), 'percentile', .999)
+                    )
+        ) as  average_trio_lobby_skill_score_tier_cutoffs,
+              JSON_BUILD_OBJECT(
+                        'category', 'average_quad_lobby_skill_score',
+                        'description', '',
+                        'percentiles', JSON_BUILD_OBJECT(
+                            'bronze_4_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.01) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .01),
+                            'bronze_3_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.05) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .05),
+                            'bronze_2_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.1) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .1),
+                            'bronze_1_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.15) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .15),
+                            'silver_4_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.2) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .2),
+                            'silver_3_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.25) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .25),
+                            'silver_2_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.3) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .3),
+                            'silver_1_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.35) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .35),
+                            'gold_4_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.4) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .4),
+                            'gold_3_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.45) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .45),
+                            'gold_2_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .5),
+                            'gold_1_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.55) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .55),
+                            'platinum_4_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.6) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .6),
+                            'platinum_3_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.65) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .65),
+                            'platinum_2_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.7) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .7),
+                            'platinum_1_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.75) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .75),
+                            'diamond_4_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.8) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .8),
+                            'diamond_3_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.85) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .85),
+                            'diamond_2_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .9),
+                            'diamond_1_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.95) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .95),
+                            'master_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.99) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .99),
+                            'legend_average_quad_lobby_skill_score', JSON_BUILD_OBJECT('value', PERCENTILE_DISC(0.999) WITHIN GROUP (ORDER BY average_quad_lobby_skill_score), 'percentile', .999)
+                            )
+                ) as  average_quad_lobby_skill_score_tier_cutoffs
 FROM warzone.gamer_stat_summary
 WHERE num_matches >= 100
 GROUP BY game_category
