@@ -11,6 +11,7 @@ import UtilityService from '../../../src/services/UtilityService';
 
 import MaterializedViewRefreshController
     from '../../components/MaterializedViewRefresh/MaterializedViewRefreshController';
+import TypeService from '../../../src/services/TypeService';
 
 const isDevMode = (process.env.NODE_ENV === 'development');
 const time = {
@@ -24,9 +25,9 @@ const jobsRunPerDay = Math.floor((24 * 60) / minutesBetweenRuns);
 
 const JOB_RUN_TIMES = {
     EVERY_10_MINUTES: minutesBetweenRuns,
-    EVERY_15_MINUTES: minutesBetweenRuns * .25,
-    EVERY_30_MINUTES: minutesBetweenRuns * .5,
-    EVERY_45_MINUTES: minutesBetweenRuns * .75,
+    EVERY_15_MINUTES: minutesBetweenRuns * 1.5,
+    EVERY_30_MINUTES: minutesBetweenRuns * 3,
+    EVERY_45_MINUTES: minutesBetweenRuns * 4.5,
     HOURLY: 60,
     EVERY_HOUR_AND_A_HALF: 60 * 1.5,
     EVERY_2_HOURS: 60 * 2,
@@ -102,26 +103,8 @@ async function run() {
         await testAndRefreshMaterializedView();
     } catch (error) {
         errorResponse = error;
+        console.log(errorResponse);
     }
-
-    console.log(errorResponse);
-
-
-
-    // IS_REFRESHING = null;
-    //
-    // if (errorResponse) {
-    //     logger.info('JOB FAILURE: refreshing materialized views');
-    //     logger.error(errorResponse);
-    // } else {
-    //     logger.info('JOB COMPLETE: refreshing materialized views');
-    //     setTime('end');
-    //     logJobDuration();
-    //
-    //     if (isDevMode) {
-    //         logger.info(response);
-    //     }
-    // }
 }
 
 
@@ -138,15 +121,16 @@ async function validateViewNames() {
 
 async function testAndRefreshMaterializedView(position = 0) {
     const selectedViewObj = getViews()[position];
+    console.log(' ');
 
-    if (!selectedViewObj) {
-        finishJob();
+    if (TypeService.isObject(selectedViewObj, true) === false) {
+        return finishJob();
     } else if (selectedViewObj.skip === true) {
-        console.log('skipping view');
+        console.log('skipping view: ' + selectedViewObj.name);
         return testAndRefreshMaterializedView(position + 1);
     }
 
-    console.log(`checking view (${selectedViewObj.name})`);
+    console.log(`checking view: ${selectedViewObj.name}`);
 
     const mostRecentRefreshes = await MaterializedViewRefreshController.queryMaterializedViewRefresh({
         view_id: selectedViewObj.name
@@ -248,7 +232,7 @@ async function testAndRefreshMaterializedView(position = 0) {
 function finishJob() {
     console.log('job finished');
     IS_REFRESHING = null;
-    // DAO.closeConnection();
+    process.exit(0);
 }
 
 

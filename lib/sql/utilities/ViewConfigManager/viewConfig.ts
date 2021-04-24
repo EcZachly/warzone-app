@@ -114,6 +114,12 @@ export default [
         materialized: true
     },
     {
+        name: 'match_tier_cutoffs',
+        type: 'view',
+        group: 'core',
+        materialized: true
+    },
+    {
         name: 'gamer_rolling_trends_materialized',
         type: 'view',
         group: 'core',
