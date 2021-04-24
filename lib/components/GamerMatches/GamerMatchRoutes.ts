@@ -1,4 +1,6 @@
 import {Request, Response} from 'express';
+import tracer from 'tracer';
+const logger = tracer.colorConsole();
 
 import responseHandler from './../../../routes/responseHandler';
 
@@ -13,6 +15,8 @@ import {RouteService} from '../Routes';
 
 
 export async function queryGamerMatches(req: Request, res: Response): Promise<void> {
+    logger.trace('queryGamerMatches');
+
     const query = RouteService.sanitizeQueryParameters(req.query);
 
     const options = {
@@ -35,7 +39,13 @@ export async function queryGamerMatches(req: Request, res: Response): Promise<vo
         delete options.order;
     }
 
+
+    console.log('query', query);
+    console.log('options', options);
+
     GamerMatchController.queryGamerMatches(query, options).then((gamerMatches) => {
+        console.log('gamerMatches', gamerMatches);
+
         if (gamerMatches.length > 0) {
             responseHandler.handleResponse(req, res, gamerMatches);
         } else {

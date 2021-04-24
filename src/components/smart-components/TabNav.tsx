@@ -29,12 +29,13 @@ export default function TabNav(props: TabNavProps) {
     return (
         <Box className={'tab-nav ' + props.className} style={props.style}>
             {
-                props.options.map((option) => {
+                props.options.map((option, index) => {
                     const {text, id} = option;
                     const isActive = (props.value === id);
 
                     return (
                         <Button type={isActive ? activeColor : inactiveColor}
+                                key={index}
                                 className={'tab ' + (isActive ? 'active' : 'inactive') + '-tab'}
                                 style={option.style}
                                 onClick={() => isActive === false && props.onChange(option)}>

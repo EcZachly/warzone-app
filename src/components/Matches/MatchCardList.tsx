@@ -17,12 +17,14 @@ export type MatchCardListProps = {
 export default function MatchCardList({matches}: MatchCardListProps) {
     return (
         <Box className={'match-list-container'}>
-            {matches.map((match) => {
-                return (
-                    <MatchCard key={match.match_id}
-                               match={match}/>
-                );
-            })}
+            {
+                matches.map((match, index) => {
+                    return (
+                        <MatchCard key={index + '-' + match.match_id}
+                                   match={match}/>
+                    );
+                })
+            }
         </Box>
     );
 }

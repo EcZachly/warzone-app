@@ -268,11 +268,9 @@ const DashboardPage = ({baseUrl}) => {
         return (
             <Box>
                 <Paragraph>
-                    Add your friends to follow them, see their recent games, and compare stats. <Text italic>You'll also
-                                                                                                             see when
-                                                                                                             they're on
-                                                                                                             a hot
-                                                                                                             streak!</Text>
+                    Add your friends to follow them, see their recent games, and compare stats. <Text italic>
+                    You'll also see when they're on a hot streak!
+                </Text>
                 </Paragraph>
 
                 <CreateGamerRelationship user={userState.data}
@@ -499,13 +497,16 @@ const DashboardPage = ({baseUrl}) => {
 
 
 
-    function getRecentMatches(gamerRelationships) {
+    async function getRecentMatches(gamerRelationships) {
+        console.log('getRecentMatches');
+
         const gamerRelationshipsIDList = gamerRelationships.map(({username, platform}) => {
             return [platform, username].join('-');
         });
 
         const query = {
-            platform_username: gamerRelationshipsIDList
+            platform_username: gamerRelationshipsIDList,
+            game_category: 'Warzone'
         };
 
         const queryOptions = {
@@ -514,19 +515,23 @@ const DashboardPage = ({baseUrl}) => {
             order: [{field: 'end_timestamp', direction: 'desc'}]
         };
 
-        GamerMatchService.queryGamerMatches(query, queryOptions).then((gamerMatches) => {
-            console.log('gamerMatches', gamerMatches);
+        try {
+            let gamerMatches = await GamerMatchService.queryGamerMatches(query, queryOptions);
+
+            console.log(gamerMatches);
+
             setRecentMatchesState({
                 data: GamerMatchService.combineGamerMatches(gamerMatches),
                 loading: false
             });
-        }).catch((error) => {
+        } catch (error) {
             console.error(error);
+
             setRecentMatchesState({
                 loading: false,
                 error: 'An unknown error occurred while getting the recent matches'
             });
-        });
+        }
     }
 
 
