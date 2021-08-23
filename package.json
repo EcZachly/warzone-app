@@ -13,7 +13,7 @@
     "nodemon": "npm run pre-start && nodemon",
     "reminder": "node config/dev/reminders.js",
     "refresh-materialized-views": "ts-node lib/etl/jobs/materialized_views_refresh.ts",
-    "refresh-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType refresh",
+    "refresh-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType followed_users",
     "backfill-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType backfill",
     "update-gamer-matches": "ts-node lib/etl/jobs/user_match_runner.ts --jobType update",
     "regenerate-views": "ts-node lib/sql/utilities/ViewGeneration/index.ts",

@@ -117,11 +117,12 @@ WITH agg AS (
               LEFT JOIN warzone.matches m ON gm.match_id = m.match_id AND m.game_category = 'Warzone'
     GROUP BY gm.game_category, gm.uno_id
 ),
-     gamer_rolling AS (
-         SELECT *
-         FROm warzone.gamer_rolling_trends
-         WHERE is_latest_game = TRUE
-     )
+
+ gamer_rolling AS (
+     SELECT *
+     FROm warzone.gamer_rolling_trends
+     WHERE is_latest_game = TRUE
+ )
 
 
 SELECT a.*,
